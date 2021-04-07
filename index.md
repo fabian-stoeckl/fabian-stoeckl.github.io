@@ -24,7 +24,6 @@ with Michael Knoblach, in: Journal of Economic Surveys (2020)<br/>
 [
 [download](https://onlinelibrary.wiley.com/doi/abs/10.1111/joes.12366){:target="_blank"}
 ]
-
 <details>
   <summary>Abstract (<i>click to expand</i>)</summary>
   
