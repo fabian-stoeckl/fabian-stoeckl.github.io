@@ -37,6 +37,7 @@ with Michael Knoblach, in: *Journal of Economic Surveys (2020)*<br/>
 
 ## *Working Papers*
 
+Definition
 :	**Is Substitutability the New Efficiency? Endogenous Investment in the Elasticity of Substitution Between Clean and Dirty Energy**<br/>
 	*DIW Discussion Paper No. 1886*<br/>
 	[
