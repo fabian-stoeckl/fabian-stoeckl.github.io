@@ -42,7 +42,7 @@ with Michael Knoblach, in: *Journal of Economic Surveys (2020)*<br/>
 [
 [download](https://www.diw.de/documents/publikationen/73/diw_01.c.795781.de/dp1886.pdf){:target="_blank"}
 ]<br/>
-&nbsp; <details>
+<details>
 	<summary>Abstract(<i>click to expand</i>)</summary>
   
 		<p style='text-align: justify;'>
