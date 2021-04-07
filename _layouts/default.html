@@ -10,15 +10,21 @@
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
+	
+	<style>
+        p span {
+            display: block;
+        }
+    </style>
+	
   </head>
   <body>
     <div class="wrapper">
       <header>
-	  <div style="white-space: pre">
-        <h1>Dr. Fabian Stöckl</h1>
-		<h2>Economisttt</h2>
-		</div>
-		
+	  <p>
+        <span><h1>Dr. Fabian Stöckl</h1></span>
+		<span><h2>Economistü</h2></span>
+	  </p>
         
         {% if site.logo %}
           <img src="{{site.logo | relative_url}}" alt="Logo" />
