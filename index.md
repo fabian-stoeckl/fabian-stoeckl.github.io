@@ -16,3 +16,8 @@ My **research interest** are:
 <br/><br/>
 
 # Research
+
+## Published Papers:
+
+**What Determines the Elasticity of Substitution Between Capital and Labor? A Literature Review**
+with Michael Knoblach, in: Journal of Economic Surveys (2020)
