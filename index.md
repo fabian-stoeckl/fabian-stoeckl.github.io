@@ -41,7 +41,7 @@ with Michael Knoblach, in: *Journal of Economic Surveys (2020)*<br/>
 &nbsp;&nbsp; *DIW Discussion Paper No. 1886*<br/>
 &nbsp;&nbsp; [
 &nbsp;&nbsp; [download](https://www.diw.de/documents/publikationen/73/diw_01.c.795781.de/dp1886.pdf){:target="_blank"}
-&nbsp;&nbsp; ]
+&nbsp;&nbsp; ]<br/>
 &nbsp; <details>
 	<summary>Abstract(<i>click to expand</i>)</summary>
   
