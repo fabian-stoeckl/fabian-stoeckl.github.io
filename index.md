@@ -189,6 +189,26 @@ with *Prof. Dr. Franziska Holz*
   overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
   font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-gc4a{background-color:#f1f1f1;border-color:#f1f1f1;font-family:Helvetica, sans-serif !important;;font-size:22px;
+  font-weight:bold;text-align:center;vertical-align:middle}
+</style>
+<table class="tg">
+<tbody>
+  <tr>
+    <td class="tg-gc4a"><span style="color:#1a2154">REFERENCES</span></td>
+  </tr>
+</tbody>
+</table>
+
+<br/>
+
+
+<style type="text/css">
+.tg  {border:none;border-collapse:collapse;border-spacing:0;margin:0px auto;}
+.tg td{border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;
+  padding:10px 5px;word-break:normal;}
+.tg th{border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg .tg-73oq{border-color:#000000;text-align:left;vertical-align:top}
 </style>
 <table class="tg">
