@@ -17,13 +17,21 @@ My **research interest** are:
 
 # <u>Research</u>
 
-<table style="width: 100%; border-color: yellow; background-color: yellow; margin-left: auto; margin-right: auto;" border="0">
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;margin:0px auto;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-npyd{background-color:#9b9b9b;border-color:#fe996b;
+  font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif !important;;font-size:18px;font-weight:bold;
+  text-align:center;vertical-align:middle}
+</style>
+<table class="tg">
 <tbody>
-<tr>
-<td style="text-align: center; vertical-align: middle;">
-<p><span style="color: #808000;">Testio</span></p>
-</td>
-</tr>
+  <tr>
+    <td class="tg-npyd">Test</td>
+  </tr>
 </tbody>
 </table>
 
