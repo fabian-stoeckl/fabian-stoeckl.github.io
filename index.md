@@ -4,7 +4,7 @@
 
 I am a **research associate** at the **German Institute for Economic Research** (DIW Berlin), Dept. Energy, Transportation, Environment.
 
-You can download my **CV** [here](https://onedrive.live.com/download?cid=BD775751B616586F&resid=BD775751B616586F%218832&authkey=AJ_rfI2twfH7ZR0&em=2){:target="_blank"}.
+You can download my **CV** [here](https://onedrive.live.com/download?cid=BD775751B616586F&resid=BD775751B616586F%218832&authkey=AJ_rfI2twfH7ZR0&em=2).
 
 My **research interest** are:
 
