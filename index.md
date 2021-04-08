@@ -21,7 +21,7 @@ My **research interest** are:
   overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
   font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-gc4a{background-color:#f1f1f1;border-color:#f1f1f1;font-family:Helvetica, sans-serif !important;;font-size:20px;
+.tg .tg-gc4a{background-color:#f1f1f1;border-color:#f1f1f1;font-family:Helvetica, sans-serif !important;;font-size:22px;
   font-weight:bold;text-align:center;vertical-align:middle}
 </style>
 <table class="tg">
