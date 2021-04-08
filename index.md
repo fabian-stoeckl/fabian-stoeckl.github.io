@@ -218,7 +218,7 @@ with *Prof. Dr. Franziska Holz*
     <td class="tg-m223"><span style="font-weight:bold;color:#000">Prof. Dr. Georg Meran</span><br>Professor of Economics, Technische Universität Berlin<br>Workgroup Environmental Economics and Policy<br>Email: g.meran[at]tu-berlin.de</td>
   </tr>
   <tr>
-    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Prof. Dr. Claudia Kemfert</span><br>Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Professor of Economics, Leuphana Universität Lüneburg<br>Email: ckemfert[at]diw[dot]de<br></td>
+    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Prof. Dr. Claudia Kemfert</span><br>Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Professor of Economics, Leuphana Universität Lüneburg<br>Email: ckemfert[at]diw.de<br></td>
   </tr>
   <tr>
     <td class="tg-73oq"><span style="font-weight:bold;color:#000">Dr. Wolf-Peter Schill</span><br>Deputy Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Email: wschill[at]diw.de</td>
