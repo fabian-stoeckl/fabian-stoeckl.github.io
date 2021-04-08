@@ -214,13 +214,13 @@ with *Prof. Dr. Franziska Holz*
 <table class="tg">
 <tbody>
   <tr>
-    <td class="tg-73oq"><span style="font-weight:bold">Prof. Dr. Georg Meran</span><br>Professor of Economics, Technische Universität Berlin<br>Workgroup Environmental Economics and Policy<br>Straße des 17. Juni 135,<br>10623 Berlin, Germany<br>Email: g.meran[at]tu-berlin.de</td>
+    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Prof. Dr. Georg Meran</span><br>Professor of Economics, Technische Universität Berlin<br>Workgroup Environmental Economics and Policy<br>Straße des 17. Juni 135,<br>10623 Berlin, Germany<br>Email: g.meran[at]tu-berlin.de</td>
   </tr>
   <tr>
-    <td class="tg-73oq"><span style="font-weight:bold">Prof. Dr. Claudia Kemfert</span><br>Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Professor of Economics, Leuphana Universität Lüneburg<br>Universitätsallee 1,<br>21335 Lüneburg, Germany<br>Email: ckemfert[at]diw[dot]de</td>
+    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Prof. Dr. Claudia Kemfert</span><br>Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Professor of Economics, Leuphana Universität Lüneburg<br>Universitätsallee 1,<br>21335 Lüneburg, Germany<br>Email: ckemfert[at]diw[dot]de</td>
   </tr>
   <tr>
-    <td class="tg-73oq"><span style="font-weight:bold">Dr. Wolf-Peter Schill</span><br>Deputy Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Mohrenstraße 58<br>10117 Berlin, Germany<br>Email: wschill[at]diw.de</td>
+    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Dr. Wolf-Peter Schill</span><br>Deputy Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Mohrenstraße 58<br>10117 Berlin, Germany<br>Email: wschill[at]diw.de</td>
   </tr>
 </tbody>
 </table>
