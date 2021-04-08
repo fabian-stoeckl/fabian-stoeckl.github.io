@@ -24,13 +24,13 @@ My **research interest** are:
 .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
   font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg .tg-npyd{background-color:#f1f1f1;border-color:#f1f1f1;
-  font-family: Avenir, san-serif !important;;font-size:18px;font-weight:bold;
+  font-family: 'Avenir Black', san-serif !important;;font-size:18px;font-weight:bold;
   text-align:center;vertical-align:middle}
 </style>
 <table class="tg">
 <tbody>
   <tr>
-    <td class="tg-npyd"><span style="color:#1a2154">RESEARCH5</span></td>
+    <td class="tg-npyd"><span style="color:#1a2154">RESEARCH6</span></td>
   </tr>
 </tbody>
 </table>
