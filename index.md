@@ -67,9 +67,10 @@ with Michael Knoblach, in: *Journal of Economic Surveys (2020)*<br/>
 		</p>
   
 </details>
-<span style="display:block; margin-top:-50px;">&nbsp;</span><hr/>
+<span style="display:block; margin-top:-50px;">&nbsp;</span>
+<hr/>
 
-**Substituting Clean for Dirty Energy: A Bottom-Up Analysis**<br/>
+**Substituting Clean for Dirty Energy: A Bottom-Upm Analysis**<br/>
 with Alexander Zerrahn, *DIW Discussion Paper No. 1885*<br/>
 [
 [download](https://www.diw.de/documents/publikationen/73/diw_01.c.795779.de/dp1885.pdf){:target="_blank"}
