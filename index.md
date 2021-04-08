@@ -17,10 +17,12 @@ My **research interest** are:
 
 # <u>Research</u>
 
-<table style="width: 100%; height: 30px; border-color: yellow; background-color: yellow; margin-left: auto; margin-right: auto;">
+<table style="width: 100%; height: 30px; border-color: yellow; background-color: yellow; margin-left: auto; margin-right: auto;" border="0">
 <tbody>
 <tr>
-<td style="text-align: center;">Test</td>
+<td style="text-align: center;">
+<h1><span style="color: #808000;">Test</span></h1>
+</td>
 </tr>
 </tbody>
 </table>
