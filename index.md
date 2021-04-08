@@ -15,25 +15,19 @@ My **research interest** are:
 
 <br/><br/>
 
-# <u>Research</u>
-#f1f1f1
-
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;margin:0px auto;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
   overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
   font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-npyd{background-color:#f1f1f1;border-color:#f1f1f1;
-  font-family: 'Avenir Black', san-serif !important;;font-size:18px;font-weight:bold;
-  text-align:center;vertical-align:middle}
+.tg .tg-gc4a{background-color:#f1f1f1;border-color:#f1f1f1;font-family:Helvetica, sans-serif !important;;font-size:20px;
+  font-weight:bold;text-align:center;vertical-align:middle}
 </style>
 <table class="tg">
 <tbody>
   <tr>
-    <td class="tg-npyd"><span style="color:#1a2154">
-	# RESEARCH
-	</span></td>
+    <td class="tg-gc4a"><span style="color:#1a2154">RESEARCH</span></td>
   </tr>
 </tbody>
 </table>
