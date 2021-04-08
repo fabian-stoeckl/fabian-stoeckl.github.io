@@ -148,7 +148,7 @@ with Wolf-Peter Schill
 	- H2 production & distribution for the mobility sector [
 [DIETER 1.4](https://gitlab.com/diw-evu/dieter_public/dietergms/-/releases){:target="_blank"}
 ] <br/>
-	- H2 as energy storage [
+	- H<sub>2</sub> as energy storage [
 [DIETER 1.5](https://gitlab.com/diw-evu/dieter_public/dietergms/-/releases){:target="_blank"}
 ] <br/>
 	- Power-to-Liquid production [
