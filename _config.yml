@@ -5,3 +5,7 @@ logo: /fabian.png # Either absolute or relative url
 url: "https://example.com" # the base hostname & protocol for your site
 plugins:
   - jekyll-sitemap
+  
+  
+title: Dr. Fabian Stöckl
+description: Dr. Fabian Stöckl - Economist
