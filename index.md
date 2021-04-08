@@ -21,7 +21,7 @@ My **research interest** are:
 <tbody>
 <tr>
 <td style="text-align: center; vertical-align: middle;">
-<p><span style="color: #808000;">Testi</span></p>
+<p><span style="color: #808000;">Testio</span></p>
 </td>
 </tr>
 </tbody>
