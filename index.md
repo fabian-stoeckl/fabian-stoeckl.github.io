@@ -108,12 +108,12 @@ with Wolf-Peter Schill & Alexander Zerrahn, *arXiv preprint*<br/>
 Funding: German Ministry for the Environment, Nature Conservation and Nuclear Safety<br/>
 Project Partners: IFEU (lead), Fraunhofer IIS, PTV Group, DIW Berlin
 
-<br/> - - - - -
+- - - - -
 
 **Increasing Capital-Labor Substitutability and the Declining Labor Income Share**<br/>
 with Michael Knoblach & Khalid ElFayoumi
 
-<br/> - - - - -
+- - - - -
 
 **Benefits of Hydrogen/Power-to-Liquid Mobility for Integrating Intermittent Renewable Energy**<br/>
 with Wolf-Peter Schill
