@@ -27,14 +27,14 @@ My **research interest** are:
 <table class="tg">
 <tbody>
   <tr>
-    <td class="tg-gc4a"><span style="color:#1a2154">RESEARCH1</span></td>
+    <td class="tg-gc4a"><span style="color:#1a2154">RESEARCH</span></td>
   </tr>
 </tbody>
 </table>
 
 <br/>
 
-## *Published Papers:*
+## <u>*Published Papers:*</u>
 
 **What Determines the Elasticity of Substitution Between Capital and Labor? A Literature Review**<br/>
 with Michael Knoblach, in: *Journal of Economic Surveys (2020)*<br/>
