@@ -43,7 +43,7 @@ with Michael Knoblach, in: *Journal of Economic Surveys (2020)*<br/>
 ]
 <details>
   <summary>Abstract (<i>click to expand</i>)</summary>
-  
+  <br/>
   <p style='text-align: justify;'>
   This paper provides the first comprehensive review of the empirical and theoretical literature on the determinants of the elasticity of substitution between capital and labor. Our focus is on the two‐input constant elasticity of substitution (CES) production function. We start by presenting four concise observations that summarize the empirical literature on the estimation of σ. Motivated by these observations, the main part of this survey then focuses on potential determinants of capital-labor substitution. We first review several approaches to the microfoundation of production functions where the elasticity of substitution (EOS) is treated as a purely technological parameter. Second, we outline the construction of an aggregate elasticity of substitution (AES) in a multi‐sectoral framework and investigate its dependence on underlying intra‐ and inter‐sectoral substitution. Third, we discuss the influence of the institutional framework on the extent of factor substitution. Overall, this survey highlights that the effective elasticity of substitution (EES), which is typically estimated in empirical studies, is generally not an immutable deep parameter but depends on a multitude of technological, non‐technological, and institutional determinants. Based on these insights, the final section identifies a number of potential empirical and theoretical avenues for future research.
   </p>
@@ -140,7 +140,17 @@ with Wolf-Peter Schill
 <br/>
 
 
-**Core developer of DIETER** (Dispatch & Investment Evaluation Tool with Endogenous Renewables) [GitLab]
+**Core developer of DIETER** (Dispatch & Investment Evaluation Tool with Endogenous Renewables) [
+[GitLab](https://gitlab.com/diw-evu/dieter_public){:target="_blank"}
+]
+
+- Special Contributions:
+
+     - H2 production and distribution for the mobility sector [DIETER 1.4]
+
+     - H2 as energy storage [DIETER 1.5]
+
+     - Power-to-Liquid production [DIETER 1.5]
 
 ​
 
