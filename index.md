@@ -144,13 +144,16 @@ with Wolf-Peter Schill
 [GitLab](https://gitlab.com/diw-evu/dieter_public){:target="_blank"}
 ]
 
-- Special Contributions:
-
-     - H2 production and distribution for the mobility sector [DIETER 1.4]
-
-     - H2 as energy storage [DIETER 1.5]
-
-     - Power-to-Liquid production [DIETER 1.5]
+* Special Contributions:
+	- H2 production and distribution for the mobility sector [
+[DIETER 1.4](https://gitlab.com/diw-evu/dieter_public/dietergms/-/releases){:target="_blank"}
+] <br/>
+	- H2 as energy storage [
+[DIETER 1.5](https://gitlab.com/diw-evu/dieter_public/dietergms/-/releases){:target="_blank"}
+] <br/>
+	- Power-to-Liquid production [
+[DIETER 1.5](https://gitlab.com/diw-evu/dieter_public/dietergms/-/releases){:target="_blank"}
+]
 
 ​
 
