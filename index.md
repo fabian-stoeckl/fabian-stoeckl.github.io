@@ -132,7 +132,7 @@ with Wolf-Peter Schill
 <table class="tg">
 <tbody>
   <tr>
-    <td class="tg-gc4a"><span style="color:#1a2154"; letter-spacing: 1em>SOFTWARE DEVELOPMENT</span></td>
+    <td class="tg-gc4a"><span style="color:#1a2154"; letter-spacing: 1em;>SOFTWARE DEVELOPMENT</span></td>
   </tr>
 </tbody>
 </table>
