@@ -148,7 +148,7 @@ with Wolf-Peter Schill
 	-- H<sub>2</sub> production & distribution for the mobility sector [
 [DIETER 1.4](https://gitlab.com/diw-evu/dieter_public/dietergms/-/releases){:target="_blank"}
 ] <br/>
-	-- H2 as energy storage [
+	-- H<sub>2</sub> as energy storage [
 [DIETER 1.5](https://gitlab.com/diw-evu/dieter_public/dietergms/-/releases){:target="_blank"}
 ] <br/>
 	-- Power-to-Liquid production [
@@ -180,6 +180,50 @@ with Wolf-Peter Schill
 **Hertie School of Governance**<br/>
 Teaching Assistant - Course "Trade, Growth, and Development"<br/>
 with Prof. Dr. Franziska Holz
+
+<br/>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;margin:0px auto;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-gc4a{background-color:#f1f1f1;border-color:#f1f1f1;font-family:Helvetica, sans-serif !important;;font-size:22px;
+  font-weight:bold;text-align:center;vertical-align:middle}
+</style>
+<table class="tg">
+<tbody>
+  <tr>
+    <td class="tg-gc4a"><span style="color:#1a2154">REFERENCES</span></td>
+  </tr>
+</tbody>
+</table>
+
+<br/>
+
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;margin:0px auto;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<tbody>
+  <tr>
+    <td class="tg-0lax"><span style="font-weight:bold">Prof. Dr. Georg Meran</span><br>Professor of Economics, Technische Universität Berlin<br>Workgroup Environmental Economics and Policy<br>Straße des 17. Juni 135,<br>10623 Berlin, Germany<br>Email: g.meran[at]tu-berlin.de</td>
+    <td class="tg-0pky"><span style="font-weight:bold">Prof. Dr. Claudia Kemfert</span><br>Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Professor of Economics, Leuphana Universität Lüneburg<br>Universitätsallee 1,<br>21335 Lüneburg, Germany<br>Email: ckemfert[at]diw.de</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"><span style="font-weight:bold">Dr. Wolf-Peter Schill</span><br>Deputy Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Mohrenstraße 58<br>10117 Berlin, Germany<br>Email: wschill[at]diw.de</td>
+    <td class="tg-0pky"></td>
+  </tr>
+</tbody>
+</table>
 
 
 ​
