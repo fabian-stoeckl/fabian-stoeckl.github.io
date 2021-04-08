@@ -209,18 +209,19 @@ with *Prof. Dr. Franziska Holz*
   padding:10px 5px;word-break:normal;}
 .tg th{border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;
   overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-m223{border-color:#000000;font-size:100%;text-align:left;vertical-align:top}
 .tg .tg-73oq{border-color:#000000;text-align:left;vertical-align:top}
 </style>
 <table class="tg">
 <tbody>
   <tr>
-    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Prof. Dr. Georg Meran</span><br>Professor of Economics, Technische Universität Berlin<br>Workgroup Environmental Economics and Policy<br>Straße des 17. Juni 135,<br>10623 Berlin, Germany<br>Email: g.meran[at]tu-berlin.de</td>
+    <td class="tg-m223"><span style="font-weight:bold;color:#000">Prof. Dr. Georg Meran</span><br>Professor of Economics, Technische Universität Berlin<br>Workgroup Environmental Economics and Policy<br>Email: g.meran[at]tu-berlin.de</td>
   </tr>
   <tr>
-    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Prof. Dr. Claudia Kemfert</span><br>Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Professor of Economics, Leuphana Universität Lüneburg<br>Universitätsallee 1,<br>21335 Lüneburg, Germany<br>Email: ckemfert[at]diw[dot]de</td>
+    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Prof. Dr. Claudia Kemfert</span><br>Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Professor of Economics, Leuphana Universität Lüneburg<br>Email: ckemfert[at]diw[dot]de<br></td>
   </tr>
   <tr>
-    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Dr. Wolf-Peter Schill</span><br>Deputy Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Mohrenstraße 58<br>10117 Berlin, Germany<br>Email: wschill[at]diw.de</td>
+    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Dr. Wolf-Peter Schill</span><br>Deputy Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Email: wschill[at]diw.de</td>
   </tr>
 </tbody>
 </table>
