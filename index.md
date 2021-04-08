@@ -178,7 +178,8 @@ with Wolf-Peter Schill
 
 
 **Hertie School of Governance**<br/>
-Teaching Assistant - Course "Trade, Growth, and Development" with Prof. Dr. Franziska Holz
+Teaching Assistant - Course "Trade, Growth, and Development"<br/>
+with Prof. Dr. Franziska Holz
 
 
 ​
