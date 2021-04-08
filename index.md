@@ -132,7 +132,7 @@ with Wolf-Peter Schill
 <table class="tg">
 <tbody>
   <tr>
-    <td class="tg-gc4a"><span style="color:#1a2154; letter-spacing: 1em";>SOFTWARE DEVELOPMENT</span></td>
+    <td class="tg-gc4a"><span style="color:#1a2154; letter-spacing: 0.1em";>SOFTWARE DEVELOPMENT</span></td>
   </tr>
 </tbody>
 </table>
@@ -148,7 +148,7 @@ with Wolf-Peter Schill
 	H2 production & distribution for the mobility sector [
 [DIETER 1.4](https://gitlab.com/diw-evu/dieter_public/dietergms/-/releases){:target="_blank"}
 ] <br/>
-	H<sub>2</sub> as energy storage [
+	H2 as energy storage [
 [DIETER 1.5](https://gitlab.com/diw-evu/dieter_public/dietergms/-/releases){:target="_blank"}
 ] <br/>
 	Power-to-Liquid production [
