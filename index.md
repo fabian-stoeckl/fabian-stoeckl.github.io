@@ -27,7 +27,7 @@ My **research interest** are:
 <table class="tg">
 <tbody>
   <tr>
-    <td class="tg-gc4a"><span style="color:#1a2154">RESEARCH</span></td>
+    <td class="tg-gc4a"><span style="color:#1a2154">RESEARCH1</span></td>
   </tr>
 </tbody>
 </table>
