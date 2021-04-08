@@ -145,7 +145,7 @@ with Wolf-Peter Schill
 ]
 
 * Special Contributions:<br/>
-	-- H2 production & distribution for the mobility sector [
+	-- H<sub>2</sub> production & distribution for the mobility sector [
 [DIETER 1.4](https://gitlab.com/diw-evu/dieter_public/dietergms/-/releases){:target="_blank"}
 ] <br/>
 	-- H2 as energy storage [
