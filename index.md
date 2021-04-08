@@ -16,6 +16,7 @@ My **research interest** are:
 <br/><br/>
 
 # <u>Research</u>
+#f1f1f1
 
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;margin:0px auto;}
@@ -30,7 +31,9 @@ My **research interest** are:
 <table class="tg">
 <tbody>
   <tr>
-    <td class="tg-npyd"><span style="color:#1a2154">RESEARCH6</span></td>
+    <td class="tg-npyd"><span style="color:#1a2154">
+	# RESEARCH
+	</span></td>
   </tr>
 </tbody>
 </table>
