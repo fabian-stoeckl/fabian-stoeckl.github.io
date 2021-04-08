@@ -30,7 +30,7 @@ My **research interest** are:
 <table class="tg">
 <tbody>
   <tr>
-    <td class="tg-npyd"><span style="color:#1a2154">Test</span></td>
+    <td class="tg-npyd"><span style="color:#1a2154">Research</span></td>
   </tr>
 </tbody>
 </table>
