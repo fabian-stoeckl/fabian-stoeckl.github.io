@@ -202,6 +202,7 @@ with *Prof. Dr. Franziska Holz*
 
 <br/>
 
+
 <style type="text/css">
 .tg  {border:none;border-collapse:collapse;border-spacing:0;margin:0px auto;}
 .tg td{border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;
@@ -214,46 +215,19 @@ with *Prof. Dr. Franziska Holz*
 <table class="tg">
 <tbody>
   <tr>
-    <td class="tg-m223"><span style="font-weight:bold;color:#000">Prof. Dr. Georg Meran</span><br>Professor of Economics, Technische Universität Berlin<br>Workgroup Environmental Economics and Policy<br>Email: g.meran[at]tu-berlin[dot]de</td>
+    <td class="tg-m223"><span style="font-weight:bold;color:#000">Prof. Dr. Georg Meran</span><br>Professor of Economics, Technische Universität Berlin<br>Workgroup Environmental Economics and Policy<br>Email: g.meran[at]tu-berlin.de</td>
   </tr>
   <tr>
-    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Prof. Dr. Claudia Kemfert</span><br>Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Professor of Economics, Leuphana Universität Lüneburg<br>Email: ckemfert[at]diw[dot]de<br></td>
+    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Prof. Dr. Claudia Kemfert</span><br>Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Professor of Economics, Leuphana Universität Lüneburg<br>Email: ckemfert[at]diw.de<br></td>
   </tr>
   <tr>
-    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Dr. Wolf-Peter Schill</span><br>Deputy Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Email: wschill[at]diw[dot]de</td>
+    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Dr. Wolf-Peter Schill</span><br>Deputy Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Email: wschill[at]diw.de</td>
   </tr>
 </tbody>
 </table>
-
-<br/>
-
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;margin:0px auto;}
-.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-gc4a{background-color:#f1f1f1;border-color:#f1f1f1;font-family:Helvetica, sans-serif !important;;font-size:22px;
-  font-weight:bold;text-align:center;vertical-align:middle}
-</style>
-<table class="tg">
-<tbody>
-  <tr>
-    <td class="tg-gc4a"><span style="color:#1a2154">CONTACT</span></td>
-  </tr>
-</tbody>
-</table>
-
-<br/>
-
-Dr. Fabian Stöckl
-German Institute for Economic Research (DIW Berlin)
-10108 Berlin, Germany
-Email: fstoeckl[at]diw[dot]de
 
 
 ​
-
 
 
 <p style="text-align: center;"><small>© 2021</small></p>
