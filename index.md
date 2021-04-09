@@ -89,7 +89,7 @@ with Alexander Zerrahn, *DIW Discussion Paper No. 1885*<br/>
 **Green Hydrogen: Optimal Supply Chains and Power Sector Benefits**<br/>
 with Wolf-Peter Schill & Alexander Zerrahn, *arXiv preprint*<br/>
 [
-[download](Green Hydrogen: Optimal Supply Chains and Power Sector Benefits){:target="_blank"}
+[download](https://arxiv.org/abs/2005.03464){:target="_blank"}
 ]
 <details>
   <summary>Abstract (<i>click to expand</i>)</summary>
