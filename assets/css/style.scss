@@ -8,15 +8,19 @@
  }
  
  
- section {
+section {
   width:500px;
   float:right;
   padding-bottom:50px;
 }
 
 header {
-  width:70px;
+  width:170px;
   float:left;
   position:fixed;
   -webkit-font-smoothing:subpixel-antialiased;
 }
+
+header {
+    padding-right:320px;
+  }
