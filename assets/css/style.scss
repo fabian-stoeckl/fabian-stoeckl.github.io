@@ -12,3 +12,25 @@
   width:1060px;
   margin:0 auto;
 }
+
+header {
+  width:270px;
+  float:left;
+  position:fixed;
+  -webkit-font-smoothing:subpixel-antialiased;
+}
+
+
+section {
+  width:700px;
+  float:right;
+  padding-bottom:50px;
+}
+
+footer {
+  width:270px;
+  float:left;
+  position:fixed;
+  bottom:50px;
+  -webkit-font-smoothing:subpixel-antialiased;
+}
