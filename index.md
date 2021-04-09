@@ -229,7 +229,7 @@ with *Prof. Dr. Franziska Holz*
 </table>
 
 
-​
+​<div class="sharethis-inline-follow-buttons"></div>
 
 
 <p style="text-align: center;"><small>© 2021</small></p>
