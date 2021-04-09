@@ -3,13 +3,7 @@
 
 @import "{{ site.theme }}";
 
-   h1,h2,h3 {
-   color: #1a2154;
- }
  
-@import "fonts";
-@import "rouge-github";
-
 body {
   background-color: #fff;
   padding:50px;
@@ -114,7 +108,7 @@ img {
 }
 
 header {
-  width:220px;
+  width:190px;
   float:left;
   position:fixed;
   -webkit-font-smoothing:subpixel-antialiased;
@@ -127,7 +121,7 @@ ul.downloads {
   background: #f4f4f4;
   border-radius:5px;
   border:1px solid #e0e0e0;
-  width:170px;
+  width:270px;
 }
 
 .downloads li {
@@ -181,7 +175,7 @@ strong {
 }
 
 section {
-  width:600px;
+  width:620px;
   float:right;
   padding-bottom:50px;
 }
@@ -198,7 +192,7 @@ hr {
 }
 
 footer {
-  width:170px;
+  width:190px;
   float:left;
   position:fixed;
   bottom:50px;
@@ -219,7 +213,7 @@ footer {
   }
 
   header {
-    padding-right:270px;
+    padding-right:240px;
   }
 
   section {
@@ -279,3 +273,11 @@ footer {
     color:#444;
   }
 }
+
+
+
+
+
+   h1,h2,h3 {
+   color: #1a2154;
+ }
