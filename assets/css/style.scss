@@ -8,14 +8,14 @@
  }
  
  header {
-  width:170px;
+  width:260px;
   float:left;
   position:fixed;
   -webkit-font-smoothing:subpixel-antialiased;
 }
 
 section {
-  width:600px;
+  width:510px;
   float:right;
   padding-bottom:50px;
 }
@@ -23,7 +23,7 @@ section {
 @media print, screen and (max-width: 960px) {
 
   header {
-    padding-right:220px;
+    padding-right:310px;
   }
   
     }
