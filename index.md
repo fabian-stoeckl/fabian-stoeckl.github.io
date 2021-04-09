@@ -4,7 +4,7 @@
 
 I am a **research associate** at the **German Institute for Economic Research** (DIW Berlin), Dept. Energy, Transportation, Environment.
 
-I obtained my **Ph.D. in economics** in a joint program of the [German Institute for Economic Research (DIW Berlin)](https://www.diw.de/en), the [the Technische Universität Berlin (TU Berlin)](https://www.tu-berlin.de/menue/home/parameter/en/), and the [Berlin School of Economics (BSE)](https://berlin-econ.de/bse-about).
+I obtained my **Ph.D. in economics** in a joint program of the [German Institute for Economic Research (DIW Berlin)](https://www.diw.de/en), the [Technische Universität Berlin (TU Berlin)](https://www.tu-berlin.de/menue/home/parameter/en/), and the [Berlin School of Economics (BSE)](https://berlin-econ.de/bse-about).
 
 You can download my **CV** [here](https://onedrive.live.com/download?cid=BD775751B616586F&resid=BD775751B616586F%218832&authkey=AJ_rfI2twfH7ZR0&em=2).
 
