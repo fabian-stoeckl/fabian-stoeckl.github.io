@@ -7,7 +7,7 @@ I am a **research associate** at the **German Institute for Economic Research** 
 
 I obtained my **Ph.D.** in **economics** in a joint program of the [German Institute for Economic Research (DIW Berlin)](https://www.diw.de/), the [Technische Universität Berlin (TU Berlin)](https://www.tu-berlin.de/), and the [Berlin School of Economics (BSE)](https://berlin-econ.de/).
 
-You can download my **CV** [here](https://onedrive.live.com/download?cid=BD775751B616586F&resid=BD775751B616586F%218832&authkey=AJ_rfI2twfH7ZR0&em=2).
+You can download my **CV** [here](http://www.fabian-stoeckl.com/CV-Fabian_Stoeckl.pdf).
 
 My **research interest** are:
 
