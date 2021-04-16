@@ -5,7 +5,7 @@
 
 I am a **research associate** at the **German Institute for Economic Research** (DIW Berlin), Dept. Energy, Transportation, Environment.
 
-I obtained my **Ph.D.** in **economics** in a joint program of the [German Institute for Economic Research (DIW Berlin)](https://www.diw.de/){:target="_blank"}, the [Technische Universität Berlin (TU Berlin)](https://www.tu-berlin.de/){:target="_blank"}, and the [Berlin School of Economics (BSE)](https://berlin-econ.de/){:target="_blank"}.
+I obtained my **Ph.D.** in **economics** from the [Technische Universität Berlin (TU Berlin)](https://www.tu-berlin.de/){:target="_blank"} in a joint program with the [German Institute for Economic Research (DIW Berlin)](https://www.diw.de/){:target="_blank"} and the [Berlin School of Economics (BSE)](https://berlin-econ.de/){:target="_blank"}. I hold a **M.Sc.** and **B.Sc.** in economics from the [Ludwig Maximilians Universität München (LMU Munich)](https://www.lmu.de/){:target="_blank"}.
 
 You can download my **CV** [here](/CV-Fabian_Stoeckl.pdf){:target="_blank"}.
 
