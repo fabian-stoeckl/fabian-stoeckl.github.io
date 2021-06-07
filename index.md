@@ -1,9 +1,8 @@
 <br/><br/>
-<br/><br/>
 
 # Welcome!
 
-I am an **economist** at **Vivid Economics** working in the **Growth & Development** practicee. This website documents my academic publications and research.
+I am an **economist** at **Vivid Economics** working in the **Growth & Development** practice. This website covers my academic publications and research.
 
 Previously, I worked as a **research associate** at the **German Institute for Economic Research** (DIW Berlin), Dept. Energy, Transportation, Environment. This webpage only covers my academic work.
 
