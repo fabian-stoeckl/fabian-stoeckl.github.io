@@ -52,6 +52,22 @@ with Michael Knoblach, in: *Journal of Economic Surveys (2020)*<br/>
   </p>
   
 </details>
+<span style="display:block; margin-top:-18px;">&nbsp;</span>
+<hr/>
+
+**Green Hydrogen: Optimal Supply Chains and Power Sector Benefits**<br/>
+with Wolf-Peter Schill & Alexander Zerrahn, *Scientific Reports (forthcoming)*<br/>
+[
+[download arXiv preprint](https://arxiv.org/abs/2005.03464){:target="_blank"}
+]
+<details>
+  <summary>Abstract</summary>
+  <br/>
+  <p style='text-align: justify;'>
+  Green hydrogen can help to decarbonize transportation, but its power sector interactions are not well understood. It may contribute to integrating variable renewable energy sources if production is sufficiently flexible in time. Using an open-source co-optimization model of the power sector and four options for supplying hydrogen at German filling stations, we find a trade-off between energy efficiency and temporal flexibility: for lower shares of renewables and hydrogen, more energy-efficient and less flexible small-scale on-site electrolysis is optimal. For higher shares of renewables and/or hydrogen, more flexible but less energy-efficient large-scale hydrogen supply chains gain importance as they allow disentangling hydrogen production from demand via storage. Liquid hydrogen emerges as particularly beneficial, followed by liquid organic hydrogen carriers and gaseous hydrogen. Large-scale hydrogen supply chains can deliver substantial power sector benefits, mainly through reduced renewable surplus generation. Energy modelers and system planners should consider the distinct flexibility characteristics of hydrogen supply chains in more detail when assessing the role of green hydrogen in future energy transition scenarios.
+  </p>
+  
+</details>
 
 <br/>
 
@@ -83,22 +99,6 @@ with Alexander Zerrahn, *DIW Discussion Paper No. 1885*<br/>
   <br/>
   <p style='text-align: justify;'>
   We fit CES and VES production functions to data from a numerical bottom-up optimization model of electricity supply with clean and dirty inputs. This approach allows for studying high shares of clean energy not observable today and for isolating mechanisms that impact the elasticity of substitution between clean and dirty energy. Central results show that (i) dirty inputs are not essential for production. As long as some energy storage is available, the elasticity of substitution between clean and dirty inputs is above unity; (ii) no single clean technology is indispensable, but a balanced mix facilitates substitution; (iii) substitution is harder for higher shares of clean energy. Finally, we demonstrate how changing availability of generation and storage technologies can be implemented in macroeconomic models.
-  </p>
-  
-</details>
-<span style="display:block; margin-top:-18px;">&nbsp;</span>
-<hr/>
-
-**Green Hydrogen: Optimal Supply Chains and Power Sector Benefits**<br/>
-with Wolf-Peter Schill & Alexander Zerrahn, *arXiv preprint*<br/>
-[
-[download](https://arxiv.org/abs/2005.03464){:target="_blank"}
-]
-<details>
-  <summary>Abstract</summary>
-  <br/>
-  <p style='text-align: justify;'>
-  Green hydrogen can help to decarbonize transportation, but its power sector interactions are not well understood. It may contribute to integrating variable renewable energy sources if production is sufficiently flexible in time. Using an open-source co-optimization model of the power sector and four options for supplying hydrogen at German filling stations, we find a trade-off between energy efficiency and temporal flexibility: for lower shares of renewables and hydrogen, more energy-efficient and less flexible small-scale on-site electrolysis is optimal. For higher shares of renewables and/or hydrogen, more flexible but less energy-efficient large-scale hydrogen supply chains gain importance as they allow disentangling hydrogen production from demand via storage. Liquid hydrogen emerges as particularly beneficial, followed by liquid organic hydrogen carriers and gaseous hydrogen. Large-scale hydrogen supply chains can deliver substantial power sector benefits, mainly through reduced renewable surplus generation. Energy modelers and system planners should consider the distinct flexibility characteristics of hydrogen supply chains in more detail when assessing the role of green hydrogen in future energy transition scenarios.
   </p>
   
 </details>
