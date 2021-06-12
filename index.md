@@ -9,7 +9,7 @@ I received my **Ph.D.** in **economics** from the [Technische Universität Berli
 
 This website covers my academic publications and research. You can download my **CV** [here](/CV-Fabian_Stoeckl.pdf){:target="_blank"}.
 
-My **research interest** are:x
+My **research interest** are:
 
 * (Green) Growth Theory
 * Declining Labor Share of Income
