@@ -1,13 +1,13 @@
 <br/><br/><br/><br/>
 # Welcome!
 
-I am an **economist** at **[Vivid Economics](http://www.vivideconomics.com){:target="_blank"}** working in the Growth & Development practice. This website covers my academic publications and research.
+I am an **economist** at **[Vivid Economics](http://www.vivideconomics.com){:target="_blank"}** working in the Growth & Development practice.
 
-Previously, I worked as a **research associate** at the **[German Institute for Economic Research](http://www.diw.de){:target="_blank"}** (DIW Berlin), Dept. Energy, Transportation, Environment. This webpage only covers my academic work.
+Previously, I worked as a **research associate** at the **[German Institute for Economic Research](http://www.diw.de){:target="_blank"}** (DIW Berlin), Dept. Energy, Transportation, Environment.
 
 I received my **Ph.D.** in **economics** from the [Technische Universität Berlin (TU Berlin)](https://www.tu-berlin.de/){:target="_blank"} in a joint program with the [German Institute for Economic Research (DIW Berlin)](https://www.diw.de/){:target="_blank"} and the [Berlin School of Economics (BSE)](https://berlin-econ.de/){:target="_blank"}. I hold an M.Sc. and B.Sc. in economics from the [Ludwig-Maximilians-Universität München (LMU Munich)](https://www.lmu.de/){:target="_blank"}.
 
-You can download my **CV** [here](/CV-Fabian_Stoeckl.pdf){:target="_blank"}.
+This website covers my academic publications and research. You can download my **CV** [here](/CV-Fabian_Stoeckl.pdf){:target="_blank"}.
 
 My **research interest** are:x
 
