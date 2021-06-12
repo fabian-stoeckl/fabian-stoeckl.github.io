@@ -48,14 +48,14 @@ with Michael Knoblach, in: *Journal of Economic Surveys (2020)*<br/>
   <summary>Abstract</summary>
   <br/>
   <p style='text-align: justify;'>
-  This paper provides the first comprehensive review of the empirical and theoretical literature on the determinants of the elasticity of substitution between capital and labor. Our focus is on the two‐input constant elasticity of substitution (CES) production function. We start by presenting four concise observations that summarize the empirical literature on the estimation of σ. Motivated by these observations, the main part of this survey then focuses on potential determinants of capital-labor substitution. We first review several approaches to the microfoundation of production functions where the elasticity of substitution (EOS) is treated as a purely technological parameter. Second, we outline the construction of an aggregate elasticity of substitution (AES) in a multi‐sectoral framework and investigate its dependence on underlying intra‐ and inter‐sectoral substitution. Third, we discuss the influence of the institutional framework on the extent of factor substitution. Overall, this survey highlights that the effective elasticity of substitution (EES), which is typically estimated in empirical studies, is generally not an immutable deep parameter but depends on a multitude of technological, non‐technological, and institutional determinants. Based on these insights, the final section identifies a number of potential empirical and theoretical avenues for future research.
+  This paper provides the first comprehensive review of the empirical and theoretical literature on the determinants of the elasticity of substitution between capital and labor. Our focus is on the two-input constant elasticity of substitution (CES) production function. We start by presenting four concise observations that summarize the empirical literature on the estimation of σ. Motivated by these observations, the main part of this survey then focuses on potential determinants of capital-labor substitution. We first review several approaches to the microfoundation of production functions where the elasticity of substitution (EOS) is treated as a purely technological parameter. Second, we outline the construction of an aggregate elasticity of substitution (AES) in a multi-sectoral framework and investigate its dependence on underlying intra‐ and inter‐sectoral substitution. Third, we discuss the influence of the institutional framework on the extent of factor substitution. Overall, this survey highlights that the effective elasticity of substitution (EES), which is typically estimated in empirical studies, is generally not an immutable deep parameter but depends on a multitude of technological, non‐technological, and institutional determinants. Based on these insights, the final section identifies a number of potential empirical and theoretical avenues for future research.
   </p>
   
 </details>
 <span style="display:block; margin-top:-18px;">&nbsp;</span>
 <hr/>
 
-**Green Hydrogen: Optimal Supply Chains and Power Sector Benefits**<br/>
+**Optimal supply chains and power sector benefits of green hydrogen**<br/>
 with Wolf-Peter Schill & Alexander Zerrahn, *Scientific Reports (forthcoming)*<br/>
 [
 [download arXiv preprint](https://arxiv.org/abs/2005.03464){:target="_blank"}
@@ -144,7 +144,7 @@ with Wolf-Peter Schill
 
 
 **Core developer of DIETER** (Dispatch & Investment Evaluation Tool with Endogenous Renewables) [
-[GitLab](https://gitlab.com/diw-evu/dieter_public){:target="_blank"}
+[GitLab](https://diw-evu.gitlab.io/dieter_public/dieterpy/index.html){:target="_blank"}
 ]
 
 * Special Contributions:<br/>
