@@ -40,7 +40,7 @@ My **research interest** are:
 ## *Published Papers:*
 
 **What Determines the Elasticity of Substitution Between Capital and Labor? A Literature Review**<br/>
-with Michael Knoblach, in: *Journal of Economic Surveys (2020)*<br/>
+with Michael Knoblach, *Journal of Economic Surveys (2020)*<br/>
 [
 [download](https://onlinelibrary.wiley.com/doi/abs/10.1111/joes.12366){:target="_blank"}
 ]
@@ -56,7 +56,7 @@ with Michael Knoblach, in: *Journal of Economic Surveys (2020)*<br/>
 <hr/>
 
 **Optimal supply chains and power sector benefits of green hydrogen**<br/>
-with Wolf-Peter Schill & Alexander Zerrahn, in: *Scientific Reports (forthcoming)*<br/>
+with Wolf-Peter Schill & Alexander Zerrahn, *Scientific Reports (forthcoming)*<br/>
 [
 [download arXiv preprint](https://arxiv.org/abs/2005.03464){:target="_blank"}
 ]
