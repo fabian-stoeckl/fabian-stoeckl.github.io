@@ -56,9 +56,9 @@ with Michael Knoblach, *Journal of Economic Surveys (2020)*<br/>
 <hr/>
 
 **Optimal supply chains and power sector benefits of green hydrogen**<br/>
-with Wolf-Peter Schill & Alexander Zerrahn, *Scientific Reports (forthcoming)*<br/>
+with Wolf-Peter Schill & Alexander Zerrahn, *Scientific Reports (2021)*<br/>
 [
-[download arXiv preprint](https://arxiv.org/abs/2005.03464){:target="_blank"}
+[download](https://www.nature.com/articles/s41598-021-92511-6){:target="_blank"}
 ]
 <details>
   <summary>Abstract</summary>
