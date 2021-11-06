@@ -1,7 +1,7 @@
 <br/><br/><br/><br/>
 # Welcome!
 
-I am an **economist** at [Vivid Economics](http://www.vivideconomics.com){:target="_blank"} (McKinsey) working in the Growth & Development and Energy & Industry and Sustainable Finance practices.
+I am an **economist** at [Vivid Economics](http://www.vivideconomics.com){:target="_blank"} (McKinsey) working in the Growth & Development, Energy & Industry, and Sustainable Finance practices.
 
 Previously, I worked as a **research associate** at the [German Institute for Economic Research](http://www.diw.de){:target="_blank"} (DIW Berlin), Dept. Energy, Transportation, Environment.
 
