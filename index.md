@@ -1,7 +1,7 @@
 <br/><br/><br/><br/>
 # Welcome!
 
-I work as an **economist** on climate and energy topics at the Austrian **Ministry of Finance** at the [Ministry of Finance](http://www.bmf.gv.at){:target="_blank"} in Austria.
+I work as an **economist** on climate and energy topics at the [Ministry of Finance](http://www.bmf.gv.at){:target="_blank"} in Austria.
 
 Previously, I worked as an **economist** at [Vivid Economics](http://www.vivideconomics.com){:target="_blank"} (McKinsey & Company) in London and as a **research associate** at the [German Institute for Economic Research](http://www.diw.de){:target="_blank"} (DIW Berlin), Dept. Energy, Transportation, Environment.
 
