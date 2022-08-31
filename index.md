@@ -1,9 +1,9 @@
 <br/><br/><br/><br/>
 # Welcome!
 
-I am an **economist** at [Vivid Economics](http://www.vivideconomics.com){:target="_blank"} (McKinsey & Company) working in the Growth & Development, Energy & Industry, and Sustainable Finance practices.
+I work as an **economist** on environmental and energy topics in the Austrian **Ministry of Finance** at the [Ministry of Finance](http://www.bmf.gv.at){:target="_blank"} in Austria.
 
-Previously, I worked as a **research associate** at the [German Institute for Economic Research](http://www.diw.de){:target="_blank"} (DIW Berlin), Dept. Energy, Transportation, Environment.
+Previously, I worked as an **economist** at [Vivid Economics](http://www.vivideconomics.com){:target="_blank"} (McKinsey & Company) in London and as a **research associate** at the [German Institute for Economic Research](http://www.diw.de){:target="_blank"} (DIW Berlin), Dept. Energy, Transportation, Environment.
 
 I received my **Ph.D.** in **economics** from the [Technische Universität Berlin (TU Berlin)](https://www.tu-berlin.de/){:target="_blank"} in a joint program with the [German Institute for Economic Research (DIW Berlin)](https://www.diw.de/){:target="_blank"} and the [Berlin School of Economics (BSE)](https://berlin-econ.de/){:target="_blank"}. I hold an M.Sc. and B.Sc. in economics from the [Ludwig-Maximilians-Universität München (LMU Munich)](https://www.lmu.de/){:target="_blank"}.
 
@@ -68,6 +68,22 @@ with Wolf-Peter Schill & Alexander Zerrahn, *Scientific Reports (2021)*<br/>
   </p>
   
 </details>
+<span style="display:block; margin-top:-18px;">&nbsp;</span>
+<hr/>
+
+**Substituting Clean for Dirty Energy: A Bottom-Up Analysis**<br/>
+with Alexander Zerrahn, forthcoming in: *Journal of the Association of Environmental and Resource Economists*<br/>
+[
+[download - outdated working paper](https://www.diw.de/documents/publikationen/73/diw_01.c.795779.de/dp1885.pdf){:target="_blank"}
+]
+<details>
+  <summary>Abstract</summary>
+  <br/>
+  <p style='text-align: justify;'>
+  We analyze the macroeconomic substitution between clean and dirty inputs through the lens of production isoquants derived from a numerical bottom-up model of electricity production. This approach also allows to study high shares of clean energy not observable today and isolate mechanisms that impact the elasticity of substitution between clean and dirty inputs. Our results, for the first time, demonstrate that aggregate production functions used in macroeconomic models can represent the complex substitution patterns obtained from numerical models. Further, we show that (i) dirty inputs are not essential for production. As long as some energy storage is available, the elasticity of substitution between clean and dirty inputs is above unity; (ii) no single clean technology is indispensable, but a balanced mix facilitates substitution; (iii) substitution is harder for higher shares of clean energy. Finally, we demonstrate how changing availability of generation and storage technologies can be implemented in macroeconomic models.
+  </p>
+  
+</details>
 
 <br/>
 
@@ -86,40 +102,13 @@ with Wolf-Peter Schill & Alexander Zerrahn, *Scientific Reports (2021)*<br/>
 		</p>
   
 </details>
-<span style="display:block; margin-top:-18px;">&nbsp;</span>
-<hr/>
-
-**Substituting Clean for Dirty Energy: A Bottom-Up Analysis**<br/>
-with Alexander Zerrahn, *DIW Discussion Paper No. 1885*<br/>
-[
-[download](https://www.diw.de/documents/publikationen/73/diw_01.c.795779.de/dp1885.pdf){:target="_blank"}
-]
-<details>
-  <summary>Abstract</summary>
-  <br/>
-  <p style='text-align: justify;'>
-  We fit CES and VES production functions to data from a numerical bottom-up optimization model of electricity supply with clean and dirty inputs. This approach allows for studying high shares of clean energy not observable today and for isolating mechanisms that impact the elasticity of substitution between clean and dirty energy. Central results show that (i) dirty inputs are not essential for production. As long as some energy storage is available, the elasticity of substitution between clean and dirty inputs is above unity; (ii) no single clean technology is indispensable, but a balanced mix facilitates substitution; (iii) substitution is harder for higher shares of clean energy. Finally, we demonstrate how changing availability of generation and storage technologies can be implemented in macroeconomic models.
-  </p>
-  
-</details>
 
 <br/>
 
 ## *Work in progress*
 
-**"My eRoads" - Electrification Potential of Freight and Bus Transport**<br/>
-Funding: German Ministry for the Environment, Nature Conservation and Nuclear Safety<br/>
-Project Partners: IFEU (lead), Fraunhofer IIS, PTV Group, DIW Berlin
-
-- - - - -
-
 **Increasing Capital-Labor Substitutability and the Declining Labor Income Share**<br/>
 with Michael Knoblach & Khalid ElFayoumi
-
-- - - - -
-
-**Benefits of Hydrogen/Power-to-Liquid Mobility for Integrating Intermittent Renewable Energy**<br/>
-with Wolf-Peter Schill
 
 <br/>
 
@@ -143,7 +132,7 @@ with Wolf-Peter Schill
 <br/>
 
 
-**Core developer of DIETER** (Dispatch & Investment Evaluation Tool with Endogenous Renewables) [
+**Former core developer of DIETER** (Dispatch & Investment Evaluation Tool with Endogenous Renewables) [
 [GitLab](https://diw-evu.gitlab.io/dieter_public/dieterpy/index.html){:target="_blank"}
 ]
 
