@@ -222,7 +222,7 @@ with *Prof. Dr. Franziska Holz*
 ​
 
 
-<p style="text-align: center;"><small>© 2021</small></p>
+<p style="text-align: center;"><small>© 2022</small></p>
 
 
 <p style="text-align: center;"><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
