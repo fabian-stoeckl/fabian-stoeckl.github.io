@@ -72,9 +72,9 @@ with Wolf-Peter Schill & Alexander Zerrahn, *Scientific Reports (2021)*<br/>
 <hr/>
 
 **Substituting Clean for Dirty Energy: A Bottom-Up Analysis**<br/>
-with Alexander Zerrahn, forthcoming in: *Journal of the Association of Environmental and Resource Economists*<br/>
+with Alexander Zerrahn, *Journal of the Association of Environmental and Resource Economists (2023)*<br/>
 [
-[download - outdated working paper](https://www.diw.de/documents/publikationen/73/diw_01.c.795779.de/dp1885.pdf){:target="_blank"}
+[download](https://doi.org/10.1086/722612){:target="_blank"}
 ]
 <details>
   <summary>Abstract</summary>
