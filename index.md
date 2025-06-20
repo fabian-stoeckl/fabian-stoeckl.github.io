@@ -1,15 +1,15 @@
 <br/><br/><br/><br/>
 # Welcome!
 
-I work as an **economist** on climate and energy topics at the [Ministry of Finance](http://www.bmf.gv.at){:target="_blank"} in Austria.
+I work as an **economist** at the intersection of budget, climate, and energy policy at the Austrian [Ministry of Finance](http://www.bmf.gv.at){:target="_blank"}.
 
-Previously, I worked as an **economist** at [Vivid Economics](http://www.vivideconomics.com){:target="_blank"} (McKinsey & Company) in London and as a **research associate** at the [German Institute for Economic Research](http://www.diw.de){:target="_blank"} (DIW Berlin), Dept. Energy, Transportation, Environment.
+Previously, I was an **economist** at [Vivid Economics](http://www.vivideconomics.com){:target="_blank"} (McKinsey & Company) in London and a **research associate** in the Department of Energy, Transportation, and Environment at the [German Institute for Economic Research](http://www.diw.de){:target="_blank"} (DIW Berlin).
 
-I received my **Ph.D.** in **economics** from the [Technische Universität Berlin (TU Berlin)](https://www.tu-berlin.de/){:target="_blank"} in a joint program with the [German Institute for Economic Research (DIW Berlin)](https://www.diw.de/){:target="_blank"} and the [Berlin School of Economics (BSE)](https://berlin-econ.de/){:target="_blank"}. I hold an M.Sc. and B.Sc. in economics from the [Ludwig-Maximilians-Universität München (LMU Munich)](https://www.lmu.de/){:target="_blank"}.
+I earned my **Ph.D.** in **Economics** from [Technische Universität Berlin (TU Berlin)](https://www.tu-berlin.de/){:target="_blank"} in a joint program with the [German Institute for Economic Research (DIW Berlin)](https://www.diw.de/){:target="_blank"} and the [Berlin School of Economics (BSE)](https://berlin-econ.de/){:target="_blank"}. I also hold an M.Sc. and B.Sc. in Economics from [Ludwig-Maximilians-Universität München (LMU Munich)](https://www.lmu.de/){:target="_blank"}.
 
-This website covers my academic publications and research. You can download my **CV** [here](/CV-Fabian_Stoeckl.pdf){:target="_blank"}.
+This website presents my academic research and publications. You can download my **CV** [here](/CV-Fabian_Stoeckl.pdf){:target="_blank"}.
 
-My **research interest** are:
+My **research interests** are:
 
 * (Green) Growth Theory
 * Declining Labor Share of Income
@@ -132,7 +132,7 @@ with Michael Knoblach & Khalid ElFayoumi
 <br/>
 
 
-**Former core developer of DIETER** (Dispatch & Investment Evaluation Tool with Endogenous Renewables) [
+**Core developer (formerly) of DIETER** (Dispatch & Investment Evaluation Tool with Endogenous Renewables) [
 [GitLab](https://diw-evu.gitlab.io/dieter_public/dieterpy/index.html){:target="_blank"}
 ]
 
@@ -222,7 +222,7 @@ with *Prof. Dr. Franziska Holz*
 ​
 
 
-<p style="text-align: center;"><small>© 2023</small></p>
+<p style="text-align: center;"><small>© 2025</small></p>
 
 
 <p style="text-align: center;"><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
