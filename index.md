@@ -3,7 +3,7 @@
 
 I work as an **economist** at the intersection of budget, climate, and energy policy at the Austrian [Ministry of Finance](http://www.bmf.gv.at){:target="_blank"}.
 
-Previously, I was an **economist** at [Vivid Economics](http://www.https://www.mckinsey.com){:target="_blank"} (McKinsey & Company) in London and a **research associate** in the Department of Energy, Transportation, and Environment at the [German Institute for Economic Research](http://www.diw.de){:target="_blank"} (DIW Berlin).
+Previously, I was an **economist** at [Vivid Economics](http://www.mckinsey.com){:target="_blank"} (McKinsey & Company) in London and a **research associate** in the Department of Energy, Transportation, and Environment at the [German Institute for Economic Research](http://www.diw.de){:target="_blank"} (DIW Berlin).
 
 I earned my **Ph.D.** in **Economics** from [Technische Universität Berlin (TU Berlin)](https://www.tu-berlin.de/){:target="_blank"} in a joint program with the [German Institute for Economic Research (DIW Berlin)](https://www.diw.de/){:target="_blank"} and the [Berlin School of Economics (BSE)](https://berlin-econ.de/){:target="_blank"}. I also hold an M.Sc. and B.Sc. in Economics from [Ludwig-Maximilians-Universität München (LMU Munich)](https://www.lmu.de/){:target="_blank"}.
 
