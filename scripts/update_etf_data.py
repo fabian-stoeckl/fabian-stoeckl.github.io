@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "Privat" / "ETFs" / "etfs.json"
 OUT = ROOT / "Privat" / "ETFs" / "data" / "etf_data.json"
 FIRST_YEAR = 2025
+FIRST_PURCHASE_DATE = "2025-11-03"
 CURRENT_YEAR = datetime.now().year
 YEARS = list(range(FIRST_YEAR, CURRENT_YEAR + 1))
 
@@ -16,7 +17,7 @@ def clean(x):
     return x if math.isfinite(x) else None
 
 def fetch(ticker):
-    df=yf.download(ticker,start=f"{FIRST_YEAR}-01-01",end=(pd.Timestamp.utcnow()+pd.Timedelta(days=2)).strftime("%Y-%m-%d"),auto_adjust=True,progress=False,actions=False,threads=False)
+    df=yf.download(ticker,start=FIRST_PURCHASE_DATE,end=(pd.Timestamp.utcnow()+pd.Timedelta(days=2)).strftime("%Y-%m-%d"),auto_adjust=True,progress=False,actions=False,threads=False)
     if df.empty: raise RuntimeError(f"No data for {ticker}")
     close=df["Close"]
     if isinstance(close,pd.DataFrame): close=close.iloc[:,0]
@@ -24,6 +25,8 @@ def fetch(ticker):
     out={}
     for year in YEARS:
         s=close[close.index.year==year]
+        if year == FIRST_YEAR:
+            s=s[s.index >= pd.Timestamp(FIRST_PURCHASE_DATE)]
         if s.empty: out[str(year)]=[]; continue
         first=float(s.iloc[0]); pts=[]
         for idx,v in s.items():

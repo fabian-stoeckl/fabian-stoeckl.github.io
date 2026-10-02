@@ -1,27 +1,31 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Privat</title>
 <style>
-:root{--bg:#f6f7fb;--text:#111827;--muted:#6b7280}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text)}
-.wrap{max-width:1100px;margin:auto;padding:48px 24px 70px}h1{font-size:clamp(34px,5vw,58px);letter-spacing:-.04em;margin:0 0 10px}.sub{color:var(--muted);margin-bottom:30px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:22px}
-.tile{aspect-ratio:1/1;background:#fff;border:8px solid var(--c);border-radius:26px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--text);font-weight:800;font-size:30px;letter-spacing:-.03em;box-shadow:0 10px 28px rgba(31,41,55,.08);transition:.18s transform,.18s box-shadow}
-.tile:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(31,41,55,.12)}
-.note{margin-top:28px;color:var(--muted);font-size:13px}
+:root{--paper:#f4efe7;--ink:#242321;--muted:#79736b}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1100px;margin:auto;padding:48px 24px 70px}h1{font-size:clamp(34px,5vw,58px);letter-spacing:-.04em;margin:0 0 10px}.sub{color:var(--muted);margin-bottom:34px}
+.gallery{border:12px solid #252523;background:#f7f2ea;box-shadow:inset 0 0 0 2px #d6cfc5,0 8px 25px #00000012;padding:40px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px}
+.tile{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;color:white;text-decoration:none;font-weight:800;font-size:clamp(28px,4vw,42px);letter-spacing:-.04em;isolation:isolate;transition:transform .2s}
+.paint{position:absolute;inset:0;width:100%;height:100%;z-index:-1}.tile span{text-shadow:0 2px 8px #00000030}.tile:hover{transform:rotate(-2deg) scale(1.035)}.tile:focus-visible{outline:3px solid #242321;outline-offset:8px}
+.note{margin-top:25px;color:var(--muted);font-size:13px;line-height:1.6}
+@media(max-width:700px){.gallery{padding:22px;border-width:8px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}}
+@media(max-width:400px){.grid{grid-template-columns:1fr}.tile{max-width:240px;width:100%;margin:auto}}
 </style>
 </head>
-<body>
-<main class="wrap">
-<h1>Privat</h1>
-<div class="sub">Persönliche Übersichten und Tools.</div>
-<section class="grid">
-<a class="tile" href="./ETFs/" style="--c:#5b8cff">ETF</a>
-</section>
-<div class="note">Weitere Themen können später einfach als zusätzliche Kacheln ergänzt werden.</div>
-</main>
-</body>
-</html>
+<body><main class="wrap">
+<h1>Privat</h1><div class="sub">Persönliche Übersichten und Tools.</div>
+<div class="gallery"><section class="grid" aria-label="Private Themen">
+<a class="tile" href="./ETFs/" aria-label="ETF-Übersicht öffnen">
+<svg class="paint" viewBox="0 0 300 300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+<defs><filter id="rough" x="-15%" y="-15%" width="130%" height="130%"><feTurbulence type="fractalNoise" baseFrequency=".075" numOctaves="4" seed="12" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G"/></filter>
+<filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="3" seed="7"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".18"/></feComponentTransfer><feComposite in2="SourceGraphic" operator="in"/></filter></defs>
+<g filter="url(#rough)"><path fill="#30328c" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/><path fill="#253c99" opacity=".72" d="M31 36 L271 39 L259 92 L27 116 Z"/><path fill="#373294" opacity=".7" d="M24 147 L253 132 L270 232 L40 260 Z"/><path fill="#202573" opacity=".46" d="M42 38 L111 40 L95 258 L30 248 Z"/><path fill="#6374bc" opacity=".22" d="M62 176 Q143 117 244 168 L259 190 Q143 155 67 212 Z"/></g>
+<path fill="#ebe5dc" filter="url(#grain)" d="M24 25H274V275H24Z"/>
+</svg><span>ETF</span></a>
+</section></div>
+<div class="note">Weitere Themen finden hier später ihren Platz.</div>
+</main></body></html>
