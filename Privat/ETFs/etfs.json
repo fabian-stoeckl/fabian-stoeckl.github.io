@@ -12,10 +12,10 @@
     "ticker": "VWCG.DE"
   },
   {
-    "name": "iShares MSCI Japan UCITS ETF USD (Acc)",
+    "name": "Xtrackers MSCI Japan UCITS ETF 1C",
     "short": "MSCI Japan",
-    "isin": "IE00B53QDK08",
-    "ticker": "SXR5.DE"
+    "isin": "LU0274209740",
+    "ticker": "DBXJ.DE"
   },
   {
     "name": "iShares Core MSCI EM IMI UCITS ETF USD (Acc)",
@@ -36,10 +36,10 @@
     "ticker": "2B76.DE"
   },
   {
-    "name": "iShares Global Clean Energy Transition UCITS ETF USD (Acc)",
+    "name": "Invesco Global Clean Energy UCITS ETF Acc",
     "short": "Global Clean Energy",
-    "isin": "IE000U58J0M1",
-    "ticker": "Q8Y0.DE"
+    "isin": "IE00BLRB0242",
+    "ticker": "G1CE.DE"
   },
   {
     "name": "Xtrackers ATX UCITS ETF 1C",
