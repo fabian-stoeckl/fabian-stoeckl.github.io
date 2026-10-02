@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Seite nicht gefunden</title>
+<meta name="robots" content="noindex">
+<script>
+const path = window.location.pathname.toLowerCase().replace(/\/+$/, "");
+const target = {"/privat": "/Privat/", "/privat/etfs": "/Privat/ETFs/"}[path];
+if (target && window.location.pathname !== target) {
+  window.location.replace(target + window.location.search + window.location.hash);
+}
+</script>
+</head>
+<body><h1>Seite nicht gefunden</h1><p><a href="/">Zur Startseite</a> · <a href="/Privat/">Zur Privat-Übersicht</a></p></body>
+</html>
