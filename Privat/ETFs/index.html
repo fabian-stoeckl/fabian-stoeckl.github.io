@@ -29,7 +29,7 @@ footer{font-size:12px;color:var(--muted);line-height:1.5;margin-top:24px}@media(
 <div class="slider-wrap"><div class="track"></div><div id="fill" class="fill"></div><input id="from" type="range"><input id="to" type="range"></div>
 <div id="yearsText" class="years"></div>
 </section>
-<section aria-labelledby="savingsTitle"><h2 id="savingsTitle" class="group-title">Sparplan-ETFs</h2><div id="grid" class="grid"></div></section><section class="separate" aria-labelledby="extraTitle"><h2 id="extraTitle" class="group-title">Separat · ATX</h2><p class="group-note">Eigenständige Anlage außerhalb des Sparplans.</p><div id="extraGrid" class="grid"></div></section>
+<section aria-labelledby="savingsTitle"><h2 id="savingsTitle" class="group-title">Sparplan-ETFs</h2><div id="grid" class="grid"></div></section><section class="separate" aria-labelledby="portfolioTitle"><h2 id="portfolioTitle" class="group-title">Sparplan gesamt</h2><p class="group-note">1.000 € monatlich · S&P 500 35 % · Europa 20 % · Japan, Emerging Markets und Pacific je 10 % · Clean Energy und Robotics je 7,5 %.<br>Gewichtete Kursperformance ohne ATX. Gewichte zu Beginn jedes dargestellten Zeitraums; monatliche Einzahlungen sind nicht eingerechnet.</p><div id="portfolioGrid"></div></section><section class="separate" aria-labelledby="extraTitle"><h2 id="extraTitle" class="group-title">Separat · ATX</h2><p class="group-note">Eigenständige Anlage außerhalb des Sparplans.</p><div id="extraGrid" class="grid"></div></section>
 <footer>Datenquelle: Yahoo Finance über yfinance, bereinigte Schlusskurse. Historische Performance ist kein verlässlicher Indikator für zukünftige Ergebnisse.</footer>
 </main>
 <script>
@@ -42,7 +42,31 @@ if(year!==2025||!points.length)return points;
 const first=points[0].price;
 return points.map(p=>({...p,performance:Number.isFinite(first)&&first>0&&Number.isFinite(p.price)?(p.price/first-1)*100:null}));
 }
+const savingsWeights={"SXR8.DE":.35,"VWCG.DE":.20,"DBXJ.DE":.10,"IS3N.DE":.10,"SXR1.DE":.10,"G1CE.DE":.075,"2B76.DE":.075};
+function weightedPoints(etfs,chosen){
+const components=Object.entries(savingsWeights).map(([ticker,weight])=>{
+const etf=etfs.find(e=>e.ticker===ticker);
+if(!etf||etf.status==="error")return null;
+const points=chosen.flatMap(year=>seriesFor(etf,year)).filter(p=>Number.isFinite(p.price)&&p.price>0);
+return {weight,points:new Map(points.map(p=>[p.date,p]))};
+});
+if(components.some(c=>!c))return [];
+const dates=[...components[0].points.keys()].filter(date=>components.every(c=>c.points.has(date))).sort();
+if(!dates.length)return [];
+const start=dates[0];
+return dates.map(date=>{
+const value=components.reduce((sum,c)=>sum+c.weight*(c.points.get(date).price/c.points.get(start).price-1)*100,0);
+return {date,day:components[0].points.get(date).day,performance:value,price:100+value};
+});
+}
+function savingsPortfolio(etfs,all,chosen){
+const series=Object.fromEntries(all.map(year=>[String(year),weightedPoints(etfs,[year])]));
+const points=weightedPoints(etfs,chosen),first=points[0],last=points.at(-1);
+return {isPortfolio:true,short:"Sparplan · gewichtet",ticker:"Sparplan",isin:"",status:points.length?"ok":"error",series,
+total:points.length?{value:last.performance,first:first.date,last:last.date}:null};
+}
 function cumulative(etf,chosen){
+if(etf.isPortfolio)return etf.total;
 const points=chosen.flatMap(year=>seriesFor(etf,year)).filter(p=>Number.isFinite(p.price)&&p.price>0).sort((a,b)=>a.date.localeCompare(b.date));
 if(!points.length||etf.status==="error")return null;
 const first=points[0],last=points[points.length-1];
@@ -55,8 +79,8 @@ function selected(){const ys=years(), a=+document.getElementById("from").value,b
 function updateRangeUI(){const ys=years(),f=document.getElementById("from"),t=document.getElementById("to");let a=+f.value,b=+t.value;if(a>b){if(document.activeElement===f)b=a;else a=b;f.value=a;t.value=b}
 document.getElementById("fromLabel").textContent=ys[a];document.getElementById("toLabel").textContent=ys[b];document.getElementById("yearsText").textContent=selected().join(" · ");
 const max=Math.max(1,ys.length-1),left=(a/max)*100,right=(b/max)*100;const fill=document.getElementById("fill");fill.style.left=left+"%";fill.style.width=(right-left)+"%";render()}
-function render(){charts.forEach(c=>c.destroy());charts=[];const grid=document.getElementById("grid"),extraGrid=document.getElementById("extraGrid");grid.innerHTML=extraGrid.innerHTML="";const all=years(),chosen=selected();
-for(const etf of payload.etfs||[]){const total=cumulative(etf,chosen);const card=document.createElement("article");card.className="card";card.innerHTML=`<div class="head"><div><h2>${etf.short}</h2><div class="meta">${etf.ticker} · ${etf.isin}</div></div><div class="total"><div class="total-label">Kumulierte Performance</div><div class="total-value${total?total.value>=0?" positive":" negative":""}">${pct(total?.value)}</div>${total?`<div class="total-period">${shortDate(total.first)} – ${shortDate(total.last)}</div>`:""}</div></div>${etf.status==="error"?`<div class="error">Keine Daten verfügbar.</div>`:`<div class="chart"><canvas></canvas></div>`}`;(etf.ticker==="XB4A.DE"?extraGrid:grid).appendChild(card);if(etf.status==="error")continue;
+function render(){charts.forEach(c=>c.destroy());charts=[];const grid=document.getElementById("grid"),extraGrid=document.getElementById("extraGrid"),portfolioGrid=document.getElementById("portfolioGrid");grid.innerHTML=extraGrid.innerHTML=portfolioGrid.innerHTML="";const all=years(),chosen=selected();
+for(const etf of [...(payload.etfs||[]),savingsPortfolio(payload.etfs||[],all,chosen)]){const total=cumulative(etf,chosen);const card=document.createElement("article");card.className="card";card.innerHTML=`<div class="head"><div><h2>${etf.short}</h2><div class="meta">${etf.isPortfolio?"7 ETFs · Gewichtung nach Sparraten":`${etf.ticker} · ${etf.isin}`}</div></div><div class="total"><div class="total-label">Kumulierte Performance</div><div class="total-value${total?total.value>=0?" positive":" negative":""}">${pct(total?.value)}</div>${total?`<div class="total-period">${shortDate(total.first)} – ${shortDate(total.last)}</div>`:""}</div></div>${etf.status==="error"?`<div class="error">Keine Daten verfügbar.</div>`:`<div class="chart"><canvas></canvas></div>`}`;(etf.isPortfolio?portfolioGrid:etf.ticker==="XB4A.DE"?extraGrid:grid).appendChild(card);if(etf.status==="error")continue;
 const datasets=chosen.map(year=>({label:String(year),data:seriesFor(etf,year).map(p=>({x:p.day,y:p.performance,date:p.date})),borderColor:palette[all.indexOf(year)%palette.length],backgroundColor:palette[all.indexOf(year)%palette.length],pointRadius:0,pointHoverRadius:3,borderWidth:year===Math.max(...all)?2.7:1.7,tension:.12,spanGaps:true}));
 charts.push(new Chart(card.querySelector("canvas"),{type:"line",data:{datasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"nearest",intersect:false},plugins:{legend:{position:"top",align:"start",labels:{usePointStyle:true,boxWidth:8}},tooltip:{callbacks:{title(items){return items.length?new Date(items[0].raw.date).toLocaleDateString("de-AT"):""},label(ctx){return `${ctx.dataset.label}: ${pct(ctx.parsed.y)}`}}}},scales:{x:{type:"linear",min:1,max:366,grid:{display:false},ticks:{stepSize:31,callback:v=>monthLabel(v)}},y:{ticks:{callback:v=>`${v}%`},title:{display:true,text:"Performance seit Jahresstart / Erstkauf 2025"}}}}}))}}
 async function init(){const r=await fetch(`data/etf_data.json?v=${Date.now()}`);if(!r.ok)throw new Error(`HTTP ${r.status}`);payload=await r.json();document.getElementById("status").textContent=payload.generated_at?`Letztes Update: ${new Date(payload.generated_at).toLocaleString("de-AT")}`:"Noch keine Marktdaten geladen";
