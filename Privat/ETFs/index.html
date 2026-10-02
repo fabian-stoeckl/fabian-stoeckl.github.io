@@ -31,7 +31,7 @@ footer{font-size:12px;color:var(--muted);line-height:1.5;margin-top:24px}@media(
 <div id="yearsText" class="years"></div>
 </section>
 <section aria-labelledby="savingsTitle"><h2 id="savingsTitle" class="group-title">Sparplan-ETFs</h2><div id="grid" class="grid"></div></section><section class="separate" aria-labelledby="portfolioTitle"><h2 id="portfolioTitle" class="group-title">Sparplan gesamt</h2><p class="group-note">S&P 500 35 % · Europa 20 % · Japan, Emerging Markets und Pacific je 10 % · Clean Energy und Robotics je 7,5 %.<br>Gewichtete Kursperformance ohne ATX. Gewichte zu Beginn jedes dargestellten Zeitraums; monatliche Einzahlungen sind nicht eingerechnet.</p><div id="portfolioGrid"></div></section><section class="separate" aria-labelledby="extraTitle"><h2 id="extraTitle" class="group-title">Separat · ATX</h2><p class="group-note">Eigenständige Anlage außerhalb des Sparplans.</p><div id="extraGrid" class="grid"></div></section>
-<footer>Gestrichelte Linien: erwartete Performance für den jeweiligen Datenzeitraum, abgeleitet aus den fondsbezogenen Annahmen der 25-Jahres-Prognose mit Zinseszins. Vergleich vor persönlichen Steuern, ohne Einzahlungen.<br>Datenquelle: Yahoo Finance über yfinance, bereinigte Schlusskurse. Historische Performance ist kein verlässlicher Indikator für zukünftige Ergebnisse.</footer>
+<footer>Gestrichelte Linie: volle erwartete Jahresrendite aus den fondsbezogenen Annahmen der 25-Jahres-Prognose, in jedem Jahr gleich. Die berechneten Erwartungswerte in der Legende und unter der kumulierten Performance beziehen sich weiterhin mit Zinseszins auf den tatsächlichen Datenzeitraum. Vergleich vor persönlichen Steuern, ohne Einzahlungen.<br>Datenquelle: Yahoo Finance über yfinance, bereinigte Schlusskurse. Historische Performance ist kein verlässlicher Indikator für zukünftige Ergebnisse.</footer>
 </main>
 <script>
 let payload,charts=[];
@@ -67,6 +67,10 @@ return {isPortfolio:true,short:"Sparplan · gewichtet",ticker:"Sparplan",isin:""
 total:points.length?{value:last.performance,first:first.date,last:last.date}:null};
 }
 const expectedRates={"SXR8.DE":.0932,"VWCG.DE":.0674,"DBXJ.DE":.0519,"SXR1.DE":.0647,"IS3N.DE":.0703,"2B76.DE":.0892,"G1CE.DE":.0745};
+function expectedAnnualReturn(etf){
+if(etf.isPortfolio)return Object.entries(savingsWeights).reduce((sum,[ticker,weight])=>sum+weight*expectedRates[ticker]*100,0);
+return Number.isFinite(expectedRates[etf.ticker])?expectedRates[etf.ticker]*100:null;
+}
 function expectedReturn(etf,first,last){
 if(!first||!last)return null;
 const days=(Date.parse(last+"T00:00:00Z")-Date.parse(first+"T00:00:00Z"))/86400000;
@@ -92,13 +96,12 @@ const max=Math.max(1,ys.length-1),left=(a/max)*100,right=(b/max)*100;const fill=
 function render(){charts.forEach(c=>c.destroy());charts=[];const grid=document.getElementById("grid"),extraGrid=document.getElementById("extraGrid"),portfolioGrid=document.getElementById("portfolioGrid");grid.innerHTML=extraGrid.innerHTML=portfolioGrid.innerHTML="";const all=years(),chosen=selected();
 for(const etf of [...(payload.etfs||[]),savingsPortfolio(payload.etfs||[],all,chosen)]){const total=cumulative(etf,chosen),expected=total?expectedReturn(etf,total.first,total.last):null;const card=document.createElement("article");card.className="card";card.innerHTML=`<div class="head"><div><h2>${etf.short}</h2><div class="meta">${etf.isPortfolio?"7 ETFs · Gewichtung nach Sparraten":`${etf.ticker} · ${etf.isin}`}</div></div><div class="total"><div class="total-label">Kumulierte Performance</div><div class="total-value${total?total.value>=0?" positive":" negative":""}">${pct(total?.value)}</div><div class="expected-total">${expected===null?"(Keine Prognose hinterlegt)":`(erwartet: ${pct(expected)})`}</div>${total?`<div class="total-period">${shortDate(total.first)} – ${shortDate(total.last)}</div>`:""}</div></div>${etf.status==="error"?`<div class="error">Keine Daten verfügbar.</div>`:`<div class="year-legend" aria-label="Jahre und Performance"></div><div class="chart"><canvas></canvas></div>`}`;(etf.isPortfolio?portfolioGrid:etf.ticker==="XB4A.DE"?extraGrid:grid).appendChild(card);if(etf.status==="error")continue;
 const datasets=chosen.map(year=>({label:String(year),data:seriesFor(etf,year).map(p=>({x:p.day,y:p.performance,date:p.date})),borderColor:palette[all.indexOf(year)%palette.length],backgroundColor:palette[all.indexOf(year)%palette.length],pointRadius:0,pointHoverRadius:3,borderWidth:year===Math.max(...all)?2.7:1.7,tension:.12,spanGaps:true}));
-const expectedDatasets=chosen.flatMap(year=>{
-const points=seriesFor(etf,year).filter(p=>Number.isFinite(p.performance)),first=points[0],last=points.at(-1);
-const value=expectedReturn(etf,first?.date,last?.date);
-if(value===null)return [];
-const color=palette[all.indexOf(year)%palette.length];
-return [{label:`Erwartung ${year}`,isExpected:true,data:[{x:first.day,y:value,date:first.date},{x:last.day,y:value,date:last.date}],borderColor:color,backgroundColor:color,borderDash:[6,5],borderWidth:1.5,pointRadius:0,pointHoverRadius:0,tension:0}];
-});
+const annualExpected=expectedAnnualReturn(etf);
+const expectedDatasets=annualExpected===null?[]:[{
+label:"Erwartung Jahresende",isExpected:true,
+data:[{x:1,y:annualExpected},{x:366,y:annualExpected}],
+borderColor:"#8b929c",backgroundColor:"#8b929c",borderDash:[6,5],borderWidth:1.5,pointRadius:0,pointHoverRadius:0,tension:0
+}];
 charts.push(new Chart(card.querySelector("canvas"),{type:"line",data:{datasets:[...datasets,...expectedDatasets]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"nearest",intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{title(items){if(items[0]?.dataset.isExpected)return items[0].dataset.label;return items.length?new Date(items[0].raw.date).toLocaleDateString("de-AT"):""},label(ctx){return `${ctx.dataset.label}: ${pct(ctx.parsed.y)}`}}}},scales:{x:{type:"linear",min:1,max:366,grid:{display:false},ticks:{stepSize:31,callback:v=>monthLabel(v)}},y:{ticks:{callback:v=>`${v}%`},title:{display:true,text:"Jahresperformance"}}}}}));const chart=charts[charts.length-1];
 const legend=card.querySelector(".year-legend");
 chosen.forEach((year,index)=>{
@@ -107,7 +110,7 @@ const first=points[0],last=points.at(-1),yearExpected=expectedReturn(etf,first?.
 const button=document.createElement("button");button.type="button";button.className="year-key";button.setAttribute("aria-pressed","true");
 button.setAttribute("aria-label",`${year}: ${pct(last?.performance)}. Jahreslinie ein- oder ausblenden.`);
 button.innerHTML=`<span class="year-name"><span class="year-dot" style="background:${color}"></span>${year}</span><strong class="year-return">${pct(last?.performance)}</strong>${yearExpected===null?"":`<span class="expected-year">(erwartet: ${pct(yearExpected)})</span>`}${!first?`<span class="year-period">Keine Daten</span>`:""}`;
-button.addEventListener("click",()=>{const visible=!chart.isDatasetVisible(index);chart.setDatasetVisibility(index,visible);const expectedIndex=expectedDatasets.findIndex(d=>d.label===`Erwartung ${year}`);if(expectedIndex>=0)chart.setDatasetVisibility(datasets.length+expectedIndex,visible);button.setAttribute("aria-pressed",String(visible));chart.update()});
+button.addEventListener("click",()=>{const visible=!chart.isDatasetVisible(index);chart.setDatasetVisibility(index,visible);button.setAttribute("aria-pressed",String(visible));chart.update()});
 legend.appendChild(button);
 });
 }}
