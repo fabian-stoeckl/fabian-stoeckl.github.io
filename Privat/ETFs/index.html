@@ -16,7 +16,7 @@ h1{font-size:clamp(30px,4vw,46px);letter-spacing:-.04em;margin:0 0 8px}.intro{co
 .slider-wrap input[type=range]::-moz-range-thumb{pointer-events:auto;width:16px;height:16px;border-radius:50%;background:#111827;border:3px solid #fff;box-shadow:0 0 0 1px #111827;cursor:pointer}
 .track{position:absolute;left:0;right:0;top:17px;height:5px;background:#dfe3e8;border-radius:4px}.fill{position:absolute;top:17px;height:5px;background:#111827;border-radius:4px}
 .years{font-size:12px;color:var(--muted);text-align:center}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(30,40,60,.06);min-width:0}
-.head{display:flex;justify-content:space-between;gap:12px;align-items:start}.head h2{font-size:17px;margin:0 0 5px}.meta{font-size:12px;color:var(--muted)}.chart{height:315px;margin-top:8px}.error{padding:30px 0;color:#a33}
+.head{display:flex;justify-content:space-between;gap:12px;align-items:start}.head>div:first-child{min-width:0;flex:1}.total{text-align:right;flex-shrink:0}.total-label{font-size:11px;color:var(--muted)}.total-value{font-size:22px;font-weight:800;letter-spacing:-.03em;margin:3px 0}.total-value.positive{color:#059669}.total-value.negative{color:#dc2626}.total-period{font-size:10px;color:var(--muted)}@media(max-width:480px){.head{flex-wrap:wrap}.total{margin-left:auto}}.head h2{font-size:17px;margin:0 0 5px}.meta{font-size:12px;color:var(--muted)}.chart{height:315px;margin-top:8px}.error{padding:30px 0;color:#a33}
 footer{font-size:12px;color:var(--muted);line-height:1.5;margin-top:24px}@media(max-width:900px){.grid{grid-template-columns:1fr}.chart{height:285px}}
 </style>
 </head>
@@ -36,6 +36,13 @@ footer{font-size:12px;color:var(--muted);line-height:1.5;margin-top:24px}@media(
 let payload,charts=[];
 const palette=["#111827","#2563eb","#dc2626","#059669","#7c3aed","#ea580c","#0891b2","#be185d","#4d7c0f","#6b7280"];
 function pct(v){return v==null?"–":`${v>=0?"+":""}${v.toFixed(2)} %`}
+function cumulative(etf,chosen){
+const points=chosen.flatMap(year=>etf.series?.[String(year)]||[]).filter(p=>Number.isFinite(p.price)&&p.price>0).sort((a,b)=>a.date.localeCompare(b.date));
+if(!points.length||etf.status==="error")return null;
+const first=points[0],last=points[points.length-1];
+return {value:(last.price/first.price-1)*100,first:first.date,last:last.date};
+}
+function shortDate(date){return new Date(date+"T12:00:00").toLocaleDateString("de-AT",{day:"2-digit",month:"2-digit",year:"numeric"})}
 function monthLabel(day){return new Date(2024,0,day).toLocaleDateString("de-AT",{month:"short"})}
 function years(){return (payload.years||[]).filter(y=>payload.etfs.some(e=>(e.series?.[String(y)]||[]).length))}
 function selected(){const ys=years(), a=+document.getElementById("from").value,b=+document.getElementById("to").value;return ys.filter((y,i)=>i>=a&&i<=b)}
@@ -43,7 +50,7 @@ function updateRangeUI(){const ys=years(),f=document.getElementById("from"),t=do
 document.getElementById("fromLabel").textContent=ys[a];document.getElementById("toLabel").textContent=ys[b];document.getElementById("yearsText").textContent=selected().join(" · ");
 const max=Math.max(1,ys.length-1),left=(a/max)*100,right=(b/max)*100;const fill=document.getElementById("fill");fill.style.left=left+"%";fill.style.width=(right-left)+"%";render()}
 function render(){charts.forEach(c=>c.destroy());charts=[];const grid=document.getElementById("grid");grid.innerHTML="";const all=years(),chosen=selected();
-for(const etf of payload.etfs||[]){const card=document.createElement("article");card.className="card";card.innerHTML=`<div class="head"><div><h2>${etf.short}</h2><div class="meta">${etf.ticker} · ${etf.isin}</div></div></div>${etf.status==="error"?`<div class="error">Keine Daten verfügbar.</div>`:`<div class="chart"><canvas></canvas></div>`}`;grid.appendChild(card);if(etf.status==="error")continue;
+for(const etf of payload.etfs||[]){const total=cumulative(etf,chosen);const card=document.createElement("article");card.className="card";card.innerHTML=`<div class="head"><div><h2>${etf.short}</h2><div class="meta">${etf.ticker} · ${etf.isin}</div></div><div class="total"><div class="total-label">Kumulierte Performance</div><div class="total-value${total?total.value>=0?" positive":" negative":""}">${pct(total?.value)}</div>${total?`<div class="total-period">${shortDate(total.first)} – ${shortDate(total.last)}</div>`:""}</div></div>${etf.status==="error"?`<div class="error">Keine Daten verfügbar.</div>`:`<div class="chart"><canvas></canvas></div>`}`;grid.appendChild(card);if(etf.status==="error")continue;
 const datasets=chosen.map(year=>({label:String(year),data:(etf.series?.[String(year)]||[]).map(p=>({x:p.day,y:p.performance,date:p.date})),borderColor:palette[all.indexOf(year)%palette.length],backgroundColor:palette[all.indexOf(year)%palette.length],pointRadius:0,pointHoverRadius:3,borderWidth:year===Math.max(...all)?2.7:1.7,tension:.12,spanGaps:true}));
 charts.push(new Chart(card.querySelector("canvas"),{type:"line",data:{datasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"nearest",intersect:false},plugins:{legend:{position:"top",align:"start",labels:{usePointStyle:true,boxWidth:8}},tooltip:{callbacks:{title(items){return items.length?new Date(items[0].raw.date).toLocaleDateString("de-AT"):""},label(ctx){return `${ctx.dataset.label}: ${pct(ctx.parsed.y)}`}}}},scales:{x:{type:"linear",min:1,max:366,grid:{display:false},ticks:{stepSize:31,callback:v=>monthLabel(v)}},y:{ticks:{callback:v=>`${v}%`},title:{display:true,text:"Performance seit Jahresbeginn"}}}}}))}}
 async function init(){const r=await fetch(`data/etf_data.json?v=${Date.now()}`);if(!r.ok)throw new Error(`HTTP ${r.status}`);payload=await r.json();document.getElementById("status").textContent=payload.generated_at?`Letztes Update: ${new Date(payload.generated_at).toLocaleString("de-AT")}`:"Noch keine Marktdaten geladen";
