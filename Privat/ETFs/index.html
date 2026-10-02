@@ -67,6 +67,21 @@ return {isPortfolio:true,short:"Sparplan · gewichtet",ticker:"Sparplan",isin:""
 total:points.length?{value:last.performance,first:first.date,last:last.date}:null};
 }
 const expectedRates={"SXR8.DE":.0932,"VWCG.DE":.0674,"DBXJ.DE":.0519,"SXR1.DE":.0647,"IS3N.DE":.0703,"2B76.DE":.0892,"G1CE.DE":.0745};
+function forecastAxisLabel(value){
+return {id:"forecastAxisLabel",afterDraw(chart){
+if(!Number.isFinite(value)||!chart.scales?.y||!chart.chartArea)return;
+const axis=chart.scales.y,y=axis.getPixelForValue(value),ctx=chart.ctx;
+if(!Number.isFinite(y)||y<chart.chartArea.top||y>chart.chartArea.bottom)return;
+const right=chart.chartArea.left-9;
+ctx.save();
+ctx.font="bold 11px system-ui, sans-serif";
+const label=value.toLocaleString("de-AT",{minimumFractionDigits:2,maximumFractionDigits:2})+" %";
+const width=ctx.measureText(label).width;
+ctx.fillStyle="#fff";ctx.fillRect(right-width-4,y-9,width+8,18);
+ctx.fillStyle="#6b7280";ctx.textAlign="right";ctx.textBaseline="middle";ctx.fillText(label,right,y);
+ctx.restore();
+}};
+}
 function expectedAnnualReturn(etf){
 if(etf.isPortfolio)return Object.entries(savingsWeights).reduce((sum,[ticker,weight])=>sum+weight*expectedRates[ticker]*100,0);
 return Number.isFinite(expectedRates[etf.ticker])?expectedRates[etf.ticker]*100:null;
@@ -102,7 +117,7 @@ label:"Erwartung Jahresende",isExpected:true,
 data:[{x:1,y:annualExpected},{x:366,y:annualExpected}],
 borderColor:"#8b929c",backgroundColor:"#8b929c",borderDash:[6,5],borderWidth:1.5,pointRadius:0,pointHoverRadius:0,tension:0
 }];
-charts.push(new Chart(card.querySelector("canvas"),{type:"line",data:{datasets:[...datasets,...expectedDatasets]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"nearest",intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{title(items){if(items[0]?.dataset.isExpected)return items[0].dataset.label;return items.length?new Date(items[0].raw.date).toLocaleDateString("de-AT"):""},label(ctx){return `${ctx.dataset.label}: ${pct(ctx.parsed.y)}`}}}},scales:{x:{type:"linear",min:1,max:366,grid:{display:false},ticks:{stepSize:31,callback:v=>monthLabel(v)}},y:{ticks:{callback:v=>`${v}%`},title:{display:true,text:"Jahresperformance"}}}}}));const chart=charts[charts.length-1];
+charts.push(new Chart(card.querySelector("canvas"),{type:"line",plugins:[forecastAxisLabel(annualExpected)],data:{datasets:[...datasets,...expectedDatasets]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"nearest",intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{title(items){if(items[0]?.dataset.isExpected)return items[0].dataset.label;return items.length?new Date(items[0].raw.date).toLocaleDateString("de-AT"):""},label(ctx){return `${ctx.dataset.label}: ${pct(ctx.parsed.y)}`}}}},scales:{x:{type:"linear",min:1,max:366,grid:{display:false},ticks:{stepSize:31,callback:v=>monthLabel(v)}},y:{ticks:{callback:v=>`${v}%`},title:{display:true,text:"Jahresperformance"}}}}}));const chart=charts[charts.length-1];
 const legend=card.querySelector(".year-legend");
 chosen.forEach((year,index)=>{
 const points=seriesFor(etf,year).filter(p=>Number.isFinite(p.performance));

@@ -1,0 +1,76 @@
+name: Verify ETF charts
+on:
+  push:
+    paths:
+      - .github/workflows/verify-etf-charts.yml
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --prefix /tmp/chart-check playwright chart.js@4.4.7
+      - run: /tmp/chart-check/node_modules/.bin/playwright install --with-deps chromium
+      - name: Check charts at mobile and desktop widths
+        run: |
+          cat > /tmp/chart-check/check.cjs <<'JS'
+          const { chromium } = require('playwright');
+          const fs = require('fs');
+          const assert = require('assert');
+          (async () => {
+            const html = fs.readFileSync('Privat/ETFs/index.html','utf8');
+            const data = fs.readFileSync('Privat/ETFs/data/etf_data.json','utf8');
+            const chart = fs.readFileSync('/tmp/chart-check/node_modules/chart.js/dist/chart.umd.js','utf8');
+            const browser = await chromium.launch();
+            for (const width of [320,390,550,768,1024,1440]) {
+              const page = await browser.newPage({viewport:{width,height:900}});
+              const errors = [];
+              page.on('pageerror',e=>errors.push(e.message));
+              await page.route('**/*',route=>{
+                const url = route.request().url();
+                if(url.includes('chart.umd'))return route.fulfill({contentType:'application/javascript',body:chart});
+                if(url.includes('etf_data.json'))return route.fulfill({contentType:'application/json',body:data});
+                return route.fulfill({contentType:'text/html',body:html});
+              });
+              await page.goto('https://chart-test.invalid/');
+              await page.waitForSelector('.year-key');
+              await page.waitForTimeout(800);
+              assert.deepEqual(errors,[], 'Chart runtime errors');
+              assert.equal(await page.locator('canvas').count(),9);
+              const issues = await page.evaluate(()=>{
+                const issues=[];
+                if(document.documentElement.scrollWidth>innerWidth)issues.push('horizontal overflow');
+                for(const canvas of document.querySelectorAll('canvas')){
+                  const c=Chart.getChart(canvas);
+                  if(!c||!Number.isFinite(c.scales.y.min)||!Number.isFinite(c.scales.y.max))issues.push('broken chart');
+                  const expected=c.data.datasets.find(d=>d.isExpected);
+                  if(expected&&!Number.isFinite(c.scales.y.getPixelForValue(expected.data[0].y)))issues.push('invalid forecast');
+                }
+                for(const card of document.querySelectorAll('.card')){
+                  const rect=e=>e.getBoundingClientRect();
+                  const h=rect(card.querySelector('.head')),l=rect(card.querySelector('.year-legend')),c=rect(card.querySelector('.chart'));
+                  if(h.bottom>l.top||l.bottom>c.top)issues.push('overlapping sections');
+                  const title=rect(card.querySelector('.head>div')),total=rect(card.querySelector('.total'));
+                  if(Math.min(title.right,total.right)>Math.max(title.left,total.left)&&Math.min(title.bottom,total.bottom)>Math.max(title.top,total.top))issues.push('overlapping header');
+                }
+                return issues;
+              });
+              assert.deepEqual(issues,[],width+'px layout');
+              await page.locator('.year-key').first().click();
+              await page.waitForTimeout(100);
+              assert.deepEqual(errors,[]);
+              await page.locator('#from').evaluate(e=>{e.value=e.max;e.dispatchEvent(new Event('input'))});
+              await page.waitForTimeout(500);
+              assert.equal(await page.locator('.year-key').count(),9);
+              assert.deepEqual(errors,[]);
+              console.log('PASS '+width+'px: 9 real charts, no overlaps, year toggle and range selection');
+              await page.close();
+            }
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          node /tmp/chart-check/check.cjs
