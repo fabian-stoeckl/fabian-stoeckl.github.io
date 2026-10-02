@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ETF Jahresperformance</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--text:#101318;--muted:#6f7785;--line:#e2e5ea}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1500px;margin:auto;padding:36px 22px 60px}.back{display:inline-block;margin-bottom:18px;color:#536071;text-decoration:none}
+h1{font-size:clamp(30px,4vw,46px);letter-spacing:-.04em;margin:0 0 8px}.intro{color:var(--muted);line-height:1.5;max-width:880px}.top{display:flex;justify-content:space-between;gap:20px;align-items:end;flex-wrap:wrap}.status{font-size:12px;color:var(--muted)}
+.controls{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin:22px 0}.label{font-size:13px;font-weight:750;margin-bottom:10px}.range-values{display:flex;justify-content:space-between;font-weight:750;margin-bottom:8px}
+.slider-wrap{position:relative;height:38px}.slider-wrap input[type=range]{position:absolute;left:0;right:0;width:100%;pointer-events:none;appearance:none;background:transparent;top:8px}
+.slider-wrap input[type=range]::-webkit-slider-thumb{appearance:none;pointer-events:auto;width:20px;height:20px;border-radius:50%;background:#111827;border:3px solid #fff;box-shadow:0 0 0 1px #111827;cursor:pointer}
+.slider-wrap input[type=range]::-moz-range-thumb{pointer-events:auto;width:16px;height:16px;border-radius:50%;background:#111827;border:3px solid #fff;box-shadow:0 0 0 1px #111827;cursor:pointer}
+.track{position:absolute;left:0;right:0;top:17px;height:5px;background:#dfe3e8;border-radius:4px}.fill{position:absolute;top:17px;height:5px;background:#111827;border-radius:4px}
+.years{font-size:12px;color:var(--muted);text-align:center}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(30,40,60,.06);min-width:0}
+.head{display:flex;justify-content:space-between;gap:12px;align-items:start}.head h2{font-size:17px;margin:0 0 5px}.meta{font-size:12px;color:var(--muted)}.chart{height:315px;margin-top:8px}.error{padding:30px 0;color:#a33}
+footer{font-size:12px;color:var(--muted);line-height:1.5;margin-top:24px}@media(max-width:900px){.grid{grid-template-columns:1fr}.chart{height:285px}}
+</style>
+</head>
+<body><main class="wrap">
+<a class="back" href="../">← Privat</a>
+<div class="top"><div><h1>ETF Jahresperformance</h1><div class="intro">Jede Linie zeigt ein Kalenderjahr und startet am ersten verfügbaren Handelstag dieses Jahres bei 0 %. Mit den beiden Reglern wählst du den Zeitraum der angezeigten Jahreslinien.</div></div><div id="status" class="status">Daten werden geladen …</div></div>
+<section class="controls">
+<div class="label">Jahre auswählen</div>
+<div class="range-values"><span id="fromLabel">2025</span><span id="toLabel">2026</span></div>
+<div class="slider-wrap"><div class="track"></div><div id="fill" class="fill"></div><input id="from" type="range"><input id="to" type="range"></div>
+<div id="yearsText" class="years"></div>
+</section>
+<section id="grid" class="grid"></section>
+<footer>Datenquelle: Yahoo Finance über yfinance, bereinigte Schlusskurse. Historische Performance ist kein verlässlicher Indikator für zukünftige Ergebnisse.</footer>
+</main>
+<script>
+let payload,charts=[];
+const palette=["#111827","#2563eb","#dc2626","#059669","#7c3aed","#ea580c","#0891b2","#be185d","#4d7c0f","#6b7280"];
+function pct(v){return v==null?"–":`${v>=0?"+":""}${v.toFixed(2)} %`}
+function monthLabel(day){return new Date(2024,0,day).toLocaleDateString("de-AT",{month:"short"})}
+function years(){return (payload.years||[]).filter(y=>payload.etfs.some(e=>(e.series?.[String(y)]||[]).length))}
+function selected(){const ys=years(), a=+document.getElementById("from").value,b=+document.getElementById("to").value;return ys.filter((y,i)=>i>=a&&i<=b)}
+function updateRangeUI(){const ys=years(),f=document.getElementById("from"),t=document.getElementById("to");let a=+f.value,b=+t.value;if(a>b){if(document.activeElement===f)b=a;else a=b;f.value=a;t.value=b}
+document.getElementById("fromLabel").textContent=ys[a];document.getElementById("toLabel").textContent=ys[b];document.getElementById("yearsText").textContent=selected().join(" · ");
+const max=Math.max(1,ys.length-1),left=(a/max)*100,right=(b/max)*100;const fill=document.getElementById("fill");fill.style.left=left+"%";fill.style.width=(right-left)+"%";render()}
+function render(){charts.forEach(c=>c.destroy());charts=[];const grid=document.getElementById("grid");grid.innerHTML="";const all=years(),chosen=selected();
+for(const etf of payload.etfs||[]){const card=document.createElement("article");card.className="card";card.innerHTML=`<div class="head"><div><h2>${etf.short}</h2><div class="meta">${etf.ticker} · ${etf.isin}</div></div></div>${etf.status==="error"?`<div class="error">Keine Daten verfügbar.</div>`:`<div class="chart"><canvas></canvas></div>`}`;grid.appendChild(card);if(etf.status==="error")continue;
+const datasets=chosen.map(year=>({label:String(year),data:(etf.series?.[String(year)]||[]).map(p=>({x:p.day,y:p.performance,date:p.date})),borderColor:palette[all.indexOf(year)%palette.length],backgroundColor:palette[all.indexOf(year)%palette.length],pointRadius:0,pointHoverRadius:3,borderWidth:year===Math.max(...all)?2.7:1.7,tension:.12,spanGaps:true}));
+charts.push(new Chart(card.querySelector("canvas"),{type:"line",data:{datasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"nearest",intersect:false},plugins:{legend:{position:"top",align:"start",labels:{usePointStyle:true,boxWidth:8}},tooltip:{callbacks:{title(items){return items.length?new Date(items[0].raw.date).toLocaleDateString("de-AT"):""},label(ctx){return `${ctx.dataset.label}: ${pct(ctx.parsed.y)}`}}}},scales:{x:{type:"linear",min:1,max:366,grid:{display:false},ticks:{stepSize:31,callback:v=>monthLabel(v)}},y:{ticks:{callback:v=>`${v}%`},title:{display:true,text:"Performance seit Jahresbeginn"}}}}}))}}
+async function init(){const r=await fetch(`data/etf_data.json?v=${Date.now()}`);if(!r.ok)throw new Error(`HTTP ${r.status}`);payload=await r.json();document.getElementById("status").textContent=payload.generated_at?`Letztes Update: ${new Date(payload.generated_at).toLocaleString("de-AT")}`:"Noch keine Marktdaten geladen";
+const ys=years(),f=document.getElementById("from"),t=document.getElementById("to");if(!ys.length){f.disabled=t.disabled=true;document.getElementById("fromLabel").textContent="–";document.getElementById("toLabel").textContent="–";document.getElementById("yearsText").textContent="Noch keine Jahresdaten verfügbar.";render();return}f.min=t.min=0;f.max=t.max=Math.max(0,ys.length-1);f.step=t.step=1;f.value=Math.max(0,ys.length-2);t.value=Math.max(0,ys.length-1);f.oninput=t.oninput=updateRangeUI;updateRangeUI()}
+init().catch(()=>{document.getElementById("status").textContent="Daten konnten nicht geladen werden.";document.getElementById("from").disabled=document.getElementById("to").disabled=true});
+</script></body></html>
