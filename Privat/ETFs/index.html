@@ -106,7 +106,7 @@ const points=seriesFor(etf,year).filter(p=>Number.isFinite(p.performance));
 const first=points[0],last=points.at(-1),yearExpected=expectedReturn(etf,first?.date,last?.date),color=palette[all.indexOf(year)%palette.length];
 const button=document.createElement("button");button.type="button";button.className="year-key";button.setAttribute("aria-pressed","true");
 button.setAttribute("aria-label",`${year}: ${pct(last?.performance)}. Jahreslinie ein- oder ausblenden.`);
-button.innerHTML=`<span class="year-name"><span class="year-dot" style="background:${color}"></span>${year}</span><strong class="year-return">${pct(last?.performance)}</strong>${yearExpected===null?"":`<span class="expected-year">(erwartet: ${pct(yearExpected)})</span>`}<span class="year-period">${first?shortDate(first.date)+" – "+shortDate(last.date):"Keine Daten"}${year===2025?"<br>Ab Erstkauf":""}</span>`;
+button.innerHTML=`<span class="year-name"><span class="year-dot" style="background:${color}"></span>${year}</span><strong class="year-return">${pct(last?.performance)}</strong>${yearExpected===null?"":`<span class="expected-year">(erwartet: ${pct(yearExpected)})</span>`}${!first?`<span class="year-period">Keine Daten</span>`:""}`;
 button.addEventListener("click",()=>{const visible=!chart.isDatasetVisible(index);chart.setDatasetVisibility(index,visible);const expectedIndex=expectedDatasets.findIndex(d=>d.label===`Erwartung ${year}`);if(expectedIndex>=0)chart.setDatasetVisibility(datasets.length+expectedIndex,visible);button.setAttribute("aria-pressed",String(visible));chart.update()});
 legend.appendChild(button);
 });
