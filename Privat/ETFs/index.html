@@ -102,19 +102,7 @@ label:"Erwartung Jahresende",isExpected:true,
 data:[{x:1,y:annualExpected},{x:366,y:annualExpected}],
 borderColor:"#8b929c",backgroundColor:"#8b929c",borderDash:[6,5],borderWidth:1.5,pointRadius:0,pointHoverRadius:0,tension:0
 }];
-charts.push(new Chart(card.querySelector("canvas"),{type:"line",data:{datasets:[...datasets,...expectedDatasets]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"nearest",intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{title(items){if(items[0]?.dataset.isExpected)return items[0].dataset.label;return items.length?new Date(items[0].raw.date).toLocaleDateString("de-AT"):""},label(ctx){return `${ctx.dataset.label}: ${pct(ctx.parsed.y)}`}}}},scales:{x:{type:"linear",min:1,max:366,grid:{display:false},ticks:{stepSize:31,callback:v=>monthLabel(v)}},y:{
-afterBuildTicks(scale){
-if(annualExpected===null)return;
-const spacing=(scale.max-scale.min)*.06;
-scale.ticks=scale.ticks.filter(t=>Math.abs(t.value-annualExpected)>spacing);
-scale.ticks.push({value:annualExpected});
-scale.ticks.sort((a,b)=>a.value-b.value);
-},
-ticks:{autoSkip:false,maxTicksLimit:8,
-callback:v=>annualExpected!==null&&Math.abs(v-annualExpected)<1e-8?annualExpected.toLocaleString("de-AT",{minimumFractionDigits:2,maximumFractionDigits:2})+" %":`${v}%`,
-color:ctx=>annualExpected!==null&&Math.abs(ctx.tick.value-annualExpected)<1e-8?"#6b7280":"#666",
-font:ctx=>({weight:annualExpected!==null&&Math.abs(ctx.tick.value-annualExpected)<1e-8?"bold":"normal"})
-},title:{display:true,text:"Jahresperformance"}}}}}));const chart=charts[charts.length-1];
+charts.push(new Chart(card.querySelector("canvas"),{type:"line",data:{datasets:[...datasets,...expectedDatasets]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"nearest",intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{title(items){if(items[0]?.dataset.isExpected)return items[0].dataset.label;return items.length?new Date(items[0].raw.date).toLocaleDateString("de-AT"):""},label(ctx){return `${ctx.dataset.label}: ${pct(ctx.parsed.y)}`}}}},scales:{x:{type:"linear",min:1,max:366,grid:{display:false},ticks:{stepSize:31,callback:v=>monthLabel(v)}},y:{ticks:{callback:v=>`${v}%`},title:{display:true,text:"Jahresperformance"}}}}}));const chart=charts[charts.length-1];
 const legend=card.querySelector(".year-legend");
 chosen.forEach((year,index)=>{
 const points=seriesFor(etf,year).filter(p=>Number.isFinite(p.performance));
