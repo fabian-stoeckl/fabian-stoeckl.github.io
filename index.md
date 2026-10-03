@@ -71,7 +71,7 @@ with Wolf-Peter Schill & Alexander Zerrahn, *Scientific Reports (2021)*<br/>
 <span style="display:block; margin-top:-18px;">&nbsp;</span>
 <hr/>
 
-**Substituting Clean for Dirty Energy: A Bottom-Up Analysis**<br/>
+**Substituting Clean for Dirty Energy: A Bottom-Up Analysis** (*[JAERE Best Paper Award](https://www.aere.org/best-jaere-paper-award-recipients){:target="_blank"}*)<br/>
 with Alexander Zerrahn, *Journal of the Association of Environmental and Resource Economists (2023)*<br/>
 [
 [download](https://doi.org/10.1086/722612){:target="_blank"}
@@ -132,7 +132,7 @@ with Michael Knoblach & Khalid ElFayoumi
 <br/>
 
 
-**Core developer (formerly) of DIETER** (Dispatch & Investment Evaluation Tool with Endogenous Renewables) [
+**DIETER** (Dispatch & Investment Evaluation Tool with Endogenous Renewables) [
 [GitLab](https://diw-evu.gitlab.io/dieter_public/dieterpy/index.html){:target="_blank"}
 ]
 
@@ -213,10 +213,10 @@ with *Prof. Dr. Franziska Holz*
     <td class="tg-73oq"><span style="font-weight:bold;color:#000">Prof. Dr. Claudia Kemfert</span><br>Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Professor of Economics, Leuphana Universität Lüneburg<br>ckemfert[at]diw[dot]de<br></td>
   </tr>
   <tr>
-    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Dr. Wolf-Peter Schill</span><br>Deputy Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>wschill[at]diw[dot]de</td>
+    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Dr. José Delgado</span><br>Head of Unit - Green Budgeting<br>Directorate General II - Budget<br>Austrian Ministry of Finance<br>jose.delgado[at]bmf[dot]gv[dot]at</td>
   </tr>
   <tr>
-    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Dr. José Delgado</span><br>Head of Unit - Green Budgeting<br>Directorate General II - Budget<br>Austrian Ministry of Finance<br>jose.delgado[at]bmf[dot]gv[dot]at</td>
+    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Dr. Wolf-Peter Schill</span><br>Deputy Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>wschill[at]diw[dot]de</td>
   </tr>
 </tbody>
 </table>
