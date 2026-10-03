@@ -11,7 +11,7 @@ This website presents my academic research and publications. You can download my
 
 My **research interests** are:
 
-* (Green) Growth Theory
+* (Green) Growth
 * Declining Labor Share of Income
 * Environmental Economics
 * Energy System Modeling
@@ -71,7 +71,7 @@ with Wolf-Peter Schill & Alexander Zerrahn, *Scientific Reports (2021)*<br/>
 <span style="display:block; margin-top:-18px;">&nbsp;</span>
 <hr/>
 
-**Substituting Clean for Dirty Energy: A Bottom-Up Analysis**<br/>
+**Substituting Clean for Dirty Energy: A Bottom-Up Analysis** (*[JAERE Best Paper Award](https://www.aere.org/best-jaere-paper-award-recipients){:target="_blank"}*)<br/>
 with Alexander Zerrahn, *Journal of the Association of Environmental and Resource Economists (2023)*<br/>
 [
 [download](https://doi.org/10.1086/722612){:target="_blank"}

@@ -40,11 +40,17 @@ h3, h4, h5, h6 {
 a {
   color:#267CB9;
   text-decoration:none;
+  font-weight:inherit;
+  border-radius:2px;
+  box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;
 }
 
 a:hover, a:focus {
   color:#069;
-  font-weight: bold;
+  font-weight:inherit;
+  background-color:rgba(38, 124, 185, 0.10);
+  box-shadow:0 0 0 2px rgba(38, 124, 185, 0.10);
 }
 
 a small {
@@ -150,8 +156,8 @@ ul.downloads {
 }
 
 .downloads a:hover, .downloads a:focus {
-  color:#675C5C;
-  font-weight:bold;
+  color:#069;
+  font-weight:inherit;
 }
 
 .downloads ul a:active {
