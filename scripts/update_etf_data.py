@@ -34,13 +34,29 @@ def fetch(ticker):
         out[str(year)]=pts
     return out
 
+FX_PAIRS = [
+    ("USD", "US-Dollar", "EURUSD=X"),
+    ("JPY", "Japanischer Yen", "EURJPY=X"),
+    ("GBP", "Britisches Pfund", "EURGBP=X"),
+    ("CHF", "Schweizer Franken", "EURCHF=X"),
+    ("AUD", "Australischer Dollar", "EURAUD=X"),
+    ("CNY", "Chinesischer Yuan", "EURCNY=X"),
+    ("KRW", "Südkoreanischer Won", "EURKRW=X"),
+    ("TWD", "Taiwan-Dollar", "EURTWD=X"),
+]
+
 def main():
     items=json.loads(CONFIG.read_text(encoding="utf-8"))
-    payload={"generated_at":datetime.now(timezone.utc).isoformat(),"first_year":FIRST_YEAR,"years":YEARS,"source":"Yahoo Finance via yfinance","etfs":[]}
+    payload={"generated_at":datetime.now(timezone.utc).isoformat(),"first_year":FIRST_YEAR,"years":YEARS,"source":"Yahoo Finance via yfinance","etfs":[],"fx":[]}
     for e in items:
         x=dict(e)
         try: x["series"]=fetch(e["ticker"]);x["status"]="ok"
         except Exception as exc: x["series"]={str(y):[] for y in YEARS};x["status"]="error";x["error"]=str(exc)
         payload["etfs"].append(x)
+    for code, name, ticker in FX_PAIRS:
+        x={"code":code,"name":name,"ticker":ticker}
+        try: x["series"]=fetch(ticker);x["status"]="ok"
+        except Exception as exc: x["series"]={str(y):[] for y in YEARS};x["status"]="error";x["error"]=str(exc)
+        payload["fx"].append(x)
     OUT.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
 if __name__=="__main__": main()
