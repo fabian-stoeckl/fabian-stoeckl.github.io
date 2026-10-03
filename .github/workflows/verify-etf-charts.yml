@@ -3,6 +3,9 @@ on:
   push:
     paths:
       - .github/workflows/verify-etf-charts.yml
+      - Privat/ETFs/index.html
+      - scripts/update_etf_data.py
+      - tests/fx.test.cjs
 permissions:
   contents: read
 jobs:
@@ -13,6 +16,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Check FX mathematics and reference dates
+        run: node tests/fx.test.cjs
       - run: npm install --prefix /tmp/chart-check playwright chart.js@4.4.7
       - run: /tmp/chart-check/node_modules/.bin/playwright install --with-deps chromium
       - name: Check charts at mobile and desktop widths
@@ -60,9 +65,31 @@ jobs:
                   const total=rect(totalElement);
                   if(Math.min(title.right,total.right)>Math.max(title.left,total.left)&&Math.min(title.bottom,total.bottom)>Math.max(title.top,total.top))issues.push('overlapping header');
                 }
+                const fxChart=Chart.getChart(document.querySelector('.fx-card canvas'));
+                const fxButtons=[...document.querySelectorAll('.fx-card .year-key')];
+                fxChart.data.datasets.forEach((dataset,i)=>{
+                  const code=payload.fx.find(f=>f.name===dataset.label)?.code;
+                  const source=payload.fx.find(f=>f.code===code);
+                  if(!source){issues.push('missing source currency');return}
+                  const raw=selected().flatMap(year=>source.series[String(year)]||[]).filter(p=>Number.isFinite(p.price)&&p.price>0&&new Date(p.date+'T00:00:00Z').getUTCDay()!==0&&new Date(p.date+'T00:00:00Z').getUTCDay()!==6).sort((a,b)=>a.date.localeCompare(b.date));
+                  if(dataset.data[0].date!==raw[0].date)issues.push('wrong reference date');
+                  for(const point of dataset.data){
+                    const original=raw.find(p=>p.date===point.date);
+                    if(!original||Math.abs(point.rate*original.price-1)>1e-9||Math.abs(point.y-(raw[0].price/original.price-1)*100)>1e-8)issues.push('FX orientation mismatch');
+                  }
+                  const last=dataset.data.at(-1);
+                  const tooltip=fxChart.options.plugins.tooltip.callbacks.label({datasetIndex:i,raw:last,parsed:{y:last.y},dataset});
+                  const quote=fxQuote(code,last.rate,last.y);
+                  if(tooltip!==quote||!tooltip.startsWith('1 '+code+' = ')||tooltip.includes(code+'/EUR'))issues.push('ambiguous tooltip');
+                  if(!fxButtons[i].textContent.includes(quote))issues.push('card/tooltip mismatch');
+                });
                 return issues;
               });
-              assert.deepEqual(issues,[],width+'px layout');
+              assert.deepEqual(issues,[],width+'px layout and FX convention');
+              const currencyButton=page.locator('.fx-card .year-key').first();
+              await currencyButton.click();
+              assert.equal(await currencyButton.getAttribute('aria-pressed'),'false');
+              await currencyButton.click();
               await page.locator('.year-key').first().click();
               await page.waitForTimeout(100);
               assert.deepEqual(errors,[]);

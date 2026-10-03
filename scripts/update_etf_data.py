@@ -16,12 +16,16 @@ def clean(x):
     x=float(x)
     return x if math.isfinite(x) else None
 
-def fetch(ticker):
+def fetch(ticker, is_fx=False):
     df=yf.download(ticker,start=FIRST_PURCHASE_DATE,end=(pd.Timestamp.utcnow()+pd.Timedelta(days=2)).strftime("%Y-%m-%d"),auto_adjust=True,progress=False,actions=False,threads=False)
     if df.empty: raise RuntimeError(f"No data for {ticker}")
     close=df["Close"]
     if isinstance(close,pd.DataFrame): close=close.iloc[:,0]
     close=close.dropna()
+    if is_fx:
+        today = pd.Timestamp.utcnow().strftime("%Y-%m-%d")
+        close = close[(close.index.dayofweek < 5) & (close.index.strftime("%Y-%m-%d") <= today)]
+        close = close[(close > 0) & close.map(math.isfinite)]
     out={}
     for year in YEARS:
         s=close[close.index.year==year]
@@ -30,7 +34,7 @@ def fetch(ticker):
         if s.empty: out[str(year)]=[]; continue
         first=float(s.iloc[0]); pts=[]
         for idx,v in s.items():
-            v=float(v); pts.append({"date":idx.strftime("%Y-%m-%d"),"day":int(idx.dayofyear),"price":clean(v),"performance":clean((v/first-1)*100)})
+            v=float(v); pts.append({"date":idx.strftime("%Y-%m-%d"),"day":int(idx.dayofyear),"price":clean(v),"performance":clean(((first/v if is_fx else v/first)-1)*100)})
         out[str(year)]=pts
     return out
 
@@ -54,8 +58,8 @@ def main():
         except Exception as exc: x["series"]={str(y):[] for y in YEARS};x["status"]="error";x["error"]=str(exc)
         payload["etfs"].append(x)
     for code, name, ticker in FX_PAIRS:
-        x={"code":code,"name":name,"ticker":ticker}
-        try: x["series"]=fetch(ticker);x["status"]="ok"
+        x={"code":code,"name":name,"ticker":ticker,"quote_units":"foreign_per_eur","performance_units":"eur_per_foreign"}
+        try: x["series"]=fetch(ticker, is_fx=True);x["status"]="ok"
         except Exception as exc: x["series"]={str(y):[] for y in YEARS};x["status"]="error";x["error"]=str(exc)
         payload["fx"].append(x)
     OUT.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
