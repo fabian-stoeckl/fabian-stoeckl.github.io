@@ -64,6 +64,17 @@ a:hover small {
   color:#777;
 }
 
+details > summary {
+  width:max-content;
+  border-radius:2px;
+}
+
+details > summary:hover,
+details > summary:focus {
+  background-color:rgba(38, 124, 185, 0.10);
+  box-shadow:0 0 0 2px rgba(38, 124, 185, 0.10);
+}
+
 .wrapper {
   width:920px;
   margin:0 auto;
