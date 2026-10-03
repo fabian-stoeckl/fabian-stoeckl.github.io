@@ -32,6 +32,7 @@ jobs:
             if(!data.fx?.some(f=>f.status==='ok'))data.fx=['USD','JPY','GBP'].map((code,i)=>({code,name:code,status:'ok',series:Object.fromEntries(Object.entries(data.etfs[0].series).map(([year,points])=>[year,points.map((p,j)=>({...p,price:(i+1)*(1+j*.001)}))]))}));
             const chart = fs.readFileSync('/tmp/chart-check/node_modules/chart.js/dist/chart.umd.js','utf8');
             const browser = await chromium.launch();
+            fs.mkdirSync('artifacts/screenshots', { recursive: true });
             for (const width of [320,390,550,768,1024,1440]) {
               const page = await browser.newPage({viewport:{width,height:900}});
               const errors = [];
@@ -97,6 +98,7 @@ jobs:
               await page.waitForTimeout(500);
               assert.equal(await page.locator('.card:not(.fx-card) .year-key').count(),9);
               assert.deepEqual(errors,[]);
+              await page.screenshot({path:`artifacts/screenshots/etf-charts-${width}px.png`,fullPage:true});
               console.log('PASS '+width+'px: 10 real charts, no overlaps, year toggle and range selection');
               await page.close();
             }
@@ -104,3 +106,10 @@ jobs:
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
           node /tmp/chart-check/check.cjs
+      - name: Upload chart screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: etf-chart-screenshots
+          path: artifacts/screenshots/
+          if-no-files-found: warn
