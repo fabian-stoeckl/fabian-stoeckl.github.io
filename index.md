@@ -132,7 +132,7 @@ with Michael Knoblach & Khalid ElFayoumi
 <br/>
 
 
-**Core developer (formerly) of DIETER** (Dispatch & Investment Evaluation Tool with Endogenous Renewables) [
+**DIETER** (Dispatch & Investment Evaluation Tool with Endogenous Renewables) [
 [GitLab](https://diw-evu.gitlab.io/dieter_public/dieterpy/index.html){:target="_blank"}
 ]
 
