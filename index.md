@@ -105,13 +105,6 @@ with Alexander Zerrahn, *Journal of the Association of Environmental and Resourc
 
 <br/>
 
-## *Work in progress*
-
-**Increasing Capital-Labor Substitutability and the Declining Labor Income Share**<br/>
-with Michael Knoblach & Khalid ElFayoumi
-
-<br/>
-
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;margin:0px auto;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
