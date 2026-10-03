@@ -62,7 +62,7 @@ const viewports = [
           }
         }
         const ministry = page.getByRole('link', { name: 'Ministry of Finance', exact: true });
-        await ministry.focus();
+        await page.getByRole('heading', { name: 'Welcome!', exact: true }).click();
         await ministry.hover();
         const style = await ministry.evaluate(link => ({
           color: getComputedStyle(link).color,
