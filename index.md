@@ -207,13 +207,16 @@ with *Prof. Dr. Franziska Holz*
 <table class="tg">
 <tbody>
   <tr>
-    <td class="tg-m223"><span style="font-weight:bold;color:#000">Prof. Dr. Georg Meran</span><br>Professor of Economics, Technische Universität Berlin<br>Workgroup Environmental Economics and Policy<br>Email: g.meran[at]tu-berlin[dot]de</td>
+    <td class="tg-m223"><span style="font-weight:bold;color:#000">Prof. Dr. Georg Meran</span><br>Professor of Economics, Technische Universität Berlin<br>Workgroup Environmental Economics and Policy<br>g.meran[at]tu-berlin[dot]de</td>
   </tr>
   <tr>
-    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Prof. Dr. Claudia Kemfert</span><br>Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Professor of Economics, Leuphana Universität Lüneburg<br>Email: ckemfert[at]diw[dot]de<br></td>
+    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Prof. Dr. Claudia Kemfert</span><br>Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Professor of Economics, Leuphana Universität Lüneburg<br>ckemfert[at]diw[dot]de<br></td>
   </tr>
   <tr>
-    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Dr. Wolf-Peter Schill</span><br>Deputy Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Email: wschill[at]diw[dot]de</td>
+    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Dr. Wolf-Peter Schill</span><br>Deputy Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>wschill[at]diw[dot]de</td>
+  </tr>
+  <tr>
+    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Dr. José Delgado</span><br>Head of Unit - Green Budgeting<br>Directorate General II - Budget<br>Austrian Ministry of Finance<br>jose.delgado[at]bmf[dot]gv[dot]at</td>
   </tr>
 </tbody>
 </table>
