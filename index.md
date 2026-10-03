@@ -11,7 +11,7 @@ This website presents my academic research and publications. You can download my
 
 My **research interests** are:
 
-* (Green) Growth
+* (Green) Growth Theory
 * Declining Labor Share of Income
 * Environmental Economics
 * Energy System Modeling
