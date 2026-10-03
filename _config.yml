@@ -9,3 +9,19 @@ plugins:
   
 title: Dr. Fabian Stöckl &#124; Economist
 #description: Economist
+
+# Repository-only development material must not be published by Jekyll.
+exclude:
+  - AGENTS.md
+  - DEVELOPMENT.md
+  - Gemfile
+  - Gemfile.lock
+  - package.json
+  - package-lock.json
+  - requirements-etf.txt
+  - scripts
+  - tests
+  - artifacts
+  - node_modules
+  - vendor
+  - .venv

@@ -1,0 +1,9 @@
+/.bundle/
+/.jekyll-cache/
+/.sass-cache/
+/_site/
+/.venv/
+/node_modules/
+/vendor/
+
+/artifacts/
