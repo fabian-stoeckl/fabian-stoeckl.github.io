@@ -174,13 +174,13 @@ with Alexander Zerrahn, *Journal of the Association of Environmental and Resourc
 <table class="tg">
 <tbody>
   <tr>
-    <td class="tg-m223"><span style="font-weight:bold;color:#000">Prof. Dr. Georg Meran</span><br>Professor of Economics, Technische Universität Berlin<br>Workgroup Environmental Economics and Policy<br>g.meran [at] tu-berlin.de</td>
+    <td class="tg-m223"><span style="font-weight:bold;color:#000">Prof. Dr. Georg Meran</span><br>Professor of Economics, Technische Universität Berlin<br>Workgroup Environmental Economics and Policy<br>g.meran[at]tu-berlin.de</td>
   </tr>
   <tr>
-    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Prof. Dr. Claudia Kemfert</span><br>Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Professor of Economics, Leuphana Universität Lüneburg<br>ckemfert [at] diw.de<br></td>
+    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Prof. Dr. Claudia Kemfert</span><br>Head of Dept. Energy, Transportation, Environment, DIW Berlin<br>Professor of Economics, Leuphana Universität Lüneburg<br>ckemfert[at]diw.de<br></td>
   </tr>
   <tr>
-    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Dr. José Delgado</span><br>Head of Unit - Green Budgeting<br>Directorate General II - Budget<br>Austrian Ministry of Finance<br>jose.delgado [at] bmf.gv.at</td>
+    <td class="tg-73oq"><span style="font-weight:bold;color:#000">Dr. José Delgado</span><br>Head of Unit - Green Budgeting<br>Directorate General II - Budget<br>Austrian Ministry of Finance<br>jose.delgado[at]bmf.gv.at</td>
   </tr>
 </tbody>
 </table>
