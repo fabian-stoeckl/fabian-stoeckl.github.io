@@ -5,7 +5,7 @@
 <title>Privat</title>
 <style>
 :root{--paper:#f4efe7;--ink:#242321;--muted:#79736b}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}.seasonal-weather{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}.seasonal-particle{position:absolute;top:-12vh;left:var(--x);font-size:var(--size);opacity:var(--opacity);animation:season-fall var(--duration) linear var(--delay) infinite;will-change:transform}.wrap{position:relative;z-index:1}@keyframes season-fall{0%{transform:translate3d(0,-12vh,0) rotate(0deg)}100%{transform:translate3d(var(--drift),112vh,0) rotate(var(--spin))}}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
 .wrap{max-width:1100px;margin:auto;padding:48px 24px 70px}h1{font-size:clamp(34px,5vw,58px);letter-spacing:-.04em;margin:0 0 10px}.sub{color:var(--muted);margin-bottom:34px}
 .gallery{padding:40px}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px}
@@ -14,10 +14,10 @@
 .note{margin-top:25px;color:var(--muted);font-size:13px;line-height:1.6}
 .tile-website span{line-height:1.15;text-align:center}
 @media(max-width:700px){.gallery{padding:22px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}}
-@media(max-width:700px){.seasonal-particle:nth-child(n+13){display:none}}@media(max-width:400px){.grid{grid-template-columns:1fr}.tile{max-width:240px;width:100%;margin:auto}}@media(prefers-reduced-motion:reduce){.seasonal-weather{display:none}.tile{transition:none}}
+@media(max-width:400px){.grid{grid-template-columns:1fr}.tile{max-width:240px;width:100%;margin:auto}}
 </style>
 </head>
-<body><div class="seasonal-weather" aria-hidden="true"></div><main class="wrap">
+<body><main class="wrap">
 <h1>Privat</h1><div class="sub">Persönliche Übersichten und Tools.</div>
 <div class="gallery"><section class="grid" aria-label="Private Themen">
 <a class="tile" href="./ETFs/" aria-label="ETF-Übersicht öffnen">
@@ -37,36 +37,4 @@
 </section></div>
 <div class="note">Weitere Themen finden hier später ihren Platz.</div>
 </main>
-<script>
-(() => {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const month = new Date().getMonth() + 1;
-  const season = month >= 3 && month <= 5 ? 'spring'
-    : month >= 6 && month <= 8 ? 'summer'
-    : month >= 9 && month <= 11 ? 'autumn' : 'winter';
-  const symbols = {
-    spring: ['🌸','❀','🌷'],
-    summer: ['☀️','☀','🌞'],
-    autumn: ['🍂','🍁','🍃'],
-    winter: ['❄','❅','❆']
-  }[season];
-  const layer = document.querySelector('.seasonal-weather');
-  const count = window.innerWidth <= 700 ? 12 : 22;
-  for (let i = 0; i < count; i++) {
-    const p = document.createElement('span');
-    p.className = 'seasonal-particle';
-    p.textContent = symbols[i % symbols.length];
-    const size = 13 + (i * 7 % 16);
-    const duration = 13 + (i * 5 % 12);
-    p.style.setProperty('--x', ((i * 43) % 101) + 'vw');
-    p.style.setProperty('--size', size + 'px');
-    p.style.setProperty('--opacity', String(0.10 + ((i * 3) % 8) / 100));
-    p.style.setProperty('--duration', duration + 's');
-    p.style.setProperty('--delay', (-1 * ((i * 7) % duration)) + 's');
-    p.style.setProperty('--drift', (((i % 2 ? 1 : -1) * (18 + (i * 11 % 55)))) + 'px');
-    p.style.setProperty('--spin', ((i % 2 ? 1 : -1) * (180 + (i * 37 % 360))) + 'deg');
-    layer.appendChild(p);
-  }
-})();
-</script>
 </body></html>
