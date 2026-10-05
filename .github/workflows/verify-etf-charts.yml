@@ -44,6 +44,12 @@ jobs:
         with:
           node-version: "22"
           cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-etf.txt
+      - name: Check update failure handling and exchange holidays
+        run: python tests/test_etf_update.py
       - run: npm ci
       - name: Check FX mathematics and reference dates
         run: node tests/fx.test.cjs

@@ -7,3 +7,5 @@
 /vendor/
 
 /artifacts/
+
+__pycache__/
