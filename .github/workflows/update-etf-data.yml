@@ -9,7 +9,9 @@ on:
       - requirements-etf.txt
       - Privat/ETFs/etfs.json
   schedule:
-    - cron: "15 18 * * 1-5"
+    - cron: "37 21 * * 1-5"
+    # Retry next morning, including Saturday for Friday closing prices.
+    - cron: "37 6 * * 2-6"
     # Saturday at 12:15 Vienna time in summer, 11:15 in winter.
     - cron: "15 10 * * 6"
 permissions:
@@ -27,8 +29,14 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements-etf.txt
-      - run: python scripts/update_etf_data.py
+      - name: Test freshness and failure handling
+        run: python -m unittest discover -s tests -p "test_etf_update.py"
+      - name: Fetch and validate market data
+        id: fetch
+        continue-on-error: true
+        run: python scripts/update_etf_data.py
       - name: Commit data and rebuild GitHub Pages
+        if: always() && steps.fetch.outcome != 'skipped'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -40,3 +48,8 @@ jobs:
             git push
             gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"
           fi
+      - name: Report stale or failed data fetch
+        if: always() && steps.fetch.outcome == 'failure'
+        run: |
+          echo "Market data is incomplete or stale. Existing data was preserved; see warnings above."
+          exit 1

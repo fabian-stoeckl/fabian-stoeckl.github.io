@@ -9,7 +9,7 @@
 :root{--bg:#f6f7f9;--card:#fff;--text:#101318;--muted:#6f7785;--line:#e2e5ea}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
 .wrap{max-width:1500px;margin:auto;padding:36px 22px 60px}.back{display:inline-block;margin-bottom:18px;color:#536071;text-decoration:none}
-h1{font-size:clamp(30px,4vw,46px);letter-spacing:-.04em;margin:0 0 8px}.intro{color:var(--muted);line-height:1.5;max-width:880px}.top{display:flex;justify-content:space-between;gap:20px;align-items:end;flex-wrap:wrap}.status{font-size:12px;color:var(--muted)}
+h1{font-size:clamp(30px,4vw,46px);letter-spacing:-.04em;margin:0 0 8px}.intro{color:var(--muted);line-height:1.5;max-width:880px}.top{display:flex;justify-content:space-between;gap:20px;align-items:end;flex-wrap:wrap}.status{font-size:12px;color:var(--muted);max-width:520px;line-height:1.6}.status.warning{color:#854d0e}.data-note{font-size:13px;line-height:1.6;margin:12px 0;padding:10px 12px;border-radius:8px;background:#fef3c7;color:#854d0e}.data-note.missing{background:#fee2e2;color:#991b1b}
 .controls{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin:22px 0}.label{font-size:13px;font-weight:750;margin-bottom:10px}.range-values{display:flex;justify-content:space-between;font-weight:750;margin-bottom:8px}
 .slider-wrap{position:relative;height:38px}.slider-wrap input[type=range]{position:absolute;left:0;right:0;width:100%;pointer-events:none;appearance:none;background:transparent;top:8px}
 .slider-wrap input[type=range]::-webkit-slider-thumb{appearance:none;pointer-events:auto;width:20px;height:20px;border-radius:50%;background:#111827;border:3px solid #fff;box-shadow:0 0 0 1px #111827;cursor:pointer}
@@ -23,7 +23,7 @@ footer{font-size:12px;color:var(--muted);line-height:1.5;margin-top:24px}@media(
 </head>
 <body><main class="wrap">
 <a class="back" href="../">← Privat</a>
-<div class="top"><div><h1>ETF Jahresperformance</h1></div><div id="status" class="status">Daten werden geladen …</div></div>
+<div class="top"><div><h1>ETF Jahresperformance</h1></div><div id="status" class="status" role="status" aria-live="polite">Daten werden geladen …</div></div>
 <section class="controls">
 <div class="label">Jahre auswählen</div>
 <div class="range-values"><span id="fromLabel">2025</span><span id="toLabel">2026</span></div>
@@ -122,6 +122,7 @@ const card=document.createElement("article");card.className="card fx-card";
 card.innerHTML=`<div class="head"><div><h2>Anlagewährungen in Euro</h2><div class="meta">Vergleich ab der ersten verfügbaren Beobachtung im gewählten Zeitraum · Kurse: Euro je Einheit Fremdwährung</div></div></div><div class="year-legend" aria-label="Währungen"></div><div class="chart"><canvas></canvas></div>`;grid.appendChild(card);
 const entries=(payload.fx||[]).map(fx=>({fx,points:fxPoints(fx,chosen)})).filter(e=>e.fx.status==="ok"&&e.points.length);
 if(!entries.length){card.innerHTML=`<h2>Anlagewährungen in Euro</h2><div class="meta">Für diesen Zeitraum sind noch keine Wechselkursdaten verfügbar.</div>`;return}
+for(const fx of payload.fx||[]){const state=dataState(fx);if(state.kind!=="current"){const note=document.createElement("p");note.className=`data-note ${state.kind}`;note.textContent=`${fx.code}: ${state.text}`;card.appendChild(note)}}
 const dates=entries.flatMap(e=>e.points.map(p=>p.x)),min=Math.min(...dates),max=Math.max(...dates);
 const datasets=entries.map(({fx,points},i)=>({label:fx.name,data:points.map(p=>({x:p.x,y:p.change,rate:p.eurPerUnit,date:p.date})),borderColor:palette[i%palette.length],backgroundColor:palette[i%palette.length],pointRadius:0,pointHoverRadius:3,borderWidth:2,tension:.1,hidden:!["USD","JPY","GBP"].includes(fx.code)}));
 const chart=new Chart(card.querySelector("canvas"),{type:"line",data:{datasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"nearest",intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{title:items=>items.length?shortDate(items[0].raw.date):"",label:ctx=>fxQuote(entries[ctx.datasetIndex].fx.code,ctx.raw.rate,ctx.raw.y)}}},scales:{x:{type:"linear",min,max,ticks:{maxTicksLimit:7,callback:v=>new Date(v).toLocaleDateString("de-AT",{month:"short",year:"2-digit",timeZone:"UTC"})},grid:{display:false}},y:{ticks:{callback:v=>`${v}%`},title:{display:true,text:"Währungsentwicklung in Euro (%)"}}}}});charts.push(chart);
@@ -131,8 +132,32 @@ button.innerHTML=`<span class="year-name"><span class="year-dot" style="backgrou
 button.addEventListener("click",()=>{const visible=!chart.isDatasetVisible(i);chart.setDatasetVisibility(i,visible);button.setAttribute("aria-pressed",String(visible));chart.update()});legend.appendChild(button)});
 const missing=(payload.fx||[]).filter(fx=>fx.status==="error");if(missing.length){const note=document.createElement("p");note.className="meta";note.textContent=`Aktuell ohne Daten: ${missing.map(fx=>fx.code).join(", ")}`;card.appendChild(note)}
 }
+function currentDataLag(item,now=Date.now()){
+const last=Object.values(item.series||{}).flat().filter(p=>Number.isFinite(p.price)&&p.price>0).map(p=>p.date).sort().at(-1);
+if(!last)return {last:null,lag:Infinity,expected:null};
+const sessions=(payload?.xetra_session_closes||[]).filter(s=>Date.parse(s.close)<=now);
+const expected=item.code?item.expected_price_date:(sessions.at(-1)?.date||item.expected_price_date);
+let lag=Number.isFinite(item.lag_sessions)?item.lag_sessions:0;
+if(!item.code&&sessions.length)lag=sessions.filter(s=>s.date>last).length;
+return {last,lag,expected};
+}
+function dataState(item){
+const {last,lag,expected}=currentDataLag(item),tolerance=payload?.stale_tolerance_sessions??2;
+if(!last)return {kind:"missing",text:"Keine Kursdaten verfügbar. Die Performance kann nicht berechnet werden."};
+if(lag>tolerance){
+if(item.update_error)return {kind:"warning",text:`Abruf fehlgeschlagen · Letzter gültiger Kursstand: ${shortDate(last)}. Vorhandene Kurse bleiben sichtbar.`};
+return {kind:"warning",text:`Kurse verspätet · Kursstand: ${shortDate(last)} · Erwartet: ${shortDate(expected)} · ${lag} Handelstage Rückstand.`};
+}
+return {kind:"current",text:`Kursstand: ${shortDate(last)}`};
+}
+function addDataNote(card,item){
+let state;
+if(item.isPortfolio){const affected=(payload.etfs||[]).filter(e=>savingsWeights[e.ticker]&&dataState(e).kind!=="current");state=affected.length?{kind:affected.some(e=>dataState(e).kind==="missing")?"missing":"warning",text:`${affected.length} Sparplan-ETF(s) mit verspäteten oder fehlenden Daten. Die Gesamtperformance verwendet ausschließlich gemeinsame gültige Kurstage.`}:null;}
+else state=dataState(item);
+if(!state||state.kind==="current")return;const note=document.createElement("p");note.className=`data-note ${state.kind}`;note.textContent=state.text;card.querySelector(".head").after(note);
+}
 function render(){charts.forEach(c=>c.destroy());charts=[];const grid=document.getElementById("grid"),extraGrid=document.getElementById("extraGrid"),portfolioGrid=document.getElementById("portfolioGrid");grid.innerHTML=extraGrid.innerHTML=portfolioGrid.innerHTML="";const all=years(),chosen=selected();
-for(const etf of [...(payload.etfs||[]),savingsPortfolio(payload.etfs||[],all,chosen)]){const total=cumulative(etf,chosen),expected=total?expectedReturn(etf,total.first,total.last):null;const card=document.createElement("article");card.className="card";card.innerHTML=`<div class="head"><div><h2>${etf.short}</h2><div class="meta">${etf.isPortfolio?"7 ETFs · Gewichtung nach Sparraten":`${etf.ticker} · ${etf.isin}`}</div></div><div class="total"><div class="total-label">Kumulierte Performance</div><div class="total-value${total?total.value>=0?" positive":" negative":""}">${pct(total?.value)}</div><div class="expected-total">${expected===null?"(Keine Prognose hinterlegt)":`(erwartet: ${pct(expected)})`}</div>${total?`<div class="total-period">${shortDate(total.first)} – ${shortDate(total.last)}</div>`:""}</div></div>${etf.status==="error"?`<div class="error">Keine Daten verfügbar.</div>`:`<div class="year-legend" aria-label="Jahre und Performance"></div><div class="chart"><canvas></canvas></div>`}`;(etf.isPortfolio?portfolioGrid:etf.ticker==="XB4A.DE"?extraGrid:grid).appendChild(card);if(etf.status==="error")continue;
+for(const etf of [...(payload.etfs||[]),savingsPortfolio(payload.etfs||[],all,chosen)]){const total=cumulative(etf,chosen),expected=total?expectedReturn(etf,total.first,total.last):null;const card=document.createElement("article");card.className="card";card.innerHTML=`<div class="head"><div><h2>${etf.short}</h2><div class="meta">${etf.isPortfolio?"7 ETFs · Gewichtung nach Sparraten":`${etf.ticker} · ${etf.isin}`}</div></div><div class="total"><div class="total-label">Kumulierte Performance</div><div class="total-value${total?total.value>=0?" positive":" negative":""}">${pct(total?.value)}</div><div class="expected-total">${expected===null?"(Keine Prognose hinterlegt)":`(erwartet: ${pct(expected)})`}</div>${total?`<div class="total-period">${shortDate(total.first)} – ${shortDate(total.last)}</div>`:""}</div></div>${etf.status==="error"?`<div class="error">Keine Daten verfügbar.</div>`:`<div class="year-legend" aria-label="Jahre und Performance"></div><div class="chart"><canvas></canvas></div>`}`;(etf.isPortfolio?portfolioGrid:etf.ticker==="XB4A.DE"?extraGrid:grid).appendChild(card);addDataNote(card,etf);if(etf.status==="error")continue;
 const datasets=chosen.map(year=>({label:String(year),data:seriesFor(etf,year).map(p=>({x:p.day,y:p.performance,date:p.date})),borderColor:palette[all.indexOf(year)%palette.length],backgroundColor:palette[all.indexOf(year)%palette.length],pointRadius:0,pointHoverRadius:3,borderWidth:year===Math.max(...all)?2.7:1.7,tension:.12,spanGaps:true}));
 const annualExpected=expectedAnnualReturn(etf);
 const expectedDatasets=annualExpected===null?[]:[{
@@ -154,7 +179,12 @@ legend.appendChild(button);
 }
 renderFx(chosen);
 }
-async function init(){const r=await fetch(`data/etf_data.json?v=${Date.now()}`);if(!r.ok)throw new Error(`HTTP ${r.status}`);payload=await r.json();document.getElementById("status").textContent=payload.generated_at?`Letztes Update: ${new Date(payload.generated_at).toLocaleString("de-AT")}`:"Noch keine Marktdaten geladen";
+async function init(){const r=await fetch(`data/etf_data.json?v=${Date.now()}`);if(!r.ok)throw new Error(`HTTP ${r.status}`);payload=await r.json();const status=document.getElementById("status"),dates=(payload.etfs||[]).map(e=>Object.values(e.series||{}).flat().map(p=>p.date).sort().at(-1)).filter(Boolean),oldest=dates.sort()[0];
+const lastAttempt=new Date(payload.generated_at);
+const states=(payload.etfs||[]).map(e=>dataState(e)),hasWarning=states.some(s=>s.kind!=="current");
+status.textContent=`Zuletzt abgerufen: ${Number.isFinite(lastAttempt.getTime())?lastAttempt.toLocaleString("de-AT",{timeZone:"Europe/Vienna"}):"unbekannt"} · ETF-Kursstand: ${oldest?shortDate(oldest):"fehlt"}`;
+if(hasWarning){status.classList.add("warning");status.textContent+=" · Kursdaten fehlen oder sind mehr als zwei Handelstage verspätet; vorhandene Daten bleiben erhalten.";}
+
 const ys=years(),f=document.getElementById("from"),t=document.getElementById("to");if(!ys.length){f.disabled=t.disabled=true;document.getElementById("fromLabel").textContent="–";document.getElementById("toLabel").textContent="–";document.getElementById("yearsText").textContent="Noch keine Jahresdaten verfügbar.";render();return}f.min=t.min=0;f.max=t.max=Math.max(0,ys.length-1);f.step=t.step=1;f.value=Math.max(0,ys.length-2);t.value=Math.max(0,ys.length-1);f.oninput=t.oninput=updateRangeUI;updateRangeUI()}
 init().catch(()=>{document.getElementById("status").textContent="Daten konnten nicht geladen werden.";document.getElementById("from").disabled=document.getElementById("to").disabled=true});
 </script></body></html>
