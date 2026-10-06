@@ -1,5 +1,6 @@
 {
-  "generated_at": "2026-10-06T00:00:28.473701+00:00",
+  "generated_at": "2026-10-06T11:49:50.351213+00:00",
+  "last_successful_update_at": "2026-10-06T11:49:50.351213+00:00",
   "first_year": 2025,
   "years": [
     2025,
@@ -18,7 +19,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 635.4000244140625,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -254,7 +255,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 624.739990234375,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -751,7 +752,7 @@
           {
             "date": "2026-05-05",
             "day": 125,
-            "price": 666,
+            "price": 666.0,
             "performance": 6.604349074908122
           },
           {
@@ -805,7 +806,7 @@
           {
             "date": "2026-05-18",
             "day": 138,
-            "price": 682,
+            "price": 682.0,
             "performance": 9.165414518149163
           },
           {
@@ -1051,7 +1052,7 @@
           {
             "date": "2026-07-14",
             "day": 195,
-            "price": 710,
+            "price": 710.0,
             "performance": 13.64727904382097
           },
           {
@@ -1153,7 +1154,7 @@
           {
             "date": "2026-08-06",
             "day": 218,
-            "price": 721,
+            "price": 721.0,
             "performance": 15.408011536049182
           },
           {
@@ -1195,7 +1196,7 @@
           {
             "date": "2026-08-17",
             "day": 229,
-            "price": 723,
+            "price": 723.0,
             "performance": 15.728144716454295
           },
           {
@@ -1207,7 +1208,7 @@
           {
             "date": "2026-08-19",
             "day": 231,
-            "price": 714,
+            "price": 714.0,
             "performance": 14.287545404631219
           },
           {
@@ -1401,14 +1402,20 @@
             "day": 275,
             "price": 739.47998046875,
             "performance": 18.36603899669198
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 747.719970703125,
+            "performance": 19.68498613681082
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-10-02",
+      "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 1
+      "lag_sessions": 0,
+      "stale": false
     },
     {
       "name": "Vanguard FTSE Developed Europe UCITS ETF EUR (Acc)",
@@ -1421,7 +1428,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 51.93000030517578,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -1657,7 +1664,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 54.27000045776367,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -2340,7 +2347,7 @@
           {
             "date": "2026-06-16",
             "day": 167,
-            "price": 59,
+            "price": 59.0,
             "performance": 8.715679937975152
           },
           {
@@ -2388,7 +2395,7 @@
           {
             "date": "2026-06-26",
             "day": 177,
-            "price": 59,
+            "price": 59.0,
             "performance": 8.715679937975152
           },
           {
@@ -2810,14 +2817,20 @@
             "day": 275,
             "price": 58.86000061035156,
             "performance": 8.4577116526102
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 59.5,
+            "performance": 9.636999259483403
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-10-02",
+      "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 1
+      "lag_sessions": 0,
+      "stale": false
     },
     {
       "name": "Xtrackers MSCI Japan UCITS ETF 1C",
@@ -2830,7 +2843,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 86.90399932861328,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -2884,7 +2897,7 @@
             "date": "2025-11-14",
             "day": 318,
             "price": 86.90399932861328,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-17",
@@ -3066,7 +3079,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 86.08799743652344,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -3473,7 +3486,7 @@
           {
             "date": "2026-04-13",
             "day": 103,
-            "price": 93,
+            "price": 93.0,
             "performance": 8.028996804778842
           },
           {
@@ -4213,14 +4226,20 @@
             "day": 275,
             "price": 109.875,
             "performance": 27.631032515323394
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 111.41999816894531,
+            "performance": 29.42570565786513
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-10-02",
+      "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 1
+      "lag_sessions": 0,
+      "stale": false
     },
     {
       "name": "iShares Core MSCI EM IMI UCITS ETF USD (Acc)",
@@ -4233,7 +4252,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 39.1510009765625,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -4469,7 +4488,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 39.13999938964844,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -4684,7 +4703,7 @@
           {
             "date": "2026-02-23",
             "day": 54,
-            "price": 43,
+            "price": 43.0,
             "performance": 9.862035438284744
           },
           {
@@ -5616,14 +5635,20 @@
             "day": 275,
             "price": 49.08399963378906,
             "performance": 25.40623505163
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 50.012001037597656,
+            "performance": 27.77721465888574
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-10-02",
+      "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 1
+      "lag_sessions": 0,
+      "stale": false
     },
     {
       "name": "iShares Core MSCI Pacific ex-Japan UCITS ETF USD (Acc)",
@@ -5636,7 +5661,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 189.60000610351562,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -5872,7 +5897,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 187.63999938964844,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -5913,7 +5938,7 @@
           {
             "date": "2026-01-13",
             "day": 13,
-            "price": 191,
+            "price": 191.0,
             "performance": 1.7906633027504393
           },
           {
@@ -6015,7 +6040,7 @@
           {
             "date": "2026-02-05",
             "day": 36,
-            "price": 198,
+            "price": 198.0,
             "performance": 5.521211172484741
           },
           {
@@ -6039,13 +6064,13 @@
           {
             "date": "2026-02-11",
             "day": 42,
-            "price": 203,
+            "price": 203.0,
             "performance": 8.185888222294956
           },
           {
             "date": "2026-02-12",
             "day": 43,
-            "price": 202,
+            "price": 202.0,
             "performance": 7.652952812332914
           },
           {
@@ -6153,7 +6178,7 @@
           {
             "date": "2026-03-11",
             "day": 70,
-            "price": 204,
+            "price": 204.0,
             "performance": 8.718823632257
           },
           {
@@ -6267,7 +6292,7 @@
           {
             "date": "2026-04-09",
             "day": 99,
-            "price": 207,
+            "price": 207.0,
             "performance": 10.317629862143129
           },
           {
@@ -6285,7 +6310,7 @@
           {
             "date": "2026-04-14",
             "day": 104,
-            "price": 208,
+            "price": 208.0,
             "performance": 10.850565272105172
           },
           {
@@ -6393,7 +6418,7 @@
           {
             "date": "2026-05-11",
             "day": 131,
-            "price": 207,
+            "price": 207.0,
             "performance": 10.317629862143129
           },
           {
@@ -6561,7 +6586,7 @@
           {
             "date": "2026-06-18",
             "day": 169,
-            "price": 207,
+            "price": 207.0,
             "performance": 10.317629862143129
           },
           {
@@ -7019,14 +7044,20 @@
             "day": 275,
             "price": 213.75,
             "performance": 13.914943879386943
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 216.0500030517578,
+            "performance": 15.140696948689424
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-10-02",
+      "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 1
+      "lag_sessions": 0,
+      "stale": false
     },
     {
       "name": "iShares Automation & Robotics UCITS ETF USD (Acc)",
@@ -7039,7 +7070,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 14.791999816894531,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -7275,7 +7306,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 13.895999908447266,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -8422,14 +8453,20 @@
             "day": 275,
             "price": 20.09000015258789,
             "performance": 44.573980173786154
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 20.40999984741211,
+            "performance": 46.8767989484876
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-10-02",
+      "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 1
+      "lag_sessions": 0,
+      "stale": false
     },
     {
       "name": "Invesco Global Clean Energy UCITS ETF Acc",
@@ -8442,7 +8479,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 19.833999633789062,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -8678,7 +8715,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 19.195999145507812,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -9079,7 +9116,7 @@
           {
             "date": "2026-04-10",
             "day": 100,
-            "price": 22,
+            "price": 22.0,
             "performance": 14.607214937016554
           },
           {
@@ -9721,7 +9758,7 @@
           {
             "date": "2026-09-09",
             "day": 252,
-            "price": 21,
+            "price": 21.0,
             "performance": 9.39779607624307
           },
           {
@@ -9825,14 +9862,20 @@
             "day": 275,
             "price": 20.864999771118164,
             "performance": 8.694523337697312
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 20.9950008392334,
+            "performance": 9.371753353857493
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-10-02",
+      "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 1
+      "lag_sessions": 0,
+      "stale": false
     },
     {
       "name": "Xtrackers ATX UCITS ETF 1C",
@@ -9845,7 +9888,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 98.6500015258789,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -9875,7 +9918,7 @@
             "date": "2025-11-10",
             "day": 314,
             "price": 98.6500015258789,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-11",
@@ -10081,7 +10124,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 109.18000030517578,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -10374,7 +10417,7 @@
           {
             "date": "2026-03-12",
             "day": 71,
-            "price": 109,
+            "price": 109.0,
             "performance": -0.16486563901140228
           },
           {
@@ -10446,14 +10489,14 @@
           {
             "date": "2026-03-30",
             "day": 89,
-            "price": 108,
+            "price": 108.0,
             "performance": -1.080784302873683
           },
           {
             "date": "2026-03-31",
             "day": 90,
             "price": 109.18000030517578,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-04-01",
@@ -10848,7 +10891,7 @@
           {
             "date": "2026-07-06",
             "day": 187,
-            "price": 137,
+            "price": 137.0,
             "performance": 25.480856949132445
           },
           {
@@ -11172,7 +11215,7 @@
           {
             "date": "2026-09-18",
             "day": 261,
-            "price": 142,
+            "price": 142.0,
             "performance": 30.060450268443862
           },
           {
@@ -11232,16 +11275,22 @@
           {
             "date": "2026-10-02",
             "day": 275,
-            "price": 140,
+            "price": 140.0,
             "performance": 28.2286129407193
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 141.97999572753906,
+            "performance": 30.042127981939903
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-10-02",
+      "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 1
+      "lag_sessions": 0,
+      "stale": false
     }
   ],
   "fx": [
@@ -11257,7 +11306,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 1.1528042554855347,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -11511,7 +11560,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 1.175046682357788,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -12692,16 +12741,16 @@
           {
             "date": "2026-10-06",
             "day": 279,
-            "price": 1.121956706047058,
-            "performance": 4.731909531320477
+            "price": 1.127268671989441,
+            "performance": 4.238387134810284
           }
         ]
       },
       "status": "ok",
       "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 0
+      "lag_sessions": 0,
+      "stale": false
     },
     {
       "code": "JPY",
@@ -12715,7 +12764,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 177.7449951171875,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -12969,7 +13018,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 184.16299438476562,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -14150,16 +14199,16 @@
           {
             "date": "2026-10-06",
             "day": 279,
-            "price": 177.19200134277344,
-            "performance": 3.9341465693516042
+            "price": 177.99899291992188,
+            "performance": 3.4629417637305426
           }
         ]
       },
       "status": "ok",
       "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 0
+      "lag_sessions": 0,
+      "stale": false
     },
     {
       "code": "GBP",
@@ -14173,7 +14222,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 0.8776199817657471,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -14427,7 +14476,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 0.8720499873161316,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -14829,7 +14878,7 @@
             "date": "2026-04-07",
             "day": 97,
             "price": 0.8720499873161316,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-04-08",
@@ -15608,16 +15657,16 @@
           {
             "date": "2026-10-06",
             "day": 279,
-            "price": 0.8485699892044067,
-            "performance": 2.7670078379438134
+            "price": 0.8486700057983398,
+            "performance": 2.7548966451098167
           }
         ]
       },
       "status": "ok",
       "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 0
+      "lag_sessions": 0,
+      "stale": false
     },
     {
       "code": "CHF",
@@ -15631,7 +15680,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 0.9278200268745422,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -15885,7 +15934,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 0.9306100010871887,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -17066,16 +17115,16 @@
           {
             "date": "2026-10-06",
             "day": 279,
-            "price": 0.9325399994850159,
-            "performance": -0.20696145997951554
+            "price": 0.9353899955749512,
+            "performance": -0.5110162082527236
           }
         ]
       },
       "status": "ok",
       "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 0
+      "lag_sessions": 0,
+      "stale": false
     },
     {
       "code": "AUD",
@@ -17089,7 +17138,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 1.7609299421310425,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -17343,7 +17392,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 1.7593400478363037,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -18524,16 +18573,16 @@
           {
             "date": "2026-10-06",
             "day": 279,
-            "price": 1.610219955444336,
-            "performance": 9.260852338078163
+            "price": 1.6136499643325806,
+            "performance": 9.028605132711153
           }
         ]
       },
       "status": "ok",
       "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 0
+      "lag_sessions": 0,
+      "stale": false
     },
     {
       "code": "CNY",
@@ -18547,7 +18596,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 8.204108238220215,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -18801,7 +18850,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 8.22031021118164,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -19982,16 +20031,16 @@
           {
             "date": "2026-10-06",
             "day": 279,
-            "price": 7.522200107574463,
-            "performance": 9.28066381674979
+            "price": 7.556399822235107,
+            "performance": 8.786067499934846
           }
         ]
       },
       "status": "ok",
       "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 0
+      "lag_sessions": 0,
+      "stale": false
     },
     {
       "code": "KRW",
@@ -20005,7 +20054,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 1646.4599609375,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -20208,7 +20257,7 @@
           {
             "date": "2025-12-19",
             "day": 353,
-            "price": 1729,
+            "price": 1729.0,
             "performance": -4.773859980480044
           },
           {
@@ -20259,7 +20308,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 1691.489990234375,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -20270,7 +20319,7 @@
           {
             "date": "2026-01-06",
             "day": 6,
-            "price": 1694,
+            "price": 1694.0,
             "performance": -0.14817058828955343
           },
           {
@@ -20666,7 +20715,7 @@
           {
             "date": "2026-04-08",
             "day": 98,
-            "price": 1752,
+            "price": 1752.0,
             "performance": -3.4537676806863593
           },
           {
@@ -21086,7 +21135,7 @@
           {
             "date": "2026-07-15",
             "day": 196,
-            "price": 1698,
+            "price": 1698.0,
             "performance": -0.38339280127355213
           },
           {
@@ -21374,7 +21423,7 @@
           {
             "date": "2026-09-21",
             "day": 264,
-            "price": 1593,
+            "price": 1593.0,
             "performance": 6.182673586589771
           },
           {
@@ -21440,16 +21489,16 @@
           {
             "date": "2026-10-06",
             "day": 279,
-            "price": 1506.5,
-            "performance": 12.27945504376866
+            "price": 1508.0,
+            "performance": 12.167771235701252
           }
         ]
       },
       "status": "ok",
       "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 0
+      "lag_sessions": 0,
+      "stale": false
     },
     {
       "code": "TWD",
@@ -21463,7 +21512,7 @@
             "date": "2025-11-03",
             "day": 307,
             "price": 34.54499816894531,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2025-11-04",
@@ -21717,7 +21766,7 @@
             "date": "2026-01-02",
             "day": 2,
             "price": 36.78048324584961,
-            "performance": 0
+            "performance": 0.0
           },
           {
             "date": "2026-01-05",
@@ -22898,20 +22947,19 @@
           {
             "date": "2026-10-06",
             "day": 279,
-            "price": 35.65700149536133,
-            "performance": 3.1508026569043945
+            "price": 35.808998107910156,
+            "performance": 2.712963750094022
           }
         ]
       },
       "status": "ok",
       "last_price_date": "2026-10-06",
       "expected_price_date": "2026-10-05",
-      "stale": false,
-      "lag_sessions": 0
+      "lag_sessions": 0,
+      "stale": false
     }
   ],
   "expected_etf_date": "2026-10-05",
-  "update_status": "ok",
   "stale_tolerance_sessions": 2,
   "xetra_session_closes": [
     {
@@ -24050,5 +24098,6 @@
       "date": "2027-10-06",
       "close": "2027-10-06T15:30:00+00:00"
     }
-  ]
+  ],
+  "update_status": "ok"
 }
