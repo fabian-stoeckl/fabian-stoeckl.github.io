@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "bundle exec jekyll build",
-    "check:etf": "node tests/fx.test.cjs && node tests/data-status.test.cjs",
+    "check:etf": "node tests/fx.test.cjs && node tests/data-status.test.cjs && node tests/annual.test.cjs",
     "check:charts": "node tests/charts.test.cjs",
     "check:preview": "node tests/preview.test.cjs",
     "test": "npm run check:etf && npm run check:charts && npm run build",

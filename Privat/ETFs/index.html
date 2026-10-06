@@ -31,7 +31,7 @@ footer{font-size:12px;color:var(--muted);line-height:1.5;margin-top:24px}@media(
 <div id="yearsText" class="years"></div>
 </section>
 
-<section aria-labelledby="savingsTitle"><h2 id="savingsTitle" class="group-title">Sparplan-ETFs</h2><div class="group-note" style="line-height:1.6;margin:0 0 24px">Gestrichelte Linie: volle erwartete Jahresrendite aus den fondsbezogenen Annahmen der 25-Jahres-Prognose, in jedem Jahr gleich. Die Erwartungswerte in der Legende beziehen sich jeweils auf den dargestellten Zeitraum des einzelnen Jahres. Die erwartete kumulierte Performance wird über den gesamten tatsächlichen Datenzeitraum mit Zinseszins berechnet. Vergleich vor persönlichen Steuern, ohne Einzahlungen.<br>Datenquelle: Yahoo Finance über yfinance, bereinigte Schlusskurse. Historische Performance ist kein verlässlicher Indikator für zukünftige Ergebnisse.</div><div id="grid" class="grid"></div></section><section class="separate" aria-labelledby="portfolioTitle"><h2 id="portfolioTitle" class="group-title">Sparplan gesamt</h2><p class="group-note">S&P 500 35 % · Europa 20 % · Japan, Emerging Markets und Pacific je 10 % · Clean Energy und Robotics je 7,5 %.<br>Gewichtete Kursperformance ohne ATX. Gewichte zu Beginn jedes dargestellten Zeitraums; monatliche Einzahlungen sind nicht eingerechnet.</p><div id="portfolioGrid"></div></section><section class="separate" aria-labelledby="extraTitle"><h2 id="extraTitle" class="group-title">Separat · ATX</h2><p class="group-note">Eigenständige Anlage außerhalb des Sparplans.</p><div id="extraGrid" class="grid"></div></section>
+<section aria-labelledby="savingsTitle"><h2 id="savingsTitle" class="group-title">Sparplan-ETFs</h2><div class="group-note" style="line-height:1.6;margin:0 0 24px">Gestrichelte Linie: volle erwartete Jahresrendite aus den fondsbezogenen Annahmen der 25-Jahres-Prognose, in jedem Jahr gleich. Die Erwartungswerte in der Legende beziehen sich jeweils auf den dargestellten Zeitraum des einzelnen Jahres. Die erwartete kumulierte Performance wird über den gesamten tatsächlichen Datenzeitraum mit Zinseszins berechnet. Vergleich vor persönlichen Steuern, ohne Einzahlungen. Jahresrenditen ab dem letzten verfügbaren Schlusskurs des Vorjahres; 2025 ab 03.11. Fehlende Vorjahreskurse werden als Teilzeitraum gekennzeichnet.<br>Datenquelle: Yahoo Finance über yfinance, bereinigte Schlusskurse. Historische Performance ist kein verlässlicher Indikator für zukünftige Ergebnisse.</div><div id="grid" class="grid"></div></section><section class="separate" aria-labelledby="portfolioTitle"><h2 id="portfolioTitle" class="group-title">Sparplan gesamt</h2><p class="group-note">S&P 500 35 % · Europa 20 % · Japan, Emerging Markets und Pacific je 10 % · Clean Energy und Robotics je 7,5 %.<br>Gewichtete Kursperformance ohne ATX. Gewichte zu Beginn jedes dargestellten Zeitraums; monatliche Einzahlungen sind nicht eingerechnet.</p><div id="portfolioGrid"></div></section><section class="separate" aria-labelledby="extraTitle"><h2 id="extraTitle" class="group-title">Separat · ATX</h2><p class="group-note">Eigenständige Anlage außerhalb des Sparplans.</p><div id="extraGrid" class="grid"></div></section>
 <section class="separate" aria-labelledby="fxTitle"><h2 id="fxTitle" class="group-title">Euro &amp; Wechselkurse</h2><p class="group-note">Linie steigt: Du bekommst mehr Euro für einen Dollar, Yen oder eine andere Währung. Bleibt der Wert deiner ausländischen Aktien in ihrer Währung gleich, sind sie dadurch für dich mehr Euro wert.</p><div id="fxGrid"></div></section>
 
 </main>
@@ -39,18 +39,29 @@ footer{font-size:12px;color:var(--muted);line-height:1.5;margin-top:24px}@media(
 let payload,charts=[];
 const palette=["#111827","#2563eb","#dc2626","#059669","#7c3aed","#ea580c","#0891b2","#be185d","#4d7c0f","#6b7280"];
 function pct(v){return v==null?"–":`${v>=0?"+":""}${v.toFixed(2)} %`}
+function validPrices(etf,year){return (etf.series?.[String(year)]||[]).filter(p=>Number.isFinite(p.price)&&p.price>0&&(year!==2025||p.date>="2025-11-03")).sort((a,b)=>a.date.localeCompare(b.date))}
+function annualBase(etf,year){
+const points=validPrices(etf,year);
+return year===2025?points[0]:validPrices(etf,year-1).at(-1)||points[0];
+}
+function periodPrices(etf,chosen){
+const points=[...chosen].sort((a,b)=>a-b).flatMap(year=>validPrices(etf,year));
+if(!points.length)return [];
+const base=annualBase(etf,Number(points[0].date.slice(0,4)));
+return base&&base.date<points[0].date?[base,...points]:points;
+}
 function seriesFor(etf,year){
-const points=(etf.series?.[String(year)]||[]).filter(p=>year!==2025||p.date>="2025-11-03");
-if(year!==2025||!points.length)return points;
-const first=points[0].price;
-return points.map(p=>({...p,performance:Number.isFinite(first)&&first>0&&Number.isFinite(p.price)?(p.price/first-1)*100:null}));
+const points=validPrices(etf,year);
+if(etf.isPortfolio)return points;
+const base=annualBase(etf,year);
+return points.map(p=>({...p,baseDate:base.date,performance:(p.price/base.price-1)*100}));
 }
 const savingsWeights={"SXR8.DE":.35,"VWCG.DE":.20,"DBXJ.DE":.10,"IS3N.DE":.10,"SXR1.DE":.10,"G1CE.DE":.075,"2B76.DE":.075};
 function weightedPoints(etfs,chosen){
 const components=Object.entries(savingsWeights).map(([ticker,weight])=>{
 const etf=etfs.find(e=>e.ticker===ticker);
 if(!etf||etf.status==="error")return null;
-const points=chosen.flatMap(year=>seriesFor(etf,year)).filter(p=>Number.isFinite(p.price)&&p.price>0);
+const points=periodPrices(etf,chosen);
 return {weight,points:new Map(points.map(p=>[p.date,p]))};
 });
 if(components.some(c=>!c))return [];
@@ -59,11 +70,11 @@ if(!dates.length)return [];
 const start=dates[0];
 return dates.map(date=>{
 const value=components.reduce((sum,c)=>sum+c.weight*(c.points.get(date).price/c.points.get(start).price-1)*100,0);
-return {date,day:components[0].points.get(date).day,performance:value,price:100+value};
+return {date,baseDate:start,day:components[0].points.get(date).day,performance:value,price:100+value};
 });
 }
 function savingsPortfolio(etfs,all,chosen){
-const series=Object.fromEntries(all.map(year=>[String(year),weightedPoints(etfs,[year])]));
+const series=Object.fromEntries(all.map(year=>[String(year),weightedPoints(etfs,[year]).filter(p=>Number(p.date.slice(0,4))===year)]));
 const points=weightedPoints(etfs,chosen),first=points[0],last=points.at(-1);
 return {isPortfolio:true,short:"Sparplan · gewichtet",ticker:"Sparplan",isin:"",status:points.length?"ok":"error",series,
 total:points.length?{value:last.performance,first:first.date,last:last.date}:null};
@@ -83,13 +94,16 @@ return Number.isFinite(expectedRates[etf.ticker])?growth(expectedRates[etf.ticke
 }
 function cumulative(etf,chosen){
 if(etf.isPortfolio)return etf.total;
-const points=chosen.flatMap(year=>seriesFor(etf,year)).filter(p=>Number.isFinite(p.price)&&p.price>0).sort((a,b)=>a.date.localeCompare(b.date));
+const points=periodPrices(etf,chosen);
 if(!points.length||etf.status==="error")return null;
 const first=points[0],last=points[points.length-1];
 return {value:(last.price/first.price-1)*100,first:first.date,last:last.date};
 }
 function shortDate(date){return new Date(date+"T12:00:00").toLocaleDateString("de-AT",{day:"2-digit",month:"2-digit",year:"numeric"})}
-function monthLabel(day){return new Date(2024,0,day).toLocaleDateString("de-AT",{month:"short"})}
+// Align month/day across years on a leap-year calendar, retaining February 29.
+function calendarDay(date){const [,month,day]=date.split("-").map(Number);return (Date.UTC(2000,month-1,day)-Date.UTC(2000,0,1))/86400000+1}
+const monthStarts=Array.from({length:12},(_,month)=>(Date.UTC(2000,month,1)-Date.UTC(2000,0,1))/86400000+1);
+function monthLabel(day){return new Date(Date.UTC(2000,0,day)).toLocaleDateString("de-AT",{month:"short",timeZone:"UTC"})}
 function years(){return (payload.years||[]).filter(y=>payload.etfs.some(e=>(e.series?.[String(y)]||[]).length))}
 function selected(){const ys=years(), a=+document.getElementById("from").value,b=+document.getElementById("to").value;return ys.filter((y,i)=>i>=a&&i<=b)}
 function updateRangeUI(){const ys=years(),f=document.getElementById("from"),t=document.getElementById("to");let a=+f.value,b=+t.value;if(a>b){if(document.activeElement===f)b=a;else a=b;f.value=a;t.value=b}
@@ -158,21 +172,21 @@ if(!state||state.kind==="current")return;const note=document.createElement("p");
 }
 function render(){charts.forEach(c=>c.destroy());charts=[];const grid=document.getElementById("grid"),extraGrid=document.getElementById("extraGrid"),portfolioGrid=document.getElementById("portfolioGrid");grid.innerHTML=extraGrid.innerHTML=portfolioGrid.innerHTML="";const all=years(),chosen=selected();
 for(const etf of [...(payload.etfs||[]),savingsPortfolio(payload.etfs||[],all,chosen)]){const total=cumulative(etf,chosen),expected=total?expectedReturn(etf,total.first,total.last):null;const card=document.createElement("article");card.className="card";card.innerHTML=`<div class="head"><div><h2>${etf.short}</h2><div class="meta">${etf.isPortfolio?"7 ETFs · Gewichtung nach Sparraten":`${etf.ticker} · ${etf.isin}`}</div></div><div class="total"><div class="total-label">Kumulierte Performance</div><div class="total-value${total?total.value>=0?" positive":" negative":""}">${pct(total?.value)}</div><div class="expected-total">${expected===null?"(Keine Prognose hinterlegt)":`(erwartet: ${pct(expected)})`}</div>${total?`<div class="total-period">${shortDate(total.first)} – ${shortDate(total.last)}</div>`:""}</div></div>${etf.status==="error"?`<div class="error">Keine Daten verfügbar.</div>`:`<div class="year-legend" aria-label="Jahre und Performance"></div><div class="chart"><canvas></canvas></div>`}`;(etf.isPortfolio?portfolioGrid:etf.ticker==="XB4A.DE"?extraGrid:grid).appendChild(card);addDataNote(card,etf);if(etf.status==="error")continue;
-const datasets=chosen.map(year=>({label:String(year),data:seriesFor(etf,year).map(p=>({x:p.day,y:p.performance,date:p.date})),borderColor:palette[all.indexOf(year)%palette.length],backgroundColor:palette[all.indexOf(year)%palette.length],pointRadius:0,pointHoverRadius:3,borderWidth:year===Math.max(...all)?2.7:1.7,tension:.12,spanGaps:true}));
+const datasets=chosen.map(year=>({label:String(year),data:seriesFor(etf,year).map(p=>({x:calendarDay(p.date),y:p.performance,date:p.date})),borderColor:palette[all.indexOf(year)%palette.length],backgroundColor:palette[all.indexOf(year)%palette.length],pointRadius:0,pointHoverRadius:3,borderWidth:year===Math.max(...all)?2.7:1.7,tension:.12,spanGaps:true}));
 const annualExpected=expectedAnnualReturn(etf);
 const expectedDatasets=annualExpected===null?[]:[{
 label:"Erwartung Jahresende",isExpected:true,
 data:[{x:1,y:annualExpected},{x:366,y:annualExpected}],
 borderColor:"#8b929c",backgroundColor:"#8b929c",borderDash:[6,5],borderWidth:1.5,pointRadius:0,pointHoverRadius:0,tension:0
 }];
-charts.push(new Chart(card.querySelector("canvas"),{type:"line",data:{datasets:[...datasets,...expectedDatasets]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"nearest",intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{title(items){if(items[0]?.dataset.isExpected)return items[0].dataset.label;return items.length?new Date(items[0].raw.date).toLocaleDateString("de-AT"):""},label(ctx){return `${ctx.dataset.label}: ${pct(ctx.parsed.y)}`}}}},scales:{x:{type:"linear",min:1,max:366,grid:{display:false},ticks:{stepSize:31,callback:v=>monthLabel(v)}},y:{ticks:{callback:v=>`${v}%`},title:{display:true,text:"Jahresperformance"}}}}}));const chart=charts[charts.length-1];
+charts.push(new Chart(card.querySelector("canvas"),{type:"line",data:{datasets:[...datasets,...expectedDatasets]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"nearest",intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{title(items){if(items[0]?.dataset.isExpected)return items[0].dataset.label;return items.length?new Date(items[0].raw.date).toLocaleDateString("de-AT"):""},label(ctx){return `${ctx.dataset.label}: ${pct(ctx.parsed.y)}`}}}},scales:{x:{type:"linear",min:1,max:366,grid:{display:false},afterBuildTicks:axis=>{axis.ticks=monthStarts.map(value=>({value}))},ticks:{autoSkip:true,maxRotation:0,callback:v=>monthLabel(v)}},y:{ticks:{callback:v=>`${v}%`},title:{display:true,text:"Jahresperformance"}}}}}));const chart=charts[charts.length-1];
 const legend=card.querySelector(".year-legend");
 chosen.forEach((year,index)=>{
 const points=seriesFor(etf,year).filter(p=>Number.isFinite(p.performance));
-const first=points[0],last=points.at(-1),yearExpected=expectedReturn(etf,first?.date,last?.date),color=palette[all.indexOf(year)%palette.length];
+const first=points[0],last=points.at(-1),yearExpected=expectedReturn(etf,first?.baseDate||first?.date,last?.date),color=palette[all.indexOf(year)%palette.length];
 const button=document.createElement("button");button.type="button";button.className="year-key";button.setAttribute("aria-pressed","true");
 button.setAttribute("aria-label",`${year}: ${pct(last?.performance)}. Jahreslinie ein- oder ausblenden.`);
-button.innerHTML=`<span class="year-name"><span class="year-dot" style="background:${color}"></span>${year}</span><strong class="year-return">${pct(last?.performance)}</strong>${yearExpected===null?"":`<span class="expected-year">(erwartet: ${pct(yearExpected)})</span>`}${!first?`<span class="year-period">Keine Daten</span>`:""}`;
+button.innerHTML=`<span class="year-name"><span class="year-dot" style="background:${color}"></span>${year}</span><strong class="year-return">${pct(last?.performance)}</strong>${yearExpected===null?"":`<span class="expected-year">(erwartet: ${pct(yearExpected)})</span>`}${!first?`<span class="year-period">Keine Daten</span>`:`<span class="year-period">Basis ${shortDate(first.baseDate||first.date)}${year!==2025&&(first.baseDate||first.date).startsWith(String(year))?" · Teilzeitraum":""}</span>`}`;
 button.addEventListener("click",()=>{const visible=!chart.isDatasetVisible(index);chart.setDatasetVisibility(index,visible);button.setAttribute("aria-pressed",String(visible));chart.update()});
 legend.appendChild(button);
 });
