@@ -132,12 +132,23 @@ button.innerHTML=`<span class="year-name"><span class="year-dot" style="backgrou
 button.addEventListener("click",()=>{const visible=!chart.isDatasetVisible(i);chart.setDatasetVisibility(i,visible);button.setAttribute("aria-pressed",String(visible));chart.update()});legend.appendChild(button)});
 const missing=(payload.fx||[]).filter(fx=>fx.status==="error");if(missing.length){const note=document.createElement("p");note.className="meta";note.textContent=`Aktuell ohne Daten: ${missing.map(fx=>fx.code).join(", ")}`;card.appendChild(note)}
 }
+function currentDataLag(item,now=Date.now()){
+const last=Object.values(item.series||{}).flat().filter(p=>Number.isFinite(p.price)&&p.price>0).map(p=>p.date).sort().at(-1);
+if(!last)return {last:null,lag:Infinity,expected:null};
+const sessions=(payload?.xetra_session_closes||[]).filter(s=>Date.parse(s.close)<=now);
+const expected=item.code?item.expected_price_date:(sessions.at(-1)?.date||item.expected_price_date);
+let lag=Number.isFinite(item.lag_sessions)?item.lag_sessions:0;
+if(!item.code&&sessions.length)lag=sessions.filter(s=>s.date>last).length;
+return {last,lag,expected};
+}
 function dataState(item){
-const points=Object.values(item.series||{}).flat().filter(p=>Number.isFinite(p.price)&&p.price>0),last=points.map(p=>p.date).sort().at(-1);
+const {last,lag,expected}=currentDataLag(item),tolerance=payload?.stale_tolerance_sessions??2;
 if(!last)return {kind:"missing",text:"Keine Kursdaten verfügbar. Die Performance kann nicht berechnet werden."};
+if(lag>tolerance){
 if(item.update_error)return {kind:"warning",text:`Abruf fehlgeschlagen · Letzter gültiger Kursstand: ${shortDate(last)}. Vorhandene Kurse bleiben sichtbar.`};
-if(item.stale)return {kind:"warning",text:`Kurse verspätet · Kursstand: ${shortDate(last)} · Erwartet: ${shortDate(item.expected_price_date)}.`};
-return {kind:"current",text:`Aktuell · Kursstand: ${shortDate(last)}`};
+return {kind:"warning",text:`Kurse verspätet · Kursstand: ${shortDate(last)} · Erwartet: ${shortDate(expected)} · ${lag} Handelstage Rückstand.`};
+}
+return {kind:"current",text:`Kursstand: ${shortDate(last)}`};
 }
 function addDataNote(card,item){
 let state;
@@ -170,14 +181,9 @@ renderFx(chosen);
 }
 async function init(){const r=await fetch(`data/etf_data.json?v=${Date.now()}`);if(!r.ok)throw new Error(`HTTP ${r.status}`);payload=await r.json();const status=document.getElementById("status"),dates=(payload.etfs||[]).map(e=>Object.values(e.series||{}).flat().map(p=>p.date).sort().at(-1)).filter(Boolean),oldest=dates.sort()[0];
 const lastAttempt=new Date(payload.generated_at);
-function nextUpdateAfter(date){
-if(!Number.isFinite(date.getTime()))return 0;
-for(let offset=0;offset<8;offset++){const day=new Date(date);day.setUTCHours(0,0,0,0);day.setUTCDate(day.getUTCDate()+offset);const dow=day.getUTCDay(),slots=[];
-if(dow>=1&&dow<=5)slots.push([21,37]);if(dow>=2&&dow<=6)slots.push([6,37]);if(dow===6)slots.push([10,15]);
-const candidates=slots.map(([h,m])=>new Date(day.getTime()+h*3600000+m*60000).getTime()).filter(t=>t>date.getTime()).sort((a,b)=>a-b);if(candidates.length)return candidates[0];}return 0;}
-const overdue=Date.now()>nextUpdateAfter(lastAttempt)+3600000;
+const states=(payload.etfs||[]).map(e=>dataState(e)),hasWarning=states.some(s=>s.kind!=="current");
 status.textContent=`Zuletzt abgerufen: ${Number.isFinite(lastAttempt.getTime())?lastAttempt.toLocaleString("de-AT",{timeZone:"Europe/Vienna"}):"unbekannt"} · ETF-Kursstand: ${oldest?shortDate(oldest):"fehlt"}`;
-if(overdue||payload.update_status==="warning"||(payload.etfs||[]).some(e=>e.stale||e.update_error)){status.classList.add("warning");status.textContent+=overdue?" · Automatische Aktualisierung überfällig.":" · Neuere Tageskurse fehlen teilweise; vorhandene Daten bleiben erhalten.";}
+if(hasWarning){status.classList.add("warning");status.textContent+=" · Kursdaten fehlen oder sind mehr als zwei Handelstage verspätet; vorhandene Daten bleiben erhalten.";}
 
 const ys=years(),f=document.getElementById("from"),t=document.getElementById("to");if(!ys.length){f.disabled=t.disabled=true;document.getElementById("fromLabel").textContent="–";document.getElementById("toLabel").textContent="–";document.getElementById("yearsText").textContent="Noch keine Jahresdaten verfügbar.";render();return}f.min=t.min=0;f.max=t.max=Math.max(0,ys.length-1);f.step=t.step=1;f.value=Math.max(0,ys.length-2);t.value=Math.max(0,ys.length-1);f.oninput=t.oninput=updateRangeUI;updateRangeUI()}
 init().catch(()=>{document.getElementById("status").textContent="Daten konnten nicht geladen werden.";document.getElementById("from").disabled=document.getElementById("to").disabled=true});

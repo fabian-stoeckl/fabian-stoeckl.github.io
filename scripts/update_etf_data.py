@@ -8,6 +8,7 @@ import yfinance as yf
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "Privat" / "ETFs" / "etfs.json"
 OUT = ROOT / "Privat" / "ETFs" / "data" / "etf_data.json"
+STALE_TOLERANCE_SESSIONS = 2
 FIRST_YEAR = 2025
 FIRST_PURCHASE_DATE = "2025-11-03"
 CURRENT_YEAR = datetime.now().year
@@ -60,6 +61,25 @@ def expected_etf_date(now):
     completed = schedule[schedule["close"] <= now]
     return completed.index[-1].strftime("%Y-%m-%d")
 
+def lag_sessions(last, expected, is_fx=False):
+    if not last:
+        return None
+    if last >= expected:
+        return 0
+    if is_fx:
+        sessions = pd.bdate_range(last, expected)
+    else:
+        sessions = xcals.get_calendar("XETR").sessions_in_range(last, expected)
+    return sum(day.strftime("%Y-%m-%d") > last for day in sessions)
+
+def xetra_session_closes(now):
+    # Include future sessions so a saved page can detect aging without a new fetch.
+    schedule = xcals.get_calendar("XETR").schedule.loc[
+        (now - pd.Timedelta(days=40)).strftime("%Y-%m-%d"):
+        (now + pd.Timedelta(days=370)).strftime("%Y-%m-%d")]
+    return [{"date":day.strftime("%Y-%m-%d"), "close":row["close"].isoformat()}
+            for day, row in schedule.iterrows()]
+
 def refresh_item(item, previous, expected, is_fx=False):
     x = dict(item)
     try:
@@ -75,7 +95,8 @@ def refresh_item(item, previous, expected, is_fx=False):
         x["update_error"] = str(exc)
     x["last_price_date"] = latest_date(x["series"])
     x["expected_price_date"] = expected
-    x["stale"] = x["last_price_date"] < expected
+    x["lag_sessions"] = lag_sessions(x["last_price_date"], expected, is_fx)
+    x["stale"] = x["lag_sessions"] is None or x["lag_sessions"] > STALE_TOLERANCE_SESSIONS
     return x
 
 def main():
@@ -90,7 +111,8 @@ def main():
     expected_fx = day.isoformat()
     payload = {"generated_at": now.isoformat(), "last_successful_update_at": previous.get("last_successful_update_at", previous.get("generated_at")),
                "first_year": FIRST_YEAR, "years": YEARS, "source": "Yahoo Finance via yfinance", "etfs": [], "fx": [],
-               "expected_etf_date": expected}
+               "expected_etf_date": expected, "stale_tolerance_sessions": STALE_TOLERANCE_SESSIONS,
+               "xetra_session_closes": xetra_session_closes(now)}
     for group, configs, is_fx, target in [
         ("etfs", items, False, expected),
         ("fx", [{"code": c, "name": n, "ticker": t, "quote_units": "foreign_per_eur", "performance_units": "eur_per_foreign"} for c,n,t in FX_PAIRS], True, expected_fx),
@@ -99,7 +121,7 @@ def main():
         payload[group] = [refresh_item(e, old.get(e["ticker"]), target, is_fx) for e in configs]
     issues = [e for e in payload["etfs"] + payload["fx"] if e["stale"] or e.get("update_error")]
     payload["update_status"] = "warning" if issues else "ok"
-    if not issues:
+    if not issues and all(e["lag_sessions"] == 0 for e in payload["etfs"] + payload["fx"]):
         payload["last_successful_update_at"] = now.isoformat()
     temp = OUT.with_suffix(".tmp")
     temp.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
