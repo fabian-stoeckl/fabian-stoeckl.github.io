@@ -19,4 +19,17 @@ class UpdateTests(unittest.TestCase):
   with patch.object(u,'fetch',return_value={'2026':[{'date':'2026-10-02'}]}):
    x=u.refresh_item({'ticker':'TEST'},None,'2026-10-05')
    self.assertTrue(x['stale']);self.assertEqual(x['last_price_date'],'2026-10-02')
+ def test_empty_data_and_first_failure(self):
+  for kwargs in [dict(return_value={'2026':[]}),dict(side_effect=RuntimeError('unavailable'))]:
+   with patch.object(u,'fetch',**kwargs):
+    x=u.refresh_item({'ticker':'TEST'},None,'2026-10-05')
+    self.assertEqual(x['status'],'error');self.assertTrue(x['stale']);self.assertEqual(x['last_price_date'],'');self.assertIn('update_error',x)
+ def test_success_clears_prior_failure(self):
+  old={'series':{'2026':[{'date':'2026-10-02','price':100}]},'update_error':'old error','stale':True}
+  with patch.object(u,'fetch',return_value={'2026':[{'date':'2026-10-05','price':101}]}):
+   x=u.refresh_item({'ticker':'TEST'},old,'2026-10-05')
+   self.assertEqual(x['status'],'ok');self.assertFalse(x['stale']);self.assertNotIn('update_error',x)
+ def test_good_friday_easter_and_dst(self):
+  for now,expected in [('2026-04-03T21:00Z','2026-04-02'),('2026-04-06T21:00Z','2026-04-02'),('2026-10-06T09:00Z','2026-10-05'),('2026-10-26T15:00Z','2026-10-23'),('2026-10-26T18:00Z','2026-10-26')]:
+   self.assertEqual(u.expected_etf_date(pd.Timestamp(now)),expected)
 if __name__=='__main__':unittest.main()

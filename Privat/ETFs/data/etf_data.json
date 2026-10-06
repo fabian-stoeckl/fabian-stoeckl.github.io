@@ -1,21 +1,17 @@
 {
-  "generated_at": "2026-10-05T23:44:07.370058+00:00",
+  "generated_at": "2026-10-06T00:00:28.473701+00:00",
   "first_year": 2025,
   "years": [
     2025,
     2026
   ],
-  "source": "Yahoo Finance (adjusted daily closes; direct chart API refresh)",
+  "source": "Yahoo Finance via yfinance",
   "etfs": [
     {
       "name": "iShares Core S&P 500 UCITS ETF USD (Acc)",
       "short": "Core S&P 500",
       "isin": "IE00B5BMR087",
       "ticker": "SXR8.DE",
-      "status": "ok",
-      "last_price_date": "2026-10-02",
-      "expected_price_date": "2026-10-05",
-      "stale": true,
       "series": {
         "2025": [
           {
@@ -1407,17 +1403,17 @@
             "performance": 18.36603899669198
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-02",
+      "expected_price_date": "2026-10-05",
+      "stale": true
     },
     {
       "name": "Vanguard FTSE Developed Europe UCITS ETF EUR (Acc)",
       "short": "FTSE Developed Europe",
       "isin": "IE00BK5BQX27",
       "ticker": "VWCG.DE",
-      "status": "ok",
-      "last_price_date": "2026-10-02",
-      "expected_price_date": "2026-10-05",
-      "stale": true,
       "series": {
         "2025": [
           {
@@ -2815,17 +2811,17 @@
             "performance": 8.4577116526102
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-02",
+      "expected_price_date": "2026-10-05",
+      "stale": true
     },
     {
       "name": "Xtrackers MSCI Japan UCITS ETF 1C",
       "short": "MSCI Japan",
       "isin": "LU0274209740",
       "ticker": "DBXJ.DE",
-      "status": "ok",
-      "last_price_date": "2026-10-02",
-      "expected_price_date": "2026-10-05",
-      "stale": true,
       "series": {
         "2025": [
           {
@@ -4217,17 +4213,17 @@
             "performance": 27.631032515323394
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-02",
+      "expected_price_date": "2026-10-05",
+      "stale": true
     },
     {
       "name": "iShares Core MSCI EM IMI UCITS ETF USD (Acc)",
       "short": "Core MSCI EM IMI",
       "isin": "IE00BKM4GZ66",
       "ticker": "IS3N.DE",
-      "status": "ok",
-      "last_price_date": "2026-10-02",
-      "expected_price_date": "2026-10-05",
-      "stale": true,
       "series": {
         "2025": [
           {
@@ -5619,17 +5615,17 @@
             "performance": 25.40623505163
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-02",
+      "expected_price_date": "2026-10-05",
+      "stale": true
     },
     {
       "name": "iShares Core MSCI Pacific ex-Japan UCITS ETF USD (Acc)",
       "short": "Core MSCI Pacific ex-Japan",
       "isin": "IE00B52MJY50",
       "ticker": "SXR1.DE",
-      "status": "ok",
-      "last_price_date": "2026-10-02",
-      "expected_price_date": "2026-10-05",
-      "stale": true,
       "series": {
         "2025": [
           {
@@ -7021,17 +7017,17 @@
             "performance": 13.914943879386943
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-02",
+      "expected_price_date": "2026-10-05",
+      "stale": true
     },
     {
       "name": "iShares Automation & Robotics UCITS ETF USD (Acc)",
       "short": "Automation & Robotics",
       "isin": "IE00BYZK4552",
       "ticker": "2B76.DE",
-      "status": "ok",
-      "last_price_date": "2026-10-02",
-      "expected_price_date": "2026-10-05",
-      "stale": true,
       "series": {
         "2025": [
           {
@@ -8423,17 +8419,17 @@
             "performance": 44.573980173786154
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-02",
+      "expected_price_date": "2026-10-05",
+      "stale": true
     },
     {
       "name": "Invesco Global Clean Energy UCITS ETF Acc",
       "short": "Global Clean Energy",
       "isin": "IE00BLRB0242",
       "ticker": "G1CE.DE",
-      "status": "ok",
-      "last_price_date": "2026-10-02",
-      "expected_price_date": "2026-10-05",
-      "stale": true,
       "series": {
         "2025": [
           {
@@ -9825,17 +9821,17 @@
             "performance": 8.694523337697312
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-02",
+      "expected_price_date": "2026-10-05",
+      "stale": true
     },
     {
       "name": "Xtrackers ATX UCITS ETF 1C",
       "short": "ATX",
       "isin": "LU0659579063",
       "ticker": "XB4A.DE",
-      "status": "ok",
-      "last_price_date": "2026-10-02",
-      "expected_price_date": "2026-10-05",
-      "stale": true,
       "series": {
         "2025": [
           {
@@ -11233,7 +11229,11 @@
             "performance": 28.2286129407193
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-02",
+      "expected_price_date": "2026-10-05",
+      "stale": true
     }
   ],
   "fx": [
@@ -11243,10 +11243,6 @@
       "ticker": "EURUSD=X",
       "quote_units": "foreign_per_eur",
       "performance_units": "eur_per_foreign",
-      "status": "ok",
-      "last_price_date": "2026-10-05",
-      "expected_price_date": "2026-10-02",
-      "stale": false,
       "series": {
         "2025": [
           {
@@ -12684,9 +12680,19 @@
             "day": 278,
             "price": 1.1254544258117676,
             "performance": 4.4064206784962145
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 1.121956706047058,
+            "performance": 4.731909531320477
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-06",
+      "expected_price_date": "2026-10-05",
+      "stale": false
     },
     {
       "code": "JPY",
@@ -12694,10 +12700,6 @@
       "ticker": "EURJPY=X",
       "quote_units": "foreign_per_eur",
       "performance_units": "eur_per_foreign",
-      "status": "ok",
-      "last_price_date": "2026-10-05",
-      "expected_price_date": "2026-10-02",
-      "stale": false,
       "series": {
         "2025": [
           {
@@ -14135,9 +14137,19 @@
             "day": 278,
             "price": 177.52000427246094,
             "performance": 3.7421079047006423
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 177.19200134277344,
+            "performance": 3.9341465693516042
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-06",
+      "expected_price_date": "2026-10-05",
+      "stale": false
     },
     {
       "code": "GBP",
@@ -14145,10 +14157,6 @@
       "ticker": "EURGBP=X",
       "quote_units": "foreign_per_eur",
       "performance_units": "eur_per_foreign",
-      "status": "ok",
-      "last_price_date": "2026-10-05",
-      "expected_price_date": "2026-10-02",
-      "stale": false,
       "series": {
         "2025": [
           {
@@ -15586,9 +15594,19 @@
             "day": 278,
             "price": 0.8496999740600586,
             "performance": 2.6303417604309987
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 0.8485699892044067,
+            "performance": 2.7670078379438134
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-06",
+      "expected_price_date": "2026-10-05",
+      "stale": false
     },
     {
       "code": "CHF",
@@ -15596,10 +15614,6 @@
       "ticker": "EURCHF=X",
       "quote_units": "foreign_per_eur",
       "performance_units": "eur_per_foreign",
-      "status": "ok",
-      "last_price_date": "2026-10-05",
-      "expected_price_date": "2026-10-02",
-      "stale": false,
       "series": {
         "2025": [
           {
@@ -17037,9 +17051,19 @@
             "day": 278,
             "price": 0.9319300055503845,
             "performance": -0.14164201767665752
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 0.9325399994850159,
+            "performance": -0.20696145997951554
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-06",
+      "expected_price_date": "2026-10-05",
+      "stale": false
     },
     {
       "code": "AUD",
@@ -17047,10 +17071,6 @@
       "ticker": "EURAUD=X",
       "quote_units": "foreign_per_eur",
       "performance_units": "eur_per_foreign",
-      "status": "ok",
-      "last_price_date": "2026-10-05",
-      "expected_price_date": "2026-10-02",
-      "stale": false,
       "series": {
         "2025": [
           {
@@ -18488,9 +18508,19 @@
             "day": 278,
             "price": 1.6188499927520752,
             "performance": 8.678386244138213
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 1.610219955444336,
+            "performance": 9.260852338078163
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-06",
+      "expected_price_date": "2026-10-05",
+      "stale": false
     },
     {
       "code": "CNY",
@@ -18498,10 +18528,6 @@
       "ticker": "EURCNY=X",
       "quote_units": "foreign_per_eur",
       "performance_units": "eur_per_foreign",
-      "status": "ok",
-      "last_price_date": "2026-10-05",
-      "expected_price_date": "2026-10-02",
-      "stale": false,
       "series": {
         "2025": [
           {
@@ -19939,9 +19965,19 @@
             "day": 278,
             "price": 7.545693874359131,
             "performance": 8.940414865157864
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 7.522200107574463,
+            "performance": 9.28066381674979
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-06",
+      "expected_price_date": "2026-10-05",
+      "stale": false
     },
     {
       "code": "KRW",
@@ -19949,10 +19985,6 @@
       "ticker": "EURKRW=X",
       "quote_units": "foreign_per_eur",
       "performance_units": "eur_per_foreign",
-      "status": "ok",
-      "last_price_date": "2026-10-05",
-      "expected_price_date": "2026-10-02",
-      "stale": false,
       "series": {
         "2025": [
           {
@@ -21390,9 +21422,19 @@
             "day": 278,
             "price": 1507.81005859375,
             "performance": 12.1819012012649
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 1506.5,
+            "performance": 12.27945504376866
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-06",
+      "expected_price_date": "2026-10-05",
+      "stale": false
     },
     {
       "code": "TWD",
@@ -21400,10 +21442,6 @@
       "ticker": "EURTWD=X",
       "quote_units": "foreign_per_eur",
       "performance_units": "eur_per_foreign",
-      "status": "ok",
-      "last_price_date": "2026-10-05",
-      "expected_price_date": "2026-10-02",
-      "stale": false,
       "series": {
         "2025": [
           {
@@ -22841,12 +22879,21 @@
             "day": 278,
             "price": 35.82897186279297,
             "performance": 2.655703844085888
+          },
+          {
+            "date": "2026-10-06",
+            "day": 279,
+            "price": 35.65700149536133,
+            "performance": 3.1508026569043945
           }
         ]
-      }
+      },
+      "status": "ok",
+      "last_price_date": "2026-10-06",
+      "expected_price_date": "2026-10-05",
+      "stale": false
     }
   ],
-  "last_successful_update_at": "2026-10-03T17:12:07.094632+00:00",
   "expected_etf_date": "2026-10-05",
   "update_status": "warning"
 }

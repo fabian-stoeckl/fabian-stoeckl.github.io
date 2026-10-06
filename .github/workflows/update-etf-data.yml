@@ -29,6 +29,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements-etf.txt
+      - name: Test freshness and failure handling
+        run: python -m unittest discover -s tests -p "test_etf_update.py"
       - name: Fetch and validate market data
         id: fetch
         continue-on-error: true

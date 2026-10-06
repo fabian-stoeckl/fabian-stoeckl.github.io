@@ -13,6 +13,7 @@ on:
       - package.json
       - package-lock.json
       - Privat/ETFs/index.html
+      - requirements-etf.txt
       - scripts/update_etf_data.py
       - tests/**
   pull_request:
@@ -52,7 +53,7 @@ jobs:
         run: python tests/test_etf_update.py
       - run: npm ci
       - name: Check FX mathematics and reference dates
-        run: node tests/fx.test.cjs
+        run: npm run check:etf
       - name: Build Jekyll site
         run: bundle exec jekyll build --trace
       - run: npx playwright install --with-deps chromium

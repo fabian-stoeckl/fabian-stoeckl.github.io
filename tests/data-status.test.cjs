@@ -1,0 +1,11 @@
+const fs=require('fs'),assert=require('node:assert/strict');
+const html=fs.readFileSync('Privat/ETFs/index.html','utf8');
+const source=html.slice(html.indexOf('function dataState('),html.indexOf('function addDataNote('));
+const state=new Function('shortDate',source+';return dataState;')(x=>x);
+const valid={series:{2026:[{date:'2026-10-02',price:100}]}};
+assert.equal(state(valid).kind,'current');
+assert.equal(state({...valid,stale:true,expected_price_date:'2026-10-05'}).kind,'warning');
+assert.match(state({...valid,update_error:'unavailable'}).text,/Abruf fehlgeschlagen/);
+assert.equal(state({series:{2026:[]}}).kind,'missing');
+assert.equal(state({series:{2026:[{date:'2026-10-05',price:null}]}}).kind,'missing');
+console.log('PASS visible current, stale, failed-fetch and missing-data states');
