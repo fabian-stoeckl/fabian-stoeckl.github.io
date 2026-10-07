@@ -1,6 +1,10 @@
 import importlib.util
 from pathlib import Path
 import unittest
+import json
+import tempfile
+import io
+from contextlib import redirect_stdout
 from unittest.mock import patch
 import pandas as pd
 spec=importlib.util.spec_from_file_location('update',Path(__file__).resolve().parents[1]/'scripts/update_etf_data.py')
@@ -43,4 +47,23 @@ class UpdateTests(unittest.TestCase):
   with patch.object(u,'fetch',side_effect=RuntimeError('unavailable')):
    x=u.refresh_item({'ticker':'TEST'},old,'2026-10-06')
    self.assertEqual(x['series'],old['series']);self.assertFalse(x['stale']);self.assertIn('update_error',x)
+ def test_workflow_tolerance_preserves_data_and_success_timestamp(self):
+  # Exercise main's exit status and saved payload, not just per-item staleness.
+  for mode in ['older_response', 'fetch_failure']:
+   for expected,code in [('2026-10-02',0),('2026-10-05',0),('2026-10-06',0),('2026-10-07',1)]:
+    with self.subTest(mode=mode,expected=expected), tempfile.TemporaryDirectory() as tmp:
+     config=Path(tmp)/'etfs.json';out=Path(tmp)/'data.json'
+     series={'2026':[{'date':'2026-10-02','price':100,'performance':0}]}
+     config.write_text(json.dumps([{'ticker':'TEST'}]))
+     out.write_text(json.dumps({'last_successful_update_at':'previous-success','etfs':[{'ticker':'TEST','series':series}]}))
+     fetch_args=dict(return_value={'2026':[{'date':'2026-10-01','price':90}]}) if mode=='older_response' else dict(side_effect=RuntimeError('unavailable'))
+     log=io.StringIO()
+     with patch.object(u,'CONFIG',config),patch.object(u,'OUT',out),patch.object(u,'FX_PAIRS',[]),patch.object(u,'expected_etf_date',return_value=expected),patch.object(u,'xetra_session_closes',return_value=[]),patch.object(u,'fetch',**fetch_args),redirect_stdout(log):
+      self.assertEqual(u.main(),code)
+     saved=json.loads(out.read_text())
+     self.assertEqual(saved['etfs'][0]['series'],series)
+     self.assertIn('update_error',saved['etfs'][0])
+     self.assertEqual(saved['last_successful_update_at'],'previous-success')
+     self.assertEqual(saved['update_status'],'warning' if code else 'ok')
+     self.assertIn('::warning::' if code else '::notice::',log.getvalue())
 if __name__=='__main__':unittest.main()
