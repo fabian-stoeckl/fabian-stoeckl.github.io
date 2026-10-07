@@ -119,15 +119,21 @@ def main():
     ]:
         old = {e["ticker"]: e for e in previous.get(group, [])}
         payload[group] = [refresh_item(e, old.get(e["ticker"]), target, is_fx) for e in configs]
-    issues = [e for e in payload["etfs"] + payload["fx"] if e["stale"] or e.get("update_error")]
+    all_items = payload["etfs"] + payload["fx"]
+    # Apply the same grace period as the dashboard to retained valid data.
+    # Keep fetch diagnostics, but fail only when usable data is missing or stale.
+    issues = [e for e in all_items if e["stale"]]
     payload["update_status"] = "warning" if issues else "ok"
-    if not issues and all(e["lag_sessions"] == 0 for e in payload["etfs"] + payload["fx"]):
+    if not issues and all(e["lag_sessions"] == 0 and not e.get("update_error") for e in all_items):
         payload["last_successful_update_at"] = now.isoformat()
     temp = OUT.with_suffix(".tmp")
     temp.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     temp.replace(OUT)
     for e in issues:
         print(f"::warning::{e['ticker']}: Kursstand {e['last_price_date'] or 'fehlt'}, erwartet {e['expected_price_date']}; {e.get('update_error', 'Quelle noch nicht aktuell')}")
+    for e in all_items:
+        if e.get("update_error") and not e["stale"]:
+            print(f"::notice::{e['ticker']}: {e['update_error']}; Kursstand {e['last_price_date']} bleibt innerhalb der Toleranz erhalten")
     return 1 if issues else 0
 
 if __name__ == "__main__":
