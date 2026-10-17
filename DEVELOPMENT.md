@@ -28,13 +28,13 @@ Start Jekyll in terminal 1:
 ./scripts/preview.sh
 ```
 
-The main site is at <http://127.0.0.1:4000/>, the dashboard at <http://127.0.0.1:4000/Privat/>, and the ETF dashboard at <http://127.0.0.1:4000/Privat/ETFs/>. In terminal 2 run:
+The main site is at <http://127.0.0.1:4000/>, the dashboard at <http://127.0.0.1:4000/Privat/>, the ETF dashboard at <http://127.0.0.1:4000/Privat/ETFs/>, and the Pressespiegel placeholder at <http://127.0.0.1:4000/Privat/Pressespiegel/>. In terminal 2 run:
 
 ```sh
 npm run check:preview
 ```
 
-This checks all three pages at desktop (1440 px) and phone (390 px) widths for successful responses, browser errors, and horizontal overflow. It writes full-page PNGs to `artifacts/screenshots/`. Set `PREVIEW_URL` or `SCREENSHOT_DIR` to override either location.
+This checks all four pages at desktop (1440 px) and phone (390 px) widths for successful responses, browser errors, and horizontal overflow. It writes full-page PNGs to `artifacts/screenshots/`. Set `PREVIEW_URL` or `SCREENSHOT_DIR` to override either location.
 
 ## Website change protocols
 
