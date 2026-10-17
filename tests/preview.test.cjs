@@ -8,6 +8,7 @@ const pages = [
   { name: 'homepage', path: '/', ready: 'h1' },
   { name: 'dashboard', path: '/Privat/', ready: '.grid' },
   { name: 'etf-dashboard', path: '/Privat/ETFs/', ready: '.year-key' },
+  { name: 'pressespiegel', path: '/Privat/Pressespiegel/', ready: 'h1' },
 ];
 const viewports = [
   { name: 'desktop', width: 1440, height: 1000 },
@@ -35,6 +36,22 @@ const viewports = [
         path: path.join(outputDir, `${target.name}-${viewport.name}.png`),
         fullPage: true,
       });
+      if (target.name === 'dashboard') {
+        if (await page.getByRole('link', { name: 'Pressespiegel öffnen' }).count() !== 1) {
+          throw new Error('Pressespiegel tile missing in private dashboard');
+        }
+        if (await page.getByRole('link', { name: 'Website ändern – ChatGPT-Skill öffnen' }).count() !== 1) {
+          throw new Error('Existing Website ändern skill link missing');
+        }
+        if ((await page.locator('body').innerText()).includes('Weitere Themen finden hier später ihren Platz.')) {
+          throw new Error('Removed private footer notice is visible again');
+        }
+      }
+      if (target.name === 'pressespiegel') {
+        if (await page.getByRole('link', { name: '← Privat' }).count() !== 1) {
+          throw new Error('Pressespiegel has no return link to Privat');
+        }
+      }
       if (target.name === 'homepage') {
         const layout = () => page.locator('section').evaluate(section => ({
           height: section.getBoundingClientRect().height,
