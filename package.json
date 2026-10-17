@@ -6,8 +6,9 @@
     "check:etf": "node tests/fx.test.cjs && node tests/data-status.test.cjs && node tests/annual.test.cjs",
     "check:charts": "node tests/charts.test.cjs",
     "check:preview": "node tests/preview.test.cjs",
-    "test": "npm run check:etf && npm run check:charts && npm run build",
-    "check:data": ".venv/bin/python -m unittest discover -s tests -p \"test_etf_update.py\""
+    "test": "npm run check:context && npm run check:etf && npm run check:charts && npm run build",
+    "check:data": ".venv/bin/python -m unittest discover -s tests -p \"test_etf_update.py\"",
+    "check:context": "node tests/website-context.test.cjs"
   },
   "devDependencies": {
     "chart.js": "4.4.7",

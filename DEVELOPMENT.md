@@ -35,3 +35,7 @@ npm run check:preview
 ```
 
 This checks all three pages at desktop (1440 px) and phone (390 px) widths for successful responses, browser errors, and horizontal overflow. It writes full-page PNGs to `artifacts/screenshots/`. Set `PREVIEW_URL` or `SCREENSHOT_DIR` to override either location.
+
+## Website change protocols
+
+The project keeps short, versioned change histories in `docs/website-context/README.md` (general website, ETF, Pressespiegel). Before editing, read the matching protocol; after finishing, update it in the same PR. Use `npm run check:context` to check index completeness and that Jekyll excludes the internal documentation. Update the log with verifiable branch/PR/CI information rather than relying on older chat transcripts.

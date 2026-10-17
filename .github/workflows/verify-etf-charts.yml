@@ -4,6 +4,9 @@ on:
     paths:
       - .github/workflows/verify-etf-charts.yml
       - _config.yml
+      - docs/website-context/**
+      - AGENTS.md
+      - DEVELOPMENT.md
       - _layouts/**
       - assets/**
       - index.md
@@ -20,6 +23,9 @@ on:
     paths:
       - .github/workflows/verify-etf-charts.yml
       - _config.yml
+      - docs/website-context/**
+      - AGENTS.md
+      - DEVELOPMENT.md
       - _layouts/**
       - assets/**
       - index.md
@@ -52,6 +58,8 @@ jobs:
       - name: Check update failure handling and exchange holidays
         run: python tests/test_etf_update.py
       - run: npm ci
+      - name: Check website context protocols
+        run: npm run check:context
       - name: Check FX mathematics and reference dates
         run: npm run check:etf
       - name: Build Jekyll site
