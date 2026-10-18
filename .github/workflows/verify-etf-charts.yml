@@ -17,7 +17,7 @@ on:
       - package-lock.json
       - Privat/ETFs/index.html
       - requirements-etf.txt
-      - scripts/update_etf_data.py
+      - scripts/**
       - tests/**
   pull_request:
     paths:

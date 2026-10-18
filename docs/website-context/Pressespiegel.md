@@ -1,3 +1,4 @@
+<!-- website-area: {"name": "Pressespiegel", "paths": ["Privat/Pressespiegel/"]} -->
 # Bereichsprotokoll: Pressespiegel
 
 **Stand:** 18.10.2026. **Status:** absichtlich als Platzhalter veröffentlichter neuer Website-Bereich.
@@ -19,13 +20,10 @@
 
 - Inhalt, Datenquelle, Speicherung, Zugriffsregeln, Gestaltung und mögliche Automatisierung eines späteren echten Pressespiegels müssen **vor Implementierung** festgelegt und freigegeben werden.
 - Der aktuelle Platzhalter ist der vereinbarte veröffentlichte Stand, kein fehlgeschlagener Funktionsstart.
-- Bei Erweiterungen: separater Branch/PR → Vorschau → Freigabe → Tests → Live-Prüfung; Protokoll danach aktualisieren.
 
-## Protokoll für nächste Änderung
 
-- Datum / Änderungsauftrag:
-- Quellen und Urheberrechts-/Zugriffsanforderungen:
-- Umsetzung / betroffene Dateien / PR:
-- Vorschau und ausdrückliche Freigabe:
-- Tests und Live-Prüfung:
-- Noch offen / Rücknahme:
+## Ergänzte Veröffentlichungsbelege (18.10.2026)
+
+- PR #19: Merge 36779c79944a9dc833b62c536393e918b6292bb8; Pages-Lauf 39042426812 und Verify site 39042426985 erfolgreich.
+- Damalige Desktop-/Mobilprüfung bei 390/700/1440 px, keine Überläufe oder JS-Seitenfehler. Per HTTPS abgerufene HTML-Seiten entsprachen der geprüften Vorschau; direkter Browser-Netzabruf in der damaligen Umgebung nicht möglich.
+- Rücknahme nur der eigenen PR-19-Änderungen an Privat/index.html und Privat/Pressespiegel/index.html; vorherige Basis 1e1d8e63b8af2660318a8a46338497e0363a371a. Spätere unabhängige Änderungen erhalten.

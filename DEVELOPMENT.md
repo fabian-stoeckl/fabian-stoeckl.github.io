@@ -38,4 +38,8 @@ This checks all four pages at desktop (1440 px) and phone (390 px) widths for su
 
 ## Website change protocols
 
-The project keeps short, versioned change histories in `docs/website-context/README.md` (general website, ETF, Pressespiegel). Before editing, read the matching protocol; after finishing, update it in the same PR. Use `npm run check:context` to check index completeness and that Jekyll excludes the internal documentation. Update the log with verifiable branch/PR/CI information rather than relying on older chat transcripts.
+The existing “Fabians Website ändern” skill owns the editing workflow. Canonical history lives in `docs/website-context/`. Each area protocol has one JSON metadata comment, `<!-- website-area: {"name":"Area name","paths":["Privat/Area/"]} -->`, a heading, a `**Stand:**` date and an open-items section.
+
+Run `npm run context:update` to regenerate README from all area protocols. Run `npm run check:context` to validate metadata, unique names/paths, registered files, canonical private-page coverage, README freshness and exclusion from Jekyll. New areas need a protocol and their source path, not a test-code edit. Empty planned areas may use `"paths":[]` until their website files are added; record their draft status in the protocol.
+
+The context test also exercises temporary fixtures for a fourth area, missing protocols, stale registry entries and unsafe paths. It never modifies website content or financial data.
