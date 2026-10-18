@@ -53,6 +53,15 @@ Quelle: am 17.10. recherchierte Skill-Notizen, damals mit PRs #2–#18 abgeglich
 - Englischer generischer Starttext bleibt auf Nutzerwunsch bestehen; Bereichsauswahl wurde vom Nutzer am 17.10. damit bestätigt. Link-Test mit q-Parameter änderte den Text nicht, deshalb Original-Link erhalten.
 - PR #20 ist veröffentlicht: /Privat/ am 18.10. über HTTPS geprüft, Schlusszeile fehlt. PR #21 etablierte die GitHub-Protokolle; dessen Build und Pages-Bereitstellung waren erfolgreich.
 - Dieser Abgleich ändert nur interne Anweisungen, Protokolle und Testautomatisierung. Keine ETF-Daten, Berechnungen oder Website-Seiten geändert. Nutzerauftrag autorisiert diese interne Bereinigung.
-- Status: vorbereitet; technische Prüfergebnisse und PR-Status siehe zugehörigen Änderungs-PR. Der neue Workflow ist erst nach Zusammenführung in main für neue Chats verfügbar.
+- Status: PR #22 zusammengeführt als 26fe733ef3ed34ff7c34cab7a5ede084a22da17e. Vollständige PR-Prüfungen 39084361977 und 39084360337 erfolgreich; Pages-Bereitstellung 39102729346 erfolgreich. Der Workflow ist auf main verfügbar.
 - Einschränkung: ChatGPT-Weboberfläche hier abgemeldet; ein tatsächlicher neuer angemeldeter Webchat ist noch nicht geprüft. Agententests getrennt davon ausweisen.
 - Rücknahme: eigene Workflow-Dateien anhand der PR-Differenz auf Basis 167ad15fe8ec66bcbf90f65901fbc55b48c54370 zurücksetzen, unabhängige spätere Änderungen erhalten.
+
+## Abschlussprüfung am 18.10.2026
+
+- Bestehenden Skill unter gleicher Identität gespeichert und den gespeicherten Stand erneut geprüft: GitHub-Protokolle als einzige Quelle, keine lokalen Protokollkopien mehr. Relevante Historie vor Entfernung übernommen.
+- Zwei unabhängige Agententests ohne Eltern-Chatverlauf: ETF-Protokoll tatsächlich vom GitHub-Commit 167ad15fe8ec66bcbf90f65901fbc55b48c54370 gelesen; allgemeiner englischer Einstieg las nach Merge das README von 26fe733ef3ed34ff7c34cab7a5ede084a22da17e und fragte nach Allgemeine Website, ETF, Pressespiegel oder Neuer Bereich. Keine Beispieländerung ausgeführt.
+- Dynamische Tests bestanden: vier Bereiche einschließlich geplanter Bereiche, fehlende Bereichszuordnung, veraltetes Verzeichnis, doppelte Namen, unsichere Pfade und Jekyll-Ausschluss.
+- Nach Bereitstellung Homepage, Privat, ETF und Pressespiegel per HTTPS erreichbar (200). Die drei statischen Privat-Seiten sind bytegleich mit der bestehenden geprüften Quelle. Keine Website-Inhalte oder Finanzdaten geändert.
+- Offen bleibt nur der echte neue Chat über die angemeldete ChatGPT-Weboberfläche: hier war die Sitzung abgemeldet. Agententests bestätigen das Verhalten der Anweisungen, nicht den vollständigen UI-Aufruf. Der allgemeine Agententest wurde nach einer Nutzungslimit-Unterbrechung erfolgreich wiederholt.
+- Dieser Abschlussnachtrag betrifft ausschließlich interne Dokumentation; sein Merge-/Checkstatus ist direkt im zugehörigen Dokumentations-PR nachprüfbar.
