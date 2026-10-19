@@ -10,4 +10,4 @@ assert.match(url.searchParams.get('body'),/Bewertung: Sehr relevant/);
 assert.match(url.searchParams.get('body'),/Grund: Mehr davon/);
 console.log('GitHub feedback URL checks passed');
 const batch=paper.batchBody('2026-10-19',[{id:'abc',value:'Sehr relevant',reason:'Mehr davon'},{id:'def',value:'Nicht relevant'}],' Mehr Handelsblatt ');
-assert.match(batch,/abc \| Sehr relevant \| Mehr davon/);assert.match(batch,/def \| Nicht relevant \| –/);assert(batch.endsWith('Mehr Handelsblatt'));
+assert.match(batch,/abc\nBewertung: Sehr relevant\nBegründung: Mehr davon/);assert.match(batch,/def\nBewertung: Nicht relevant\nBegründung: –/);assert(batch.endsWith('Mehr Handelsblatt'));

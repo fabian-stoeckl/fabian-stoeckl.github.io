@@ -15,8 +15,8 @@ const GitHubPaper = {
       '\n\nOptionales Feedback:\n');
   },
   batchBody(date, ratings, feedback) {
-    const rows=ratings.map(r=>r.id+' | '+r.value+' | '+(r.reason||'–'));
-    return 'Typ: Sammelbewertung\nAusgabe: '+date+'\n\nArtikel-ID | Bewertung | Grund\n'+rows.join('\n')+'\n\nFeedback:\n'+feedback.trim();
+    const rows=ratings.map(r=>'Artikel-ID: '+r.id+'\nBewertung: '+(r.value||'Keine Auswahl')+'\nBegründung: '+(r.reason||'–')+'\n');
+    return 'Typ: Sammelbewertung\nAusgabe: '+date+'\n\n'+rows.join('\n')+'\n\nFeedback:\n'+feedback.trim();
   },
   async json(path) {
     const r = await fetch(path, {cache:'no-store'});
