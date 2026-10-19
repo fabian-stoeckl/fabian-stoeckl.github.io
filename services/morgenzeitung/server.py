@@ -46,7 +46,7 @@ class Handler(BaseHTTPRequestHandler):
         path=urlsplit(self.path).path
         if path=='/health':
             return self.result({'ok':True})
-        if PREVIEW and path in ('/','/index.html','/app.js','/style.css','/config.json'):
+        if PREVIEW and path in ('/','/index.html','/app.js','/github.js','/style.css','/config.json'):
             if path=='/config.json':
                 return self.result({'api':'','preview':True})
             p=ROOT/('index.html' if path=='/' else path[1:])

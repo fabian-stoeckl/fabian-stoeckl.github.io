@@ -1,1 +1,6 @@
-{"api": null, "preview": false}
+{
+  "mode": "github",
+  "api": null,
+  "preview": true,
+  "feedback_repository": null
+}

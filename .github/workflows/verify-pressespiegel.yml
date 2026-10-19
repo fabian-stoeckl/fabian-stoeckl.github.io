@@ -1,9 +1,9 @@
 name: Verify Morgenzeitung
 on:
   pull_request:
-    paths: ['Privat/Pressespiegel/**', 'services/morgenzeitung/**', 'tests/pressespiegel/**', '.github/workflows/verify-pressespiegel.yml']
+    paths: ['Privat/Pressespiegel/**', 'services/morgenzeitung/**', 'tests/pressespiegel/**', 'tests/pressespiegel-github*', '.github/workflows/verify-pressespiegel.yml']
   push:
-    paths: ['Privat/Pressespiegel/**', 'services/morgenzeitung/**', 'tests/pressespiegel/**', '.github/workflows/verify-pressespiegel.yml']
+    paths: ['Privat/Pressespiegel/**', 'services/morgenzeitung/**', 'tests/pressespiegel/**', 'tests/pressespiegel-github*', '.github/workflows/verify-pressespiegel.yml']
 permissions:
   contents: read
 jobs:
@@ -19,19 +19,19 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
+      - run: node tests/pressespiegel-github.test.cjs
       - run: python3 -m unittest discover -s tests/pressespiegel -v
       - run: npx playwright install --with-deps chromium
-      - name: Isolated preview and browser checks (no paid API calls)
+      - name: Static GitHub preview (no API calls or feedback submissions)
         run: |
-          python3 services/morgenzeitung/preview.py /tmp/paper-preview.sqlite
-          PAPER_PREVIEW=1 PAPER_DB=/tmp/paper-preview.sqlite python3 services/morgenzeitung/server.py &
+          python3 -m http.server 8765 &
           server_pid=$!
           trap 'kill "$server_pid"' EXIT
           for attempt in {1..30}; do
-            curl --fail --silent http://127.0.0.1:8765/health >/dev/null && break
+            curl --fail --silent http://127.0.0.1:8765/Privat/Pressespiegel/config.json >/dev/null && break
             sleep 1
           done
-          node tests/pressespiegel/browser.cjs
+          node tests/pressespiegel-github-browser.cjs
       - uses: actions/upload-artifact@v4
         with:
           name: morgenzeitung-preview

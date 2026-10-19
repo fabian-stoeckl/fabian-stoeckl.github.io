@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict');
+const paper=require('../Privat/Pressespiegel/github.js');
+assert.throws(()=>paper.issueURL(null,'x','x'));
+assert.throws(()=>paper.issueURL('https://evil.test','x','x'));
+const url=new URL(paper.ratingURL('fabian-stoeckl/morgenzeitung-feedback',{date:'2026-10-18'},{id:'abc',url:'https://orf.at/stories/1/'},'Sehr relevant','Mehr davon'));
+assert.equal(url.origin,'https://github.com');
+assert.equal(url.pathname,'/fabian-stoeckl/morgenzeitung-feedback/issues/new');
+assert.match(url.searchParams.get('body'),/Artikel-ID: abc\n/);
+assert.match(url.searchParams.get('body'),/Bewertung: Sehr relevant/);
+assert.match(url.searchParams.get('body'),/Grund: Mehr davon/);
+console.log('GitHub feedback URL checks passed');

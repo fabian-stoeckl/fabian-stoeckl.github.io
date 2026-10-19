@@ -1,3 +1,5 @@
+> **Aktueller Weg:** GitHub-Dateien + private GitHub-Issues + geplante ChatGPT-Aufgabe. Siehe [GITHUB-BETRIEB.md](GITHUB-BETRIEB.md). Der folgende Server-/API-Entwurf ist nicht aktiviert und wegen der Kosten nicht der gewählte Betrieb.
+
 # Morgenzeitung — Entwurf, nicht aktiviert
 
 Die bestehende GitHub-Pages-Seite bleibt das Frontend. Ein separater privater Python-Dienst hält SQLite-Ausgaben, Profile, Feedback und Bewertungen auf einem persistenten Datenträger. Sämtliche Inhalts- und Schreibendpunkte verlangen einen hochentropischen Bearer-Zugangsschlüssel (mindestens 32 Zeichen). Nur `/health` ist öffentlich. HTTPS wird vom vorgeschalteten Hostingdienst terminiert; CORS erlaubt ausschließlich die konfigurierte Website. Im Browser bleibt der Zugang nur im Arbeitsspeicher. Keine Schlüssel, Rückmeldungen oder Datenbanken ins Repository schreiben.
