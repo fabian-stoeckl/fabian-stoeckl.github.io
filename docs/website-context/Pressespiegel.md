@@ -81,3 +81,9 @@ Die folgenden Punkte sind durch die Entscheidung vom 19.10.2026 ersetzt; keine K
 - Nutzer hat morgenzeitung-feedback erstellt und verbunden. Sichtbarkeit private sowie Schreib-/Lesezugriff geprüft. Initiales profile.json liegt ausschließlich dort. Synthetisches Issue #1 angelegt, unverändert zurückgelesen und geschlossen; ausdrücklich vom Lernen ausgeschlossen. Kein echter Feedback-Folgelauf behauptet.
 - config.json des Entwurfs zeigt nun auf fabian-stoeckl/morgenzeitung-feedback. Bewertungslinks aktiviert; Speicherung erfolgt nach GitHub-Anmeldung durch Absenden des vorausgefüllten Formulars.
 - Weiterhin offen: Freigabe der konkreten Vorschau und wiederkehrenden Ausgaben, Merge/Pages/Live-Prüfung sowie unbeaufsichtigter Lauf mit echtem Feedback.
+
+## Vereinfachung und redaktioneller Mehrwert (19.10.2026)
+
+- Nutzer wünscht auch Desktop einspaltig; alle Artikel stehen untereinander. Drei beschriftete Radio-Auswahlpunkte pro Artikel, optionaler Grund. Keine Vorauswahl; nicht bewertete Artikel neutral.
+- Bewertungen der gewählten Ausgabe und Freitext werden als eine Sammelbewertung in einem privaten GitHub-Issue übermittelt; Absenden auf GitHub erforderlich. Auswahl bleibt nur im geöffneten Tab, noch keine dauerhafte Speicherung vor Absenden. Bei sehr langem Link wird der Gesamttext kopiert und auf GitHub eingefügt.
+- Redaktioneller Auftrag erhöht: Ziel 20, maximal 30 Vertiefungen, Handelsblatt deutlich stärker berücksichtigen. Qualität und neuer Erkenntnisgewinn wichtiger als Ausschöpfen der Zahl; Headlines unverändert 15–20. Geplante Aufgabe und privates Profil aktualisiert. Ältere 10/15-Vorgaben überholt. Inhalt der reduzierten Vorschau noch unverändert, keine neue recherchierte Ausgabe behauptet.

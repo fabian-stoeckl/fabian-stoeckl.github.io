@@ -30,3 +30,9 @@ Status: Entwurf in PR #24, nicht veröffentlicht. Privates Feedback-Repository f
 ## Noch nicht nachgewiesen
 
 Unbeaufsichtigte GitHub-Schreibvorgänge/Merges der geplanten Aufgabe, echte Medienmischung und echter Feedback-Folgelauf. Der private Zugriff ist in der interaktiven Sitzung geprüft. Ein Prompt allein ersetzt diese Tests nicht. Bei fehlender Berechtigung oder Kontingent Ausgabe in ChatGPT als unveröffentlicht liefern und Blockade nennen. Die enthaltene Ausgabe vom 18.10. ist weiterhin nur eine reduzierte Vorschau.
+
+## Aktueller Feedback- und Inhaltsvertrag (19.10.2026)
+
+Die Oberfläche sammelt drei Radio-Auswahlstufen je Artikel und optionalen Grund. Beim gemeinsamen Übermitteln entsteht ein Issue vom Typ Sammelbewertung: Ausgabe plus Zeilen `Artikel-ID | Bewertung | Grund` und Freitext. Jede Zeile getrennt dem Artikel zuordnen; fehlende Zeilen neutral lassen. Diese Sammelbewertung ersetzt einzelne Issue-Links. Änderungen vor Absenden sind nur im Tab gespeichert. Sehr lange Rückmeldungen werden für das GitHub-Textfeld kopiert statt als überlanger URL übergeben.
+
+Ziel jetzt 20/maximal 30 Artikel inklusive Zuckerl; Handelsblatt gezielt stärker durchsuchen. Mehrwert vor Menge und vor starren Medienquoten. Die ursprüngliche 10/15-Vorgabe ist überholt. Bestehende fünf ORF-Vorschauartikel sind kein Nachweis der redaktionellen Zielerfüllung.

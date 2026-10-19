@@ -14,6 +14,10 @@ const GitHubPaper = {
       '\nURL: ' + article.url + '\nBewertung: ' + value + '\nGrund: ' + (reason || '–') +
       '\n\nOptionales Feedback:\n');
   },
+  batchBody(date, ratings, feedback) {
+    const rows=ratings.map(r=>r.id+' | '+r.value+' | '+(r.reason||'–'));
+    return 'Typ: Sammelbewertung\nAusgabe: '+date+'\n\nArtikel-ID | Bewertung | Grund\n'+rows.join('\n')+'\n\nFeedback:\n'+feedback.trim();
+  },
   async json(path) {
     const r = await fetch(path, {cache:'no-store'});
     if (!r.ok) throw Error('Ausgabe nicht erreichbar (' + r.status + ')');

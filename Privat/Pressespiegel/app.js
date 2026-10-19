@@ -1,5 +1,6 @@
 'use strict';
 let config, secret='', currentProfile, ratings={}, edition, latestDate;
+const ratingDrafts={};
 const $=id=>document.getElementById(id);
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
 const fmt=v=>new Intl.DateTimeFormat('de-AT',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Vienna'}).format(new Date(v));
@@ -9,18 +10,19 @@ async function api(path, data){const response=await fetch(config.api+path,{metho
 function status(text){$('notice').textContent=text;}
 function readingLinks(a){const box=el('div',undefined,'links');box.append(link('Original lesen ↗',a.url));if(a.paywall){const archive=link('Archivsuche ↗','https://archive.is/'+safeURL(a.url));const smry=link('SMRY öffnen ↗','https://smry.ai/'+safeURL(a.url));const isPresse=/(^|\.)diepresse\.com$/.test(new URL(a.url).hostname);box.append(...(isPresse?[smry,archive]:[archive,smry]));}return box;}
 function githubRating(a) {
-  const box=el('div',undefined,'ratings');
-  const reason=el('select');reason.setAttribute('aria-label','Optionaler Bewertungsgrund');
-  for(const value of ['','Mehr davon','Schon bekannt','Zu oberflächlich','Thema interessiert mich nicht']) { const o=el('option',value||'Optionaler Grund');o.value=value;reason.append(o); }
-  const links=[];
-  function update(){for(const [n,value] of links)n.href=GitHubPaper.ratingURL(config.feedback_repository,edition,a,value,reason.value);}
-  box.append(reason);
+  const box=el('fieldset',undefined,'ratings rating-dots');
+  box.append(el('legend','Wie relevant ist dieser Artikel?'));
+  const key=edition.date+':'+a.id;
   for(const value of ['Sehr relevant','Teilweise relevant','Nicht relevant']) {
-    if(config.feedback_repository){const n=link(value+' ↗',GitHubPaper.ratingURL(config.feedback_repository,edition,a,value,''));links.push([n,value]);box.append(n);}
-    else {const n=el('button',value);n.disabled=true;box.append(n);}
+    const label=el('label');const input=el('input');input.type='radio';input.name='rating-'+a.id;
+    input.value=value;input.checked=ratingDrafts[key]?.value===value;
+    input.onchange=()=>{ratingDrafts[key]={id:a.id,value,reason:ratingDrafts[key]?.reason||''};$('feedback-status').textContent='Auswahl vorgemerkt · unten gemeinsam übermitteln.';};
+    label.append(input,el('span',value));box.append(label);
   }
-  reason.onchange=update;
-  box.append(el('p',config.feedback_repository?'Auf GitHub prüfen und absenden. Erst dann ist die Bewertung gespeichert. Bestehende Bewertungen kannst du dort bearbeiten.':'Private Bewertungen sind vorbereitet; das GitHub-Repository ist noch nicht verbunden.','small'));
+  const label=el('label','Optionaler Grund ','reason');const reason=el('select');
+  for(const value of ['','Mehr davon','Schon bekannt','Zu oberflächlich','Thema interessiert mich nicht']){const o=el('option',value||'–');o.value=value;reason.append(o);}
+  reason.value=ratingDrafts[key]?.reason||'';
+  reason.onchange=()=>{ratingDrafts[key]={id:a.id,value:ratingDrafts[key]?.value,reason:reason.value};$('feedback-status').textContent='Änderung vorgemerkt · unten gemeinsam übermitteln.';};label.append(reason);box.append(label);
   return box;
 }
 function article(a,index){const node=el('article',undefined,a.treat?'treat':'');const intro=el('div');intro.append(el('span',a.treat?'DAS ZUCKERL':a.topic,'eyebrow'));const meta=el('p',a.source+' · '+a.kind+'\n'+fmt(a.published_at)+(a.paywall?' · Paywall':''),'meta');intro.append(meta);const body=el('div',undefined,'body');const title=el('h2');title.append(link(a.title,a.url));body.append(title,el('p',a.summary));if(a.access==='teaser')body.append(el('p','Zusammenfassung beruht ausschließlich auf dem zugänglichen Vorspann.','small'));if(a.novelty)body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty,'novelty'));body.append(readingLinks(a));if(config.mode==='github'){body.append(githubRating(a));node.append(intro,body);return node;}const controls=el('div',undefined,'ratings');controls.setAttribute('aria-label','Relevanz bewerten');const state=el('p','','rating-state');state.setAttribute('role','status');const reasonLabel=el('label','Optionaler Grund ','reason');const reason=el('select');reason.setAttribute('aria-label','Grund für die Bewertung');for(const t of ['','Mehr davon','Schon bekannt','Zu oberflächlich','Thema interessiert mich nicht']){const o=el('option',t||'–');o.value=t;reason.append(o);}reasonLabel.append(reason);let saved=ratings[a.id];reason.value=saved?.reason||'';const buttons=[];function refresh(){for(const [b,v] of buttons)b.setAttribute('aria-pressed',String(saved?.value===v));state.textContent=saved?'Gespeichert · jederzeit änderbar':'';reason.disabled=!saved;}
@@ -35,11 +37,17 @@ $('logout').onclick=()=>{secret='';location.reload();};
 $('profile-toggle').onclick=async()=>{if(config.mode==='github'){status('Profiländerungen bitte über das GitHub-Feedback unten mitteilen. Deine ausdrücklichen Wünsche haben Vorrang.');$('feedback-section').scrollIntoView({behavior:'smooth'});return;}if(config?.api===null){status('Interessenprofil wird nach Verbindung des privaten Dienstes verfügbar.');return;}try{const data=await api('/api/profile');currentProfile=data.profile;$('topics').replaceChildren();for(const [topic,value] of Object.entries(currentProfile.topics)){const label=el('label',topic);const select=el('select');select.dataset.topic=topic;for(const [v,t] of [[5,'Sehr hoch'],[4,'Hoch'],[3,'Mittel'],[2,'Ergänzend'],[1,'Gering'],[0,'Ausblenden']]){const o=el('option',t);o.value=v;select.append(o);}select.value=value;label.append(select);$('topics').append(label);}$('rules').value=currentProfile.rules;$('profile-history').replaceChildren(el('p','Lernsignale (maximal ±0,5; explizite Prioritäten bleiben maßgeblich): '+JSON.stringify(data.learning)));for(const h of data.history)$('profile-history').append(el('p',fmt(h.at)+' · '+h.reason));$('profile').hidden=!$('profile').hidden;}catch(e){status(e.message);}};
 $('profile-form').onsubmit=async e=>{e.preventDefault();const topics=Object.fromEntries([...$('topics').querySelectorAll('select')].map(s=>[s.dataset.topic,Number(s.value)]));try{currentProfile=await api('/api/profile',{topics,rules:$('rules').value,version:currentProfile.version});$('profile-status').textContent='Gespeichert · gilt für den nächsten Recherchelauf';}catch(e){$('profile-status').textContent=e.message;}};
 $('feedback-form').onsubmit=async e=>{e.preventDefault();if(config.mode==='github'){
-try{const url=GitHubPaper.issueURL(config.feedback_repository,'[Morgenzeitung] Feedback '+edition.date,'Typ: Feedback\nAusgabe: '+edition.date+'\n\n'+$('feedback').value);const n=link('Feedback auf GitHub öffnen und absenden ↗',url);$('feedback-status').replaceChildren(n);}
+try{const selected=edition.articles.map(a=>ratingDrafts[edition.date+':'+a.id]).filter(r=>r?.value);
+const body=GitHubPaper.batchBody(edition.date,selected,$('feedback').value);
+if(!selected.length&&!$('feedback').value.trim())throw Error('Bitte mindestens einen Artikel bewerten oder Feedback eingeben.');
+const url=GitHubPaper.issueURL(config.feedback_repository,'[Morgenzeitung] Rückmeldung '+edition.date,body);
+if(url.length<=7000){$('feedback-status').replaceChildren(link('Alles auf GitHub öffnen und absenden ↗',url));}
+else{await navigator.clipboard.writeText(body);$('feedback-status').replaceChildren(el('p','Rückmeldung kopiert. Auf GitHub ins Textfeld einfügen und absenden.'),link('GitHub-Formular öffnen ↗',GitHubPaper.issueURL(config.feedback_repository,'[Morgenzeitung] Rückmeldung '+edition.date,'')));}
+}
 catch(err){$('feedback-status').textContent=err.message;}return;}const b=e.submitter;b.disabled=true;try{await api('/api/feedback',{text:$('feedback').value});$('feedback-status').textContent='Gespeichert · wird beim nächsten Recherchelauf berücksichtigt';$('feedback').value='';}catch(e){$('feedback-status').textContent=e.message+' – bitte erneut versuchen';}finally{b.disabled=false;}};
 (async()=>{try{config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode==='github') {
 $('login').hidden=true;$('logout').hidden=true;$('feedback').maxLength=600;
-$('feedback-form').querySelector('button').textContent='GitHub-Feedback vorbereiten';
+$('feedback-form').querySelector('button').textContent='Bewertungen & Feedback übermitteln';$('feedback').required=false;
 const index=await GitHubPaper.json('./data/index.json');latestDate=index.dates[0];$('date').replaceChildren();
 for(const d of index.dates){const o=el('option',d);o.value=d;$('date').append(o);}
 $('operating-state').textContent='Ausgaben aus GitHub · Feedback wird auf GitHub abgesendet.';
