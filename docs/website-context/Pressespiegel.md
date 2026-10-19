@@ -40,11 +40,23 @@
 - Vorschau: lokale, eingeschränkte Funktionsvorschau mit fünf manuell anhand der Originalquellen gelesenen ORF-Artikeln vom 16.–18.10.2026. Erweitertes Zeitfenster und nur vier Headlines ausdrücklich sichtbar markiert. Noch keine vollständige 24h-Ausgabe oder Abnahme der gewünschten Medienvielfalt. Keine erfundenen Beispielnachrichten. Screenshots 1440 und 390 px; lokal interaktive API geprüft, kein dauerhaft erreichbarer privater Vorschauhost vorhanden.
 - Prüfungen lokal: 10 Kernlogiktests erfolgreich (DST, dauerhafte/änderbare Bewertungen, Konflikte, Feedbackübergabe, Dubletten/Fortsetzungen, Fehler/Retry, Zeitfenster); Browserprüfung mit zweitem unabhängigen Browser, Bewertungsänderung, Feedback, Profil, Speicherfehlern und Reitern erfolgreich; kein horizontaler Überlauf oder JS-Seitenfehler bei 1440/390 px. Kontext- und bestehende ETF-Mathematiktests erfolgreich. Weitere fünf Authentifizierungs-/CORS-/Eingabeprüfungen erfolgreich (insgesamt 15 Python-Tests). Vollständiger lokaler Jekyll-Build durch fehlendes Ruby/Bundler blockiert; bestehende GitHub-CI prüft Build separat. Externer KI-Recherchelauf nicht ausgeführt, keine Kosten ausgelöst.
 - SMRY-Präfix anhand Anbieter-Dokumentation und HTTP-Weitergabe geprüft; Artikel-Endabrufe von SMRY/Archive teilweise blockiert. Archivlink ausdrücklich „Archivsuche“, keine Verfügbarkeitsbehauptung. End-to-End-Nachweis bei echten Paywall-Artikeln offen.
-- Betrieb und Kostenoptionen: `services/morgenzeitung/README.md`. Kein Hosting gebucht. Render verbunden; verfügbarer Arbeitsbereich „My Workspace“, dessen Auswahl noch vom Nutzer zu bestätigen ist. Ein dauerhafter Dienst mit persistentem Speicher plus freigegebener Recherche-API erforderlich. API-Projektbudget/Modellwahl, externe Backups und Alarmierung noch offen.
+- Historischer kostenpflichtiger Entwurf (am 19.10.2026 verworfen): Betrieb und Kostenoptionen: `services/morgenzeitung/README.md`. Kein Hosting gebucht. Render verbunden; verfügbarer Arbeitsbereich „My Workspace“, dessen Auswahl noch vom Nutzer zu bestätigen ist. Ein dauerhafter Dienst mit persistentem Speicher plus freigegebener Recherche-API erforderlich. API-Projektbudget/Modellwahl, externe Backups und Alarmierung noch offen.
 
-## Offen für die Morgenzeitung
+## Historische offene Punkte des kostenpflichtigen Entwurfs (überholt)
+
+Die folgenden Punkte sind durch die Entscheidung vom 19.10.2026 ersetzt; keine Kostenfreigabe oder Render-Auswahl mehr anfordern.
+
+### Ursprüngliche Liste
 
 1. Hosting verbinden und konkreten Kostenrahmen freigeben; Zugangsschlüssel nur über sichere Host-Konfiguration hinterlegen.
 2. Geschützte Remote-Vorschau, echte 24h-Recherche aus der gewünschten Medienmischung, erfolgreiche Folgeausgabe nach Feedback und Link-Endtests; Produktionssicherung/Monitoring einrichten.
 3. Entwurfs-PR und CI prüfen; erst danach konkrete Veröffentlichungs- und Betriebsfreigabe einholen, zusammenführen, Pages und privaten Dienst bereitstellen und live prüfen.
 4. Nachweise über PR/Commit/CI und Freigabe nach tatsächlichem Erfolg nachtragen. Gegenwärtig **nicht veröffentlicht und nicht täglich aktiviert**.
+
+## Kostenentscheidung und ChatGPT-Aufgabe (19.10.2026)
+
+- Nutzerentscheidung: keine zusätzlichen Ausgaben; stattdessen ausdrücklich geplante GPT-Analyse beauftragt. Kein Render-Dienst und keine kostenpflichtige Recherche-API gebucht oder aktiviert. Bestehendes Hosting und Domain bleiben erhalten.
+- Aktiviert: geplante ChatGPT-Aufgabe „Fabians Morgenzeitung“, täglich 07:15 Europe/Vienna einschließlich Sommer-/Winterzeit und Wochenenden. Ziel Fertigstellung bis 07:45, keine garantierte Fertigstellungszeit. Sie nutzt ausschließlich vorhandene ChatGPT-Funktionen und das bestehende Nutzungskontingent.
+- Aufgabenprompt enthält Interessen, Quellenprioritäten, 24h-Zeitfenster, Ziel 10/max. 15 Vertiefungen inklusive Zuckerl, 15–20 Headlines Österreich/International, Quellen-/Zeitangaben, ehrliche Teaserkennzeichnung, Archivsuche und drei Relevanzbewertungen. Fehlende Recherche oder Historie muss ausdrücklich benannt werden.
+- Ergebnisse vorerst ausschließlich in ChatGPT. Keine automatische Website-Veröffentlichung und kein Merge autorisiert. Website-Entwurf bleibt in PR #24; API-Konfiguration bleibt leer. Der Python/API-Entwurf ist kein aktivierter oder freigegebener Betriebsweg.
+- Noch offen: Übertragung der Ausgaben auf die Website und privater geräteübergreifender Rückfluss von Website-Bewertungen ohne zusätzliche Kosten. Dauerhafte Lernwirkung und erste reale Ausgabe sind noch nicht nachgewiesen. Die Aufgabe darf nur tatsächlich zugängliche frühere Ausgaben und Rückmeldungen verwenden.
