@@ -97,3 +97,10 @@ Verbindlich wieder Ziel 10–15 Vertiefungen, maximal 15 einschließlich Zuckerl
 - Nutzer verlangt Absenden direkt auf der Website mit einem Klick, ohne Anmeldung, ohne Eingabe eines Schlüssels und ohne Kosten. Token- und OAuth-Varianten ausdrücklich verworfen; nur lokale, unveröffentlichte Experimente zurückgenommen. Keine Dienste gebucht.
 - Vorhandener gespeicherter Entwurf mit GitHub-Formularübergabe erfüllt diese neue Vorgabe noch nicht. Er ist deshalb weiterhin nicht zur Veröffentlichung freigegeben.
 - Erforderlich ist eine Annahmestelle ohne Besucheranmeldung mit serverseitig geschütztem Schreibzugang oder anderem dauerhaften Speicher. Noch keine eingerichtet. Ohne Identitätsprüfung sind Rückmeldungen nicht sicher dem Nutzer zuzuordnen; solche Eingänge nicht automatisch als bestätigte Nutzerpräferenzen behandeln. Kostenfreiheit muss auch Mehrverbrauch ausschließen, nicht nur Grundtarif Free heißen.
+
+## Anonymer Direktversand vorbereitet (19.10.2026)
+
+- Nutzer akzeptiert ausdrücklich das Restrisiko fremder Eingaben. Keine Anmeldung und keine Schlüssel-Eingabe auf der Website. Keine weitere Identitätsbestätigung für diese Rückmeldungen fordern. Herkunft trotzdem als Website ohne Anmeldung kennzeichnen.
+- Ein-Klick-Client feedback.js und schreibender Dienst services/feedback-relay/server.py implementiert. Festes privates Ziel; keine Lese-API für Bewertungen; serverseitiger Schreibzugang ausschließlich als Umgebungsvariable. Privatsichtbarkeit vor jedem Schreiben prüfen, strukturierte Daten validieren, maximale 15 Artikel, Textgrenzen und dauerhafte Dublettenprüfung via GitHub.
+- Noch NICHT live: feedback_endpoint bleibt null, kein Dienst erstellt, keine Zugangsdaten vorhanden. Frontend meldet dann ehrlich „noch nicht verbunden“, niemals „gespeichert“. Livebetrieb benötigt einmalige serverseitige Einrichtung und belegte Kostenbegrenzung.
+- Verifiziert: 19 Python-Tests sowie Clienttests erfolgreich; Desktop/Mobil-Browsertest gegen simulierte Annahmestelle erfolgreich (ein Klick, keine Anmeldung, korrekte Sammeldaten, keine Weiterleitung, Fehler erhält Eingaben). Kein Live-Ende-zu-Ende-Nachweis.
