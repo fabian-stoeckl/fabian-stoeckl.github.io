@@ -3,12 +3,14 @@ const assert=require('node:assert/strict');
 (async()=>{
 const browser=await chromium.launch({headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--no-zygote','--single-process']});
 const page=await browser.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.route('**/config.json',r=>r.fulfill({json:{mode:'github',feedback_repository:null,api:null,preview:true}}));
 await page.goto('http://127.0.0.1:8765/Privat/Pressespiegel/');
 await page.waitForSelector('article');assert.equal(await page.locator('article').count(),5);
 assert.equal(await page.locator('.ratings button:disabled').count(),15);
-for(const width of [1440,390]){await page.setViewportSize({width,height:1000});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:`artifacts/screenshots/morgenzeitung-github-${width}.png`,fullPage:true});}
 await page.route('**/config.json',r=>r.fulfill({json:{mode:'github',feedback_repository:'fabian-stoeckl/morgenzeitung-feedback',api:null,preview:true}}));
 await page.reload();await page.waitForSelector('.ratings a');
+for(const width of [1440,390]){await page.setViewportSize({width,height:1000});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:`artifacts/screenshots/morgenzeitung-github-${width}.png`,fullPage:true});}
+
 const first=page.locator('.ratings').first();await first.locator('select').selectOption('Schon bekannt');
 let target=new URL(await first.locator('a').first().getAttribute('href'));assert.match(target.searchParams.get('body'),/Grund: Schon bekannt/);
 assert.equal(target.hostname,'github.com');assert.equal(await first.locator('a').count(),3);

@@ -75,3 +75,9 @@ Die folgenden Punkte sind durch die Entscheidung vom 19.10.2026 ersetzt; keine K
 - Nur öffentliches Website-Repository über Connector sichtbar. Vorgesehenes separates privates Feedback-Repository noch nicht erstellt/verbunden; config `feedback_repository: null`, Buttons daher deaktiviert. Keine echten Bewertungen öffentlich gespeichert.
 - Betriebsvertrag und tägliche Lese-/Analyse-/Schreibfolge in `services/morgenzeitung/GITHUB-BETRIEB.md`. Freigabe der konkreten Oberfläche, privater Zugriff, echter Feedback-Folgelauf und unbeaufsichtigte Veröffentlichung weiterhin ausstehend. Vorschau enthält nur die bisherigen fünf ORF-Artikel.
 - Prüfungen dieses GitHub-Entwurfs: Node-Linktests, Kontextprüfung und 15 bestehende Python-Tests erfolgreich; Browserprüfung 1440/390 px erfolgreich, fünf Vorschauartikel, kein Überlauf oder JavaScript-Fehler, drei korrekt vorausgefüllte Bewertungslinks und Freitext-Übergabe geprüft. Testziel nur lokal simuliert; kein Issue abgesendet und kein privater Zugriff behauptet. Mobile Screenshotkontrolle erfolgreich. CI auf neuem Remote-Commit noch ausstehend.
+
+## Privates Feedback verbunden (19.10.2026)
+
+- Nutzer hat morgenzeitung-feedback erstellt und verbunden. Sichtbarkeit private sowie Schreib-/Lesezugriff geprüft. Initiales profile.json liegt ausschließlich dort. Synthetisches Issue #1 angelegt, unverändert zurückgelesen und geschlossen; ausdrücklich vom Lernen ausgeschlossen. Kein echter Feedback-Folgelauf behauptet.
+- config.json des Entwurfs zeigt nun auf fabian-stoeckl/morgenzeitung-feedback. Bewertungslinks aktiviert; Speicherung erfolgt nach GitHub-Anmeldung durch Absenden des vorausgefüllten Formulars.
+- Weiterhin offen: Freigabe der konkreten Vorschau und wiederkehrenden Ausgaben, Merge/Pages/Live-Prüfung sowie unbeaufsichtigter Lauf mit echtem Feedback.
