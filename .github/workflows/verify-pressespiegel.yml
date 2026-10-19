@@ -1,0 +1,39 @@
+name: Verify Morgenzeitung
+on:
+  pull_request:
+    paths: ['Privat/Pressespiegel/**', 'services/morgenzeitung/**', 'tests/pressespiegel/**', '.github/workflows/verify-pressespiegel.yml']
+  push:
+    paths: ['Privat/Pressespiegel/**', 'services/morgenzeitung/**', 'tests/pressespiegel/**', '.github/workflows/verify-pressespiegel.yml']
+permissions:
+  contents: read
+jobs:
+  private-api-and-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: python3 -m unittest discover -s tests/pressespiegel -v
+      - run: npx playwright install --with-deps chromium
+      - name: Isolated preview and browser checks (no paid API calls)
+        run: |
+          python3 services/morgenzeitung/preview.py /tmp/paper-preview.sqlite
+          PAPER_PREVIEW=1 PAPER_DB=/tmp/paper-preview.sqlite python3 services/morgenzeitung/server.py &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          for attempt in {1..30}; do
+            curl --fail --silent http://127.0.0.1:8765/health >/dev/null && break
+            sleep 1
+          done
+          node tests/pressespiegel/browser.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: morgenzeitung-preview
+          path: artifacts/screenshots/morgenzeitung-*.png
+          retention-days: 14

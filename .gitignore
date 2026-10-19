@@ -9,3 +9,8 @@
 /artifacts/
 
 __pycache__/
+
+*.sqlite
+*.sqlite-*
+*.db
+.env
