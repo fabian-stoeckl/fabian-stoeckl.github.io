@@ -32,7 +32,48 @@ function githubRating(a) {
 function article(a,index){const node=el('article',undefined,a.treat?'treat':'');const intro=el('div');intro.append(el('span',a.treat?'DAS ZUCKERL':a.topic,'eyebrow'));const meta=el('p',a.source+' · '+a.kind+'\n'+fmt(a.published_at)+(a.paywall?' · Paywall':''),'meta');intro.append(meta);const body=el('div',undefined,'body');const title=el('h2');title.append(link(a.title,a.url));body.append(title,el('p',a.summary));if(a.access==='teaser')body.append(el('p','Zusammenfassung beruht ausschließlich auf dem zugänglichen Vorspann.','small'));if(a.novelty)body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty,'novelty'));body.append(readingLinks(a));if(config.mode==='github'){body.append(githubRating(a));node.append(intro,body);return node;}const controls=el('div',undefined,'ratings');controls.setAttribute('aria-label','Relevanz bewerten');const state=el('p','','rating-state');state.setAttribute('role','status');const reasonLabel=el('label','Optionaler Grund ','reason');const reason=el('select');reason.setAttribute('aria-label','Grund für die Bewertung');for(const t of ['','Mehr davon','Schon bekannt','Zu oberflächlich','Thema interessiert mich nicht']){const o=el('option',t||'–');o.value=t;reason.append(o);}reasonLabel.append(reason);let saved=ratings[a.id];reason.value=saved?.reason||'';const buttons=[];function refresh(){for(const [b,v] of buttons)b.setAttribute('aria-pressed',String(saved?.value===v));state.textContent=saved?'Gespeichert · jederzeit änderbar':'';reason.disabled=!saved;}
 async function save(value){buttons.forEach(([b])=>b.disabled=true);reason.disabled=true;state.textContent='Wird gespeichert …';try{await api('/api/rating',{id:a.id,value,reason:reason.value});saved={value,reason:reason.value};ratings[a.id]=saved;refresh();}catch(e){state.textContent=e.message+' – nicht gespeichert';reason.value=saved?.reason||'';}finally{buttons.forEach(([b])=>b.disabled=false);reason.disabled=!saved;}}
 for(const [text,value] of [['Sehr relevant',1],['Teilweise relevant',0],['Nicht relevant',-1]]){const b=el('button',text);b.type='button';b.onclick=()=>save(value);controls.append(b);buttons.push([b,value]);}reason.onchange=()=>save(saved.value);refresh();body.append(controls,state,reasonLabel);node.append(intro,body);return node;}
-function render(){const e=edition;$('articles').replaceChildren();const lead=el('div',undefined,'lead-grid'),rest=el('div',undefined,'article-list');e.articles.forEach((a,i)=>(i<3&&!a.treat?lead:rest).append(article(a,i)));$('articles').append(lead,rest);$('article-count').textContent=e.articles.length;$('headline-count').textContent=e.headlines.length;$('headlines').replaceChildren();const cols=el('div',undefined,'headline-columns');for(const region of ['Österreich','International']){const sec=el('section');sec.append(el('h2',region));const list=el('ul');for(const a of e.headlines.filter(a=>a.region===region)){const row=el('li');row.append(link(a.title,a.url),el('small',a.source));list.append(row);}sec.append(list);cols.append(sec);}$('headlines').append(cols);$('edition-meta').textContent=new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'}).format(new Date(e.available_at))+' · '+(e.preview?'Vorschau':('bereitgestellt '+fmt(e.available_at)));$('window').textContent='Recherche: '+fmt(e.window_start)+' bis '+fmt(e.window_end)+' · Stand: '+fmt(e.researched_at)+' · alle Zeiten Wien';$('feedback-section').hidden=false;status((e.preview?'Vorschau mit echten Artikeln · noch kein täglicher Betrieb. ':'')+(e.limitations||[]).join(' '));if(!e.preview){const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Vienna',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());if(e.date!==today)status((e.date!==latestDate?'Archiv · Ausgabe vom ':'Letzte verfügbare Ausgabe vom ')+e.date+'. '+(e.limitations||[]).join(' '));}}
+function sectionSave(section,other){
+  const box=el('div',undefined,'section-save');
+  const button=el('button','Alle Bewertungen speichern');button.type='button';
+  button.className='save-all-feedback';
+  button.onclick=()=>{$('feedback-form').requestSubmit();$('feedback-section').scrollIntoView({behavior:'smooth'});};
+  box.append(button,el('p','Übermittelt auch Bewertungen aus '+other+'.','small'));
+  section.append(box);
+}
+function render(){
+  const e=edition;
+  $('articles').replaceChildren();
+  const lead=el('div',undefined,'lead-grid'),rest=el('div',undefined,'article-list');
+  e.articles.forEach((a,i)=>(i<3&&!a.treat?lead:rest).append(article(a,i)));
+  $('articles').append(lead,rest);
+  sectionSave($('articles'),'„Heute wichtig“');
+  $('article-count').textContent=e.articles.length;
+  $('headline-count').textContent=e.headlines.length;
+  $('headlines').replaceChildren();
+  const cols=el('div',undefined,'headline-columns');
+  for(const region of ['Österreich','International']){
+    const sec=el('section');sec.append(el('h2',region));const list=el('ul');
+    for(const a of e.headlines.filter(a=>a.region===region)){
+      const item=el('li');
+      item.append(link(a.title,a.url),el('small',a.source));
+      if(config.mode==='github')item.append(githubRating(a));
+      list.append(item);
+    }
+    if(!list.children.length)list.append(el('li','Keine eigenständigen Meldungen in dieser Ausgabe.','small'));
+    sec.append(list);cols.append(sec);
+  }
+  $('headlines').append(cols);
+  sectionSave($('headlines'),'„Vertiefungen“');
+  $('feedback').value=feedbackDrafts[e.date]||'';
+  $('edition-meta').textContent=new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'}).format(new Date(e.available_at))+' · '+(e.preview?'Vorschau':('bereitgestellt '+fmt(e.available_at)));
+  $('window').textContent='Recherche: '+fmt(e.window_start)+' bis '+fmt(e.window_end)+' · Stand: '+fmt(e.researched_at)+' · alle Zeiten Wien';
+  $('feedback-section').hidden=false;
+  status((e.preview?'Vorschau mit echten Artikeln · noch kein täglicher Betrieb. ':'')+(e.limitations||[]).join(' ')+(e.duplicateHeadlinesRemoved?' '+e.duplicateHeadlinesRemoved+' doppelte Nachrichten entfernt.':''));
+  if(!e.preview){
+    const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Vienna',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+    if(e.date!==today)status((e.date!==latestDate?'Archiv · Ausgabe vom ':'Letzte verfügbare Ausgabe vom ')+e.date+'. '+(e.limitations||[]).join(' '));
+  }
+}
 async function load(){try{const [list,r]=await Promise.all([api('/api/editions'),api('/api/ratings')]);ratings=r;latestDate=list.dates[0];$('date').replaceChildren();for(const d of list.dates){const o=el('option',d);o.value=d;$('date').append(o);}if(!list.dates.length){status('Noch keine erfolgreiche Ausgabe verfügbar.');return; }edition=await api('/api/edition');render();$('login').hidden=true;$('logout').hidden=config.preview;$('operating-state').textContent=list.scheduler_enabled?'Automatik konfiguriert · tatsächlicher Stand siehe Ausgabe.':'Täglicher Betrieb noch nicht aktiviert.';}catch(e){status(e.message);$('login').hidden=false;}}
 $('date').onchange=async()=>{try{edition=config.mode==='github'?await GitHubPaper.edition($('date').value):await api('/api/edition?date='+encodeURIComponent($('date').value));render();}catch(e){status(e.message);}};
 for(const tab of ['headlines','articles'])$('tab-'+tab).onclick=()=>{for(const name of ['headlines','articles']){$(name).hidden=name!==tab;$('tab-'+name).setAttribute('aria-pressed',String(name===tab));}};
