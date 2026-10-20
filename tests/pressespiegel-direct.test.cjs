@@ -20,6 +20,7 @@ const transport=async(url,opts)=>{
   assert.equal(opts.headers.Authorization,'Bearer github_pat_TESTTOKEN_example_123456789');
   assert.equal(opts.credentials,'omit');
   assert.equal(opts.redirect,'error');
+  assert.equal(opts.headers['X-GitHub-Api-Version'],undefined); // Browser CORS preflight compatibility.
   calls.push({url,opts});
   if(fail)return {ok:false,status:500,json:async()=>({})};
   if(opts.method==='GET')return {ok:true,json:async()=>({full_name:feedback.REPO,private:privateRepo})};
