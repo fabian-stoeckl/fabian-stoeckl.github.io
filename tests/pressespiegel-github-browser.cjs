@@ -5,7 +5,7 @@ const assert=require('node:assert/strict');
  const context=await browser.newContext(),page=await context.newPage(),errors=[],requests=[];
  page.on('pageerror',e=>errors.push(e.message));
  let failure=false;
- await page.route('https://api.github.com/repos/fabian-stoeckl/morgenzeitung-feedback**',route=>{
+ await context.route('**/repos/fabian-stoeckl/morgenzeitung-feedback**',route=>{
    const req=route.request(),url=new URL(req.url()),method=req.method();
    const headers={'access-control-allow-origin':'*','access-control-allow-methods':'GET, POST, PATCH, OPTIONS',
      'access-control-allow-headers':'authorization, content-type, x-github-api-version, accept'};
