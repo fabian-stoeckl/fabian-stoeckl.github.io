@@ -95,7 +95,16 @@ const visible=GitHubPaper.partition(fixture);
  assert.equal(await page.locator('article').first().locator('.body > p.small').count(),fixture.articles[0].access==='teaser'?1:0);
  assert.equal(await page.locator('article').first().locator('.body > p.small').first().innerText().catch(()=>''),fixture.articles[0].access==='teaser'?'Zusammenfassung beruht ausschließlich auf dem zugänglichen Vorspann.':'');
  assert.equal(await page.locator('article').first().locator('h2 a').getAttribute('href'),visible.articles[0].url);
- assert.match(await page.locator('#publication-status').innerText(),/Beispielausgabe|Aktuelle Ausgabe|Letzte Ausgabe|Neue Morgenzeitung/);
+ const dateToday=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Vienna',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+ assert.equal(await page.locator('#window').count(),0,'Redundant research date window must be removed');
+ const dateLine=await page.locator('#edition-meta').innerText();
+ assert.match(dateLine,/Stand [0-2][0-9]:[0-5][0-9] Uhr \(Wien\)/);
+ assert.doesNotMatch(dateLine,/bereitgestellt|Recherche:/);
+ if(!fixture.preview&&fixture.date===dateToday){
+   assert(await page.locator('#publication-status').isHidden(),'Today must not show a duplicate freshness/date line');
+ }else{
+   assert(await page.locator('#publication-status').isVisible(),'Old/demo edition must retain a useful warning');
+ }
  await page.locator('#feedback').fill('Mehr Handelsblatt');
  await page.locator('#feedback-form button[type=submit]').click();
  assert.match(await page.locator('#feedback-status').innerText(),/einmalig/);
@@ -156,6 +165,17 @@ const visible=GitHubPaper.partition(fixture);
  await page.locator('#profile-toggle').click();
  assert(await page.locator('#profile').isVisible());
  assert.equal(await page.locator('#profile-toggle').getAttribute('aria-expanded'),'true');
+ assert.equal(new URL(page.url()).hash,'#praeferenzen');
+ assert.equal(await page.title(),'Meine Präferenzen · Pressespiegel');
+ for(const selector of ['.editionline','#publication-status','#notice','nav.tabs','#headlines','#articles','#feedback-section','#feedback-settings','footer']){
+   assert(await page.locator(selector).isHidden(),selector+' must disappear completely in preferences view');
+ }
+ assert(await page.locator('#profile-close').isVisible());
+ assert.equal(await page.locator('#profile-toggle').innerText(),'← Zur Morgenzeitung');
+ await page.setViewportSize({width:390,height:844});
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Preferences page must fit on mobile');
+ await page.screenshot({path:'artifacts/screenshots/morgenzeitung-preferences-mobile.png',fullPage:true});
+ await page.setViewportSize({width:1440,height:1000});
  await page.waitForFunction(()=>document.querySelector('#preference-feedback')?.textContent.includes('2 Artikelbewertungen'));
  assert.match(await page.locator('#preference-learning-status').innerText(),/nicht verlässlich nachgewiesen/);
  assert.match(await page.locator('#preference-edition-changes').innerText(),/Noch keine zwei veröffentlichten Ausgaben|gegenüber/);
@@ -169,8 +189,20 @@ const visible=GitHubPaper.partition(fixture);
  assert.match(afterPreference.body.body,/Bereich: Vertiefungen/);
  assert.match(afterPreference.body.body,/Mehr KI und Industrie/);
  assert.equal(await page.locator('#preference-comment').inputValue(),'');
+ await page.goBack();
+ await page.waitForFunction(()=>!document.body.classList.contains('preferences-view'));
+ assert(await page.locator('nav.tabs').isVisible(),'Browser Back returns to news');
+ assert(await page.locator('#profile').isHidden());
+ await page.goForward();
+ await page.waitForFunction(()=>document.body.classList.contains('preferences-view'));
+ assert(await page.locator('#profile').isVisible(),'Browser Forward restores preferences');
+ await page.reload();
+ await page.waitForFunction(()=>document.body.classList.contains('preferences-view'));
+ assert(await page.locator('nav.tabs').isHidden(),'Direct hash reload is still exclusive');
  await page.locator('#profile-close').click();
  assert(await page.locator('#profile').isHidden());
+ assert.equal(new URL(page.url()).hash,'');
+ assert(await page.locator('nav.tabs').isVisible(),'Closing preferences restores newspaper');
  assert.equal(await page.locator('#profile-toggle').getAttribute('aria-expanded'),'false');
  assert(await page.locator('#github-connected').isVisible());
 
