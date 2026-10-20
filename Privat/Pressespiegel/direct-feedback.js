@@ -86,14 +86,23 @@ const DirectFeedback = (() => {
     return {ratings,feedback:body.slice(cut+marker.length)};
   }
   async function submit(date,ratings,feedback,token,store=localStorage,transport=fetch,cryptoAPI=crypto) {
-    const issue=buildFeedback(date,ratings,feedback);
+    const receipts=readReceipts(store),previous=receipts[date];
+    const patch=previous&&Number.isSafeInteger(previous.number)&&previous.number>0;
+    let combined=ratings,comment=feedback;
+    if(patch){
+      const remote=await request(token,'/issues/'+previous.number,'GET',undefined,transport);
+      if(remote.number!==previous.number)throw Error('GitHub hat ein anderes Feedback-Issue geliefert.');
+      const saved=parsePrevious(remote.body,date);
+      const byId=new Map(saved.ratings.map(r=>[r.id,r]));
+      for(const r of ratings)byId.set(r.id,r);
+      combined=[...byId.values()];
+      if(!comment.trim())comment=saved.feedback;
+    }
+    const issue=buildFeedback(date,combined,comment);
     const hash=await fingerprint(issue.body,cryptoAPI);
-    const receipts=readReceipts(store), previous=receipts[date];
-    if(previous?.hash===hash&&Number.isSafeInteger(previous.number)) {
+    if(previous?.hash===hash&&Number.isSafeInteger(previous.number)){
       return {ok:true,existing:true,html_url:previous.url};
     }
-    // Subsequent updates of the same edition edit the previously confirmed issue.
-    const patch=previous&&Number.isSafeInteger(previous.number)&&previous.number>0;
     let result;
     try {
       result=await request(token,patch?'/issues/'+previous.number:'/issues',patch?'PATCH':'POST',issue,transport);
