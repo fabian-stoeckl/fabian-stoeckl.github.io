@@ -1,0 +1,28 @@
+const assert=require('node:assert/strict');
+const {webcrypto}=require('node:crypto');
+const fs=require('node:fs');
+const paper=require('../Privat/Pressespiegel/editorial.js');
+(async()=>{
+ const a={title:'Billa drängt auf längere Öffnungszeiten',url:'https://orf.at/stories/3445458/',event:'retail'};
+ const identical={title:'Billa drängt auf längere Öffnungszeiten',url:'https://orf.at/stories/3445458?utm_source=news',event:'retail2'};
+ const related={title:'Billa will längere Öffnungszeiten für Geschäfte',url:'https://example.org/news/2',event:'retail'};
+ const different={title:'China meldet Rekord bei Dieselausfuhren',url:'https://orf.at/stories/3445428/',event:'china-diesel'};
+ assert(paper.sameStory(a,identical));
+ assert(paper.sameStory(a,related));
+ assert(!paper.sameStory(a,different));
+ assert.equal(paper.canonical(a.url),paper.canonical(identical.url));
+ const raw={date:'2026-10-20',articles:[a],headlines:[identical,related,different,{...different}]};
+ const p=await paper.prepare(raw,webcrypto);
+ assert.equal(p.headlines.length,1);
+ assert.equal(p.duplicateHeadlinesRemoved,3);
+ assert.match(p.headlines[0].id,/^[a-f0-9]{16}$/);
+ assert.equal(p.headlines[0].id,await paper.stableId(different.url,webcrypto));
+ assert.equal(raw.headlines.length,4);
+ const fixture=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/2026-10-18.json','utf8'));
+ const preview=await paper.prepare(fixture,webcrypto);
+ assert.equal(preview.duplicateHeadlinesRemoved,0);
+ assert.equal(preview.headlines.length,4);
+ assert.equal(preview.articles.length,5);
+ assert(preview.headlines.every(h=>!preview.articles.some(a=>paper.sameStory(h,a))));
+ console.log('Editorial cross-section de-duplication, stable news IDs and demo separation passed.');
+})().catch(e=>{console.error(e);process.exit(1);});
