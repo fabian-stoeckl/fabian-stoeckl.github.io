@@ -11,7 +11,7 @@ const DirectFeedback = (() => {
   function clearToken(store=localStorage) {store.removeItem(TOKEN_KEY);}
   function saveToken(token,store=localStorage) {
     const value=String(token||'').trim();
-    if(value.length<20||value.length>500||/\s/.test(value)) throw Error('Ungültiges Token-Format.');
+    if(!value.startsWith('github_pat_')||value.length<30||value.length>500||/\s/.test(value)) throw Error('Bitte ausschließlich einen eingeschränkten Fine-grained GitHub-Token verwenden.');
     store.setItem(TOKEN_KEY,value);
     return value;
   }
