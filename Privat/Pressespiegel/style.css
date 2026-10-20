@@ -93,3 +93,27 @@ main{max-width:860px}.lead-grid{display:block;padding:0;border:0}.lead-grid arti
 #preference-edition-changes .preference-list{margin-top:5px}
 #preference-edition-changes .preference-list .small{display:block;margin-top:3px;font-weight:normal}
 @media(max-width:760px){.rating-dots{gap:7px 13px}.rating-dots>label{font-size:11px}}
+
+/* Desktop: align the expandable reason control with the three rating choices.
+   Mobile deliberately retains the stacked control for tap targets. */
+@media (min-width:761px){
+  .rating-dots .rating-reason,
+  .news-item .rating-dots .rating-reason{
+    flex:0 0 auto;
+    width:auto;
+    min-width:0;
+    margin:0 0 0 auto;
+    align-self:center;
+  }
+  .rating-dots .rating-reason[open],
+  .news-item .rating-dots .rating-reason[open]{
+    flex:0 1 245px;
+    width:min(245px,100%);
+    align-self:start;
+  }
+  .rating-dots .rating-reason summary{
+    white-space:nowrap;
+    padding:0;
+  }
+  .rating-dots .rating-reason textarea{width:100%;min-width:0;box-sizing:border-box;}
+}
