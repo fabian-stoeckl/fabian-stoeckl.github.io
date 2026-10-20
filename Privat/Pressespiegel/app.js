@@ -108,10 +108,16 @@ $('logout').onclick=()=>{secret='';location.reload();};
 $('profile-toggle').onclick=async()=>{if(config.mode==='github'){status('Profiländerungen bitte über das GitHub-Feedback unten mitteilen. Deine ausdrücklichen Wünsche haben Vorrang.');$('feedback-section').scrollIntoView({behavior:'smooth'});return;}if(config?.api===null){status('Interessenprofil wird nach Verbindung des privaten Dienstes verfügbar.');return;}try{const data=await api('/api/profile');currentProfile=data.profile;$('topics').replaceChildren();for(const [topic,value] of Object.entries(currentProfile.topics)){const label=el('label',topic);const select=el('select');select.dataset.topic=topic;for(const [v,t] of [[5,'Sehr hoch'],[4,'Hoch'],[3,'Mittel'],[2,'Ergänzend'],[1,'Gering'],[0,'Ausblenden']]){const o=el('option',t);o.value=v;select.append(o);}select.value=value;label.append(select);$('topics').append(label);}$('rules').value=currentProfile.rules;$('profile-history').replaceChildren(el('p','Lernsignale (maximal ±0,5; explizite Prioritäten bleiben maßgeblich): '+JSON.stringify(data.learning)));for(const h of data.history)$('profile-history').append(el('p',fmt(h.at)+' · '+h.reason));$('profile').hidden=!$('profile').hidden;}catch(e){status(e.message);}};
 $('profile-form').onsubmit=async e=>{e.preventDefault();const topics=Object.fromEntries([...$('topics').querySelectorAll('select')].map(s=>[s.dataset.topic,Number(s.value)]));try{currentProfile=await api('/api/profile',{topics,rules:$('rules').value,version:currentProfile.version});$('profile-status').textContent='Gespeichert · gilt für den nächsten Recherchelauf';}catch(e){$('profile-status').textContent=e.message;}};
 $('feedback-form').onsubmit=async e=>{e.preventDefault();if(config.mode==='github'){
-  const b=e.submitter;
+  const b=e.submitter||$('feedback-form').querySelector('button[type=submit]');
   try{
-    const selected=edition.articles.map(a=>ratingDrafts[edition.date+':'+a.id])
-      .filter(r=>r&&(r.value||r.reason.trim()));
+    const selected=[];
+    for(const [items,section] of [[visibleHeadlines,'Heute wichtig'],[visibleArticles,'Vertiefungen']]){
+      for(const item of items){
+        const draft=ratingDrafts[draftKey(item)];
+        if(draft&&(draft.value||draft.reason.trim()))
+          selected.push({id:await GitHubPaper.ratingId(item),value:draft.value||'',reason:draft.reason||'',section});
+      }
+    }
     const comment=$('feedback').value.trim();
     if(!selected.length&&!comment)throw Error('Bitte mindestens einen Artikel bewerten oder Feedback eingeben.');
     const token=DirectFeedback.readToken();
@@ -121,16 +127,16 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();if(config.mode==='githu
       throw Error('Bitte zuerst einmalig den GitHub-Zugang oben einrichten.');
     }
     b.disabled=true;
-    $('feedback-status').textContent='Wird direkt auf GitHub gespeichert …';
+    feedbackStatus('Wird gemeinsam auf GitHub gespeichert …');
     $('feedback-confirmation').hidden=true;
     const result=await DirectFeedback.submit(edition.date,selected,comment,token);
-    $('feedback-status').textContent=result.existing
-      ? 'Bereits auf GitHub gespeichert.'
-      : (result.updated?'Auf GitHub erfolgreich aktualisiert.':'Erfolgreich auf GitHub gespeichert.');
+    feedbackStatus(result.existing
+      ? 'Beide Rubriken sind bereits auf GitHub gespeichert.'
+      : (result.updated?'Bewertungen beider Rubriken auf GitHub aktualisiert.':'Bewertungen beider Rubriken erfolgreich auf GitHub gespeichert.'));
     $('feedback-issue-link').href=result.html_url;
     $('feedback-confirmation').hidden=false;
   }catch(err){
-    $('feedback-status').textContent=err.message+' Nicht bestätigte Änderungen bleiben im Tab erhalten.';
+    feedbackStatus(err.message+' Nicht bestätigte Änderungen bleiben im Tab erhalten.');
     if(/ungültig oder abgelaufen/.test(err.message)){
       $('github-setup').hidden=false;
       $('github-connected').hidden=true;
@@ -148,7 +154,7 @@ if(!latestDate){status('Noch keine veröffentlichte Ausgabe verfügbar.');return
 edition=await GitHubPaper.edition(latestDate);render();await restoreSavedRatings();return;
 }if(config.api===null){status('Die Morgenzeitung wird vorbereitet. Der private Zeitungsdienst ist noch nicht verbunden.');return;}if(config.api&&!config.api.startsWith('https://'))throw Error('Unsichere Dienstadresse');if(config.preview)await load();else{$('login').hidden=false;status('Bitte öffne deine persönliche Morgenzeitung.');}}catch(e){status('Zeitungsdienst nicht erreichbar. '+e.message);}})();
 
-$('feedback').addEventListener('input',()=>{$('feedback-status').textContent='Änderung noch nicht gesendet.';});
+$('feedback').addEventListener('input',()=>{feedbackStatus('Änderung noch nicht gesendet.');});
 
 
 function refreshGitHubConnection(){
@@ -173,7 +179,8 @@ $('github-setup-form').onsubmit=async e=>{
     $('remember-token').checked=false;
     $('github-setup-status').textContent='';
     refreshGitHubConnection();
-    $('feedback-status').textContent='GitHub verbunden. Dein nächstes Feedback lässt sich mit einem Klick speichern.';
+    feedbackStatus('GitHub verbunden. Dein nächstes Feedback lässt sich mit einem Klick speichern.');
+    await restoreSavedRatings();
   }catch(err){
     $('github-setup-status').textContent=err.message+' Kein Token gespeichert.';
   }finally{button.disabled=false;}
@@ -181,5 +188,5 @@ $('github-setup-form').onsubmit=async e=>{
 $('github-disconnect').onclick=()=>{
   DirectFeedback.clearToken();
   refreshGitHubConnection();
-  $('feedback-status').textContent='GitHub-Verbindung auf diesem Gerät entfernt. Bereits gespeicherte GitHub-Rückmeldungen bleiben erhalten.';
+  feedbackStatus('GitHub-Verbindung auf diesem Gerät entfernt. Bereits gespeicherte GitHub-Rückmeldungen bleiben erhalten.');
 };
