@@ -171,7 +171,7 @@ const visible=GitHubPaper.partition(fixture);
    assert(await page.locator(selector).isHidden(),selector+' must disappear completely in preferences view');
  }
  assert(await page.locator('#profile-close').isVisible());
- assert.equal(await page.locator('#profile-toggle').innerText(),'← Zur Morgenzeitung');
+ assert(await page.locator('#profile-toggle').isHidden(),'Only one return button should appear on the preferences page');
  await page.setViewportSize({width:390,height:844});
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Preferences page must fit on mobile');
  await page.screenshot({path:'artifacts/screenshots/morgenzeitung-preferences-mobile.png',fullPage:true});
