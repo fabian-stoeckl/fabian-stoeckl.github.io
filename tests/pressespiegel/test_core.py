@@ -40,6 +40,17 @@ class PaperTests(unittest.TestCase):
         self.ed['articles'][1]['event']=self.ed['articles'][0]['event']
         with self.assertRaises(ValueError):self.store.publish(self.ed)
         self.assertEqual(canonical('https://orf.at/stories/1/?utm_source=x'),canonical('https://orf.at/stories/1/'))
+    def test_no_duplicate_across_sections_in_new_edition(self):
+        e=copy.deepcopy(self.ed);e['preview']=False
+        for a in e['articles']:
+            if a.get('kind') == 'Nachricht':
+                a['kind']='Analyse'
+        with self.assertRaisesRegex(ValueError,'beiden Rubriken'):
+            self.store.publish(e)
+    def test_long_reads_are_not_short_news(self):
+        e=copy.deepcopy(self.ed);e['preview']=False
+        with self.assertRaisesRegex(ValueError,'Kurznachrichten'):
+            self.store.publish(e)
     def test_old_article_rejected(self):
         self.ed['window_start']='2026-10-17T14:00:00Z'
         with self.assertRaises(ValueError):self.store.publish(self.ed)
