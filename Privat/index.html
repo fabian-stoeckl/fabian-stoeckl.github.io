@@ -10,7 +10,7 @@
 .gallery{padding:40px}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px}
 .tile{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;color:white;text-decoration:none;font-weight:800;font-size:clamp(28px,4vw,42px);letter-spacing:-.04em;isolation:isolate;transition:transform .2s}
-.paint{position:absolute;inset:0;width:100%;height:100%;z-index:-1}.tile span{text-shadow:0 2px 8px #00000030}.tile:hover{transform:rotate(-2deg) scale(1.035)}.tile:focus-visible{outline:3px solid #242321;outline-offset:8px}
+.paint{position:absolute;inset:0;width:100%;height:100%;z-index:-1}.tile span{text-shadow:0 2px 8px #0009,0 1px 2px #0008}.tile:hover{transform:rotate(-2deg) scale(1.035)}.tile:focus-visible{outline:3px solid #242321;outline-offset:8px}
 .topic{text-align:center;min-width:0}.tile-press span{font-size:clamp(22px,3vw,32px)}
 .tile-website span{line-height:1.15;text-align:center}
 @media(max-width:700px){.gallery{padding:22px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}}
@@ -24,22 +24,22 @@
 <svg class="paint" viewBox="0 0 300 300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
 <defs><filter id="rough" x="-15%" y="-15%" width="130%" height="130%"><feTurbulence type="fractalNoise" baseFrequency=".075" numOctaves="4" seed="12" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G"/></filter>
 <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="3" seed="7"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".18"/></feComponentTransfer><feComposite in2="SourceGraphic" operator="in"/></filter></defs>
-<g filter="url(#rough)"><path fill="#30328c" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/><path fill="#253c99" opacity=".72" d="M31 36 L271 39 L259 92 L27 116 Z"/><path fill="#373294" opacity=".7" d="M24 147 L253 132 L270 232 L40 260 Z"/><path fill="#202573" opacity=".46" d="M42 38 L111 40 L95 258 L30 248 Z"/><path fill="#6374bc" opacity=".22" d="M62 176 Q143 117 244 168 L259 190 Q143 155 67 212 Z"/>
-<path fill="#ebe5dc" filter="url(#grain)" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/>
+<g filter="url(#rough)"><path fill="#293bff" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/><path fill="#6050ff" opacity=".72" d="M31 36 L271 39 L259 92 L27 116 Z"/><path fill="#0879ff" opacity=".7" d="M24 147 L253 132 L270 232 L40 260 Z"/><path fill="#171aab" opacity=".46" d="M42 38 L111 40 L95 258 L30 248 Z"/><path fill="#92c8ff" opacity=".22" d="M62 176 Q143 117 244 168 L259 190 Q143 155 67 212 Z"/>
+<path fill="#fff" opacity=".09" filter="url(#grain)" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/>
 </g>
 </svg><span>ETF</span></a>
 </div>
 <div class="topic"><a class="tile tile-press" href="./Pressespiegel/" aria-label="Pressespiegel öffnen">
 <svg class="paint" viewBox="0 0 300 300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#rough)"><path fill="#954d28" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/><path fill="#ae6336" opacity=".72" d="M31 36 L271 39 L259 92 L27 116 Z"/><path fill="#a4572c" opacity=".7" d="M24 147 L253 132 L270 232 L40 260 Z"/><path fill="#71391f" opacity=".46" d="M42 38 L111 40 L95 258 L30 248 Z"/><path fill="#d6a47c" opacity=".22" d="M62 176 Q143 117 244 168 L259 190 Q143 155 67 212 Z"/>
-<path fill="#ebe5dc" filter="url(#grain)" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/>
+<g filter="url(#rough)"><path fill="#ef4000" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/><path fill="#ff8700" opacity=".72" d="M31 36 L271 39 L259 92 L27 116 Z"/><path fill="#eb1d48" opacity=".7" d="M24 147 L253 132 L270 232 L40 260 Z"/><path fill="#a52400" opacity=".46" d="M42 38 L111 40 L95 258 L30 248 Z"/><path fill="#ffd958" opacity=".22" d="M62 176 Q143 117 244 168 L259 190 Q143 155 67 212 Z"/>
+<path fill="#fff" opacity=".09" filter="url(#grain)" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/>
 </g>
 </svg><span>Pressespiegel</span></a>
 </div>
 <div class="topic"><a class="tile tile-website" href="https://chatgpt.com/skills?skill_id=6ac1802fca7c8191bc3470d27b3710df" aria-label="Website ändern – ChatGPT-Skill öffnen">
 <svg class="paint" viewBox="0 0 300 300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#rough)"><path fill="#185952" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/><path fill="#206e63" opacity=".72" d="M31 36 L271 39 L259 92 L27 116 Z"/><path fill="#21645c" opacity=".7" d="M24 147 L253 132 L270 232 L40 260 Z"/><path fill="#123f3c" opacity=".46" d="M42 38 L111 40 L95 258 L30 248 Z"/><path fill="#77b6a6" opacity=".22" d="M62 176 Q143 117 244 168 L259 190 Q143 155 67 212 Z"/>
-<path fill="#ebe5dc" filter="url(#grain)" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/>
+<g filter="url(#rough)"><path fill="#009a70" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/><path fill="#00d1a1" opacity=".72" d="M31 36 L271 39 L259 92 L27 116 Z"/><path fill="#00afcc" opacity=".7" d="M24 147 L253 132 L270 232 L40 260 Z"/><path fill="#00644e" opacity=".46" d="M42 38 L111 40 L95 258 L30 248 Z"/><path fill="#9fffe2" opacity=".22" d="M62 176 Q143 117 244 168 L259 190 Q143 155 67 212 Z"/>
+<path fill="#fff" opacity=".09" filter="url(#grain)" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/>
 </g>
 </svg><span>Website<br>ändern</span></a>
 </div>
