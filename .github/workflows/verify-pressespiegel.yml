@@ -1,7 +1,7 @@
 name: Verify Morgenzeitung
 on:
   pull_request:
-    paths: ['Privat/Pressespiegel/**', 'services/morgenzeitung/**', 'tests/pressespiegel/**', 'tests/pressespiegel-github*', 'tests/pressespiegel-direct*', '.github/workflows/verify-pressespiegel.yml']
+    paths: ['Privat/Pressespiegel/**', 'services/morgenzeitung/**', 'tests/pressespiegel/**', 'tests/pressespiegel-github*', 'tests/pressespiegel-direct*', 'tests/pressespiegel-editorial*', '.github/workflows/verify-pressespiegel.yml']
   push:
     paths: ['Privat/Pressespiegel/**', 'services/morgenzeitung/**', 'tests/pressespiegel/**', 'tests/pressespiegel-github*', '.github/workflows/verify-pressespiegel.yml']
 permissions:
@@ -21,6 +21,7 @@ jobs:
       - run: npm ci
       - run: node tests/pressespiegel-github.test.cjs
       - run: node tests/pressespiegel-direct.test.cjs
+      - run: node tests/pressespiegel-editorial.test.cjs
       - run: python3 -m unittest discover -s tests/pressespiegel -v
       - run: npx playwright install --with-deps chromium
       - name: Static GitHub preview (no API calls or feedback submissions)
