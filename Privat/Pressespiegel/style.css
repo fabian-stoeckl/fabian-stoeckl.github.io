@@ -165,7 +165,7 @@ body.preferences-view main > #feedback-settings,
 body.preferences-view main > footer{display:none!important}
 body.preferences-view h1{font-size:clamp(34px,6vw,61px);margin:28px 0 4px}
 body.preferences-view #profile{display:block;min-height:65vh;margin:12px 0 30px;padding:20px 0 45px;border-top:2px solid var(--ink)}
-body.preferences-view .topline #profile-toggle{border-color:var(--line)}
+body.preferences-view .topline #profile-toggle{display:none!important}
 @media(max-width:760px){
   body.preferences-view #profile{padding-top:18px}
   body.preferences-view .profile-head{flex-wrap:wrap}
