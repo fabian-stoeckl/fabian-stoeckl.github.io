@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><title>Morgenzeitung · Pressespiegel</title><link rel="stylesheet" href="./style.css"><script src="./github.js" defer></script><script src="./direct-feedback.js" defer></script><script src="./app.js" defer></script></head>
 <body><main>
-<header><div class="topline"><a href="../">← Privat</a><span>PRESSESPIEGEL</span><button id="profile-toggle" type="button" aria-expanded="false" aria-controls="profile" aria-label="Meine Präferenzen anzeigen">Meine Präferenzen</button></div><h1>Morgenzeitung<span>.</span></h1><div class="editionline"><p id="edition-meta">Täglich um 07:45 · Wien</p><label>Ausgabe <select id="date" aria-label="Ausgabe auswählen"><option>Noch keine Ausgabe</option></select></label></div><p id="window" class="small"></p></header>
+<header><div class="topline"><a href="../">← Privat</a><span>PRESSESPIEGEL</span><button id="profile-toggle" type="button" aria-expanded="false" aria-controls="profile" aria-label="Meine Präferenzen anzeigen">Meine Präferenzen</button></div><h1>Morgenzeitung<span>.</span></h1><div class="editionline"><p id="edition-meta">Täglich um 07:45 Uhr · Wien</p><label>Ausgabe <select id="date" aria-label="Ausgabe auswählen"><option>Noch keine Ausgabe</option></select></label></div></header>
 <p id="notice" role="status" class="notice">Verbindung wird geprüft …</p>
-<p id="publication-status" class="publication-status" role="status" aria-live="polite">Prüfe die letzte veröffentlichte Ausgabe …</p>
+<p id="publication-status" class="publication-status" role="status" aria-live="polite" hidden></p>
 <section id="login" hidden><h2>Deine Zeitung öffnen</h2><p>Dein Zugang schützt Ausgaben, Bewertungen und Interessenprofil.</p><form id="login-form"><label>Zugangsschlüssel <input id="token" type="password" autocomplete="current-password" required></label><button type="submit">Öffnen</button></form><p class="small">Der Schlüssel bleibt nur in diesem geöffneten Tab und wird beim Schließen verworfen.</p></section>
 <section id="profile" hidden aria-labelledby="profile-title">
-  <div class="profile-head"><div><p class="eyebrow">DEINE AUSWAHL</p><h2 id="profile-title">Meine Präferenzen</h2></div><button id="profile-close" type="button">Schließen</button></div>
+  <div class="profile-head"><div><p class="eyebrow">DEINE AUSWAHL</p><h2 id="profile-title">Meine Präferenzen</h2></div><button id="profile-close" type="button">← Zurück zur Morgenzeitung</button></div>
   <p>Diese Regeln steuern die Auswahl deiner Morgenzeitung. Die Bewertungen werden ausschließlich aus deinem privaten GitHub-Feedback abgerufen, wenn du den Zugang auf diesem Gerät eingerichtet hast.</p>
   <div class="profile-columns">
     <section><h3>Heute wichtig</h3><p>Die wichtigsten aktuellen Nachrichten aus Österreich und international – unabhängig von deinen persönlichen Fachinteressen. Kurze Originalschlagzeilen mit Quellen, vor allem aus ORF, Standard, Presse, Krone und vergleichbaren Medien.</p></section>
