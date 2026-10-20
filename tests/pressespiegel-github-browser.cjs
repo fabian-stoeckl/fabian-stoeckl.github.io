@@ -25,7 +25,12 @@ const assert=require('node:assert/strict');
  const calls=()=>page.evaluate(()=>window.__feedbackTestRequests);
  await page.goto('http://127.0.0.1:8765/Privat/Pressespiegel/');
  await page.waitForSelector('article');
- assert.equal(await page.locator('#overview-list li').count(),3);
+ assert.equal(await page.locator('#overview').count(),0);
+ assert.equal(await page.locator('.deck').count(),0);
+ assert.equal(await page.locator('.tabs button').count(),2);
+ assert.equal(await page.locator('#tab-headlines').getAttribute('aria-pressed'),'true');
+ assert.equal(await page.locator('#headlines h2').allTextContents().then(a=>a.join(', ')),'Österreich, International');
+ await page.locator('#tab-articles').click();
  assert.equal(await page.locator('article').count(),5);
  assert(await page.locator('#github-setup').isVisible());
  await page.locator('article').first().getByLabel('Sehr relevant',{exact:true}).check();
@@ -69,7 +74,10 @@ const assert=require('node:assert/strict');
  for(const width of [1440,390]){
    await page.setViewportSize({width,height:1000});
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
-   await page.screenshot({path:'artifacts/screenshots/morgenzeitung-direct-'+width+'.png',fullPage:true});
+   await page.screenshot({path:'artifacts/screenshots/morgenzeitung-news-'+width+'.png',fullPage:true});
+   await page.locator('#tab-articles').click();
+   await page.screenshot({path:'artifacts/screenshots/morgenzeitung-analysen-'+width+'.png',fullPage:true});
+   await page.locator('#tab-headlines').click();
  }
  await page.locator('#github-disconnect').click();
  assert(await page.locator('#github-setup').isVisible());
