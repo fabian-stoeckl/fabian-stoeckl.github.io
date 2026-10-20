@@ -102,13 +102,13 @@ main{max-width:860px}.lead-grid{display:block;padding:0;border:0}.lead-grid arti
     flex:0 0 auto;
     width:auto;
     min-width:0;
-    margin:0 0 0 auto;
+    margin:0;
     align-self:center;
   }
   .rating-dots .rating-reason[open],
   .news-item .rating-dots .rating-reason[open]{
-    flex:0 1 245px;
-    width:min(245px,100%);
+    flex:0 0 auto;
+    width:auto;
     align-self:start;
   }
   .rating-dots .rating-reason summary{
@@ -116,4 +116,29 @@ main{max-width:860px}.lead-grid{display:block;padding:0;border:0}.lead-grid arti
     padding:0;
   }
   .rating-dots .rating-reason textarea{width:100%;min-width:0;box-sizing:border-box;}
+}
+
+/* Keep the section switcher accessible throughout long issues. */
+.tabs{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:var(--paper);
+  box-shadow:0 4px 9px -9px var(--ink);
+}
+/* Maintain breathing room after the last rating choice, without pushing the
+   optional explanation all the way to the far right on desktop. */
+@media (min-width:761px){
+  .rating-dots .rating-reason,
+  .news-item .rating-dots .rating-reason{
+    margin-left:3px;
+  }
+}
+
+/* Each news item gets one compact editorial sentence below its linked headline. */
+.news-item .news-summary{
+  margin:8px 0 2px;
+  font-size:13px;
+  line-height:1.55;
+  color:var(--muted);
 }

@@ -58,7 +58,8 @@
       "published_at": "2026-10-17T19:05:00+02:00",
       "region": "Österreich",
       "event": "at-uni-budget-2028-2030",
-      "id": "c56eb5eba8a468cf"
+      "id": "c56eb5eba8a468cf",
+      "summary": "Die Bundesregierung verständigte sich auf 16 Milliarden Euro für die Universitäten von 2028 bis 2030 sowie auf ein steuerlich begünstigtes Zukunftsdepot für Kinder."
     },
     {
       "title": "Wien und NÖ fordern Abschaffung der Flugabgabe",
@@ -67,7 +68,8 @@
       "published_at": "2026-10-18T10:26:00+02:00",
       "region": "Österreich",
       "event": "at-flugabgabe-abschaffung-2026",
-      "id": "4a5e7776fa335965"
+      "id": "4a5e7776fa335965",
+      "summary": "Wien und Niederösterreich fordern nach rückläufigen Passagierzahlen am Flughafen Schwechat die Abschaffung der Flugabgabe von derzeit 12 Euro je regulärem Ticket."
     },
     {
       "title": "Tanner wüscht sich frühere Verlängerung des Zivildienstes",
@@ -76,7 +78,8 @@
       "published_at": "2026-10-18T13:37:00+02:00",
       "region": "Österreich",
       "event": "at-zivildienst-verlaengerung-2026",
-      "id": "0b3ee3ed3c64d1b7"
+      "id": "0b3ee3ed3c64d1b7",
+      "summary": "Verteidigungsministerin Klaudia Tanner spricht sich dafür aus, eine Verlängerung des Zivildienstes früher anzugehen."
     }
   ]
 }

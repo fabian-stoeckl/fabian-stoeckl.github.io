@@ -262,7 +262,8 @@
       "published_at": "2026-10-19T14:58:00+02:00",
       "region": "Österreich",
       "event": "uni-budget-personalabbau-2026",
-      "id": "3ce166b1bf2054dd"
+      "id": "3ce166b1bf2054dd",
+      "summary": "Die Universitätenkonferenz rechnet wegen des Budgets 2028 bis 2030 mit einem Personalabbau von mindestens zehn Prozent und warnt vor Einschnitten in Lehre und Forschung."
     },
     {
       "title": "„Zukunftsdepot“: Startbonus nur bei 15-jährigem Aufenthalt",
@@ -271,7 +272,8 @@
       "published_at": "2026-10-19T14:53:00+02:00",
       "region": "Österreich",
       "event": "zukunftsdepot-startbonus-2026",
-      "id": "ab6f69aa7bf33e7c"
+      "id": "ab6f69aa7bf33e7c",
+      "summary": "Den geplanten Startbonus von 500 Euro sollen Kinder nur erhalten, wenn bis zur Volljährigkeit mindestens 15 Jahre rechtmäßiger Aufenthalt in Österreich vorliegen."
     },
     {
       "title": "Prozess gegen Wolf und Ex-Minister Schelling startet",
@@ -280,7 +282,8 @@
       "published_at": "2026-10-19T23:02:00+02:00",
       "region": "Österreich",
       "event": "wolf-schelling-prozess-steuernachlass",
-      "id": "29cce33ec7c6976a"
+      "id": "29cce33ec7c6976a",
+      "summary": "Am Landesgericht Wiener Neustadt beginnt der Korruptionsprozess um eine mutmaßlich unrechtmäßige Steuernachsicht von 630.000 Euro; die Beschuldigten bestreiten die Vorwürfe."
     },
     {
       "title": "Wien will „Integrationsmaßstab“ entwickeln",
@@ -289,7 +292,8 @@
       "published_at": "2026-10-19T13:41:00+02:00",
       "region": "Österreich",
       "event": "wien-integrationsmassstab-2026",
-      "id": "0823cd389f4a5d9f"
+      "id": "0823cd389f4a5d9f",
+      "summary": "Wien plant einen Integrationskodex, ein Leitbild und regelmäßige Berichte, mit denen gemeinsame Regeln und Fortschritte bei der Integration überprüft werden sollen."
     },
     {
       "title": "Neue Regierung in Ungarn macht Spar Hoffnung",
@@ -298,7 +302,8 @@
       "published_at": "2026-10-20T06:00:00+02:00",
       "region": "Österreich",
       "event": "spars-ungarn-margendeckel",
-      "id": "ce29ffafee804222"
+      "id": "ce29ffafee804222",
+      "summary": "Ungarns neuer Premier kündigt die Abschaffung der Margendeckel für Lebensmittelhändler an, während die von Spar kritisierte Sondersteuer vorerst bestehen bleiben dürfte."
     },
     {
       "title": "Sozialhilfe: Regierung sieht Einigung auf Zielgeraden",
@@ -307,7 +312,8 @@
       "published_at": "2026-10-19T13:00:00+02:00",
       "region": "Österreich",
       "event": "sozialhilfe-koalition-einigung",
-      "id": "fe9f7c69e54528f4"
+      "id": "fe9f7c69e54528f4",
+      "summary": "Die Koalition sieht Fortschritte bei einer bundesweit einheitlichen Sozialhilfe, doch Anspruchsvoraussetzungen, Leistungshöhen und strengere Regeln für Zugewanderte sind noch umstritten."
     },
     {
       "title": "US-Drohnenfirma will Steyr Motors übernehmen",
@@ -316,7 +322,8 @@
       "published_at": "2026-10-19T13:00:00+02:00",
       "region": "Österreich",
       "event": "steyr-motors-red-cat-kaufangebot",
-      "id": "b70c4759cdc84075"
+      "id": "b70c4759cdc84075",
+      "summary": "Der US-Drohnenentwickler Red Cat plant ein Übernahmeangebot für Steyr Motors und stellt einen Ausbau des österreichischen Standorts in Aussicht."
     },
     {
       "title": "Bombendrohung zwingt AUA-Maschine zur Zwischenlandung in Sofia",
@@ -325,7 +332,8 @@
       "published_at": "2026-10-19T13:00:00+02:00",
       "region": "Österreich",
       "event": "aua-flug-sofia-drohung",
-      "id": "1bf8a4eeb6683931"
+      "id": "1bf8a4eeb6683931",
+      "summary": "Eine Bombendrohung zwang eine Maschine der Austrian Airlines auf ihrem Flug zu einer außerplanmäßigen Zwischenlandung in der bulgarischen Hauptstadt."
     },
     {
       "title": "Grundwasser erreicht neue Tiefstände",
@@ -334,7 +342,8 @@
       "published_at": "2026-10-19T13:00:00+02:00",
       "region": "Österreich",
       "event": "oesterreich-grundwasser-rekordtief",
-      "id": "784d7704d7974f82"
+      "id": "784d7704d7974f82",
+      "summary": "Ein ORF-Bericht warnt vor neuen Tiefständen des Grundwassers in Österreich."
     },
     {
       "title": "Ärzte ohne Grenzen: „Absolute humanitäre Krise“ im Gazastreifen",
@@ -343,7 +352,8 @@
       "published_at": "2026-10-20T06:00:00+02:00",
       "region": "International",
       "event": "gaza-msf-humanitaere-krise",
-      "id": "e1b689e6ed6dfb1f"
+      "id": "e1b689e6ed6dfb1f",
+      "summary": "Ärzte ohne Grenzen berichtet trotz Waffenruhe von schwerer Not im Gazastreifen, während Kürzungen bei der Lebensmittelhilfe die Versorgung zusätzlich erschweren."
     },
     {
       "title": "Macron kündigt nach Krawallen hartes Vorgehen an",
@@ -352,7 +362,8 @@
       "published_at": "2026-10-19T13:00:00+02:00",
       "region": "International",
       "event": "frankreich-macron-krawalle",
-      "id": "2a92cfe8c97d9400"
+      "id": "2a92cfe8c97d9400",
+      "summary": "Frankreichs Präsident Emmanuel Macron kündigt nach gewalttätigen Ausschreitungen ein härteres Vorgehen an."
     },
     {
       "title": "Italien: Gewaltwelle erfasst Mailand – Meloni will mit Dekret reagieren",
@@ -361,7 +372,8 @@
       "published_at": "2026-10-19T17:42:00+02:00",
       "region": "International",
       "event": "italien-mailand-krawalle-meloni",
-      "id": "1947e40a11864a9d"
+      "id": "1947e40a11864a9d",
+      "summary": "Nach Protesten gegen hohe Lebenshaltungs- und Energiekosten sowie gewaltsamen Ausschreitungen in Mailand plant Italiens Regierung unter Giorgia Meloni ein Sicherheitsdekret."
     },
     {
       "title": "Ukraine-Krieg: Trump-Gesandte reisen laut Insidern zu Ukraine-Gesprächen nach Norwegen",
@@ -370,7 +382,8 @@
       "published_at": "2026-10-19T23:04:00+02:00",
       "region": "International",
       "event": "ukraine-oslo-friedensgespraeche",
-      "id": "ace3356c99174113"
+      "id": "ace3356c99174113",
+      "summary": "Insidern zufolge sollen Steve Witkoff und Jared Kushner zu neuen Ukraine-Gesprächen nach Norwegen reisen; auch eine Teilnahme von Präsident Selenskyj steht im Raum."
     },
     {
       "title": "Russischer Angriff tötet Frau in Kiew",
@@ -379,7 +392,8 @@
       "published_at": "2026-10-19T09:00:00+02:00",
       "region": "International",
       "event": "ukraine-energie-infrastruktur-angriff",
-      "id": "4bf916afaa6edc87"
+      "id": "4bf916afaa6edc87",
+      "summary": "Bei einem russischen Angriff auf die ukrainische Hauptstadt Kiew wurde laut ORF mindestens eine Frau getötet."
     },
     {
       "title": "Israel: Zehn Festnahmen nach Angriff auf US-Journalistin",
@@ -388,7 +402,8 @@
       "published_at": "2026-10-19T13:00:00+02:00",
       "region": "International",
       "event": "israel-us-journalistin-angriff-festnahmen",
-      "id": "610a3de583b9d3d9"
+      "id": "610a3de583b9d3d9",
+      "summary": "Nach einem Angriff auf eine US-Journalistin in Israel wurden laut ORF zehn Verdächtige festgenommen."
     }
   ],
   "selection_audit": {
