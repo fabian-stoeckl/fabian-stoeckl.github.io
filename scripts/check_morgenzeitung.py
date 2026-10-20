@@ -43,6 +43,11 @@ def validate(edition):
             if pub.tzinfo is None:
                 raise ValueError(f"{day}: Datum ohne Zeitzone")
             if section=="headlines":
+                # A headline alone is insufficient: every news row shows one
+                # concise, source-grounded sentence. This applies to archives too.
+                summary=item.get("summary")
+                if not isinstance(summary,str) or len(summary.strip())<40 or len(summary)>320:
+                    raise ValueError(f"{day}: Nachrichtenmeldung ohne kurzen Zusammenfassungssatz: {title}")
                 continue
             if not item.get("topic") or not item.get("kind") or item.get("kind")=="Nachricht":
                 raise ValueError(f"{day}: Vertiefung ist keine substanzielle Analyse: {title}")
