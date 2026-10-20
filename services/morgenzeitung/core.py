@@ -156,6 +156,19 @@ class Store:
                                 raise ValueError('Fortsetzung ohne belegte neue Information')
                     seen.add(aid)
                 a['id']=aid
+        # Two editorial categories: headline news and long reads cannot reuse URLs,
+        # event IDs or near-identical titles. Historic demo issues are exempt from
+        # publication validation, but the browser still removes overlaps.
+        if not e.get('preview'):
+            for deep in e['articles']:
+                if deep.get('kind') in ('Nachricht', 'Kurzmeldung', 'Ticker'):
+                    raise ValueError('Vertiefungen dürfen keine reinen Kurznachrichten sein')
+            for deep in e['articles']:
+                for headline in e['headlines']:
+                    if (canonical(deep['url']) == canonical(headline['url'])
+                            or deep.get('event') == headline.get('event')
+                            or similar(deep['title'], headline['title'])):
+                        raise ValueError('Identischer Artikel oder Ereignis in beiden Rubriken')
         if any(a.get('treat') for a in e['articles'][:-1]):
             raise ValueError('Zuckerl muss letzter Beitrag sein')
         with self.db() as db:
