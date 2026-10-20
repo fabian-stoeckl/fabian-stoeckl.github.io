@@ -76,8 +76,11 @@ function render(){
   $('headlines').append(cols);
   addSaveAction($('headlines'),'news-feedback-status');
   addSaveAction($('articles'),'features-feedback-status');
-  $('edition-meta').textContent=new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'}).format(new Date(e.available_at))+' · '+(e.preview?'Vorschau':('bereitgestellt '+fmt(e.available_at)));
-  $('window').textContent='Recherche: '+fmt(e.window_start)+' bis '+fmt(e.window_end)+' · Stand: '+fmt(e.researched_at)+' · alle Zeiten Wien';
+  // The date and the research timestamp are shown exactly once in the masthead.
+  // Use noon UTC for the calendar date, to avoid browser timezone rollover.
+  const issueDay=new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'}).format(new Date(e.date+'T12:00:00Z'));
+  const issueTime=new Intl.DateTimeFormat('de-AT',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Vienna'}).format(new Date(e.researched_at));
+  $('edition-meta').textContent=issueDay+' · Stand '+issueTime+' Uhr (Wien)'+(e.preview?' · Vorschau':'');
   $('feedback-section').hidden=false;
   updatePublicationStatus(e);
   // The edition's free-form limitations are editorial notes, not errors. Display
@@ -125,10 +128,12 @@ function updatePublicationStatus(e) {
   const hhmm=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Vienna',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(now);
   const late=hhmm>='07:45';
   node.dataset.state=e.preview||e.date!==d&&late?'stale':e.date===d?'fresh':'pending';
-  if(e.preview)node.textContent='Beispielausgabe vom '+e.date+' · Noch keine bestätigte tägliche Ausgabe. Bei der automatischen Veröffentlichung besteht weiterhin Handlungsbedarf.';
-  else if(e.date===d)node.textContent='Aktuelle Ausgabe vom '+d+' · Recherche: '+fmt(e.researched_at)+'.';
-  else if(late)node.textContent='Neue Morgenzeitung für '+d+' ist noch NICHT veröffentlicht. Letzte Ausgabe: '+e.date+'. Bitte die tägliche Aufgabe und GitHub-Prüfung kontrollieren.';
-  else node.textContent='Letzte Ausgabe: '+e.date+' · Neue Ausgabe für '+d+' wird ab 07:45 Uhr Wiener Zeit erwartet.';
+  // No third repeated date/time block when today's regular edition is up.
+  if(!e.preview&&e.date===d){node.hidden=true;node.textContent='';return;}
+  node.hidden=false;
+  if(e.preview)node.textContent='Beispielausgabe: Der tägliche Betrieb ist für diese Ausgabe noch nicht bestätigt.';
+  else if(late)node.textContent='Hinweis: Die heutige Morgenzeitung fehlt noch. Letzte Ausgabe: '+e.date+'.';
+  else node.textContent='Neue Ausgabe wird um 07:45 Uhr Wiener Zeit erwartet. Zuletzt: '+e.date+'.';
 }
 async function renderSelectionHistory() {
   const node=$('preference-edition-changes');
@@ -219,17 +224,35 @@ async function showPreferenceSummary() {
     summary.replaceChildren(el('p','Deine privaten Bewertungen konnten nicht geladen werden: '+error.message+'. Die Auswahlregeln bleiben sichtbar.','small'));
   }
 }
-$('profile-close').onclick=()=>{
-  $('profile').hidden=true;
-  $('profile-toggle').setAttribute('aria-expanded','false');
-};
-$('profile-toggle').onclick=async()=>{if(config.mode==='github'){
-  $('profile').hidden=!$('profile').hidden;
-  $('profile-toggle').setAttribute('aria-expanded',String(!$('profile').hidden));
-  if(!$('profile').hidden){
-    $('profile').scrollIntoView({behavior:'smooth',block:'start'});
-    await showPreferenceSummary();
+let preferencesVisible=false;
+const preferencesRoute=()=>location.hash==='#praeferenzen';
+async function syncPreferencesView(){
+  if(config?.mode!=='github')return;
+  const open=preferencesRoute(),changed=preferencesVisible!==open;
+  preferencesVisible=open;
+  document.body.classList.toggle('preferences-view',open);
+  $('profile').hidden=!open;
+  const toggle=$('profile-toggle');
+  toggle.setAttribute('aria-expanded',String(open));
+  toggle.textContent=open?'← Zur Morgenzeitung':'Meine Präferenzen';
+  toggle.setAttribute('aria-label',open?'Zur Morgenzeitung zurückkehren':'Meine Präferenzen öffnen');
+  document.title=(open?'Meine Präferenzen':'Morgenzeitung')+' · Pressespiegel';
+  if(changed){
+    window.scrollTo(0,0);
+    if(open)await showPreferenceSummary();
   }
+}
+function navigatePreferences(open){
+  const next=new URL(window.location.href);
+  next.hash=open?'praeferenzen':'';
+  history.pushState(null,'',next);
+  void syncPreferencesView();
+}
+window.addEventListener('popstate',()=>{void syncPreferencesView();});
+window.addEventListener('hashchange',()=>{void syncPreferencesView();});
+$('profile-close').onclick=()=>{if(config?.mode==='github')navigatePreferences(false);else $('profile').hidden=true;};
+$('profile-toggle').onclick=async()=>{if(config?.mode==='github'){
+  navigatePreferences(!preferencesRoute());
   return;}if(config?.api===null){status('Interessenprofil wird nach Verbindung des privaten Dienstes verfügbar.');return;}try{const data=await api('/api/profile');currentProfile=data.profile;$('topics').replaceChildren();for(const [topic,value] of Object.entries(currentProfile.topics)){const label=el('label',topic);const select=el('select');select.dataset.topic=topic;for(const [v,t] of [[5,'Sehr hoch'],[4,'Hoch'],[3,'Mittel'],[2,'Ergänzend'],[1,'Gering'],[0,'Ausblenden']]){const o=el('option',t);o.value=v;select.append(o);}select.value=value;label.append(select);$('topics').append(label);}$('rules').value=currentProfile.rules;$('profile-history').replaceChildren(el('p','Lernsignale (maximal ±0,5; explizite Prioritäten bleiben maßgeblich): '+JSON.stringify(data.learning)));for(const h of data.history)$('profile-history').append(el('p',fmt(h.at)+' · '+h.reason));$('profile').hidden=!$('profile').hidden;}catch(e){status(e.message);}};
 if($('profile-form')) $('profile-form').onsubmit=async e=>{e.preventDefault();const topics=Object.fromEntries([...$('topics').querySelectorAll('select')].map(s=>[s.dataset.topic,Number(s.value)]));try{currentProfile=await api('/api/profile',{topics,rules:$('rules').value,version:currentProfile.version});$('profile-status').textContent='Gespeichert · gilt für den nächsten Recherchelauf';}catch(e){$('profile-status').textContent=e.message;}};
 async function collectDraftRatings(){
@@ -281,7 +304,7 @@ const index=await GitHubPaper.json('./data/index.json');latestDate=index.dates[0
 for(const d of index.dates){const o=el('option',d);o.value=d;$('date').append(o);}
 $('operating-state').textContent='Ausgaben aus GitHub · Feedback wird nach einmaliger Verbindung direkt auf GitHub gespeichert.';
 if(!latestDate){status('Noch keine veröffentlichte Ausgabe verfügbar.');return;}
-edition=await GitHubPaper.edition(latestDate);render();await restoreSavedRatings();return;
+edition=await GitHubPaper.edition(latestDate);render();await restoreSavedRatings();await syncPreferencesView();return;
 }if(config.api===null){status('Die Morgenzeitung wird vorbereitet. Der private Zeitungsdienst ist noch nicht verbunden.');return;}if(config.api&&!config.api.startsWith('https://'))throw Error('Unsichere Dienstadresse');if(config.preview)await load();else{$('login').hidden=false;status('Bitte öffne deine persönliche Morgenzeitung.');}}catch(e){status('Zeitungsdienst nicht erreichbar. '+e.message);}})();
 
 $('feedback').addEventListener('input',()=>{feedbackStatus('Änderung noch nicht gesendet.');});
