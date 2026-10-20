@@ -1,6 +1,8 @@
 'use strict';
-let config, secret='', currentProfile, ratings={}, edition, latestDate;
+let config, secret='', currentProfile, ratings={}, edition, latestDate, visibleArticles=[], visibleHeadlines=[];
 const ratingDrafts={};
+const draftKey=a=>edition.date+':'+(a.id||a.url);
+function feedbackStatus(msg){$('feedback-status').textContent=msg;for(const id of ['news-feedback-status','features-feedback-status'])if($(id))$(id).textContent=msg;}
 const $=id=>document.getElementById(id);
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
 const fmt=v=>new Intl.DateTimeFormat('de-AT',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Vienna'}).format(new Date(v));
@@ -9,20 +11,21 @@ function link(text,url){const n=el('a',text);n.href=safeURL(url);n.target='_blan
 async function api(path, data){const response=await fetch(config.api+path,{method:data?'POST':'GET',cache:'no-store',headers:{'Authorization':'Bearer '+secret,...(data?{'Content-Type':'application/json'}:{})},...(data?{body:JSON.stringify(data)}:{})});const result=await response.json();if(!response.ok)throw Error(result.error||'Verbindung fehlgeschlagen');return result;}
 function status(text){$('notice').textContent=text;}
 function readingLinks(a){const box=el('div',undefined,'links');box.append(link('Original lesen ↗',a.url));if(a.paywall){const archive=link('Archivsuche ↗','https://archive.is/'+safeURL(a.url));const smry=link('SMRY öffnen ↗','https://smry.ai/'+safeURL(a.url));const isPresse=/(^|\.)diepresse\.com$/.test(new URL(a.url).hostname);box.append(...(isPresse?[smry,archive]:[archive,smry]));}return box;}
-function githubRating(a) {
+function githubRating(a,section='Vertiefungen') {
   const box=el('fieldset',undefined,'ratings rating-dots');
   box.append(el('legend','Wie relevant ist dieser Artikel?'));
-  const key=edition.date+':'+a.id;
+  const key=draftKey(a);
+  box.dataset.ratingKey=key;
   for(const value of ['Sehr relevant','Teilweise relevant','Nicht relevant']) {
-    const label=el('label');const input=el('input');input.type='radio';input.name='rating-'+a.id;
+    const label=el('label');const input=el('input');input.type='radio';input.name='rating-'+key;
     input.value=value;input.checked=ratingDrafts[key]?.value===value;
-    input.onchange=()=>{ratingDrafts[key]={id:a.id,value,reason:ratingDrafts[key]?.reason||''};$('feedback-status').textContent='Auswahl vorgemerkt · unten gemeinsam übermitteln.';};
+    input.onchange=()=>{ratingDrafts[key]={value,reason:ratingDrafts[key]?.reason||'',section};feedbackStatus('Auswahl vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};
     label.append(input,el('span',value));box.append(label);
   }
   const label=el('label','Optional: Warum? ','reason');const reason=el('textarea');
   reason.rows=2;reason.maxLength=600;reason.placeholder='Was war hilfreich oder hat dir gefehlt?';
   reason.value=ratingDrafts[key]?.reason||'';
-  reason.oninput=()=>{ratingDrafts[key]={id:a.id,value:ratingDrafts[key]?.value,reason:reason.value};$('feedback-status').textContent='Änderung vorgemerkt · unten gemeinsam übermitteln.';};label.append(reason);box.append(label);
+  reason.oninput=()=>{ratingDrafts[key]={value:ratingDrafts[key]?.value||'',reason:reason.value,section};feedbackStatus('Änderung vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};label.append(reason);box.append(label);
   return box;
 }
 function article(a,index){const node=el('article',undefined,a.treat?'treat':'');const intro=el('div');intro.append(el('span',a.treat?'DAS ZUCKERL':a.topic,'eyebrow'));const meta=el('p',a.source+' · '+a.kind+'\n'+fmt(a.published_at)+(a.paywall?' · Paywall':''),'meta');intro.append(meta);const body=el('div',undefined,'body');const title=el('h2');title.append(link(a.title,a.url));body.append(title,el('p',a.summary));if(a.access==='teaser')body.append(el('p','Zusammenfassung beruht ausschließlich auf dem zugänglichen Vorspann.','small'));if(a.novelty)body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty,'novelty'));body.append(readingLinks(a));if(config.mode==='github'){body.append(githubRating(a));node.append(intro,body);return node;}const controls=el('div',undefined,'ratings');controls.setAttribute('aria-label','Relevanz bewerten');const state=el('p','','rating-state');state.setAttribute('role','status');const reasonLabel=el('label','Optionaler Grund ','reason');const reason=el('select');reason.setAttribute('aria-label','Grund für die Bewertung');for(const t of ['','Mehr davon','Schon bekannt','Zu oberflächlich','Thema interessiert mich nicht']){const o=el('option',t||'–');o.value=t;reason.append(o);}reasonLabel.append(reason);let saved=ratings[a.id];reason.value=saved?.reason||'';const buttons=[];function refresh(){for(const [b,v] of buttons)b.setAttribute('aria-pressed',String(saved?.value===v));state.textContent=saved?'Gespeichert · jederzeit änderbar':'';reason.disabled=!saved;}
