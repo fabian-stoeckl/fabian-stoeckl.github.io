@@ -53,11 +53,11 @@ const DirectFeedback = (() => {
     return [...new Uint8Array(hash)].map(v=>v.toString(16).padStart(2,'0')).join('');
   }
   function buildFeedback(date,ratings,feedback) {
-    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Array.isArray(ratings)||ratings.length>15||
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Array.isArray(ratings)||ratings.length>40||
        typeof feedback!=='string'||feedback.length>4000) throw Error('Ungültige Feedback-Daten.');
     const ids=new Set();
     for(const r of ratings) {
-      if(!r||typeof r.id!=='string'||!/^[a-f0-9]{16}$/.test(r.id)||ids.has(r.id)||
+      if(!r||typeof r.id!=='string'||!/^[a-f0-9]{16,24}$/.test(r.id)||ids.has(r.id)||
          !['','Sehr relevant','Teilweise relevant','Nicht relevant'].includes(r.value||'')||
          typeof r.reason!=='string'||r.reason.length>600) throw Error('Ungültige Artikelbewertung.');
       ids.add(r.id);
