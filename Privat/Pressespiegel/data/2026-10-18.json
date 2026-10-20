@@ -143,5 +143,22 @@
       "region": "International",
       "event": "israel-wahl-2026-ki-manipulation"
     }
+  ],
+  "overview": [
+    {
+      "title": "Universitätsbudget bleibt hinter Forderungen zurück",
+      "summary": "Die Einigung auf 16 Milliarden Euro für 2028–2030 liegt unter den von Universitäten geforderten 18 Milliarden Euro. Die Budgetlücke bleibt ein zentrales hochschulpolitisches Thema.",
+      "url": "https://orf.at/stories/3445380/"
+    },
+    {
+      "title": "Debatte über die österreichische Flugabgabe",
+      "summary": "Wien und Niederösterreich fordern ihre Abschaffung. Dabei bestehen nicht nur Standortinteressen: Beide Länder sind am Flughafen Wien beteiligt.",
+      "url": "https://noe.orf.at/stories/3375753/"
+    },
+    {
+      "title": "KI als Instrument gezielter Wahlbeeinflussung",
+      "summary": "Ein Bericht über Israel beschreibt personalisierte Anrufe und Bots, die Wähler beeinflussen oder von der Stimmabgabe abhalten sollen.",
+      "url": "https://orf.at/stories/3445267/"
+    }
   ]
 }
