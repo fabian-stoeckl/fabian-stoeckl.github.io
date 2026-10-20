@@ -68,6 +68,23 @@ const DirectFeedback = (() => {
       body:GitHubPaper.batchBody(date,ratings,feedback)
     };
   }
+  function parsePrevious(body,date){
+    if(typeof body!=='string'||!body.startsWith('Typ: Sammelbewertung\nAusgabe: '+date+'\n'))
+      throw Error('Vorheriges Feedback hat ein unerwartetes Format; nichts überschrieben.');
+    const marker='\n\nFeedback:\n',cut=body.lastIndexOf(marker);
+    if(cut<0)throw Error('Vorheriges Feedback ist unvollständig; nichts überschrieben.');
+    const ratings=[];
+    for(const line of body.slice(0,cut).split(/\n\n(?=Artikel-ID: )/)){
+      if(!line.startsWith('Artikel-ID: '))continue;
+      const m=/^Artikel-ID: ([a-f0-9]{16,24})\nBewertung: ([^\n]*)\nBegründung: ([\s\S]*)$/.exec(line);
+      if(!m)throw Error('Vorherige Artikelbewertungen konnten nicht gelesen werden.');
+      const v=m[2]==='Keine Auswahl'?'':m[2];
+      if(!['','Sehr relevant','Teilweise relevant','Nicht relevant'].includes(v))
+        throw Error('Unbekannte alte Artikelbewertung.');
+      ratings.push({id:m[1],value:v,reason:m[3].trimEnd()==='–'?'':m[3].trimEnd()});
+    }
+    return {ratings,feedback:body.slice(cut+marker.length)};
+  }
   async function submit(date,ratings,feedback,token,store=localStorage,transport=fetch,cryptoAPI=crypto) {
     const issue=buildFeedback(date,ratings,feedback);
     const hash=await fingerprint(issue.body,cryptoAPI);
