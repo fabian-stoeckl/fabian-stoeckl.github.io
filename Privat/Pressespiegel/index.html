@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><title>Morgenzeitung · Pressespiegel</title><link rel="stylesheet" href="./style.css"><script src="./github.js" defer></script><script src="./direct-feedback.js" defer></script><script src="./app.js" defer></script></head>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><title>Morgenzeitung · Pressespiegel</title><style>html.preferences-initial .editionline,html.preferences-initial #notice,html.preferences-initial #publication-status,html.preferences-initial #login,html.preferences-initial #newspaper-view{display:none!important}</style><script>if(location.hash==="#praeferenzen")document.documentElement.classList.add("preferences-initial");</script><link rel="stylesheet" href="./style.css?v=20261020-prefs-hide-2"><script src="./github.js" defer></script><script src="./direct-feedback.js" defer></script><script src="./app.js?v=20261020-prefs-hide-2" defer></script></head>
 <body><main>
 <header><div class="topline"><a href="../">← Privat</a><span>PRESSESPIEGEL</span><button id="profile-toggle" type="button" aria-expanded="false" aria-controls="profile" aria-label="Meine Präferenzen anzeigen">Meine Präferenzen</button></div><h1>Morgenzeitung<span>.</span></h1><div class="editionline"><p id="edition-meta">Täglich um 07:45 Uhr · Wien</p><label>Ausgabe <select id="date" aria-label="Ausgabe auswählen"><option>Noch keine Ausgabe</option></select></label></div></header>
 <p id="notice" role="status" class="notice">Verbindung wird geprüft …</p>
@@ -27,6 +27,7 @@
   </form>
   <p class="small">Es werden keine persönlichen Bewertungen öffentlich in die Website-Dateien geschrieben.</p>
 </section>
+<div id="newspaper-view">
 <nav class="tabs" aria-label="Zeitungsbereiche"><button id="tab-headlines" aria-pressed="true">Heute wichtig <span id="headline-count">0</span></button><button id="tab-articles" aria-pressed="false">Vertiefungen <span id="article-count">0</span></button></nav>
 <section id="headlines" aria-label="Heute wichtig"><p class="empty">Die wichtigsten Nachrichten aus Österreich und weltweit erscheinen hier.</p></section><section id="articles" aria-label="Vertiefende Artikel" hidden><p class="empty">Deine ausführlichen Artikel zu Wirtschaft, Technologie und Produktivität erscheinen hier.</p></section>
 
@@ -53,4 +54,5 @@
 
 </div>
 </section><footer><p id="operating-state" class="small">Automatischer Betrieb noch nicht verbunden.</p><button id="logout" hidden>Abmelden</button></footer>
+</div>
 </main></body></html>
