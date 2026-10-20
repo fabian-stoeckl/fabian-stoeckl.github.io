@@ -8,6 +8,7 @@ const assert=require('node:assert/strict');
  await page.addInitScript(()=>{
    window.__feedbackTestRequests=[];
    window.__failFeedbackTest=false;
+   window.__savedIssueBody='';
    const originalFetch=window.fetch.bind(window);
    window.fetch=async(url,opts={})=>{
      const address=String(url);
@@ -17,8 +18,9 @@ const assert=require('node:assert/strict');
      window.__feedbackTestRequests.push({url:address,method,body:opts.body?JSON.parse(opts.body):null,
        authPresent:opts.headers?.Authorization==='Bearer github_pat_BROWSER_TEST_123456789'});
      if(window.__failFeedbackTest)return new Response(JSON.stringify({message:'offline'}),{status:503,headers:{'Content-Type':'application/json'}});
-     const result=method==='GET'?{private:true,full_name:'fabian-stoeckl/morgenzeitung-feedback'}:
+     const result=method==='GET'?(address.endsWith('/issues/23')?{number:23,body:window.__savedIssueBody}:{private:true,full_name:'fabian-stoeckl/morgenzeitung-feedback'}):
        {number:23,html_url:'https://github.com/fabian-stoeckl/morgenzeitung-feedback/issues/23'};
+     if(method==='POST'||method==='PATCH')window.__savedIssueBody=JSON.parse(opts.body).body;
      return new Response(JSON.stringify(result),{status:200,headers:{'Content-Type':'application/json'}});
    };
  });
