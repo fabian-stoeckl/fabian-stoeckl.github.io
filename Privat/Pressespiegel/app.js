@@ -74,6 +74,7 @@ function render(){
   $('edition-meta').textContent=new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'}).format(new Date(e.available_at))+' · '+(e.preview?'Vorschau':('bereitgestellt '+fmt(e.available_at)));
   $('window').textContent='Recherche: '+fmt(e.window_start)+' bis '+fmt(e.window_end)+' · Stand: '+fmt(e.researched_at)+' · alle Zeiten Wien';
   $('feedback-section').hidden=false;
+  updatePublicationStatus(e);
   status((e.preview?'Vorschau mit echten Artikeln · noch kein täglicher Betrieb. ':'')+(e.limitations||[]).join(' '));
   if(selection.duplicatesRemoved)status('Doppelte Nachrichtenmeldungen ausgeblendet: '+selection.duplicatesRemoved+'. '+$('notice').textContent);
   if(!e.preview){
@@ -112,14 +113,64 @@ for(const tab of ['headlines','articles'])$('tab-'+tab).onclick=()=>{for(const n
 $('login-form').onsubmit=async e=>{e.preventDefault();secret=$('token').value;$('token').value='';await load();};
 $('logout').onclick=()=>{secret='';location.reload();};
 
+function updatePublicationStatus(e) {
+  const node=$('publication-status');
+  if(!node||!e)return;
+  const now=new Date();
+  const d=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Vienna',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+  const hhmm=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Vienna',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(now);
+  const late=hhmm>='07:45';
+  node.dataset.state=e.preview||e.date!==d&&late?'stale':e.date===d?'fresh':'pending';
+  if(e.preview)node.textContent='Beispielausgabe vom '+e.date+' · Noch keine bestätigte tägliche Ausgabe. Bei der automatischen Veröffentlichung besteht weiterhin Handlungsbedarf.';
+  else if(e.date===d)node.textContent='Aktuelle Ausgabe vom '+d+' · Recherche: '+fmt(e.researched_at)+'.';
+  else if(late)node.textContent='Neue Morgenzeitung für '+d+' ist noch NICHT veröffentlicht. Letzte Ausgabe: '+e.date+'. Bitte die tägliche Aufgabe und GitHub-Prüfung kontrollieren.';
+  else node.textContent='Letzte Ausgabe: '+e.date+' · Neue Ausgabe für '+d+' wird ab 07:45 Uhr Wiener Zeit erwartet.';
+}
+async function renderSelectionHistory() {
+  const node=$('preference-edition-changes');
+  if(!node)return;
+  const index=await GitHubPaper.json('./data/index.json');
+  if(!Array.isArray(index.dates)||index.dates.length<2){
+    node.replaceChildren(el('p','Noch keine zwei veröffentlichten Ausgaben für einen überprüfbaren Vergleich. Die bisherige Demofassung ist kein Beleg für redaktionelles Lernen.','small'));
+    return;
+  }
+  const available=index.dates.slice(0,6);
+  const editions=await Promise.all(available.map(day=>GitHubPaper.edition(day)));
+  const entries=[];
+  for(let i=0;i<editions.length-1;i++){
+    const newer=editions[i],older=editions[i+1];
+    const counts=ed=>ed.articles.reduce((acc,a)=>(acc[a.topic]=(acc[a.topic]||0)+1,acc),{});
+    const newCounts=counts(newer),oldCounts=counts(older);
+    const topics=[...new Set([...Object.keys(newCounts),...Object.keys(oldCounts)])];
+    const changed=topics.filter(t=>(newCounts[t]||0)!==(oldCounts[t]||0))
+      .map(t=>t+': '+(oldCounts[t]||0)+' → '+(newCounts[t]||0)).slice(0,7);
+    const audit=newer.selection_audit;
+    const note=audit&&typeof audit.summary==='string'&&audit.summary.length<=600?audit.summary:null;
+    entries.push({date:newer.date,reference:older.date,change:changed.join(' · ')||'Themenschwerpunkte in den Vertiefungen unverändert',note,hasProof:!!(audit&&audit.feedback_applied===true&&note)});
+  }
+  node.replaceChildren();
+  const list=el('ul',undefined,'preference-list');
+  for(const item of entries){
+    const li=el('li');
+    li.append(el('strong',item.date+' gegenüber '+item.reference+': '),
+      el('span',item.change+'. '));
+    li.append(el('span',item.hasProof?'Redaktionell dokumentierte Feedback-Anpassung: '+item.note:
+      'Keine nachgewiesene Ursache durch Feedback.','small'));
+    list.append(li);
+  }
+  node.append(list);
+}
+
 async function showPreferenceSummary() {
   const summary=$('preference-feedback'),token=DirectFeedback.readToken();
   summary.replaceChildren(el('p','Lese deine bisherigen Bewertungen aus deinem privaten GitHub-Repository …','small'));
   if(!token){
     summary.replaceChildren(el('p','Auf diesem Gerät ist noch kein GitHub-Zugang verbunden. Die Auswahlregeln oben kannst du trotzdem lesen; nach dem Verbinden ganz unten werden hier deine gespeicherten Bewertungen angezeigt.'));
+    await renderSelectionHistory();
     return;
   }
   try{
+    await renderSelectionHistory();
     const history=await DirectFeedback.feedbackHistory(token);
     if($('profile').hidden)return;
     if(!history.length){
