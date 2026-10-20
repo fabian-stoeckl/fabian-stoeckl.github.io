@@ -9,7 +9,11 @@ const fmt=v=>new Intl.DateTimeFormat('de-AT',{dateStyle:'medium',timeStyle:'shor
 function safeURL(value){const u=new URL(value);if(u.protocol!=='https:'||u.username||u.password)throw Error('Ungültiger Link');return u.href;}
 function link(text,url){const n=el('a',text);n.href=safeURL(url);n.target='_blank';n.rel='noopener noreferrer';return n;}
 async function api(path, data){const response=await fetch(config.api+path,{method:data?'POST':'GET',cache:'no-store',headers:{'Authorization':'Bearer '+secret,...(data?{'Content-Type':'application/json'}:{})},...(data?{body:JSON.stringify(data)}:{})});const result=await response.json();if(!response.ok)throw Error(result.error||'Verbindung fehlgeschlagen');return result;}
-function status(text){$('notice').textContent=text;}
+function status(text){
+  const notice=$('notice');
+  notice.textContent=text||'';
+  notice.hidden=!text;
+}
 function githubRating(a,section='Vertiefungen') {
   const box=el('fieldset',undefined,'ratings rating-dots');
   box.append(el('legend','Wie relevant ist dieser Artikel?'));
@@ -74,12 +78,11 @@ function render(){
   $('window').textContent='Recherche: '+fmt(e.window_start)+' bis '+fmt(e.window_end)+' · Stand: '+fmt(e.researched_at)+' · alle Zeiten Wien';
   $('feedback-section').hidden=false;
   updatePublicationStatus(e);
-  status((e.preview?'Vorschau mit echten Artikeln · noch kein täglicher Betrieb. ':'')+(e.limitations||[]).join(' '));
-  if(selection.duplicatesRemoved)status('Doppelte Nachrichtenmeldungen ausgeblendet: '+selection.duplicatesRemoved+'. '+$('notice').textContent);
-  if(!e.preview){
-    const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Vienna',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-    if(e.date!==today)status((e.date!==latestDate?'Archiv · Ausgabe vom ':'Letzte verfügbare Ausgabe vom ')+e.date+'. '+(e.limitations||[]).join(' '));
-  }
+  // The edition's free-form limitations are editorial notes, not errors. Display
+  // only explicitly flagged operational issues or genuinely filtered duplicates.
+  const errors=[...(Array.isArray(e.errors)?e.errors:[]),...(Array.isArray(e.warnings)?e.warnings:[])];
+  if(selection.duplicatesRemoved)errors.unshift('Doppelte Nachrichtenmeldungen ausgeblendet: '+selection.duplicatesRemoved+'.');
+  status(errors.filter(x=>typeof x==='string'&&x.trim()).join(' '));
 }
 async function restoreSavedRatings(){
   if(config?.mode!=='github'||!edition)return;
