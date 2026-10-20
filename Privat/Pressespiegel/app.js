@@ -74,8 +74,8 @@ function render(){
     if(e.date!==today)status((e.date!==latestDate?'Archiv · Ausgabe vom ':'Letzte verfügbare Ausgabe vom ')+e.date+'. '+(e.limitations||[]).join(' '));
   }
 }
-async function load(){try{const [list,r]=await Promise.all([api('/api/editions'),api('/api/ratings')]);ratings=r;latestDate=list.dates[0];$('date').replaceChildren();for(const d of list.dates){const o=el('option',d);o.value=d;$('date').append(o);}if(!list.dates.length){status('Noch keine erfolgreiche Ausgabe verfügbar.');return; }edition=await api('/api/edition');render();$('login').hidden=true;$('logout').hidden=config.preview;$('operating-state').textContent=list.scheduler_enabled?'Automatik konfiguriert · tatsächlicher Stand siehe Ausgabe.':'Täglicher Betrieb noch nicht aktiviert.';}catch(e){status(e.message);$('login').hidden=false;}}
-$('date').onchange=async()=>{try{edition=config.mode==='github'?await GitHubPaper.edition($('date').value):await api('/api/edition?date='+encodeURIComponent($('date').value));render();}catch(e){status(e.message);}};
+async function load(){try{const [list,r]=await Promise.all([api('/api/editions'),api('/api/ratings')]);ratings=r;latestDate=list.dates[0];$('date').replaceChildren();for(const d of list.dates){const o=el('option',d);o.value=d;$('date').append(o);}if(!list.dates.length){status('Noch keine erfolgreiche Ausgabe verfügbar.');return; }edition=await PaperEditorial.prepare(await api('/api/edition'));render();$('login').hidden=true;$('logout').hidden=config.preview;$('operating-state').textContent=list.scheduler_enabled?'Automatik konfiguriert · tatsächlicher Stand siehe Ausgabe.':'Täglicher Betrieb noch nicht aktiviert.';}catch(e){status(e.message);$('login').hidden=false;}}
+$('date').onchange=async()=>{try{edition=await PaperEditorial.prepare(config.mode==='github'?await GitHubPaper.edition($('date').value):await api('/api/edition?date='+encodeURIComponent($('date').value)));render();}catch(e){status(e.message);}};
 for(const tab of ['headlines','articles'])$('tab-'+tab).onclick=()=>{for(const name of ['headlines','articles']){$(name).hidden=name!==tab;$('tab-'+name).setAttribute('aria-pressed',String(name===tab));}};
 $('login-form').onsubmit=async e=>{e.preventDefault();secret=$('token').value;$('token').value='';await load();};
 $('logout').onclick=()=>{secret='';location.reload();};
@@ -91,6 +91,7 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();if(config.mode==='githu
     const token=DirectFeedback.readToken();
     if(!token){
       refreshGitHubConnection();
+      $('github-settings').querySelector('details').open=true;
       $('github-setup').scrollIntoView({behavior:'smooth'});
       throw Error('Bitte zuerst einmalig den GitHub-Zugang oben einrichten.');
     }
@@ -108,6 +109,7 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();if(config.mode==='githu
     if(/ungültig oder abgelaufen/.test(err.message)){
       $('github-setup').hidden=false;
       $('github-connected').hidden=true;
+      $('github-settings').querySelector('details').open=true;
     }
   }finally{b.disabled=false;}
   return;}const b=e.submitter;b.disabled=true;try{await api('/api/feedback',{text:$('feedback').value});$('feedback-status').textContent='Gespeichert · wird beim nächsten Recherchelauf berücksichtigt';$('feedback').value='';}catch(e){$('feedback-status').textContent=e.message+' – bitte erneut versuchen';}finally{b.disabled=false;}};
@@ -119,7 +121,7 @@ const index=await GitHubPaper.json('./data/index.json');latestDate=index.dates[0
 for(const d of index.dates){const o=el('option',d);o.value=d;$('date').append(o);}
 $('operating-state').textContent='Ausgaben aus GitHub · Feedback wird nach einmaliger Verbindung direkt auf GitHub gespeichert.';
 if(!latestDate){status('Noch keine veröffentlichte Ausgabe verfügbar.');return;}
-edition=await GitHubPaper.edition(latestDate);render();return;
+edition=await PaperEditorial.prepare(await GitHubPaper.edition(latestDate));render();return;
 }if(config.api===null){status('Die Morgenzeitung wird vorbereitet. Der private Zeitungsdienst ist noch nicht verbunden.');return;}if(config.api&&!config.api.startsWith('https://'))throw Error('Unsichere Dienstadresse');if(config.preview)await load();else{$('login').hidden=false;status('Bitte öffne deine persönliche Morgenzeitung.');}}catch(e){status('Zeitungsdienst nicht erreichbar. '+e.message);}})();
 
 $('feedback').addEventListener('input',()=>{if(edition){feedbackDrafts[edition.date]=$('feedback').value;persistComments();}$('feedback-status').textContent='Änderung noch nicht gesendet.';});
@@ -129,6 +131,9 @@ function refreshGitHubConnection(){
   const connected=!!DirectFeedback.readToken();
   $('github-setup').hidden=connected;
   $('github-connected').hidden=!connected;
+  const details=$('github-settings').querySelector('details');
+  details.open=!connected;
+  details.querySelector('summary').textContent=connected?'GitHub-Verbindung verwalten (verbunden)':'GitHub-Verbindung einrichten';
 }
 $('github-setup-form').onsubmit=async e=>{
   e.preventDefault();
