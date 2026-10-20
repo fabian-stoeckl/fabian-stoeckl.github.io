@@ -70,6 +70,9 @@ Quelle: ältere Chats insbesondere 02.–07.10.2026 über Personal Context; tech
 - Relevante Tests: fx.test.cjs, data-status.test.cjs, annual.test.cjs, charts.test.cjs, preview.test.cjs und Python-Updater-Tests. Keine Finanzdatenänderung während dieser Protokollrecherche.
 
 
-### Design-Rückkehr zum Ausgangsstand (20.10.2026)
+### Verbindliches Design nach Nutzerkorrektur (20.10.2026)
 
-Auf ausdrücklichen Wunsch des Nutzers wurden die heutigen experimentellen Designänderungen rückgängig gemacht. Das ETF-Dashboard entspricht wieder exakt dem Stand vor PR #41 (hellgrauer Hintergrund, weiße Karten, ursprüngliche Linienfarben), die Privat-Übersicht wieder dem Stand vor PR #42 (drei gestaltete mehrfarbige Kacheln). Die ursprüngliche warme Morgenzeitung einschließlich der eigenständigen Seite „Meine Präferenzen“ bleibt bestehen. Die CI-Tests zur vorübergehenden ETF/Morgenzeitung-Farbgleichheit wurden ebenfalls auf den ursprünglichen Stand gesetzt. Keine Änderungen an ETF-Daten, automatischen Aktualisierungen oder privatem Zeitungsfeedback.
+- Der Nutzer hat klargestellt: **Nur** die Kacheln der Privat-Übersicht sollen auf ihren ursprünglichen gestalterischen Stand vor den Neon-Experimenten zurückgesetzt werden. Das ETF-Dashboard soll **nicht** auf das alte hellgraue Farbschema zurückgestellt werden.
+- Deshalb bleibt `Privat/index.html` unverändert im Originalstand (SVG-Kacheln in Blau, Braunorange und Dunkelgrün), während `Privat/ETFs/index.html` exakt das in PR #41 freigegebene und veröffentlichte warme ETF-Design erhält. ETF-CSS-Token und Diagrammfarben kommen aus Merge-Commit `a58a68788616b5969f1ad3f9899b1ebbc6c18f9c`.
+- Auch `tests/charts.test.cjs` entspricht wieder PR #41 und prüft die warmen ETF-Farben gegen die Morgenzeitung. Andere Website-Bereiche, Ausgaben und ETF-Daten bleiben unverändert.
+- PR #46 setzte zwischenzeitlich irrtümlich **auch** die ETF-Farben zurück; diese Fehlinterpretation ist korrigiert. Für spätere Wünsche gelten die beiden getrennten Entscheidungen: alte Kunst-Kacheln auf `/Privat/`, warme ETF-Farben auf `/Privat/ETFs/`.
