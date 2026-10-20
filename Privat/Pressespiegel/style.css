@@ -35,3 +35,21 @@ main{max-width:860px}.lead-grid{display:block;padding:0;border:0}.lead-grid arti
 .headline-columns li small{font-size:12px}
 .tabs{margin-top:24px}
 @media(max-width:760px){.headline-columns li a{font-size:21px}.headline-columns h2{font-size:26px}}
+
+/* Combined feedback, compact three-way choices in news, connection settings last. */
+.news-item .rating-dots{margin:12px 0 4px;padding:4px 0;gap:6px 13px}
+.news-item .rating-dots legend{font-size:11px}
+.news-item .rating-dots label{font-size:12px}
+.news-item .rating-dots input[type=radio]{width:15px;height:15px;flex-shrink:0}
+.news-item .rating-dots .reason{margin:2px 0 0}
+.news-item .rating-dots .reason textarea{font-size:12px;margin:3px 0 6px}
+.news-item .rating-dots textarea{min-height:48px}
+.section-save{padding:17px 0 18px;margin:24px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.section-save button{background:var(--ink);color:var(--paper)}
+.section-save button:disabled{opacity:.6}
+.section-save .small{margin:5px 0}
+.section-save-status{font-size:12px;color:var(--blue);margin:4px 0}
+#feedback-settings{margin:34px 0 12px;border-top:1px solid var(--line);padding-top:12px}
+#feedback-settings #github-setup{margin:12px 0}
+#feedback-settings #github-connected{margin:12px 0}
+@media(max-width:760px){.news-item .rating-dots{gap:8px 12px}.news-item .rating-dots label{font-size:11px}}
