@@ -36,7 +36,7 @@ function sectionSave(section,other){
   const box=el('div',undefined,'section-save');
   const button=el('button','Alle Bewertungen speichern');button.type='button';
   button.className='save-all-feedback';
-  button.onclick=()=>{$('feedback-form').requestSubmit();$('feedback-section').scrollIntoView({behavior:'smooth'});};
+  button.onclick=()=>{$('feedback-form').requestSubmit($('feedback-form').querySelector('button[type=submit]'));$('feedback-section').scrollIntoView({behavior:'smooth'});};
   box.append(button,el('p','Übermittelt auch Bewertungen aus '+other+'.','small'));
   section.append(box);
 }
