@@ -70,10 +70,6 @@ Quelle: ältere Chats insbesondere 02.–07.10.2026 über Personal Context; tech
 - Relevante Tests: fx.test.cjs, data-status.test.cjs, annual.test.cjs, charts.test.cjs, preview.test.cjs und Python-Updater-Tests. Keine Finanzdatenänderung während dieser Protokollrecherche.
 
 
-### ETF-Farbkonzept an Morgenzeitung angleichen (20.10.2026 – Vorschau)
+### Design-Rückkehr zum Ausgangsstand (20.10.2026)
 
-- Die vom Nutzer abgelehnte Richtung „Privat-Übersicht und Morgenzeitung an das bisherige kühle ETF-Schema anpassen“ (PR #40, **geschlossen und nicht veröffentlicht**) gilt **nicht mehr**.
-- Stattdessen die bestehende warme Gestaltung der Morgenzeitung als Quelle: ETF-Hintergrund `#f4efe7`, Hauptschrift `#242321`, Sekundärtext `#69635b`, Konturen `#d6cec1`, Braun-/Terrakotta-Akzent `#884b2d`, Petrol-/Link-Akzent `#234f63`, freundlich helle ETF-Karten `#fffaf4`.
-- ETF-Layout, Performanceberechnungen, Chart-Interaktionen, Daten und automatisches Daten-Update **unverändert**. Nur optische CSS-Farben und die Palette der Diagrammlinien passend zur neuen warmen Gesamtästhetik.
-- Die Zeitung, die separate Präferenzseite und die Privat-Übersicht bleiben im ursprünglichen Farbdesign. Browser-Tests vergleichen die ETF-Tokens mit den realen CSS-Tokens der Morgenzeitung und erstellen mobile und Desktop-Screenshots zur Freigabe.
-- Vor Merge ausdrücklich die Designfreigabe des Nutzers abwarten.
+Auf ausdrücklichen Wunsch des Nutzers wurden die heutigen experimentellen Designänderungen rückgängig gemacht. Das ETF-Dashboard entspricht wieder exakt dem Stand vor PR #41 (hellgrauer Hintergrund, weiße Karten, ursprüngliche Linienfarben), die Privat-Übersicht wieder dem Stand vor PR #42 (drei gestaltete mehrfarbige Kacheln). Die ursprüngliche warme Morgenzeitung einschließlich der eigenständigen Seite „Meine Präferenzen“ bleibt bestehen. Die CI-Tests zur vorübergehenden ETF/Morgenzeitung-Farbgleichheit wurden ebenfalls auf den ursprünglichen Stand gesetzt. Keine Änderungen an ETF-Daten, automatischen Aktualisierungen oder privatem Zeitungsfeedback.
