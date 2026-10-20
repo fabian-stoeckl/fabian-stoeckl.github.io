@@ -171,3 +171,6 @@ body.preferences-view .topline #profile-toggle{display:none!important}
   body.preferences-view .profile-head{flex-wrap:wrap}
   body.preferences-view .profile-head button{margin-top:4px}
 }
+
+/* Defence in depth: the entire newspaper is a separate DOM view. */
+#newspaper-view[hidden],html.preferences-initial #newspaper-view,body.preferences-view #newspaper-view{display:none!important}
