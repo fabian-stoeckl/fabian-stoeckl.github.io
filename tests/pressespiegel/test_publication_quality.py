@@ -43,7 +43,7 @@ class PublicQualityTests(unittest.TestCase):
     def test_not_just_short_news(self):
         ed=copy.deepcopy(self.preview)
         ed["articles"][0]["kind"]="Nachricht"
-        with self.assertRaisesRegex(ValueError,"substantielle Analyse"):validate(ed)
+        with self.assertRaisesRegex(ValueError,"substanzielle Analyse"):validate(ed)
         ed=copy.deepcopy(self.preview)
         ed["articles"][0]["facts"]=["One lonely claim"]
         with self.assertRaisesRegex(ValueError,"zwei belegte Sachverhalte"):validate(ed)
