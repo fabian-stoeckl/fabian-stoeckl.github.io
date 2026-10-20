@@ -24,7 +24,7 @@ const assert=require('node:assert/strict');
  });
  const calls=()=>page.evaluate(()=>window.__feedbackTestRequests);
  await page.goto('http://127.0.0.1:8765/Privat/Pressespiegel/');
- await page.waitForSelector('article');
+ await page.waitForSelector('#headlines li a');
  assert.equal(await page.locator('#overview').count(),0);
  assert.equal(await page.locator('.deck').count(),0);
  assert.equal(await page.locator('.tabs button').count(),2);
@@ -69,7 +69,7 @@ const assert=require('node:assert/strict');
  assert(await page.locator('#feedback-confirmation').isHidden());
  await page.evaluate(()=>{window.__failFeedbackTest=false;});
  await page.reload();
- await page.waitForSelector('article');
+ await page.waitForSelector('#headlines li a');
  assert(await page.locator('#github-connected').isVisible());
  for(const width of [1440,390]){
    await page.setViewportSize({width,height:1000});
