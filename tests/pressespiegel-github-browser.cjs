@@ -8,7 +8,7 @@ const assert=require('node:assert/strict');
  await page.addInitScript(()=>{
    window.__feedbackTestRequests=[];
    window.__failFeedbackTest=false;
-   window.__feedbackTestIssueBody=null;
+   window.__feedbackTestIssueBody=sessionStorage.getItem('__feedbackMockIssueBody')||null;
    const originalFetch=window.fetch.bind(window);
    window.fetch=async(url,opts={})=>{
      const address=String(url);
@@ -18,7 +18,10 @@ const assert=require('node:assert/strict');
      window.__feedbackTestRequests.push({url:address,method,body:opts.body?JSON.parse(opts.body):null,
        authPresent:opts.headers?.Authorization==='Bearer github_pat_BROWSER_TEST_123456789'});
      if(window.__failFeedbackTest)return new Response(JSON.stringify({message:'offline'}),{status:503,headers:{'Content-Type':'application/json'}});
-     if(method==='POST'||method==='PATCH')window.__feedbackTestIssueBody=JSON.parse(opts.body).body;
+     if(method==='POST'||method==='PATCH'){
+       window.__feedbackTestIssueBody=JSON.parse(opts.body).body;
+       sessionStorage.setItem('__feedbackMockIssueBody',window.__feedbackTestIssueBody);
+     }
      const result=method==='GET'?
        (address.endsWith('/issues/23')?{number:23,body:window.__feedbackTestIssueBody}:{private:true,full_name:'fabian-stoeckl/morgenzeitung-feedback'}):
        {number:23,html_url:'https://github.com/fabian-stoeckl/morgenzeitung-feedback/issues/23'};
