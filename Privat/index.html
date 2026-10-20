@@ -13,11 +13,15 @@
 .paint{position:absolute;inset:0;width:100%;height:100%;z-index:-1}.tile span{text-shadow:0 2px 8px #0009,0 1px 2px #0008}.tile:hover{transform:rotate(-2deg) scale(1.035)}.tile:focus-visible{outline:3px solid #242321;outline-offset:8px}
 .topic{text-align:center;min-width:0}.tile-press span{font-size:clamp(22px,3vw,32px)}
 .tile-website span{line-height:1.15;text-align:center}
-/* Neon glow remains subtle enough to keep each tile label legible. */
-.tile .paint{filter:drop-shadow(0 0 7px #00dcff) drop-shadow(0 0 18px #4761ff8c)}
-.tile-press .paint{filter:drop-shadow(0 0 7px #ff4b00) drop-shadow(0 0 18px #ff00998c)}
-.tile-website .paint{filter:drop-shadow(0 0 7px #00efb5) drop-shadow(0 0 18px #22ff608c)}
-.tile-website{color:#05261c}.tile-website span{text-shadow:0 1px 1px #ffffff66,0 2px 6px #002e2080}
+/* Single solid fluorescent SVG color per tile, with same-hue neon halo only. */
+.tile .paint{overflow:visible}
+.tile-etf .paint{filter:drop-shadow(0 0 10px #2441ff) drop-shadow(0 0 23px #2441ffb5) drop-shadow(0 0 38px #2441ff88)}
+.tile-press .paint{filter:drop-shadow(0 0 10px #ff5400) drop-shadow(0 0 23px #ff5400b5) drop-shadow(0 0 38px #ff540088)}
+.tile-website .paint{filter:drop-shadow(0 0 10px #39ff14) drop-shadow(0 0 23px #39ff14b5) drop-shadow(0 0 38px #39ff1488)}
+.tile-press{color:#291400}
+.tile-press span{text-shadow:0 1px 1px #ffffff40,0 2px 5px #a82c0055}
+.tile-website{color:#092608}
+.tile-website span{text-shadow:0 1px 1px #ffffff66,0 2px 5px #00700044}
 @media(max-width:700px){.gallery{padding:22px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}}
 @media(max-width:400px){.grid{grid-template-columns:1fr}.tile{max-width:240px;width:100%;margin:auto}}
 </style>
@@ -25,27 +29,19 @@
 <body><main class="wrap">
 <h1>Privat</h1><div class="sub">Persönliche Übersichten und Tools.</div>
 <div class="gallery"><section class="grid" aria-label="Private Themen">
-<div class="topic"><a class="tile" href="./ETFs/" aria-label="ETF-Übersicht öffnen">
+<div class="topic"><a class="tile tile-etf" href="./ETFs/" aria-label="ETF-Übersicht öffnen">
 <svg class="paint" viewBox="0 0 300 300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-<defs><filter id="rough" x="-15%" y="-15%" width="130%" height="130%"><feTurbulence type="fractalNoise" baseFrequency=".075" numOctaves="4" seed="12" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G"/></filter>
-<filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="3" seed="7"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".18"/></feComponentTransfer><feComposite in2="SourceGraphic" operator="in"/></filter></defs>
-<g filter="url(#rough)"><path fill="#1b27ff" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/><path fill="#bf00ff" opacity=".88" d="M31 36 L271 39 L259 92 L27 116 Z"/><path fill="#00ecff" opacity=".85" d="M24 147 L253 132 L270 232 L40 260 Z"/><path fill="#16129b" opacity=".24" d="M42 38 L111 40 L95 258 L30 248 Z"/><path fill="#89faff" opacity=".43" d="M62 176 Q143 117 244 168 L259 190 Q143 155 67 212 Z"/>
-<path fill="#fff" opacity=".035" filter="url(#grain)" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/>
-</g>
+<path fill="#2441FF" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/>
 </svg><span>ETF</span></a>
 </div>
 <div class="topic"><a class="tile tile-press" href="./Pressespiegel/" aria-label="Pressespiegel öffnen">
 <svg class="paint" viewBox="0 0 300 300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#rough)"><path fill="#ff4800" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/><path fill="#ffed00" opacity=".88" d="M31 36 L271 39 L259 92 L27 116 Z"/><path fill="#ff0099" opacity=".85" d="M24 147 L253 132 L270 232 L40 260 Z"/><path fill="#b0004b" opacity=".24" d="M42 38 L111 40 L95 258 L30 248 Z"/><path fill="#faff00" opacity=".43" d="M62 176 Q143 117 244 168 L259 190 Q143 155 67 212 Z"/>
-<path fill="#fff" opacity=".035" filter="url(#grain)" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/>
-</g>
+<path fill="#FF5400" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/>
 </svg><span>Pressespiegel</span></a>
 </div>
 <div class="topic"><a class="tile tile-website" href="https://chatgpt.com/skills?skill_id=6ac1802fca7c8191bc3470d27b3710df" aria-label="Website ändern – ChatGPT-Skill öffnen">
 <svg class="paint" viewBox="0 0 300 300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#rough)"><path fill="#00e78a" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/><path fill="#40ff00" opacity=".88" d="M31 36 L271 39 L259 92 L27 116 Z"/><path fill="#00f5ff" opacity=".85" d="M24 147 L253 132 L270 232 L40 260 Z"/><path fill="#006947" opacity=".24" d="M42 38 L111 40 L95 258 L30 248 Z"/><path fill="#b5ff00" opacity=".43" d="M62 176 Q143 117 244 168 L259 190 Q143 155 67 212 Z"/>
-<path fill="#fff" opacity=".035" filter="url(#grain)" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/>
-</g>
+<path fill="#39FF14" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/>
 </svg><span>Website<br>ändern</span></a>
 </div>
 </section></div>
