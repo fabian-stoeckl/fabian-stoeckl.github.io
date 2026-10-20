@@ -161,24 +161,28 @@ const visible=GitHubPaper.partition(fixture);
  }
 
  assert.equal(await page.locator('#github-disconnect').count(),0);
+
  assert.equal(await page.locator('#profile-toggle').innerText(),'Meine Präferenzen');
+ assert.equal(await page.locator('#profile-toggle').getAttribute('href'),'./praeferenzen.html');
+ assert.equal(await page.locator('#profile').count(),0,'Newspaper must not contain an inline preferences panel');
  await page.locator('#profile-toggle').click();
- assert(await page.locator('#profile').isVisible());
- assert.equal(await page.locator('#profile-toggle').getAttribute('aria-expanded'),'true');
- assert.equal(new URL(page.url()).hash,'#praeferenzen');
- assert.equal(await page.title(),'Meine Präferenzen · Pressespiegel');
- for(const selector of ['.editionline','#publication-status','#notice','nav.tabs','#headlines','#articles','#feedback-section','#feedback-settings','footer']){
-   assert(await page.locator(selector).isHidden(),selector+' must disappear completely in preferences view');
+ await page.waitForURL(/\/praeferenzen\.html$/);
+ await page.locator('#preference-feedback').waitFor();
+ assert.equal(await page.title(),'Meine Präferenzen · Morgenzeitung');
+ // REAL separate document: article/news markup is ABSENT, not merely hidden by CSS.
+ for(const selector of ['nav.tabs','#headlines','#articles','#feedback-section','#feedback-settings','#publication-status','.editionline']){
+   assert.equal(await page.locator(selector).count(),0,selector+' must not exist anywhere on preferences page');
  }
- assert(await page.locator('#profile-close').isVisible());
- assert(await page.locator('#profile-toggle').isHidden(),'Only one return button should appear on the preferences page');
+ assert.equal(await page.locator('article').count(),0);
+ assert(await page.locator('#profile').isVisible());
+ assert(await page.locator('header .topline a[href="./"]').isVisible());
+ await page.waitForFunction(()=>document.querySelector('#preference-feedback')?.textContent.includes('2 Artikelbewertungen'));
+ assert.match(await page.locator('#preference-learning-status').innerText(),/nicht verlässlich nachgewiesen/);
+ assert.match(await page.locator('#preference-edition-changes').innerText(),/Noch keine zwei veröffentlichten Ausgaben|gegenüber/);
  await page.setViewportSize({width:390,height:844});
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Preferences page must fit on mobile');
  await page.screenshot({path:'artifacts/screenshots/morgenzeitung-preferences-mobile.png',fullPage:true});
  await page.setViewportSize({width:1440,height:1000});
- await page.waitForFunction(()=>document.querySelector('#preference-feedback')?.textContent.includes('2 Artikelbewertungen'));
- assert.match(await page.locator('#preference-learning-status').innerText(),/nicht verlässlich nachgewiesen/);
- assert.match(await page.locator('#preference-edition-changes').innerText(),/Noch keine zwei veröffentlichten Ausgaben|gegenüber/);
  await page.locator('#preference-comment').fill('Bitte mehr zu Arbeitsproduktivität berichten.');
  await page.locator('#preference-comment-form button[type=submit]').click();
  await page.waitForFunction(()=>document.querySelector('#preference-comment-status')?.textContent.includes('erfolgreich'));
@@ -190,21 +194,23 @@ const visible=GitHubPaper.partition(fixture);
  assert.match(afterPreference.body.body,/Mehr KI und Industrie/);
  assert.equal(await page.locator('#preference-comment').inputValue(),'');
  await page.goBack();
- await page.waitForFunction(()=>!document.body.classList.contains('preferences-view'));
- assert(await page.locator('nav.tabs').isVisible(),'Browser Back returns to news');
- assert(await page.locator('#profile').isHidden());
+ await page.waitForURL(/\/Privat\/Pressespiegel\/$/);
+ assert(await page.locator('nav.tabs').isVisible(),'Browser Back returns to newspaper');
+ assert.equal(await page.locator('#profile').count(),0);
  await page.goForward();
- await page.waitForFunction(()=>document.body.classList.contains('preferences-view'));
- assert(await page.locator('#profile').isVisible(),'Browser Forward restores preferences');
+ await page.waitForURL(/\/praeferenzen\.html$/);
+ assert.equal(await page.locator('#articles').count(),0,'Browser Forward keeps exclusive preferences page');
  await page.reload();
- await page.waitForFunction(()=>document.body.classList.contains('preferences-view'));
- assert(await page.locator('nav.tabs').isHidden(),'Direct hash reload is still exclusive');
- await page.locator('#profile-close').click();
- assert(await page.locator('#profile').isHidden());
- assert.equal(new URL(page.url()).hash,'');
- assert(await page.locator('nav.tabs').isVisible(),'Closing preferences restores newspaper');
- assert.equal(await page.locator('#profile-toggle').getAttribute('aria-expanded'),'false');
+ await page.locator('#preference-feedback').waitFor();
+ assert.equal(await page.locator('#articles').count(),0,'Direct preferences URL reload has no newspaper content');
+ await page.locator('header .topline a[href="./"]').click();
+ await page.waitForURL(/\/Privat\/Pressespiegel\/$/);
+ assert(await page.locator('nav.tabs').isVisible());
  assert(await page.locator('#github-connected').isVisible());
+ // Old bookmarks using the previous hash must be migrated to the new actual HTML page.
+ await page.goto('http://127.0.0.1:8765/Privat/Pressespiegel/#praeferenzen');
+ await page.waitForURL(/\/praeferenzen\.html$/);
+ assert.equal(await page.locator('#articles').count(),0);
 
  assert.deepEqual(errors,[]);
  await browser.close();
