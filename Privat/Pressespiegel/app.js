@@ -173,17 +173,22 @@ $('profile-toggle').onclick=async()=>{if(config.mode==='github'){
   }
   return;}if(config?.api===null){status('Interessenprofil wird nach Verbindung des privaten Dienstes verfügbar.');return;}try{const data=await api('/api/profile');currentProfile=data.profile;$('topics').replaceChildren();for(const [topic,value] of Object.entries(currentProfile.topics)){const label=el('label',topic);const select=el('select');select.dataset.topic=topic;for(const [v,t] of [[5,'Sehr hoch'],[4,'Hoch'],[3,'Mittel'],[2,'Ergänzend'],[1,'Gering'],[0,'Ausblenden']]){const o=el('option',t);o.value=v;select.append(o);}select.value=value;label.append(select);$('topics').append(label);}$('rules').value=currentProfile.rules;$('profile-history').replaceChildren(el('p','Lernsignale (maximal ±0,5; explizite Prioritäten bleiben maßgeblich): '+JSON.stringify(data.learning)));for(const h of data.history)$('profile-history').append(el('p',fmt(h.at)+' · '+h.reason));$('profile').hidden=!$('profile').hidden;}catch(e){status(e.message);}};
 $('profile-form').onsubmit=async e=>{e.preventDefault();const topics=Object.fromEntries([...$('topics').querySelectorAll('select')].map(s=>[s.dataset.topic,Number(s.value)]));try{currentProfile=await api('/api/profile',{topics,rules:$('rules').value,version:currentProfile.version});$('profile-status').textContent='Gespeichert · gilt für den nächsten Recherchelauf';}catch(e){$('profile-status').textContent=e.message;}};
+async function collectDraftRatings(){
+  const selected=[];
+  for(const [items,section] of [[visibleHeadlines,'Heute wichtig'],[visibleArticles,'Vertiefungen']]){
+    for(const item of items){
+      const draft=ratingDrafts[draftKey(item)];
+      if(draft&&(draft.value||draft.reason.trim()))
+        selected.push({id:await GitHubPaper.ratingId(item),value:draft.value||'',reason:draft.reason||'',section});
+    }
+  }
+  return selected;
+}
+
 $('feedback-form').onsubmit=async e=>{e.preventDefault();if(config.mode==='github'){
   const b=e.submitter||$('feedback-form').querySelector('button[type=submit]');
   try{
-    const selected=[];
-    for(const [items,section] of [[visibleHeadlines,'Heute wichtig'],[visibleArticles,'Vertiefungen']]){
-      for(const item of items){
-        const draft=ratingDrafts[draftKey(item)];
-        if(draft&&(draft.value||draft.reason.trim()))
-          selected.push({id:await GitHubPaper.ratingId(item),value:draft.value||'',reason:draft.reason||'',section});
-      }
-    }
+    const selected=await collectDraftRatings();
     const comment=$('feedback').value.trim();
     if(!selected.length&&!comment)throw Error('Bitte mindestens einen Artikel bewerten oder Feedback eingeben.');
     const token=DirectFeedback.readToken();
@@ -222,6 +227,45 @@ edition=await GitHubPaper.edition(latestDate);render();await restoreSavedRatings
 
 $('feedback').addEventListener('input',()=>{feedbackStatus('Änderung noch nicht gesendet.');});
 
+
+$('preference-comment-form').onsubmit=async event=>{
+  event.preventDefault();
+  const button=event.submitter||$('preference-comment-form').querySelector('button[type=submit]');
+  const field=$('preference-comment');
+  const fresh=field.value.trim();
+  const out=$('preference-comment-status');
+  if(!fresh){out.textContent='Bitte zuerst einen Kommentar eingeben.';return;}
+  if(!edition){out.textContent='Noch keine Ausgabe geladen.';return;}
+  const token=DirectFeedback.readToken();
+  if(!token){
+    out.textContent='Bitte verbinde deinen GitHub-Zugang am Ende der Seite, bevor du Feedback sendest.';
+    return;
+  }
+  const day=edition.date;
+  button.disabled=true;
+  out.textContent='Dein Kommentar wird gemeinsam mit allen Bewertungen gespeichert …';
+  try {
+    // Preserve both previously submitted comments and any draft in the general form.
+    const existing=await DirectFeedback.savedFeedback(day,token);
+    if(edition.date!==day)throw Error('Ausgabe wurde während des Speicherns gewechselt.');
+    const previous=(existing?.feedback||'').trim();
+    const general=$('feedback').value.trim();
+    const base=general?(!previous||general.includes(previous)?general:previous+'\n\n'+general):previous;
+    const combined=[base,fresh].filter(Boolean).join('\n\n');
+    const selected=await collectDraftRatings();
+    if(edition.date!==day)throw Error('Ausgabe wurde während des Speicherns gewechselt.');
+    const result=await DirectFeedback.submit(day,selected,combined,token);
+    $('feedback').value=combined;
+    field.value='';
+    out.textContent=result.existing?'Dieser Kommentar war bereits gespeichert.':'Kommentar und sämtliche bisherigen Bewertungen erfolgreich privat auf GitHub gespeichert.';
+    feedbackStatus('Rückmeldung aus „Meine Präferenzen“ gespeichert.');
+    $('feedback-issue-link').href=result.html_url;
+    $('feedback-confirmation').hidden=false;
+    await showPreferenceSummary();
+  } catch(error){
+    out.textContent=error.message+' Dein Kommentar bleibt im Eingabefeld erhalten.';
+  } finally{button.disabled=false;}
+};
 
 function refreshGitHubConnection(){
   const connected=!!DirectFeedback.readToken();
