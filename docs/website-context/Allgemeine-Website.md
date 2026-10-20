@@ -65,3 +65,11 @@ Quelle: am 17.10. recherchierte Skill-Notizen, damals mit PRs #2–#18 abgeglich
 - Nach Bereitstellung Homepage, Privat, ETF und Pressespiegel per HTTPS erreichbar (200). Die drei statischen Privat-Seiten sind bytegleich mit der bestehenden geprüften Quelle. Keine Website-Inhalte oder Finanzdaten geändert.
 - Offen bleibt nur der echte neue Chat über die angemeldete ChatGPT-Weboberfläche: hier war die Sitzung abgemeldet. Agententests bestätigen das Verhalten der Anweisungen, nicht den vollständigen UI-Aufruf. Der allgemeine Agententest wurde nach einer Nutzungslimit-Unterbrechung erfolgreich wiederholt.
 - Dieser Abschlussnachtrag betrifft ausschließlich interne Dokumentation; sein Merge-/Checkstatus ist direkt im zugehörigen Dokumentations-PR nachprüfbar.
+
+
+## ETF-Farbabgleich für Privat-Übersicht (Oktober 2026)
+
+- Nutzerwunsch: Farbschema von `/Privat/` und `/Privat/Pressespiegel/` soll zum ETF-Bereich passen. **Designreferenz ist `Privat/ETFs/index.html`, nicht dessen technische Chart-Implementierung.**
+- Einheitliche Grundlagen: Hintergrund `#f6f7f9`, weiße Karten `#fff`, Hauptschrift `#101318`, Sekundärschrift `#6f7785`, Konturen `#e2e5ea`, Fokus-Blau `#2563eb`.
+- Die Privat-Übersicht verwendet weiterhin ihre drei unveränderten Linkziele und charakteristischen SVG-Kacheln; nur die zuvor warmen Orange-/Grüntöne werden zu kühlen Navy-/Blau-/Cyan-Farben, die Galeriefläche wird als weiße ETF-ähnliche Karte gestaltet.
+- Keine Änderungen an ETF-Scripts, Kursen oder Datenautomatik; keine Änderung der Funktion der Morgenzeitung. Nach PR-CI visuellen Screenshot für Desktop/Mobil prüfen, dann **nach Nutzerfreigabe** veröffentlichen.
