@@ -16,6 +16,12 @@
   <div id="preference-feedback" role="status" aria-live="polite">Feedbackdaten werden beim Öffnen über deinen privaten GitHub-Zugang geladen.</div>
   <h3>Was sich dadurch geändert hat</h3>
   <p id="preference-learning-status">Deine Bewertungen sind ein Signal für die künftige Auswahl. Eine tatsächlich nachgewiesene Veränderung der täglich veröffentlichten Artikel durch dieses Feedback liegt derzeit noch nicht vor. Bis eine nachfolgende Ausgabe nachweislich darauf reagiert, wird hier kein automatischer Lernerfolg behauptet.</p>
+  <form id="preference-comment-form">
+    <label for="preference-comment">Weitere Anregungen oder Änderungswünsche</label>
+    <textarea id="preference-comment" rows="3" maxlength="1600" placeholder="Was sollte ich bei der nächsten Ausgabe stärker, weniger oder anders berücksichtigen?"></textarea>
+    <button type="submit">Feedback senden</button>
+    <p id="preference-comment-status" role="status" aria-live="polite"></p>
+  </form>
   <p class="small">Es werden keine persönlichen Bewertungen öffentlich in die Website-Dateien geschrieben.</p>
 </section>
 <nav class="tabs" aria-label="Zeitungsbereiche"><button id="tab-headlines" aria-pressed="true">Heute wichtig <span id="headline-count">0</span></button><button id="tab-articles" aria-pressed="false">Vertiefungen <span id="article-count">0</span></button></nav>
