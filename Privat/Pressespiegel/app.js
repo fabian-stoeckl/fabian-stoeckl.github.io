@@ -230,7 +230,20 @@ async function syncPreferencesView(){
   if(config?.mode!=='github')return;
   const open=preferencesRoute(),changed=preferencesVisible!==open;
   preferencesVisible=open;
+  // Hide the whole newspaper in the DOM, not only through stylesheet selectors.
+  // This remains effective when a mobile browser still has an older CSS file cached.
+  document.documentElement.classList.toggle('preferences-initial',open);
   document.body.classList.toggle('preferences-view',open);
+  $('newspaper-view').hidden=open;
+  document.querySelector('.editionline').hidden=open;
+  if(open){
+    $('notice').hidden=true;
+    $('publication-status').hidden=true;
+  }else if(edition){
+    // Restore legitimate operational notices when returning to the newspaper.
+    $('notice').hidden=!$('notice').textContent.trim();
+    updatePublicationStatus(edition);
+  }
   $('profile').hidden=!open;
   const toggle=$('profile-toggle');
   toggle.setAttribute('aria-expanded',String(open));

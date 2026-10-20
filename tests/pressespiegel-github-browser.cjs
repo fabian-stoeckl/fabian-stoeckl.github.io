@@ -166,6 +166,15 @@ const visible=GitHubPaper.partition(fixture);
  assert(await page.locator('#profile').isVisible());
  assert.equal(await page.locator('#profile-toggle').getAttribute('aria-expanded'),'true');
  assert.equal(new URL(page.url()).hash,'#praeferenzen');
+ // The entire news DOM must be hidden, not just visually obscured by a fresh CSS selector.
+ assert.equal(await page.locator('#newspaper-view').getAttribute('hidden'),'','Entire newspaper must have hidden attribute');
+ assert(await page.locator('#newspaper-view').isHidden());
+ assert.equal(await page.locator('#headlines .news-item:visible').count(),0);
+ assert.equal(await page.locator('#articles article:visible').count(),0);
+ // Simulate a device that missed the updated stylesheet: the DOM split must still work.
+ await page.evaluate(()=>{document.querySelector('link[href*="style.css"]').disabled=true;});
+ assert(await page.locator('#newspaper-view').isHidden(),'Newspaper must stay hidden without any authored CSS');
+ await page.evaluate(()=>{document.querySelector('link[href*="style.css"]').disabled=false;});
  assert.equal(await page.title(),'Meine Präferenzen · Pressespiegel');
  for(const selector of ['.editionline','#publication-status','#notice','nav.tabs','#headlines','#articles','#feedback-section','#feedback-settings','footer']){
    assert(await page.locator(selector).isHidden(),selector+' must disappear completely in preferences view');
@@ -175,6 +184,10 @@ const visible=GitHubPaper.partition(fixture);
  await page.setViewportSize({width:390,height:844});
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Preferences page must fit on mobile');
  await page.screenshot({path:'artifacts/screenshots/morgenzeitung-preferences-mobile.png',fullPage:true});
+ await page.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));
+ assert(await page.locator('#newspaper-view').isHidden(),'Newspaper must not reappear at bottom of mobile preferences page');
+ assert.equal(await page.locator('#articles article:visible').count(),0,'No articles while scrolled to bottom');
+ assert.equal(await page.locator('#headlines .news-item:visible').count(),0,'No news while scrolled to bottom');
  await page.setViewportSize({width:1440,height:1000});
  await page.waitForFunction(()=>document.querySelector('#preference-feedback')?.textContent.includes('2 Artikelbewertungen'));
  assert.match(await page.locator('#preference-learning-status').innerText(),/nicht verlässlich nachgewiesen/);
@@ -203,6 +216,7 @@ const visible=GitHubPaper.partition(fixture);
  assert(await page.locator('#profile').isHidden());
  assert.equal(new URL(page.url()).hash,'');
  assert(await page.locator('nav.tabs').isVisible(),'Closing preferences restores newspaper');
+ assert(await page.locator('#newspaper-view').isVisible(),'Closing preferences must restore the actual newspaper DOM');
  assert.equal(await page.locator('#profile-toggle').getAttribute('aria-expanded'),'false');
  assert(await page.locator('#github-connected').isVisible());
 
