@@ -1,6 +1,10 @@
 'use strict';
 let config, secret='', currentProfile, ratings={}, edition, latestDate;
-const ratingDrafts={};
+function readDrafts(key){try{const data=JSON.parse(localStorage.getItem(key)||'{}');return data&&typeof data==='object'&&!Array.isArray(data)?data:{};}catch(_){return {};}}
+const ratingDrafts=readDrafts('morgenzeitung:rating-drafts:v2');
+const feedbackDrafts=readDrafts('morgenzeitung:feedback-drafts:v2');
+function persistDrafts(){try{localStorage.setItem('morgenzeitung:rating-drafts:v2',JSON.stringify(ratingDrafts));}catch(_){}}
+function persistComments(){try{localStorage.setItem('morgenzeitung:feedback-drafts:v2',JSON.stringify(feedbackDrafts));}catch(_){}}
 const $=id=>document.getElementById(id);
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
 const fmt=v=>new Intl.DateTimeFormat('de-AT',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Vienna'}).format(new Date(v));
@@ -16,13 +20,13 @@ function githubRating(a) {
   for(const value of ['Sehr relevant','Teilweise relevant','Nicht relevant']) {
     const label=el('label');const input=el('input');input.type='radio';input.name='rating-'+a.id;
     input.value=value;input.checked=ratingDrafts[key]?.value===value;
-    input.onchange=()=>{ratingDrafts[key]={id:a.id,value,reason:ratingDrafts[key]?.reason||''};$('feedback-status').textContent='Auswahl vorgemerkt · unten gemeinsam übermitteln.';};
+    input.onchange=()=>{ratingDrafts[key]={id:a.id,value,reason:ratingDrafts[key]?.reason||''};persistDrafts();$('feedback-status').textContent='Auswahl vorgemerkt · beide Rubriken werden zusammen gespeichert.';};
     label.append(input,el('span',value));box.append(label);
   }
   const label=el('label','Optional: Warum? ','reason');const reason=el('textarea');
   reason.rows=2;reason.maxLength=600;reason.placeholder='Was war hilfreich oder hat dir gefehlt?';
   reason.value=ratingDrafts[key]?.reason||'';
-  reason.oninput=()=>{ratingDrafts[key]={id:a.id,value:ratingDrafts[key]?.value,reason:reason.value};$('feedback-status').textContent='Änderung vorgemerkt · unten gemeinsam übermitteln.';};label.append(reason);box.append(label);
+  reason.oninput=()=>{ratingDrafts[key]={id:a.id,value:ratingDrafts[key]?.value,reason:reason.value};persistDrafts();$('feedback-status').textContent='Änderung vorgemerkt · beide Rubriken werden zusammen gespeichert.';};label.append(reason);box.append(label);
   return box;
 }
 function article(a,index){const node=el('article',undefined,a.treat?'treat':'');const intro=el('div');intro.append(el('span',a.treat?'DAS ZUCKERL':a.topic,'eyebrow'));const meta=el('p',a.source+' · '+a.kind+'\n'+fmt(a.published_at)+(a.paywall?' · Paywall':''),'meta');intro.append(meta);const body=el('div',undefined,'body');const title=el('h2');title.append(link(a.title,a.url));body.append(title,el('p',a.summary));if(a.access==='teaser')body.append(el('p','Zusammenfassung beruht ausschließlich auf dem zugänglichen Vorspann.','small'));if(a.novelty)body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty,'novelty'));body.append(readingLinks(a));if(config.mode==='github'){body.append(githubRating(a));node.append(intro,body);return node;}const controls=el('div',undefined,'ratings');controls.setAttribute('aria-label','Relevanz bewerten');const state=el('p','','rating-state');state.setAttribute('role','status');const reasonLabel=el('label','Optionaler Grund ','reason');const reason=el('select');reason.setAttribute('aria-label','Grund für die Bewertung');for(const t of ['','Mehr davon','Schon bekannt','Zu oberflächlich','Thema interessiert mich nicht']){const o=el('option',t||'–');o.value=t;reason.append(o);}reasonLabel.append(reason);let saved=ratings[a.id];reason.value=saved?.reason||'';const buttons=[];function refresh(){for(const [b,v] of buttons)b.setAttribute('aria-pressed',String(saved?.value===v));state.textContent=saved?'Gespeichert · jederzeit änderbar':'';reason.disabled=!saved;}
@@ -39,7 +43,7 @@ $('profile-form').onsubmit=async e=>{e.preventDefault();const topics=Object.from
 $('feedback-form').onsubmit=async e=>{e.preventDefault();if(config.mode==='github'){
   const b=e.submitter;
   try{
-    const selected=edition.articles.map(a=>ratingDrafts[edition.date+':'+a.id])
+    const selected=[...edition.headlines,...edition.articles].map(a=>ratingDrafts[edition.date+':'+a.id])
       .filter(r=>r&&(r.value||r.reason.trim()));
     const comment=$('feedback').value.trim();
     if(!selected.length&&!comment)throw Error('Bitte mindestens einen Artikel bewerten oder Feedback eingeben.');
@@ -77,7 +81,7 @@ if(!latestDate){status('Noch keine veröffentlichte Ausgabe verfügbar.');return
 edition=await GitHubPaper.edition(latestDate);render();return;
 }if(config.api===null){status('Die Morgenzeitung wird vorbereitet. Der private Zeitungsdienst ist noch nicht verbunden.');return;}if(config.api&&!config.api.startsWith('https://'))throw Error('Unsichere Dienstadresse');if(config.preview)await load();else{$('login').hidden=false;status('Bitte öffne deine persönliche Morgenzeitung.');}}catch(e){status('Zeitungsdienst nicht erreichbar. '+e.message);}})();
 
-$('feedback').addEventListener('input',()=>{$('feedback-status').textContent='Änderung noch nicht gesendet.';});
+$('feedback').addEventListener('input',()=>{if(edition){feedbackDrafts[edition.date]=$('feedback').value;persistComments();}$('feedback-status').textContent='Änderung noch nicht gesendet.';});
 
 
 function refreshGitHubConnection(){
