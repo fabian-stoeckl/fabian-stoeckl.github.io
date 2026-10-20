@@ -63,6 +63,7 @@ class PaperTests(unittest.TestCase):
         for section in ('articles','headlines'):
             for i,a in enumerate(data[section]):
                 a.update(url='https://example.com/'+section+str(i),published_at='2026-10-19T05:00:00Z',event=section+str(i),title='Neue Meldung '+section+str(i))
+                if section=='articles':a['kind']='Analyse'
         return data
     def test_feedback_is_input_to_later_selection(self):
         self.store.publish(self.ed);self.store.feedback('Mehr über Bildung')
