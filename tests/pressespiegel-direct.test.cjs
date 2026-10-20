@@ -33,7 +33,7 @@ await feedback.verify(token,transport);
 privateRepo=false;await assert.rejects(()=>feedback.verify(token,transport),/private/);
 privateRepo=true;
 let result=await feedback.submit('2026-10-20',data,'Mehr Handelsblatt',token,s,transport,webcrypto);
-assert.equal(result.ok,true);assert.equal(result.updated,undefined);
+assert.equal(result.ok,true);assert.equal(result.updated,false);
 assert.equal(calls.filter(x=>x.opts.method==='POST').length,1);
 result=await feedback.submit('2026-10-20',data,'Mehr Handelsblatt',token,s,transport,webcrypto);
 assert.equal(result.existing,true);assert.equal(calls.filter(x=>x.opts.method==='POST').length,1);
