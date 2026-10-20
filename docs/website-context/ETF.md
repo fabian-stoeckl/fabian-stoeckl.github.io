@@ -68,3 +68,12 @@ Quelle: ältere Chats insbesondere 02.–07.10.2026 über Personal Context; tech
 - Aktuelle 8 angezeigte ETFs: SXR8.DE, VWCG.DE, DBXJ.DE, IS3N.DE, SXR1.DE, 2B76.DE, G1CE.DE, XB4A.DE. Der ATX ist angezeigt, aber kein Bestandteil der im Quellcode gewichteten Sparplan-Reihe.
 - Sparplan-Gewichte laut aktuellem Code: SXR8 35%, VWCG 20%, DBXJ 10%, IS3N 10%, SXR1 10%, G1CE 7,5%, 2B76 7,5%. Diese technische Dashboard-Konfiguration ist maßgeblich, ältere Strategiediskussionen mit anderen Tickern nicht ungeprüft übertragen. Keine Aussage über tatsächlichen Depotbestand.
 - Relevante Tests: fx.test.cjs, data-status.test.cjs, annual.test.cjs, charts.test.cjs, preview.test.cjs und Python-Updater-Tests. Keine Finanzdatenänderung während dieser Protokollrecherche.
+
+
+### ETF-Farbkonzept an Morgenzeitung angleichen (20.10.2026 – Vorschau)
+
+- Die vom Nutzer abgelehnte Richtung „Privat-Übersicht und Morgenzeitung an das bisherige kühle ETF-Schema anpassen“ (PR #40, **geschlossen und nicht veröffentlicht**) gilt **nicht mehr**.
+- Stattdessen die bestehende warme Gestaltung der Morgenzeitung als Quelle: ETF-Hintergrund `#f4efe7`, Hauptschrift `#242321`, Sekundärtext `#69635b`, Konturen `#d6cec1`, Braun-/Terrakotta-Akzent `#884b2d`, Petrol-/Link-Akzent `#234f63`, freundlich helle ETF-Karten `#fffaf4`.
+- ETF-Layout, Performanceberechnungen, Chart-Interaktionen, Daten und automatisches Daten-Update **unverändert**. Nur optische CSS-Farben und die Palette der Diagrammlinien passend zur neuen warmen Gesamtästhetik.
+- Die Zeitung, die separate Präferenzseite und die Privat-Übersicht bleiben im ursprünglichen Farbdesign. Browser-Tests vergleichen die ETF-Tokens mit den realen CSS-Tokens der Morgenzeitung und erstellen mobile und Desktop-Screenshots zur Freigabe.
+- Vor Merge ausdrücklich die Designfreigabe des Nutzers abwarten.
