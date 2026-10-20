@@ -3,12 +3,25 @@
 const DirectFeedback = (() => {
   const REPO='fabian-stoeckl/morgenzeitung-feedback';
   const TOKEN_KEY='morgenzeitung:github-token:v1';
+  const RESET_KEY='morgenzeitung:github-token-reset:2026-10-20';
   const RECEIPTS_KEY='morgenzeitung:github-receipts:v1';
   const API='https://api.github.com/repos/'+REPO;
   function readToken(store=localStorage) {
     try {return store.getItem(TOKEN_KEY)||'';} catch (_) {return '';}
   }
   function clearToken(store=localStorage) {store.removeItem(TOKEN_KEY);}
+  // One-time browser-only cleanup requested by owner. Do NOT remove saved
+  // issue receipts: they are needed to update rather than duplicate feedback.
+  // Reset flag is recorded even when there was no old token; new tokens are safe.
+  function resetOldTokenOnce(store=localStorage) {
+    try {
+      if(store.getItem(RESET_KEY)==='1')return false;
+      const hadToken=!!store.getItem(TOKEN_KEY);
+      store.removeItem(TOKEN_KEY);
+      store.setItem(RESET_KEY,'1');
+      return hadToken;
+    } catch (_) {return false;}
+  }
   function saveToken(token,store=localStorage) {
     const value=String(token||'').trim();
     if(!value.startsWith('github_pat_')||value.length<30||value.length>500||/\s/.test(value)) throw Error('Bitte ausschließlich einen eingeschränkten Fine-grained GitHub-Token verwenden.');
@@ -126,6 +139,6 @@ const DirectFeedback = (() => {
     store.setItem(RECEIPTS_KEY,JSON.stringify(receipts));
     return {ok:true,updated:patch,html_url:result.html_url};
   }
-  return {REPO,TOKEN_KEY,RECEIPTS_KEY,readToken,saveToken,clearToken,verify,buildFeedback,submit,savedFeedback,feedbackHistory,readReceipts};
+  return {REPO,TOKEN_KEY,RESET_KEY,RECEIPTS_KEY,readToken,saveToken,clearToken,resetOldTokenOnce,verify,buildFeedback,submit,savedFeedback,feedbackHistory,readReceipts};
 })();
 if(typeof module!=='undefined')module.exports=DirectFeedback;
