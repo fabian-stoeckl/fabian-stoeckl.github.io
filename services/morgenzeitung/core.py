@@ -129,7 +129,7 @@ class Store:
             raise ValueError('Ungültiger Recherchezeitraum')
         if not 1<=len(e['articles'])<=15 or not 1<=len(e['headlines'])<=20:
             raise ValueError('Ungültige Ausgabegröße')
-        history=self.context()['history']; seen=set(); events=set(); titles=[]
+        history=self.context()['history']; seen=set(); events=set(); titles=[]; all_links=set(); all_events=set(); all_titles=[]
         for section in ('articles','headlines'):
             section_seen=set()
             for a in e[section]:
@@ -141,6 +141,9 @@ class Store:
                     raise ValueError('Unvollständige Quellenangabe')
                 if a.get('region') not in ('Österreich','International'):
                     raise ValueError('Region fehlt')
+                if url in all_links or a['event'] in all_events or any(similar(a['title'], t) for t in all_titles):
+                    raise ValueError('Doppelte Meldung zwischen Heute wichtig und Vertiefungen oder innerhalb einer Rubrik')
+                all_links.add(url); all_events.add(a['event']); all_titles.append(a['title'])
                 if section=='articles':
                     if a.get('access') not in ('full','teaser') or not a.get('summary') or not a.get('facts') or not a.get('topic') or not a.get('kind'):
                         raise ValueError('Inhaltsbeleg fehlt')
