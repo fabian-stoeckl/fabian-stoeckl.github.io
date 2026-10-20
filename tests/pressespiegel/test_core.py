@@ -17,11 +17,11 @@ class PaperTests(unittest.TestCase):
         self.store.publish(self.ed);aid=article_id(self.ed['articles'][0]['url'])
         self.store.rate(aid,-1,'Schon bekannt')
         self.assertEqual(Store(self.path).ratings()[aid]['value'],-1)
-        self.assertEqual(self.store.learning()['Wirtschaft & Budget'],0)
+        self.assertEqual(self.store.learning()[self.ed['articles'][0]['topic']],0)
         self.store.rate(aid,1,'Mehr davon')
         self.assertEqual(len(self.store.ratings()),1)
-        self.assertGreater(self.store.learning()['Wirtschaft & Budget'],0)
-        self.assertLess(self.store.learning()['Wirtschaft & Budget'],.1)
+        self.assertGreater(self.store.learning()[self.ed['articles'][0]['topic']],0)
+        self.assertLess(self.store.learning()[self.ed['articles'][0]['topic']],.1)
     def test_dst(self):
         self.assertEqual(schedule('2026-10-24')[1].hour,5)
         self.assertEqual(schedule('2026-10-25')[1].hour,6)
@@ -40,6 +40,19 @@ class PaperTests(unittest.TestCase):
         self.ed['articles'][1]['event']=self.ed['articles'][0]['event']
         with self.assertRaises(ValueError):self.store.publish(self.ed)
         self.assertEqual(canonical('https://orf.at/stories/1/?utm_source=x'),canonical('https://orf.at/stories/1/'))
+    def test_cross_section_duplicate_events_and_links_rejected(self):
+        d=copy.deepcopy(self.ed)
+        d['headlines'][0]['event']=d['articles'][0]['event']
+        with self.assertRaisesRegex(ValueError,'Doppelte Meldung'):
+            self.store.publish(d)
+        d=copy.deepcopy(self.ed)
+        d['headlines'][0]['url']=d['articles'][0]['url']
+        with self.assertRaisesRegex(ValueError,'Doppelte Meldung'):
+            self.store.publish(d)
+        d=copy.deepcopy(self.ed)
+        d['headlines'][0]['title']=d['articles'][0]['title']
+        with self.assertRaisesRegex(ValueError,'Doppelte Meldung'):
+            self.store.publish(d)
     def test_old_article_rejected(self):
         self.ed['window_start']='2026-10-17T14:00:00Z'
         with self.assertRaises(ValueError):self.store.publish(self.ed)

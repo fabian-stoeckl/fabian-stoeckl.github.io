@@ -16,7 +16,8 @@ const DirectFeedback = (() => {
     return value;
   }
   async function request(token,path,method='GET',body,transport=fetch) {
-    if(!/^(\/issues(?:\/\d+)?|)$/.test(path)) throw Error('Unzulässiger GitHub-Pfad.');
+    if(!/^(\/issues(?:\/\d+)?|\/issues\?state=all&per_page=100&page=[123]|)$/.test(path)) throw Error('Unzulässiger GitHub-Pfad.');
+    if(path.includes('?')&&method!=='GET')throw Error('Nur lesender Aufruf erlaubt.');
     const response=await transport(API+path,{
       method,credentials:'omit',redirect:'error',referrerPolicy:'no-referrer',
       cache:'no-store',
@@ -52,14 +53,38 @@ const DirectFeedback = (() => {
     const hash=await cryptoAPI.subtle.digest('SHA-256',bytes);
     return [...new Uint8Array(hash)].map(v=>v.toString(16).padStart(2,'0')).join('');
   }
+  async function feedbackHistory(token,transport=fetch) {
+    const issues=[];
+    for(let page=1;page<=3;page++){
+      const batch=await request(token,'/issues?state=all&per_page=100&page='+page,'GET',undefined,transport);
+      if(!Array.isArray(batch))throw Error('GitHub hat keine gültige Feedback-Liste zurückgegeben.');
+      for(const issue of batch){
+        if(!/^\[Morgenzeitung\] Sammelbewertung \d{4}-\d{2}-\d{2}$/.test(issue.title||'')||
+           typeof issue.body!=='string'||issue.body.includes('TEST: true')||issue.pull_request)continue;
+        try {
+          const parsed=GitHubPaper.parseBatchBody(issue.body);
+          if(issue.title.endsWith(parsed.date))
+            issues.push({number:issue.number,updated_at:issue.updated_at||'',...parsed});
+        }catch(_){/* Skip malformed records; never interpret them as user preferences. */}
+      }
+      if(batch.length<100)break;
+    }
+    const latest=new Map();
+    for(const item of issues){
+      const old=latest.get(item.date);
+      if(!old||item.updated_at>=old.updated_at)latest.set(item.date,item);
+    }
+    return [...latest.values()].sort((a,b)=>b.date.localeCompare(a.date));
+  }
   function buildFeedback(date,ratings,feedback) {
-    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Array.isArray(ratings)||ratings.length>15||
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Array.isArray(ratings)||ratings.length>40||
        typeof feedback!=='string'||feedback.length>4000) throw Error('Ungültige Feedback-Daten.');
     const ids=new Set();
     for(const r of ratings) {
       if(!r||typeof r.id!=='string'||!/^[a-f0-9]{16}$/.test(r.id)||ids.has(r.id)||
          !['','Sehr relevant','Teilweise relevant','Nicht relevant'].includes(r.value||'')||
-         typeof r.reason!=='string'||r.reason.length>600) throw Error('Ungültige Artikelbewertung.');
+         typeof r.reason!=='string'||r.reason.length>600||
+         (r.section!==undefined&&!['Heute wichtig','Vertiefungen'].includes(r.section))) throw Error('Ungültige Artikelbewertung.');
       ids.add(r.id);
     }
     if(!ratings.length&&!feedback.trim()) throw Error('Bitte mindestens eine Bewertung oder Feedback eingeben.');
@@ -68,19 +93,30 @@ const DirectFeedback = (() => {
       body:GitHubPaper.batchBody(date,ratings,feedback)
     };
   }
+  async function savedFeedback(date,token,store=localStorage,transport=fetch) {
+    const previous=readReceipts(store)[date];
+    if(!previous||!Number.isSafeInteger(previous.number)||previous.number<=0)return null;
+    const existing=await request(token,'/issues/'+previous.number,'GET',undefined,transport);
+    const parsed=GitHubPaper.parseBatchBody(existing.body);
+    if(parsed.date!==date)throw Error('Frühere Bewertung gehört zu einer anderen Ausgabe. Nichts überschrieben.');
+    return parsed;
+  }
   async function submit(date,ratings,feedback,token,store=localStorage,transport=fetch,cryptoAPI=crypto) {
-    const issue=buildFeedback(date,ratings,feedback);
+    const receipts=readReceipts(store),previous=receipts[date];
+    // Reload the canonical saved issue before patching: an update from either tab
+    // must never erase ratings previously submitted in the other tab.
+    const saved=await savedFeedback(date,token,store,transport);
+    const merged=new Map((saved?.ratings||[]).map(r=>[r.id,r]));
+    for(const r of ratings)merged.set(r.id,r);
+    const combined=[...merged.values()];
+    const combinedFeedback=feedback.trim()?feedback:saved?.feedback||'';
+    const issue=buildFeedback(date,combined,combinedFeedback);
     const hash=await fingerprint(issue.body,cryptoAPI);
-    const receipts=readReceipts(store), previous=receipts[date];
     if(previous?.hash===hash&&Number.isSafeInteger(previous.number)) {
       return {ok:true,existing:true,html_url:previous.url};
     }
-    // Subsequent updates of the same edition edit the previously confirmed issue.
-    const patch=previous&&Number.isSafeInteger(previous.number)&&previous.number>0;
-    let result;
-    try {
-      result=await request(token,patch?'/issues/'+previous.number:'/issues',patch?'PATCH':'POST',issue,transport);
-    } catch(e) {throw e;} // Keep inputs and receipt unchanged on failure.
+    const patch=!!(previous&&Number.isSafeInteger(previous.number)&&previous.number>0);
+    const result=await request(token,patch?'/issues/'+previous.number:'/issues',patch?'PATCH':'POST',issue,transport);
     if(!Number.isSafeInteger(result.number)||result.number<=0||
       typeof result.html_url!=='string'||
       !result.html_url.startsWith('https://github.com/'+REPO+'/issues/')) {
@@ -90,6 +126,6 @@ const DirectFeedback = (() => {
     store.setItem(RECEIPTS_KEY,JSON.stringify(receipts));
     return {ok:true,updated:patch,html_url:result.html_url};
   }
-  return {REPO,TOKEN_KEY,RECEIPTS_KEY,readToken,saveToken,clearToken,verify,buildFeedback,submit,readReceipts};
+  return {REPO,TOKEN_KEY,RECEIPTS_KEY,readToken,saveToken,clearToken,verify,buildFeedback,submit,savedFeedback,feedbackHistory,readReceipts};
 })();
 if(typeof module!=='undefined')module.exports=DirectFeedback;
