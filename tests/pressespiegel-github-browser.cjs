@@ -47,7 +47,34 @@ const visible=GitHubPaper.partition(fixture);
    };
  },currentDate);
  const calls=()=>page.evaluate(()=>window.__feedbackTestRequests);
+ // Compare actual computed colors against the ETF page (the visual source of truth).
+ const palette=await context.newPage();
+ const base='http://127.0.0.1:8765/Privat/';
+ await palette.goto(base+'ETFs/');
+ const actualTheme=await palette.evaluate(()=>({
+   bg:getComputedStyle(document.body).backgroundColor,
+   fg:getComputedStyle(document.body).color,
+   muted:getComputedStyle(document.documentElement).getPropertyValue('--muted').trim(),
+   line:getComputedStyle(document.documentElement).getPropertyValue('--line').trim(),
+   card:getComputedStyle(document.documentElement).getPropertyValue('--card').trim()
+ }));
+ assert.deepEqual(actualTheme,{bg:'rgb(246, 247, 249)',fg:'rgb(16, 19, 24)',muted:'#6f7785',line:'#e2e5ea',card:'#fff'});
+ await palette.goto(base);
+ assert.equal(await palette.evaluate(()=>getComputedStyle(document.body).backgroundColor),actualTheme.bg,'Private overview background must match ETFs');
+ assert.equal(await palette.evaluate(()=>getComputedStyle(document.body).color),actualTheme.fg,'Private overview text must match ETFs');
+ assert.equal(await palette.evaluate(()=>getComputedStyle(document.querySelector('.gallery')).backgroundColor),'rgb(255, 255, 255)','Private overview tiles should sit on a white ETF-style surface');
+ assert.equal(await palette.locator('a.tile').count(),3,'All three navigation tiles are retained');
+ for(const width of [390,1440]){
+   await palette.setViewportSize({width,height:900});
+   assert(await palette.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Private gallery must fit width '+width);
+   await palette.screenshot({path:'artifacts/screenshots/morgenzeitung-overview-'+width+'.png',fullPage:true});
+ }
+ await palette.close();
  await page.goto('http://127.0.0.1:8765/Privat/Pressespiegel/');
+ assert.equal(await page.evaluate(()=>getComputedStyle(document.body).backgroundColor),actualTheme.bg,'Newspaper background must match ETFs');
+ assert.equal(await page.evaluate(()=>getComputedStyle(document.body).color),actualTheme.fg,'Newspaper text must match ETFs');
+ assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--line').trim()),actualTheme.line);
+ assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--muted').trim()),actualTheme.muted);
  await page.waitForSelector('#headlines li a');
  assert.equal(await page.evaluate(()=>localStorage.getItem('morgenzeitung:github-token:v1')),null);
  assert.match(await page.locator('#github-setup-status').innerText(),/Alter lokal gespeicherter Token gelöscht/);
@@ -174,6 +201,8 @@ const visible=GitHubPaper.partition(fixture);
  }
  assert.equal(await page.locator('article').count(),0);
  assert(await page.locator('#profile').isVisible());
+ assert.equal(await page.evaluate(()=>getComputedStyle(document.body).backgroundColor),actualTheme.bg,'Standalone preferences must use ETF colors');
+ assert.equal(await page.evaluate(()=>getComputedStyle(document.body).color),actualTheme.fg);
  assert(await page.locator('header .topline a[href="./"]').isVisible());
  await page.waitForFunction(()=>document.querySelector('#preference-feedback')?.textContent.includes('2 Artikelbewertungen'));
  assert.match(await page.locator('#preference-learning-status').innerText(),/nicht verlässlich nachgewiesen/);
