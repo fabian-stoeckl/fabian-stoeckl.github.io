@@ -5,3 +5,16 @@
 main{max-width:860px}.lead-grid{display:block;padding:0;border:0}.lead-grid article,.article-list article{display:block;padding:28px 0;border-bottom:1px solid var(--line)}.lead-grid article+article{border-left:0;padding-left:0}.article-list .body{max-width:none}article h2,.article-list h2,.lead-grid h2{font-size:29px;margin:12px 0}.headline-columns,#feedback-section{display:block}.rating-dots{margin:20px 0 0;padding:12px 0;border:0;gap:12px 24px}.rating-dots legend{font-size:12px;color:var(--muted)}.rating-dots>label{display:flex;align-items:center;gap:7px;cursor:pointer}.rating-dots input[type=radio]{appearance:auto;display:inline-block;width:18px;height:18px;padding:0;margin:0;accent-color:var(--accent)}.rating-dots .reason{flex-basis:100%}.rating-dots .reason select{margin-left:8px}#feedback-status{display:block}#feedback-section form{margin-top:20px}
 
 .rating-dots .reason{display:block;width:100%}.rating-dots .reason textarea{font-size:13px;margin:6px 0;width:100%}
+
+/* Compact, sourced editorial overview, kept separate from selected articles. */
+#overview{margin:30px 0 8px;padding:20px 24px;border-top:2px solid var(--ink);background:#e9e1d42b}
+#overview h2{font-size:31px;line-height:1.2;margin:8px 0 16px}
+#overview-list{margin:0;padding-left:24px}
+#overview-list li{padding:10px 0;line-height:1.5}
+#overview-list strong{display:block;font-size:15px;font-weight:650}
+#overview-list p{font-size:13px;color:var(--muted);margin:4px 0}
+#overview-list a{font-size:12px}
+#manual-feedback{margin-top:14px;padding:12px;border:1px solid var(--line)}
+#manual-feedback textarea{width:100%}
+#github-submit-link{font-size:13px}
+@media(max-width:760px){#overview{padding:17px 15px}#overview h2{font-size:27px}}
