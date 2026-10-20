@@ -18,3 +18,18 @@ main{max-width:860px}.lead-grid{display:block;padding:0;border:0}.lead-grid arti
 #manual-feedback textarea{width:100%}
 #github-submit-link{font-size:13px}
 @media(max-width:760px){#overview{padding:17px 15px}#overview h2{font-size:27px}}
+
+/* Browser-only GitHub token settings. No token appears in HTML or public source. */
+#github-setup{margin:30px 0;padding:22px;border:1px solid var(--line);background:#ffffff48}
+#github-setup h2{margin:0 0 10px;font-size:27px}
+#github-setup p{font-size:13px;line-height:1.6}
+#github-setup code{overflow-wrap:anywhere}
+#github-setup-form>label{display:block;font-size:14px}
+#github-setup #github-token{width:100%;max-width:700px}
+#github-setup .token-consent{display:flex;align-items:flex-start;gap:10px;max-width:700px;cursor:pointer;margin:12px 0 19px}
+#github-setup input[type=checkbox]{appearance:auto;width:18px;height:18px;flex-shrink:0;margin:3px 0;padding:0}
+#github-setup-status{display:block;color:var(--muted);font-size:13px;margin-top:12px}
+#github-connected{display:flex;align-items:center;gap:12px;justify-content:space-between;border:1px solid var(--line);margin:25px 0;padding:13px 16px;font-size:13px}
+#github-connected button{font-size:12px}
+#feedback-confirmation{font-size:13px;margin-top:8px}
+@media(max-width:760px){#github-connected{align-items:flex-start;flex-direction:column}}
