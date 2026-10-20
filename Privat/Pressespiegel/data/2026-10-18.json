@@ -6,7 +6,7 @@
   "researched_at": "2026-10-18T13:45:00Z",
   "preview": true,
   "limitations": [
-    "Reduzierte, manuell recherchierte Vorschau mit fünf ORF-Beiträgen vom 16.–18. Oktober; keine vollständige 24-Stunden-Ausgabe und noch kein Nachweis der gewünschten Medienvielfalt."
+    "Reduzierte, manuell recherchierte Vorschau mit fünf vertiefenden ORF-Beiträgen und vier anderen ORF-Nachrichten vom 16.–18. Oktober; keine vollständige 24-Stunden-Ausgabe und noch kein Nachweis der gewünschten Medienvielfalt oder Artikellänge."
   ],
   "articles": [
     {
@@ -112,36 +112,36 @@
   ],
   "headlines": [
     {
-      "title": "Einigung bei Unis und „Zukunftsdepot“",
-      "url": "https://orf.at/stories/3445380/",
+      "title": "Billa drängt auf längere Öffnungszeiten",
+      "url": "https://orf.at/stories/3445458/",
       "source": "ORF",
-      "published_at": "2026-10-17T19:05:00+02:00",
+      "published_at": "2026-10-18T14:37:00+02:00",
       "region": "Österreich",
-      "event": "at-uni-budget-2028-2030"
+      "event": "at-retail-open-hours-rewe-2026"
     },
     {
-      "title": "Wien und NÖ fordern Abschaffung der Flugabgabe",
-      "url": "https://noe.orf.at/stories/3375753/",
-      "source": "ORF Niederösterreich",
-      "published_at": "2026-10-18T10:26:00+02:00",
+      "title": "Arabische Liga stockt Büro in Wien auf",
+      "url": "https://wien.orf.at/stories/3375787/",
+      "source": "ORF Wien",
+      "published_at": "2026-10-18T15:10:00+02:00",
       "region": "Österreich",
-      "event": "at-flugabgabe-abschaffung-2026"
+      "event": "arab-league-vienna-office-2026"
     },
     {
-      "title": "Tanner wüscht sich frühere Verlängerung des Zivildienstes",
-      "url": "https://orf.at/stories/3445456/",
+      "title": "Chinas Dieselexporte erreichen Rekordniveau",
+      "url": "https://orf.at/stories/3445428/",
       "source": "ORF",
-      "published_at": "2026-10-18T13:37:00+02:00",
-      "region": "Österreich",
-      "event": "at-zivildienst-verlaengerung-2026"
-    },
-    {
-      "title": "Sorge vor Manipulation mit KI",
-      "url": "https://orf.at/stories/3445267/",
-      "source": "ORF",
-      "published_at": "2026-10-17T22:51:00+02:00",
+      "published_at": "2026-10-18T08:19:00+02:00",
       "region": "International",
-      "event": "israel-wahl-2026-ki-manipulation"
+      "event": "china-diesel-exports-sep-2026"
+    },
+    {
+      "title": "Drohne in Litauens Luftraum eingedrungen und abgestürzt",
+      "url": "https://orf.at/stories/3445455/",
+      "source": "ORF",
+      "published_at": "2026-10-18T13:30:00+02:00",
+      "region": "International",
+      "event": "lithuania-drone-crash-oct-2026"
     }
   ]
 }
