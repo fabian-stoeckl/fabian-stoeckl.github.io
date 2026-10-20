@@ -65,7 +65,9 @@ function render(){
     if(!regional.length){const note=el('li',e.preview?'Keine zusätzlichen eigenständigen Nachrichten in dieser reduzierten Vorschau.':'Keine weiteren aktuellen Meldungen in dieser Ausgabe.','small empty-region');list.append(note);}
     for(const a of regional){
       const row=el('li',undefined,'news-item');
-      row.append(link(a.title,a.url),el('small',a.source));
+      row.append(link(a.title,a.url));
+      if(typeof a.summary==='string'&&a.summary.trim())row.append(el('p',a.summary.trim(),'news-summary'));
+      row.append(el('small',a.source));
       if(config.mode==='github')row.append(githubRating(a,'Heute wichtig'));
       list.append(row);
     }
