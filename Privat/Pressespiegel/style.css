@@ -142,3 +142,32 @@ main{max-width:860px}.lead-grid{display:block;padding:0;border:0}.lead-grid arti
   line-height:1.55;
   color:var(--muted);
 }
+
+/* Editorial masthead: one date and one timestamp, with a functional issue picker. */
+.editionline #edition-meta{line-height:1.5}
+.editionline label{white-space:nowrap}
+@media(max-width:760px){
+  .editionline{align-items:flex-start;flex-direction:column;gap:10px}
+  .editionline label{display:flex;align-items:center;gap:10px}
+}
+
+/* Preferences is a separate view, not an expanded inline panel above articles.
+   Keep the masthead for context but hide all newspaper-specific UI and footers. */
+body.preferences-view header .editionline,
+body.preferences-view main > #notice,
+body.preferences-view main > #publication-status,
+body.preferences-view main > #login,
+body.preferences-view main > .tabs,
+body.preferences-view main > #headlines,
+body.preferences-view main > #articles,
+body.preferences-view main > #feedback-section,
+body.preferences-view main > #feedback-settings,
+body.preferences-view main > footer{display:none!important}
+body.preferences-view h1{font-size:clamp(34px,6vw,61px);margin:28px 0 4px}
+body.preferences-view #profile{display:block;min-height:65vh;margin:12px 0 30px;padding:20px 0 45px;border-top:2px solid var(--ink)}
+body.preferences-view .topline #profile-toggle{border-color:var(--line)}
+@media(max-width:760px){
+  body.preferences-view #profile{padding-top:18px}
+  body.preferences-view .profile-head{flex-wrap:wrap}
+  body.preferences-view .profile-head button{margin-top:4px}
+}
