@@ -3,6 +3,7 @@ const {webcrypto}=require('node:crypto');
 globalThis.GitHubPaper=require('../Privat/Pressespiegel/github.js');
 const feedback=require('../Privat/Pressespiegel/direct-feedback.js');
 function store(){let m=new Map();return {getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k)};}
+(async()=>{
 const s=store();
 assert.equal(feedback.readToken(s),'');
 assert.throws(()=>feedback.saveToken('bad',s));
@@ -42,3 +43,4 @@ await assert.rejects(()=>feedback.submit('2026-10-20',data,'Andere Themen',token
 assert.equal(feedback.readReceipts(s)['2026-10-20'].number,42);
 feedback.clearToken(s);assert.equal(feedback.readToken(s),'');
 console.log('Direct-feedback token, private repository, create/update/no duplicate/error handling tests passed.');
+})().catch(e=>{console.error(e);process.exit(1)});
