@@ -37,6 +37,7 @@ const assert=require('node:assert/strict');
  await page.locator('#feedback-form button[type=submit]').click();
  await page.waitForFunction(()=>{const t=document.querySelector('#feedback-status').textContent;return t.includes('Erfolgreich')||t.includes('Nicht bestätigte')||t.includes('bereits gespeichert')||t.includes('aktualisiert');},{timeout:10000});
  console.log('GitHub POST status:',await page.locator('#feedback-status').innerText());
+ console.log('Intercepted API requests:',requests.map(r=>r.method+' '+r.path).join(' / '));
  assert.match(await page.locator('#feedback-status').innerText(),/Erfolgreich/);
  const post=requests.find(r=>r.method==='POST');
  assert(post);
