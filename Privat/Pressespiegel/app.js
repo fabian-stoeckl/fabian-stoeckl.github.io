@@ -10,7 +10,7 @@ function safeURL(value){const u=new URL(value);if(u.protocol!=='https:'||u.usern
 function link(text,url){const n=el('a',text);n.href=safeURL(url);n.target='_blank';n.rel='noopener noreferrer';return n;}
 async function api(path, data){const response=await fetch(config.api+path,{method:data?'POST':'GET',cache:'no-store',headers:{'Authorization':'Bearer '+secret,...(data?{'Content-Type':'application/json'}:{})},...(data?{body:JSON.stringify(data)}:{})});const result=await response.json();if(!response.ok)throw Error(result.error||'Verbindung fehlgeschlagen');return result;}
 function status(text){$('notice').textContent=text;}
-function readingLinks(a){const box=el('div',undefined,'links');box.append(link('Original lesen ↗',a.url));if(a.paywall){const archive=link('Archivsuche ↗','https://archive.is/'+safeURL(a.url));const smry=link('SMRY öffnen ↗','https://smry.ai/'+safeURL(a.url));const isPresse=/(^|\.)diepresse\.com$/.test(new URL(a.url).hostname);box.append(...(isPresse?[smry,archive]:[archive,smry]));}return box;}
+function readingLinks(a){const box=el('div',undefined,'links');const u=safeURL(a.url);box.append(link('Original lesen ↗',u),link('SMRY-Leseansicht ↗','https://smry.ai/'+u),link('Archiv suchen ↗','https://archive.is/'+u));box.append(el('span','Externe Leseoptionen; tatsächliche Verfügbarkeit nicht garantiert.','small link-disclaimer'));return box;}
 function githubRating(a,section='Vertiefungen') {
   const box=el('fieldset',undefined,'ratings rating-dots');
   box.append(el('legend','Wie relevant ist dieser Artikel?'));
@@ -22,13 +22,16 @@ function githubRating(a,section='Vertiefungen') {
     input.onchange=()=>{ratingDrafts[key]={value,reason:ratingDrafts[key]?.reason||'',section};feedbackStatus('Auswahl vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};
     label.append(input,el('span',value));box.append(label);
   }
-  const label=el('label','Optional: Warum? ','reason');const reason=el('textarea');
+  const details=el('details',undefined,'rating-reason');
+  details.append(el('summary','Optional begründen'));
+  const label=el('label','Deine Begründung','reason');const reason=el('textarea');
   reason.rows=2;reason.maxLength=600;reason.placeholder='Was war hilfreich oder hat dir gefehlt?';
-  reason.value=ratingDrafts[key]?.reason||'';
-  reason.oninput=()=>{ratingDrafts[key]={value:ratingDrafts[key]?.value||'',reason:reason.value,section};feedbackStatus('Änderung vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};label.append(reason);box.append(label);
+  reason.value=ratingDrafts[key]?.reason||'';details.open=!!reason.value;
+  reason.oninput=()=>{ratingDrafts[key]={value:ratingDrafts[key]?.value||'',reason:reason.value,section};feedbackStatus('Änderung vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};
+  label.append(reason);details.append(label);box.append(details);
   return box;
 }
-function article(a,index){const node=el('article',undefined,a.treat?'treat':'');const intro=el('div');intro.append(el('span',a.treat?'DAS ZUCKERL':a.topic,'eyebrow'));const meta=el('p',a.source+' · '+a.kind+'\n'+fmt(a.published_at)+(a.paywall?' · Paywall':''),'meta');intro.append(meta);const body=el('div',undefined,'body');const title=el('h2');title.append(link(a.title,a.url));body.append(title,el('p',a.summary));if(a.access==='teaser')body.append(el('p','Zusammenfassung beruht ausschließlich auf dem zugänglichen Vorspann.','small'));if(a.novelty)body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty,'novelty'));body.append(readingLinks(a));if(config.mode==='github'){body.append(githubRating(a));node.append(intro,body);return node;}const controls=el('div',undefined,'ratings');controls.setAttribute('aria-label','Relevanz bewerten');const state=el('p','','rating-state');state.setAttribute('role','status');const reasonLabel=el('label','Optionaler Grund ','reason');const reason=el('select');reason.setAttribute('aria-label','Grund für die Bewertung');for(const t of ['','Mehr davon','Schon bekannt','Zu oberflächlich','Thema interessiert mich nicht']){const o=el('option',t||'–');o.value=t;reason.append(o);}reasonLabel.append(reason);let saved=ratings[a.id];reason.value=saved?.reason||'';const buttons=[];function refresh(){for(const [b,v] of buttons)b.setAttribute('aria-pressed',String(saved?.value===v));state.textContent=saved?'Gespeichert · jederzeit änderbar':'';reason.disabled=!saved;}
+function article(a,index){const node=el('article',undefined,a.treat?'treat':'');const intro=el('div');intro.append(el('span',a.treat?'DAS ZUCKERL':a.topic,'eyebrow'));const meta=el('p',a.source+' · '+a.kind+'\n'+fmt(a.published_at)+(a.paywall?' · Paywall':''),'meta');intro.append(meta);const body=el('div',undefined,'body');const title=el('h2');title.append(link(a.title,a.url));body.append(title,el('p',a.summary));if(a.access==='teaser')body.append(el('p','Zusammenfassung beruht ausschließlich auf dem zugänglichen Vorspann.','small'));if(a.novelty)body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty,'novelty'));const evidence={original_full:'Textgrundlage: vollständiger Originalartikel',original_teaser:'Textgrundlage: frei zugänglicher Vorspann',verified_archive:'Textgrundlage: tatsächlich gelesene Archivfassung',verified_smry:'Textgrundlage: tatsächlich gelesene SMRY-Leseansicht'};if(evidence[a.research_access])body.append(el('p',evidence[a.research_access]+' · geprüft '+(a.research_checked_at?fmt(a.research_checked_at):'ohne Zeitangabe'),'small'));body.append(readingLinks(a));if(config.mode==='github'){body.append(githubRating(a));node.append(intro,body);return node;}const controls=el('div',undefined,'ratings');controls.setAttribute('aria-label','Relevanz bewerten');const state=el('p','','rating-state');state.setAttribute('role','status');const reasonLabel=el('label','Optionaler Grund ','reason');const reason=el('select');reason.setAttribute('aria-label','Grund für die Bewertung');for(const t of ['','Mehr davon','Schon bekannt','Zu oberflächlich','Thema interessiert mich nicht']){const o=el('option',t||'–');o.value=t;reason.append(o);}reasonLabel.append(reason);let saved=ratings[a.id];reason.value=saved?.reason||'';const buttons=[];function refresh(){for(const [b,v] of buttons)b.setAttribute('aria-pressed',String(saved?.value===v));state.textContent=saved?'Gespeichert · jederzeit änderbar':'';reason.disabled=!saved;}
 async function save(value){buttons.forEach(([b])=>b.disabled=true);reason.disabled=true;state.textContent='Wird gespeichert …';try{await api('/api/rating',{id:a.id,value,reason:reason.value});saved={value,reason:reason.value};ratings[a.id]=saved;refresh();}catch(e){state.textContent=e.message+' – nicht gespeichert';reason.value=saved?.reason||'';}finally{buttons.forEach(([b])=>b.disabled=false);reason.disabled=!saved;}}
 for(const [text,value] of [['Sehr relevant',1],['Teilweise relevant',0],['Nicht relevant',-1]]){const b=el('button',text);b.type='button';b.onclick=()=>save(value);controls.append(b);buttons.push([b,value]);}reason.onchange=()=>save(saved.value);refresh();body.append(controls,state,reasonLabel);node.append(intro,body);return node;}
 function addSaveAction(section,statusId){
@@ -71,6 +74,7 @@ function render(){
   $('edition-meta').textContent=new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'}).format(new Date(e.available_at))+' · '+(e.preview?'Vorschau':('bereitgestellt '+fmt(e.available_at)));
   $('window').textContent='Recherche: '+fmt(e.window_start)+' bis '+fmt(e.window_end)+' · Stand: '+fmt(e.researched_at)+' · alle Zeiten Wien';
   $('feedback-section').hidden=false;
+  updatePublicationStatus(e);
   status((e.preview?'Vorschau mit echten Artikeln · noch kein täglicher Betrieb. ':'')+(e.limitations||[]).join(' '));
   if(selection.duplicatesRemoved)status('Doppelte Nachrichtenmeldungen ausgeblendet: '+selection.duplicatesRemoved+'. '+$('notice').textContent);
   if(!e.preview){
@@ -97,6 +101,7 @@ async function restoreSavedRatings(){
       for(const input of field.querySelectorAll('input[type=radio]'))input.checked=input.value===savedRow.value;
       const note=field.querySelector('textarea');
       if(note)note.value=savedRow.reason;
+      const disclosure=field.querySelector('.rating-reason');if(disclosure)disclosure.open=!!savedRow.reason;
     }
     if(!$('feedback').value&&saved.feedback)$('feedback').value=saved.feedback;
   }catch(err){feedbackStatus('Alte Bewertungen konnten nicht geladen werden: '+err.message);}
@@ -108,14 +113,64 @@ for(const tab of ['headlines','articles'])$('tab-'+tab).onclick=()=>{for(const n
 $('login-form').onsubmit=async e=>{e.preventDefault();secret=$('token').value;$('token').value='';await load();};
 $('logout').onclick=()=>{secret='';location.reload();};
 
+function updatePublicationStatus(e) {
+  const node=$('publication-status');
+  if(!node||!e)return;
+  const now=new Date();
+  const d=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Vienna',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+  const hhmm=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Vienna',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(now);
+  const late=hhmm>='07:45';
+  node.dataset.state=e.preview||e.date!==d&&late?'stale':e.date===d?'fresh':'pending';
+  if(e.preview)node.textContent='Beispielausgabe vom '+e.date+' · Noch keine bestätigte tägliche Ausgabe. Bei der automatischen Veröffentlichung besteht weiterhin Handlungsbedarf.';
+  else if(e.date===d)node.textContent='Aktuelle Ausgabe vom '+d+' · Recherche: '+fmt(e.researched_at)+'.';
+  else if(late)node.textContent='Neue Morgenzeitung für '+d+' ist noch NICHT veröffentlicht. Letzte Ausgabe: '+e.date+'. Bitte die tägliche Aufgabe und GitHub-Prüfung kontrollieren.';
+  else node.textContent='Letzte Ausgabe: '+e.date+' · Neue Ausgabe für '+d+' wird ab 07:45 Uhr Wiener Zeit erwartet.';
+}
+async function renderSelectionHistory() {
+  const node=$('preference-edition-changes');
+  if(!node)return;
+  const index=await GitHubPaper.json('./data/index.json');
+  if(!Array.isArray(index.dates)||index.dates.length<2){
+    node.replaceChildren(el('p','Noch keine zwei veröffentlichten Ausgaben für einen überprüfbaren Vergleich. Die bisherige Demofassung ist kein Beleg für redaktionelles Lernen.','small'));
+    return;
+  }
+  const available=index.dates.slice(0,6);
+  const editions=await Promise.all(available.map(day=>GitHubPaper.edition(day)));
+  const entries=[];
+  for(let i=0;i<editions.length-1;i++){
+    const newer=editions[i],older=editions[i+1];
+    const counts=ed=>ed.articles.reduce((acc,a)=>(acc[a.topic]=(acc[a.topic]||0)+1,acc),{});
+    const newCounts=counts(newer),oldCounts=counts(older);
+    const topics=[...new Set([...Object.keys(newCounts),...Object.keys(oldCounts)])];
+    const changed=topics.filter(t=>(newCounts[t]||0)!==(oldCounts[t]||0))
+      .map(t=>t+': '+(oldCounts[t]||0)+' → '+(newCounts[t]||0)).slice(0,7);
+    const audit=newer.selection_audit;
+    const note=audit&&typeof audit.summary==='string'&&audit.summary.length<=600?audit.summary:null;
+    entries.push({date:newer.date,reference:older.date,change:changed.join(' · ')||'Themenschwerpunkte in den Vertiefungen unverändert',note,hasProof:!!(audit&&audit.feedback_applied===true&&note)});
+  }
+  node.replaceChildren();
+  const list=el('ul',undefined,'preference-list');
+  for(const item of entries){
+    const li=el('li');
+    li.append(el('strong',item.date+' gegenüber '+item.reference+': '),
+      el('span',item.change+'. '));
+    li.append(el('span',item.hasProof?'Redaktionell dokumentierte Feedback-Anpassung: '+item.note:
+      'Keine nachgewiesene Ursache durch Feedback.','small'));
+    list.append(li);
+  }
+  node.append(list);
+}
+
 async function showPreferenceSummary() {
   const summary=$('preference-feedback'),token=DirectFeedback.readToken();
   summary.replaceChildren(el('p','Lese deine bisherigen Bewertungen aus deinem privaten GitHub-Repository …','small'));
   if(!token){
     summary.replaceChildren(el('p','Auf diesem Gerät ist noch kein GitHub-Zugang verbunden. Die Auswahlregeln oben kannst du trotzdem lesen; nach dem Verbinden ganz unten werden hier deine gespeicherten Bewertungen angezeigt.'));
+    await renderSelectionHistory();
     return;
   }
   try{
+    await renderSelectionHistory();
     const history=await DirectFeedback.feedbackHistory(token);
     if($('profile').hidden)return;
     if(!history.length){

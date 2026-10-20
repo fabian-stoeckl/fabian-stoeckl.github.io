@@ -3,6 +3,7 @@
 <body><main>
 <header><div class="topline"><a href="../">← Privat</a><span>PRESSESPIEGEL</span><button id="profile-toggle" type="button" aria-expanded="false" aria-controls="profile" aria-label="Meine Präferenzen anzeigen">Meine Präferenzen</button></div><h1>Morgenzeitung<span>.</span></h1><div class="editionline"><p id="edition-meta">Täglich um 07:45 · Wien</p><label>Ausgabe <select id="date" aria-label="Ausgabe auswählen"><option>Noch keine Ausgabe</option></select></label></div><p id="window" class="small"></p></header>
 <p id="notice" role="status" class="notice">Verbindung wird geprüft …</p>
+<p id="publication-status" class="publication-status" role="status" aria-live="polite">Prüfe die letzte veröffentlichte Ausgabe …</p>
 <section id="login" hidden><h2>Deine Zeitung öffnen</h2><p>Dein Zugang schützt Ausgaben, Bewertungen und Interessenprofil.</p><form id="login-form"><label>Zugangsschlüssel <input id="token" type="password" autocomplete="current-password" required></label><button type="submit">Öffnen</button></form><p class="small">Der Schlüssel bleibt nur in diesem geöffneten Tab und wird beim Schließen verworfen.</p></section>
 <section id="profile" hidden aria-labelledby="profile-title">
   <div class="profile-head"><div><p class="eyebrow">DEINE AUSWAHL</p><h2 id="profile-title">Meine Präferenzen</h2></div><button id="profile-close" type="button">Schließen</button></div>
@@ -16,6 +17,8 @@
   <div id="preference-feedback" role="status" aria-live="polite">Feedbackdaten werden beim Öffnen über deinen privaten GitHub-Zugang geladen.</div>
   <h3>Was sich dadurch geändert hat</h3>
   <p id="preference-learning-status">Deine Bewertungen sind ein Signal für die künftige Auswahl. Eine tatsächlich nachgewiesene Veränderung der täglich veröffentlichten Artikel durch dieses Feedback liegt derzeit noch nicht vor. Bis eine nachfolgende Ausgabe nachweislich darauf reagiert, wird hier kein automatischer Lernerfolg behauptet.</p>
+  <h3>Änderungen zwischen Ausgaben</h3>
+  <div id="preference-edition-changes" role="status" aria-live="polite">Für eine nachvollziehbare Auswahlhistorie werden mindestens zwei veröffentlichte Ausgaben benötigt.</div>
   <form id="preference-comment-form">
     <label for="preference-comment">Weitere Anregungen oder Änderungswünsche</label>
     <textarea id="preference-comment" rows="3" maxlength="1600" placeholder="Was sollte ich bei der nächsten Ausgabe stärker, weniger oder anders berücksichtigen?"></textarea>

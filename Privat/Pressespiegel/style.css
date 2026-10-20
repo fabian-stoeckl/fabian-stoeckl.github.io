@@ -75,3 +75,21 @@ main{max-width:860px}.lead-grid{display:block;padding:0;border:0}.lead-grid arti
 #preference-comment{max-width:100%}
 #preference-comment-status{font-size:12px;color:var(--blue);margin-top:12px}
 @media(max-width:760px){.profile-columns{grid-template-columns:1fr;gap:7px}.topline #profile-toggle{padding:8px 10px}}
+
+/* Compact three-tier relevance ratings: explanation only on deliberate expansion. */
+.rating-dots{display:flex;align-items:center;gap:6px 13px;padding:8px 0 10px;margin:8px 0 0}
+.rating-dots legend{float:left;width:100%;padding:0 0 4px;margin:0}
+.rating-dots>label{display:inline-flex;align-items:center;white-space:nowrap;font-size:12px}
+.rating-dots .rating-reason{flex:1 1 100%;width:100%;margin:3px 0 0}
+.rating-reason summary{display:list-item;width:max-content;cursor:pointer;font-size:12px;color:var(--blue);padding:3px 0}
+.rating-reason label{display:block;margin:8px 0 0;font-size:12px;white-space:normal}
+.rating-reason textarea{max-width:100%;margin:4px 0 8px}
+.news-item .rating-dots{display:flex;gap:6px 12px;align-items:center}
+.news-item .rating-dots .rating-reason{flex:1 1 100%}
+.links .link-disclaimer{flex:1 1 100%;margin:2px 0 0;font-size:11px;line-height:1.35}
+.publication-status{border-top:1px solid var(--line);padding:8px 0 4px;font-size:12px;color:var(--muted);margin:0 0 7px}
+.publication-status[data-state=stale]{font-weight:600;color:var(--accent)}
+.publication-status[data-state=fresh]{color:var(--blue)}
+#preference-edition-changes .preference-list{margin-top:5px}
+#preference-edition-changes .preference-list .small{display:block;margin-top:3px;font-weight:normal}
+@media(max-width:760px){.rating-dots{gap:7px 13px}.rating-dots>label{font-size:11px}}
