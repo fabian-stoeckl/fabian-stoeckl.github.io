@@ -1,10 +1,23 @@
 <!doctype html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><title>Morgenzeitung · Pressespiegel</title><link rel="stylesheet" href="./style.css"><script src="./github.js" defer></script><script src="./direct-feedback.js" defer></script><script src="./app.js" defer></script></head>
 <body><main>
-<header><div class="topline"><a href="../">← Privat</a><span>PRESSESPIEGEL</span><button id="profile-toggle">Interessenprofil</button></div><h1>Morgenzeitung<span>.</span></h1><div class="editionline"><p id="edition-meta">Täglich um 07:45 · Wien</p><label>Ausgabe <select id="date" aria-label="Ausgabe auswählen"><option>Noch keine Ausgabe</option></select></label></div><p id="window" class="small"></p></header>
+<header><div class="topline"><a href="../">← Privat</a><span>PRESSESPIEGEL</span><button id="profile-toggle" type="button" aria-expanded="false" aria-controls="profile" aria-label="Meine Präferenzen anzeigen">Meine Präferenzen</button></div><h1>Morgenzeitung<span>.</span></h1><div class="editionline"><p id="edition-meta">Täglich um 07:45 · Wien</p><label>Ausgabe <select id="date" aria-label="Ausgabe auswählen"><option>Noch keine Ausgabe</option></select></label></div><p id="window" class="small"></p></header>
 <p id="notice" role="status" class="notice">Verbindung wird geprüft …</p>
 <section id="login" hidden><h2>Deine Zeitung öffnen</h2><p>Dein Zugang schützt Ausgaben, Bewertungen und Interessenprofil.</p><form id="login-form"><label>Zugangsschlüssel <input id="token" type="password" autocomplete="current-password" required></label><button type="submit">Öffnen</button></form><p class="small">Der Schlüssel bleibt nur in diesem geöffneten Tab und wird beim Schließen verworfen.</p></section>
-<section id="profile" hidden><h2>Dein Interessenprofil</h2><p>Deine ausdrücklichen Wünsche haben Vorrang. Einzelbewertungen verändern die Auswahl nur behutsam.</p><form id="profile-form"><div id="topics"></div><label>Auswahlregeln und neue Themen<textarea id="rules" maxlength="4000" rows="4"></textarea></label><button type="submit">Profil speichern</button><span id="profile-status" role="status"></span></form><details><summary>Nachvollziehbare Anpassungen</summary><div id="profile-history"></div></details></section>
+<section id="profile" hidden aria-labelledby="profile-title">
+  <div class="profile-head"><div><p class="eyebrow">DEINE AUSWAHL</p><h2 id="profile-title">Meine Präferenzen</h2></div><button id="profile-close" type="button">Schließen</button></div>
+  <p>Diese Regeln steuern die Auswahl deiner Morgenzeitung. Die Bewertungen werden ausschließlich aus deinem privaten GitHub-Feedback abgerufen, wenn du den Zugang auf diesem Gerät eingerichtet hast.</p>
+  <div class="profile-columns">
+    <section><h3>Heute wichtig</h3><p>Die wichtigsten aktuellen Nachrichten aus Österreich und international – unabhängig von deinen persönlichen Fachinteressen. Kurze Originalschlagzeilen mit Quellen, vor allem aus ORF, Standard, Presse, Krone und vergleichbaren Medien.</p></section>
+    <section><h3>Vertiefungen</h3><p>Ziel 10–15 längere, aussagekräftige Artikel mit Hintergrund, Daten, Studien und Argumenten. Schwerpunkte: Wirtschaft, Produktivität, Industrie, Technologie und KI, Fiskalpolitik sowie Energie und Transformation. Besonders berücksichtigt werden Handelsblatt, FAZ, SZ, NZZ und hochwertige Fachquellen.</p></section>
+  </div>
+  <p class="small">In beiden Rubriken: nur neue, überprüfte Inhalte; keine doppelten Artikel oder identischen Nachrichtenanlässe. Ein gelegentliches ungewöhnliches Thema bleibt möglich. Eine Bewertung ist kein generelles Urteil über ein gesamtes Themenfeld.</p>
+  <h3>Was dein Feedback bisher zeigt</h3>
+  <div id="preference-feedback" role="status" aria-live="polite">Feedbackdaten werden beim Öffnen über deinen privaten GitHub-Zugang geladen.</div>
+  <h3>Was sich dadurch geändert hat</h3>
+  <p id="preference-learning-status">Deine Bewertungen sind ein Signal für die künftige Auswahl. Eine tatsächlich nachgewiesene Veränderung der täglich veröffentlichten Artikel durch dieses Feedback liegt derzeit noch nicht vor. Bis eine nachfolgende Ausgabe nachweislich darauf reagiert, wird hier kein automatischer Lernerfolg behauptet.</p>
+  <p class="small">Es werden keine persönlichen Bewertungen öffentlich in die Website-Dateien geschrieben.</p>
+</section>
 <nav class="tabs" aria-label="Zeitungsbereiche"><button id="tab-headlines" aria-pressed="true">Heute wichtig <span id="headline-count">0</span></button><button id="tab-articles" aria-pressed="false">Vertiefungen <span id="article-count">0</span></button></nav>
 <section id="headlines" aria-label="Heute wichtig"><p class="empty">Die wichtigsten Nachrichten aus Österreich und weltweit erscheinen hier.</p></section><section id="articles" aria-label="Vertiefende Artikel" hidden><p class="empty">Deine ausführlichen Artikel zu Wirtschaft, Technologie und Produktivität erscheinen hier.</p></section>
 
@@ -28,7 +41,7 @@
 </section>
 <div id="github-connected" hidden class="connected">
   <span>GitHub-Feedback ist auf diesem Gerät verbunden.</span>
-  <button type="button" id="github-disconnect">Verbindung auf diesem Gerät entfernen</button>
+
 </div>
 </section><footer><p id="operating-state" class="small">Automatischer Betrieb noch nicht verbunden.</p><button id="logout" hidden>Abmelden</button></footer>
 </main></body></html>
