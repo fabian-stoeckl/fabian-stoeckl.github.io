@@ -53,6 +53,29 @@ const DirectFeedback = (() => {
     const hash=await cryptoAPI.subtle.digest('SHA-256',bytes);
     return [...new Uint8Array(hash)].map(v=>v.toString(16).padStart(2,'0')).join('');
   }
+  async function feedbackHistory(token,transport=fetch) {
+    const issues=[];
+    for(let page=1;page<=3;page++){
+      const batch=await request(token,'/issues?state=all&per_page=100&page='+page,'GET',undefined,transport);
+      if(!Array.isArray(batch))throw Error('GitHub hat keine gültige Feedback-Liste zurückgegeben.');
+      for(const issue of batch){
+        if(!/^\[Morgenzeitung\] Sammelbewertung \d{4}-\d{2}-\d{2}$/.test(issue.title||'')||
+           typeof issue.body!=='string'||issue.body.includes('TEST: true')||issue.pull_request)continue;
+        try {
+          const parsed=GitHubPaper.parseBatchBody(issue.body);
+          if(issue.title.endsWith(parsed.date))
+            issues.push({number:issue.number,updated_at:issue.updated_at||'',...parsed});
+        }catch(_){/* Skip malformed records; never interpret them as user preferences. */}
+      }
+      if(batch.length<100)break;
+    }
+    const latest=new Map();
+    for(const item of issues){
+      const old=latest.get(item.date);
+      if(!old||item.updated_at>=old.updated_at)latest.set(item.date,item);
+    }
+    return [...latest.values()].sort((a,b)=>b.date.localeCompare(a.date));
+  }
   function buildFeedback(date,ratings,feedback) {
     if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Array.isArray(ratings)||ratings.length>40||
        typeof feedback!=='string'||feedback.length>4000) throw Error('Ungültige Feedback-Daten.');
@@ -103,6 +126,6 @@ const DirectFeedback = (() => {
     store.setItem(RECEIPTS_KEY,JSON.stringify(receipts));
     return {ok:true,updated:patch,html_url:result.html_url};
   }
-  return {REPO,TOKEN_KEY,RECEIPTS_KEY,readToken,saveToken,clearToken,verify,buildFeedback,submit,savedFeedback,readReceipts};
+  return {REPO,TOKEN_KEY,RECEIPTS_KEY,readToken,saveToken,clearToken,verify,buildFeedback,submit,savedFeedback,feedbackHistory,readReceipts};
 })();
 if(typeof module!=='undefined')module.exports=DirectFeedback;
