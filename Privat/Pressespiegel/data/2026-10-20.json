@@ -1,0 +1,398 @@
+{
+  "date": "2026-10-20",
+  "window_start": "2026-10-19T08:00:00+02:00",
+  "window_end": "2026-10-20T06:19:08.912Z",
+  "available_at": "2026-10-20T06:19:08.912Z",
+  "researched_at": "2026-10-20T06:19:08.912Z",
+  "preview": false,
+  "limitations": [
+    "Außerplanmäßiger Probelauf am 20. Oktober, nicht die reguläre 07:45-Uhr-Ausgabe. Im Web recherchierte Auswahl; einzelne Bezahlartikel waren nur bis zum zugänglichen Vorspann prüfbar. Archive.is und SMRY konnten beim ersten Versuch für ein Handelsblatt-Stück keinen bestätigten Volltext liefern. Die ORF-Videozeiten bezeichnen die Erstausstrahlung der jeweiligen ZIB-Beiträge.",
+    "Ein ORF-ZIB-Link verweist auf die Sendung mit der genannten Nachricht, nicht auf eine eigenständige Artikelwebseite.",
+    "Recherchehinweis: Die Handelsblatt-Archiv- und SMRY-Fassungen zur Siemens/Nvidia-Analyse konnten auch beim späteren zweiten Abruf nicht bestätigt werden. Die externen Präfixlinks dienen nur als unverbindliche Lesewege, nicht als Volltextnachweis."
+  ],
+  "articles": [
+    {
+      "title": "KI: Siemens und Nvidia planen den Prototyp der autonomen Fabrik",
+      "url": "https://www.handelsblatt.com/unternehmen/industrie/ki-siemens-und-nvidia-planen-den-prototyp-der-autonomen-fabrik/100262775.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-19T14:23:00+02:00",
+      "topic": "Industrie & KI",
+      "kind": "Analyse",
+      "region": "International",
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "research_checked_at": "2026-10-20T06:19:08.912Z",
+      "event": "hb-siemens-nvidia-autonome-fabrik",
+      "facts": [
+        "Siemens und Nvidia wollen das Gerätewerk Erlangen als Modell für autonome Fabriken nutzen.",
+        "Beide Konzerne stellten am 19. Oktober neue industrielle KI-Anwendungen vor."
+      ],
+      "summary": "Das Siemens-Gerätewerk in Erlangen wird zum Versuchsfeld für KI-basierte Produktionssysteme. Siemens möchte den Transfer der Technologie aus Rechenzentren in laufende Fabriken beschleunigen, Nvidia liefert Simulations- und KI-Technik; das Projekt soll später als Vorlage für weitere Standorte dienen.",
+      "novelty": "",
+      "treat": false,
+      "id": "9f229f6bd666f87f"
+    },
+    {
+      "title": "Karriere: Wo Bewerber mit KI-Skills besonders gefragt sind",
+      "url": "https://www.handelsblatt.com/technik/ki/karriere-wo-bewerber-mit-ki-skills-besonders-gefragt-sind/100251207.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-19T10:23:00+02:00",
+      "topic": "Produktivität & Arbeit",
+      "kind": "Datenanalyse",
+      "region": "International",
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "research_checked_at": "2026-10-20T06:19:08.912Z",
+      "event": "hb-ki-kompetenzen-arbeitsmarkt",
+      "facts": [
+        "Die Indeed-Stellenanzeigen liegen 37 Prozent unter November 2022.",
+        "Die Datenanalyse kombiniert Angaben des Unternehmens Interface und der Stellenplattform Indeed."
+      ],
+      "summary": "Während die Gesamtzahl deutscher Stellenangebote seit November 2022 laut Indeed um 37 Prozent sank, sind Kompetenzen zur praktischen KI-Anwendung gefragt. Das Handelsblatt wertet gemeinsam mit Interface und Indeed Daten aus; aus dem öffentlich zugänglichen Teil geht hervor, dass Firmen nicht bloß KI-Forscher suchen, sondern auch geschulte Anwender.",
+      "novelty": "",
+      "treat": false,
+      "id": "88c14c4201f35bf4"
+    },
+    {
+      "title": "KI: Sind Anthropic und OpenAI wirklich geeignete Börsenkandidaten?",
+      "url": "https://www.handelsblatt.com/finanzen/anlagestrategie/kolumnen/ki-sind-anthropic-und-openai-wirklich-geeignete-boersenkandidaten/100263207.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-19T18:29:00+02:00",
+      "topic": "Kapitalmarkt & KI",
+      "kind": "Kolumne",
+      "region": "International",
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "research_checked_at": "2026-10-20T06:19:08.912Z",
+      "event": "hb-ki-ipo-anthropic-openai",
+      "facts": [
+        "Anthropic lud Investoren vor dem geplanten IPO zu einer Präsentation ein.",
+        "Im Artikel wird ein Börsengang vor Ende November und eine mögliche Billionenbewertung diskutiert."
+      ],
+      "summary": "Der erwartete Börsengang von Anthropic wirft Bewertungs- und Geschäftsmodellfragen für eine neue Generation von KI-Konzernen auf. Der im zugänglichen Teil erwähnte Plan zielt auf eine Notierung noch vor Thanksgiving Ende November; spekuliert wird über eine Bewertung oberhalb einer Billion US-Dollar. Für Anleger sind diese Angaben zunächst Erwartungen, keine bestätigten Erlöse.",
+      "novelty": "",
+      "treat": false,
+      "id": "79222e191dd0d7c3"
+    },
+    {
+      "title": "Investitionen: Acht Grafiken zeigen die wahre Lage des Standorts Deutschland",
+      "url": "https://www.handelsblatt.com/politik/konjunktur/investitionen-acht-grafiken-zeigen-die-wahre-lage-des-standorts-deutschland/100261531.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-19T15:15:00+02:00",
+      "topic": "Standort & Investitionen",
+      "kind": "Datenanalyse",
+      "region": "International",
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "research_checked_at": "2026-10-20T06:19:08.912Z",
+      "event": "hb-investitionen-deutschland-acht-grafiken",
+      "facts": [
+        "Die beschriebenen jährlichen Neuansiedlungen beziehungsweise Werksausbauten liegen im vergangenen Jahrzehnt bei rund 1.600.",
+        "Eine Unternehmensinitiative schätzt Deutschlands Investitionspotenzial bis 2035 auf 2,9 bis 4,1 Billionen Euro."
+      ],
+      "summary": "Eine datengestützte Einordnung prüft vor dem Berliner Investitionsgipfel, ob Deutschlands Standortschwäche und ausländisches Investoreninteresse zusammenpassen. Laut den zugänglichen Angaben blieben Direktinvestitionen zuletzt relativ stabil; eine Initiative beziffert zugleich das weitere Potenzial für industrielle KI, Energiesysteme und Infrastruktur auf 2,9 bis 4,1 Billionen Euro bis 2035.",
+      "novelty": "",
+      "treat": false,
+      "id": "2b62b198b197036b"
+    },
+    {
+      "title": "Energie: Zehn-Punkte-Plan – Reiche will Wasserstoffmarkt fördern",
+      "url": "https://www.handelsblatt.com/politik/deutschland/energie-zehn-punkte-plan-reiche-will-wasserstoffmarkt-foerdern/100263273.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-19T14:10:00+02:00",
+      "topic": "Energie & Transformation",
+      "kind": "Politikanalyse",
+      "region": "International",
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "research_checked_at": "2026-10-20T06:19:08.912Z",
+      "event": "hb-wasserstoff-zehn-punkte-plan",
+      "facts": [
+        "Das Bundeswirtschaftsministerium legte einen Zehn-Punkte-Maßnahmenkatalog vor.",
+        "Wasserstoff ist nach den öffentlich einsehbaren Informationen deutlich teurer als fossile Alternativen."
+      ],
+      "summary": "Deutschlands Wirtschaftsministerium legte zehn Maßnahmen vor, um den Wasserstoffmarkt trotz hoher Kosten und Investitionsunsicherheit in Gang zu bringen. Für die industrielle Dekarbonisierung bleibt Wasserstoff ein zentraler Baustein neben erneuerbarem Strom; die entscheidende Frage ist, ob die vorgeschlagenen Marktregeln Angebot und Nachfrage tatsächlich zusammenführen.",
+      "novelty": "",
+      "treat": false,
+      "id": "b249c17ba193aebf"
+    },
+    {
+      "title": "Gastkommentar: Europa hat viele Stärken – und braucht mehr Partner",
+      "url": "https://www.handelsblatt.com/meinung/gastbeitraege/gastkommentar-europa-hat-viele-staerken-und-braucht-mehr-partner/100262244.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-19T15:24:00+02:00",
+      "topic": "Wettbewerbsfähigkeit & Europa",
+      "kind": "Gastkommentar",
+      "region": "International",
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "research_checked_at": "2026-10-20T06:19:08.912Z",
+      "event": "hb-roeller-geopolitik-diversifikation",
+      "facts": [
+        "Der Kommentar nennt die Straße von Hormus, US-Zölle und chinesische Exportlizenzen als Hebel.",
+        "Als europäische strategische Stärkefelder führt Röller Maschinenbau, Chemie und Pharma an."
+      ],
+      "summary": "Lars-Hendrik Röller argumentiert, dass einseitige Abhängigkeiten bei Energie, Handel und kritischen Rohstoffen zu wirtschaftspolitischen Druckmitteln geworden sind. Er empfiehlt breitere Handels- und Versorgungspartner statt Abschottung; zugleich könne Europa eigene Stärken im Maschinenbau, in der Chemie und Pharmaindustrie für gegenseitige wirtschaftliche Abhängigkeiten nutzen.",
+      "novelty": "",
+      "treat": false,
+      "id": "7d05cf389b667873"
+    },
+    {
+      "title": "Stromversorgung: Koalition garantiert Betrieben Netzanschlüsse – Bringt das was?",
+      "url": "https://www.handelsblatt.com/politik/deutschland/stromversorgung-koalition-garantiert-betrieben-netzanschluesse-bringt-das-was/100261840.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-19T09:45:00+02:00",
+      "topic": "Elektrizität & Infrastruktur",
+      "kind": "Politikanalyse",
+      "region": "International",
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "research_checked_at": "2026-10-20T06:19:08.912Z",
+      "event": "hb-netzanschluss-industrie-wartezeiten",
+      "facts": [
+        "Industrieunternehmen berichten Wartezeiten von bis zu zehn Jahren.",
+        "Ein Reformpaket enthält sieben Priorisierungskriterien, bislang aber keine festen Anschlussfristen."
+      ],
+      "summary": "Der Bericht untersucht, warum politische Zusagen für Industrie-Netzanschlüsse an langwierigen Verfahren scheitern. Genannt werden Wartezeiten von bis zu zehn Jahren; das geplante Netzanschlusspaket setzt auf transparentere, digitalisierte Verfahren und sieben Priorisierungskriterien, jedoch ohne verbindliche Anschlussfristen.",
+      "novelty": "",
+      "treat": false,
+      "id": "953f7f04de72a413"
+    },
+    {
+      "title": "Immobilien: Wie die Wohnungskonzerne die neuen Enteignungspläne bewerten",
+      "url": "https://www.handelsblatt.com/finanzen/immobilien/immobilien-wie-die-wohnungskonzerne-die-neuen-enteignungsplaene-bewerten/100263280.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-19T16:59:00+02:00",
+      "topic": "Wohnungsmarkt & Regulierung",
+      "kind": "Hintergrund",
+      "region": "International",
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "research_checked_at": "2026-10-20T06:19:08.912Z",
+      "event": "hb-berlin-vergesellschaftung-wohnkonzerne",
+      "facts": [
+        "Vonovia bezweifelt die Verfassungsmäßigkeit der Berliner Vergesellschaftungspläne.",
+        "Der in Aussicht gestellte Schwellenwert liegt bei 10.000 Wohnungen pro Konzern."
+      ],
+      "summary": "Die Berliner Sondierungspläne zur Vergesellschaftung großer privater Wohnungsbestände treffen bei Wohnungskonzernen auf unterschiedliche Reaktionen. Vonovia hält das Vorhaben für verfassungswidrig, während Heimstaden gelassener reagiert. Die Pläne würden laut zugänglichem Artikel Bestände ab 10.000 Wohnungen betreffen und eine Entschädigung vorsehen.",
+      "novelty": "",
+      "treat": false,
+      "id": "1cb82327156b69c4"
+    },
+    {
+      "title": "Is this the beginning of the end of the AI stock market boom?",
+      "url": "https://www.theguardian.com/business/2026/oct/20/ai-stock-market-boom-beginning-of-the-end-imf-wallstreet-nasdaq",
+      "source": "The Guardian",
+      "published_at": "2026-10-20T04:29:00+02:00",
+      "topic": "Börse & KI",
+      "kind": "Analyse",
+      "region": "International",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "research_checked_at": "2026-10-20T06:19:08.912Z",
+      "event": "guardian-ki-markt-boom-bewertungen",
+      "facts": [
+        "Der Nasdaq 100 fiel in der Vorwoche um 5,5 Prozent.",
+        "Die Magnificent Seven stehen laut Analyse für etwa 35 Prozent des S&P-500-Werts."
+      ],
+      "summary": "Nach einem Rückgang des Nasdaq 100 um 5,5 Prozent diskutiert die Analyse eine Neubewertung der erwarteten KI-Renditen, nicht zwingend das Ende der Technologie. Die sieben größten US-Technologiekonzerne machen inzwischen rund 35 Prozent des S&P 500 aus; steigende Fremdfinanzierung und kreisförmige Deals zwischen Chipanbietern und Rechenzentren verstärken mögliche Ansteckungsrisiken.",
+      "novelty": "",
+      "treat": false,
+      "id": "08cbee451f7ad0d0"
+    },
+    {
+      "title": "Calls to strengthen workplace privacy in Australia as employers turn to AI to track staff",
+      "url": "https://www.theguardian.com/technology/2026/oct/20/workplace-privacy-concerns-employers-use-ai-to-monitor-staff",
+      "source": "The Guardian",
+      "published_at": "2026-10-19T16:00:00+02:00",
+      "topic": "Digitalisierung & Arbeit",
+      "kind": "Forschungsbericht",
+      "region": "International",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "research_checked_at": "2026-10-20T06:19:08.912Z",
+      "event": "guardian-ki-ueberwachung-arbeitsplatz",
+      "facts": [
+        "Die Untersuchung nennt einen disziplinarisch relevanten Fehler bei ungefähr 533 Kassenscans.",
+        "Nur neun Prozent der Befragten einer Umfrage wussten von KI-Überwachung im eigenen Betrieb."
+      ],
+      "summary": "Ein australischer Bericht untersucht den wachsenden Einsatz von KI zur Arbeitsplatzüberwachung – von Tastatur- und Nachrichtenauswertung bis zur Videoanalyse. In einem dokumentierten Fall wurde eine Kassiererin nach einem Fehler pro 533 gescannten Produkten verwarnt. Die Forscher fordern stärkere arbeitsrechtliche Regeln für Transparenz und Zumutbarkeit solcher Verfahren.",
+      "novelty": "",
+      "treat": false,
+      "id": "64c462c87525720e"
+    },
+    {
+      "title": "Four years ago countries made a historic deal to save nature. Is it dead in the water?",
+      "url": "https://www.theguardian.com/environment/2026/oct/19/can-countries-deliver-on-a-deal-to-save-the-worlds-plants-and-animals",
+      "source": "The Guardian",
+      "published_at": "2026-10-19T12:16:00+02:00",
+      "topic": "Umwelt & Subventionen",
+      "kind": "Hintergrundanalyse",
+      "region": "International",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "research_checked_at": "2026-10-20T06:19:08.912Z",
+      "event": "guardian-biodiversitaet-cop17-ziele",
+      "facts": [
+        "Das Montreal-Abkommen von 2022 legte ein 30-Prozent-Schutzgebietsziel fest.",
+        "Großbritannien ist laut Guardian-Quellen bei drei der 23 Ziele bis 2030 auf Kurs."
+      ],
+      "summary": "Vor der Biodiversitätskonferenz Cop17 bilanziert die Reportage den unzureichenden Fortschritt des Montreal-Abkommens. Die Staaten wollten unter anderem 30 Prozent der Erde schützen und mindestens 500 Milliarden Dollar umweltschädlicher Subventionen reformieren. Großbritannien ist laut den zitierten Beobachtern nur bei drei von 23 Zielen auf Kurs; daneben zeigen Schutzgebietsinitiativen einzelne Fortschritte.",
+      "novelty": "",
+      "treat": false,
+      "id": "a3b712a302f58f75"
+    }
+  ],
+  "headlines": [
+    {
+      "title": "Sparbudget: Unis stellen sich auf Personalabbau ein",
+      "url": "https://orf.at/stories/3445519/",
+      "source": "ORF",
+      "published_at": "2026-10-19T14:58:00+02:00",
+      "region": "Österreich",
+      "event": "uni-budget-personalabbau-2026",
+      "id": "3ce166b1bf2054dd"
+    },
+    {
+      "title": "„Zukunftsdepot“: Startbonus nur bei 15-jährigem Aufenthalt",
+      "url": "https://orf.at/stories/3445548/",
+      "source": "ORF",
+      "published_at": "2026-10-19T14:53:00+02:00",
+      "region": "Österreich",
+      "event": "zukunftsdepot-startbonus-2026",
+      "id": "ab6f69aa7bf33e7c"
+    },
+    {
+      "title": "Prozess gegen Wolf und Ex-Minister Schelling startet",
+      "url": "https://orf.at/stories/3445584/",
+      "source": "ORF",
+      "published_at": "2026-10-19T23:02:00+02:00",
+      "region": "Österreich",
+      "event": "wolf-schelling-prozess-steuernachlass",
+      "id": "29cce33ec7c6976a"
+    },
+    {
+      "title": "Wien will „Integrationsmaßstab“ entwickeln",
+      "url": "https://wien.orf.at/stories/3375918/",
+      "source": "ORF Wien",
+      "published_at": "2026-10-19T13:41:00+02:00",
+      "region": "Österreich",
+      "event": "wien-integrationsmassstab-2026",
+      "id": "0823cd389f4a5d9f"
+    },
+    {
+      "title": "Neue Regierung in Ungarn macht Spar Hoffnung",
+      "url": "https://salzburg.orf.at/stories/3375974/",
+      "source": "ORF Salzburg",
+      "published_at": "2026-10-20T06:00:00+02:00",
+      "region": "Österreich",
+      "event": "spars-ungarn-margendeckel",
+      "id": "ce29ffafee804222"
+    },
+    {
+      "title": "Sozialhilfe: Regierung sieht Einigung auf Zielgeraden",
+      "url": "https://on.orf.at/video/14343852/16172505/sozialhilfe-regierung-sieht-einigung-auf-zielgeraden",
+      "source": "ORF ZIB",
+      "published_at": "2026-10-19T13:00:00+02:00",
+      "region": "Österreich",
+      "event": "sozialhilfe-koalition-einigung",
+      "id": "fe9f7c69e54528f4"
+    },
+    {
+      "title": "US-Drohnenfirma will Steyr Motors übernehmen",
+      "url": "https://on.orf.at/video/14343852/16172511/us-drohnenfirma-will-steyr-motors-uebernehmen",
+      "source": "ORF ZIB",
+      "published_at": "2026-10-19T13:00:00+02:00",
+      "region": "Österreich",
+      "event": "steyr-motors-red-cat-kaufangebot",
+      "id": "b70c4759cdc84075"
+    },
+    {
+      "title": "Bombendrohung zwingt AUA-Maschine zur Zwischenlandung in Sofia",
+      "url": "https://on.orf.at/video/14343852/16172487/bombendrohung-zwingt-aua-maschine-zur-zwischenlandung-in-sofia-zib-1300-vom-19102026",
+      "source": "ORF ZIB",
+      "published_at": "2026-10-19T13:00:00+02:00",
+      "region": "Österreich",
+      "event": "aua-flug-sofia-drohung",
+      "id": "1bf8a4eeb6683931"
+    },
+    {
+      "title": "Grundwasser erreicht neue Tiefstände",
+      "url": "https://on.orf.at/video/14343852/16172512/grundwasser-erreicht-neue-tiefstaende-zib-1300-vom-19102026",
+      "source": "ORF ZIB",
+      "published_at": "2026-10-19T13:00:00+02:00",
+      "region": "Österreich",
+      "event": "oesterreich-grundwasser-rekordtief",
+      "id": "784d7704d7974f82"
+    },
+    {
+      "title": "Ärzte ohne Grenzen: „Absolute humanitäre Krise“ im Gazastreifen",
+      "url": "https://orf.at/stories/3445526/",
+      "source": "ORF",
+      "published_at": "2026-10-20T06:00:00+02:00",
+      "region": "International",
+      "event": "gaza-msf-humanitaere-krise",
+      "id": "e1b689e6ed6dfb1f"
+    },
+    {
+      "title": "Macron kündigt nach Krawallen hartes Vorgehen an",
+      "url": "https://on.orf.at/video/14343852/16172485/macron-kuendigt-nach-krawallen-hartes-vorgehen-an",
+      "source": "ORF ZIB",
+      "published_at": "2026-10-19T13:00:00+02:00",
+      "region": "International",
+      "event": "frankreich-macron-krawalle",
+      "id": "2a92cfe8c97d9400"
+    },
+    {
+      "title": "Italien: Gewaltwelle erfasst Mailand – Meloni will mit Dekret reagieren",
+      "url": "https://www.handelsblatt.com/politik/international/italien-gewaltwelle-erfasst-mailand-meloni-will-mit-dekret-reagieren/100263190.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-19T17:42:00+02:00",
+      "region": "International",
+      "event": "italien-mailand-krawalle-meloni",
+      "id": "1947e40a11864a9d"
+    },
+    {
+      "title": "Ukraine-Krieg: Trump-Gesandte reisen laut Insidern zu Ukraine-Gesprächen nach Norwegen",
+      "url": "https://www.handelsblatt.com/politik/international/ukraine-krieg-trump-gesandte-reisen-laut-insidern-zu-ukraine-gespraechen-nach-norwegen/27982126.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-19T23:04:00+02:00",
+      "region": "International",
+      "event": "ukraine-oslo-friedensgespraeche",
+      "id": "ace3356c99174113"
+    },
+    {
+      "title": "Russischer Angriff tötet Frau in Kiew",
+      "url": "https://on.orf.at/video/14343850/16172458/russischer-angriff-toetet-frau-in-kiew",
+      "source": "ORF ZIB",
+      "published_at": "2026-10-19T09:00:00+02:00",
+      "region": "International",
+      "event": "ukraine-energie-infrastruktur-angriff",
+      "id": "4bf916afaa6edc87"
+    },
+    {
+      "title": "Israel: Zehn Festnahmen nach Angriff auf US-Journalistin",
+      "url": "https://on.orf.at/video/14343852/zib-1300-vom-19102026",
+      "source": "ORF ZIB",
+      "published_at": "2026-10-19T13:00:00+02:00",
+      "region": "International",
+      "event": "israel-us-journalistin-angriff-festnahmen",
+      "id": "610a3de583b9d3d9"
+    }
+  ],
+  "selection_audit": {
+    "feedback_applied": false,
+    "summary": "Erster außerplanmäßiger redaktioneller Lauf; ein langfristiger Feedbackeinfluss ist noch nicht durch Folgeausgaben belegbar."
+  }
+}
