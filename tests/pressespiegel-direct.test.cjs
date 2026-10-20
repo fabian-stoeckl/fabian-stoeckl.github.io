@@ -9,6 +9,19 @@ assert.equal(feedback.readToken(s),'');
 assert.throws(()=>feedback.saveToken('bad',s));
 assert.equal(feedback.saveToken('github_pat_TESTTOKEN_example_123456789',s),'github_pat_TESTTOKEN_example_123456789');
 assert.match(feedback.readToken(s),/^github_pat_/);
+// One-time browser rotation: remove only old credentials, never delete issue receipts.
+const previousBrowser=store();
+feedback.saveToken('github_pat_OLD_BROWSER_SECRET_123456789',previousBrowser);
+previousBrowser.setItem(feedback.RECEIPTS_KEY,JSON.stringify({'2026-10-18':{number:3,hash:'saved'}}));
+assert.equal(feedback.resetOldTokenOnce(previousBrowser),true);
+assert.equal(feedback.readToken(previousBrowser),'');
+assert.equal(feedback.readReceipts(previousBrowser)['2026-10-18'].number,3);
+assert.equal(previousBrowser.getItem(feedback.RESET_KEY),'1');
+feedback.saveToken('github_pat_NEW_BROWSER_SECRET_123456789',previousBrowser);
+assert.equal(feedback.resetOldTokenOnce(previousBrowser),false);
+assert.equal(feedback.readToken(previousBrowser),'github_pat_NEW_BROWSER_SECRET_123456789');
+assert.equal(feedback.resetOldTokenOnce(store()),false);
+
 const a='a'.repeat(16);
 const data=[{id:a,value:'Sehr relevant',reason:'Mehr Zahlen'}];
 assert.match(feedback.buildFeedback('2026-10-20',data,'Mehr Handelsblatt').body,/Mehr Handelsblatt/);

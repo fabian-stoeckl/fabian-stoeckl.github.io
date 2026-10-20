@@ -269,10 +269,10 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();if(config.mode==='githu
     }
   }finally{b.disabled=false;}
   return;}const b=e.submitter;b.disabled=true;try{await api('/api/feedback',{text:$('feedback').value});$('feedback-status').textContent='Gespeichert · wird beim nächsten Recherchelauf berücksichtigt';$('feedback').value='';}catch(e){$('feedback-status').textContent=e.message+' – bitte erneut versuchen';}finally{b.disabled=false;}};
-(async()=>{try{config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode==='github') {
+(async()=>{try{const oldTokenCleared=DirectFeedback.resetOldTokenOnce();config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode==='github') {
 $('login').hidden=true;$('logout').hidden=true;$('feedback').maxLength=4000;
 $('feedback-form').querySelector('button').textContent='Feedback speichern';
-refreshGitHubConnection();$('feedback').required=false;
+refreshGitHubConnection();if(oldTokenCleared)$('github-setup-status').textContent='Alter lokal gespeicherter Token gelöscht. Bitte neuen Token verbinden und den alten auf GitHub widerrufen.';$('feedback').required=false;
 const index=await GitHubPaper.json('./data/index.json');latestDate=index.dates[0];$('date').replaceChildren();
 for(const d of index.dates){const o=el('option',d);o.value=d;$('date').append(o);}
 $('operating-state').textContent='Ausgaben aus GitHub · Feedback wird nach einmaliger Verbindung direkt auf GitHub gespeichert.';
