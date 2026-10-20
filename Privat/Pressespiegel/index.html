@@ -1,4 +1,34 @@
 <!doctype html>
-<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Pressespiegel</title>
-<style>*{box-sizing:border-box}body{margin:0;background:#f4efe7;color:#242321;font-family:Inter,system-ui,sans-serif}main{max-width:900px;margin:auto;padding:48px 24px}a{color:#69442c}h1{font-size:clamp(34px,5vw,58px);letter-spacing:-.04em;margin:36px 0 12px}p{color:#79736b;line-height:1.7}</style></head>
-<body><main><a href="../">← Privat</a><h1>Pressespiegel</h1><p>Hier entsteht dein persönlicher Pressespiegel.</p></main></body></html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><title>Morgenzeitung · Pressespiegel</title><link rel="stylesheet" href="./style.css"><script src="./github.js" defer></script><script src="./direct-feedback.js" defer></script><script src="./app.js" defer></script></head>
+<body><main>
+<header><div class="topline"><a href="../">← Privat</a><span>PRESSESPIEGEL</span><button id="profile-toggle">Interessenprofil</button></div><h1>Morgenzeitung<span>.</span></h1><div class="editionline"><p id="edition-meta">Täglich um 07:45 · Wien</p><label>Ausgabe <select id="date" aria-label="Ausgabe auswählen"><option>Noch keine Ausgabe</option></select></label></div><p id="window" class="small"></p></header>
+<p id="notice" role="status" class="notice">Verbindung wird geprüft …</p>
+<section id="login" hidden><h2>Deine Zeitung öffnen</h2><p>Dein Zugang schützt Ausgaben, Bewertungen und Interessenprofil.</p><form id="login-form"><label>Zugangsschlüssel <input id="token" type="password" autocomplete="current-password" required></label><button type="submit">Öffnen</button></form><p class="small">Der Schlüssel bleibt nur in diesem geöffneten Tab und wird beim Schließen verworfen.</p></section>
+<section id="profile" hidden><h2>Dein Interessenprofil</h2><p>Deine ausdrücklichen Wünsche haben Vorrang. Einzelbewertungen verändern die Auswahl nur behutsam.</p><form id="profile-form"><div id="topics"></div><label>Auswahlregeln und neue Themen<textarea id="rules" maxlength="4000" rows="4"></textarea></label><button type="submit">Profil speichern</button><span id="profile-status" role="status"></span></form><details><summary>Nachvollziehbare Anpassungen</summary><div id="profile-history"></div></details></section>
+<nav class="tabs" aria-label="Zeitungsbereiche"><button id="tab-headlines" aria-pressed="true">Heute wichtig <span id="headline-count">0</span></button><button id="tab-articles" aria-pressed="false">Vertiefungen <span id="article-count">0</span></button></nav>
+<section id="headlines" aria-label="Heute wichtig"><p class="empty">Die wichtigsten Nachrichten aus Österreich und weltweit erscheinen hier.</p></section><section id="articles" aria-label="Vertiefende Artikel" hidden><p class="empty">Deine ausführlichen Artikel zu Wirtschaft, Technologie und Produktivität erscheinen hier.</p></section>
+
+<section id="github-setup" hidden aria-label="GitHub-Feedback verbinden">
+  <h2>Einmalig GitHub-Zugang einrichten</h2>
+  <p>Erstelle auf GitHub einen <a target="_blank" rel="noopener noreferrer" href="https://github.com/settings/personal-access-tokens/new">Fine-grained Personal Access Token ↗</a>.
+    Wähle ausschließlich das private Repository <code>fabian-stoeckl/morgenzeitung-feedback</code> und die Berechtigung <strong>Issues: Read and write</strong>. Andere Rechte brauchst du nicht.</p>
+  <form id="github-setup-form">
+    <label for="github-token">GitHub-Token (nur hier auf deinem Gerät eingeben, nicht im Chat)
+      <input id="github-token" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" required>
+    </label>
+    <label class="token-consent"><input id="remember-token" type="checkbox" required>
+      <span>Ich möchte den eingeschränkten Token in diesem Browser dauerhaft speichern.
+      Andere Skripte dieser Website oder Schadsoftware auf diesem Gerät könnten ihn auslesen.
+      Auf fremden oder gemeinsam genutzten Geräten nicht verwenden.</span>
+    </label>
+    <button type="submit">GitHub-Zugang verbinden</button>
+    <span id="github-setup-status" role="status"></span>
+  </form>
+</section>
+<div id="github-connected" hidden class="connected">
+  <span>GitHub-Feedback ist auf diesem Gerät verbunden.</span>
+  <button type="button" id="github-disconnect">Verbindung auf diesem Gerät entfernen</button>
+</div>
+<section id="feedback-section" hidden><div class="feedback-heading"><span class="eyebrow">DIE NÄCHSTE AUSGABE</span><h2>Was darf morgen anders sein?</h2></div><p class="small">Wähle die passenden Bewertungen und ergänze bei Bedarf Kommentare. Nach einmaliger Einrichtung speichert „Feedback speichern“ deine Bewertungen direkt im privaten GitHub-Repository. Du benötigst dafür keine weiteren GitHub-Klicks.</p><form id="feedback-form"><label for="feedback">Welche Themen fehlen dir? Was war redundant? Was möchtest du künftig stärker oder weniger sehen?</label><textarea id="feedback" rows="4" maxlength="4000" required placeholder="Zum Beispiel: Mehr über Produktivität im öffentlichen Sektor …"></textarea><button type="submit">Feedback speichern</button><span id="feedback-status" role="status"></span><p id="feedback-confirmation" hidden><a id="feedback-issue-link" href="#" target="_blank" rel="noopener noreferrer">Gespeicherte Rückmeldung auf GitHub ansehen ↗</a></p></form></section>
+<footer><p id="operating-state" class="small">Automatischer Betrieb noch nicht verbunden.</p><button id="logout" hidden>Abmelden</button></footer>
+</main></body></html>
