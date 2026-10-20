@@ -6,6 +6,15 @@ const assert = require('assert');
   const data = JSON.parse(fs.readFileSync('Privat/ETFs/data/etf_data.json','utf8'));
   if(!data.fx?.some(f=>f.status==='ok'))data.fx=['USD','JPY','GBP'].map((code,i)=>({code,name:code,status:'ok',series:Object.fromEntries(Object.entries(data.etfs[0].series).map(([year,points])=>[year,points.map((p,j)=>({...p,price:(i+1)*(1+j*.001)}))]))}));
   const chart = fs.readFileSync('node_modules/chart.js/dist/chart.umd.js','utf8');
+  // Keep the ETF's design tokens synchronized with the actual Morgenzeitung.
+  const pressCSS=fs.readFileSync('Privat/Pressespiegel/style.css','utf8');
+  const pressToken=name=>{
+    const match=pressCSS.match(new RegExp('--'+name+':(#[0-9a-fA-F]{3,8})'));
+    assert(match,'Missing Morgenzeitung token '+name);
+    return match[1];
+  };
+  fs.mkdirSync('artifacts/screenshots',{recursive:true});
+
   const browser = await chromium.launch();
   for (const width of [320,390,550,768,1024,1440]) {
     const page = await browser.newPage({viewport:{width,height:900}});
@@ -20,6 +29,28 @@ const assert = require('assert');
     await page.goto('https://chart-test.invalid/');
     await page.waitForSelector('.year-key');
     await page.waitForTimeout(800);
+    const theme=await page.evaluate(()=>{
+      const css=getComputedStyle(document.documentElement);
+      const property=k=>css.getPropertyValue(k).trim();
+      return {
+        bg:property('--bg'),card:property('--card'),
+        text:property('--text'),muted:property('--muted'),
+        line:property('--line'),accent:property('--accent'),link:property('--link'),
+        body:getComputedStyle(document.body).backgroundColor,
+        cardBackground:getComputedStyle(document.querySelector('.card')).backgroundColor
+      };
+    });
+    assert.equal(theme.bg,pressToken('paper'));
+    assert.equal(theme.text,pressToken('ink'));
+    assert.equal(theme.muted,pressToken('muted'));
+    assert.equal(theme.line,pressToken('line'));
+    assert.equal(theme.accent,pressToken('accent'));
+    assert.equal(theme.link,pressToken('blue'));
+    assert.equal(theme.body,'rgb(244, 239, 231)');
+    assert.equal(theme.cardBackground,'rgb(255, 250, 244)');
+    if(width===390||width===1440){
+      await page.screenshot({path:'artifacts/screenshots/etf-warm-'+width+'.png',fullPage:true});
+    }
     assert.deepEqual(errors,[], 'Chart runtime errors');
     assert.equal(await page.locator('canvas').count(),10);
     const issues = await page.evaluate(()=>{
