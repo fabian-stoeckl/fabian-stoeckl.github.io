@@ -134,3 +134,11 @@ main{max-width:860px}.lead-grid{display:block;padding:0;border:0}.lead-grid arti
     margin-left:3px;
   }
 }
+
+/* Each news item gets one compact editorial sentence below its linked headline. */
+.news-item .news-summary{
+  margin:8px 0 2px;
+  font-size:13px;
+  line-height:1.55;
+  color:var(--muted);
+}
