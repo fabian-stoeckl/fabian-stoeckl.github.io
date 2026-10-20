@@ -103,11 +103,75 @@ async function restoreSavedRatings(){
 }
 
 async function load(){try{const [list,r]=await Promise.all([api('/api/editions'),api('/api/ratings')]);ratings=r;latestDate=list.dates[0];$('date').replaceChildren();for(const d of list.dates){const o=el('option',d);o.value=d;$('date').append(o);}if(!list.dates.length){status('Noch keine erfolgreiche Ausgabe verfügbar.');return; }edition=await api('/api/edition');render();$('login').hidden=true;$('logout').hidden=config.preview;$('operating-state').textContent=list.scheduler_enabled?'Automatik konfiguriert · tatsächlicher Stand siehe Ausgabe.':'Täglicher Betrieb noch nicht aktiviert.';}catch(e){status(e.message);$('login').hidden=false;}}
-$('date').onchange=async()=>{try{edition=config.mode==='github'?await GitHubPaper.edition($('date').value):await api('/api/edition?date='+encodeURIComponent($('date').value));render();}catch(e){status(e.message);}};
+$('date').onchange=async()=>{try{edition=config.mode==='github'?await GitHubPaper.edition($('date').value):await api('/api/edition?date='+encodeURIComponent($('date').value));render();await restoreSavedRatings();}catch(e){status(e.message);}};
 for(const tab of ['headlines','articles'])$('tab-'+tab).onclick=()=>{for(const name of ['headlines','articles']){$(name).hidden=name!==tab;$('tab-'+name).setAttribute('aria-pressed',String(name===tab));}};
 $('login-form').onsubmit=async e=>{e.preventDefault();secret=$('token').value;$('token').value='';await load();};
 $('logout').onclick=()=>{secret='';location.reload();};
-$('profile-toggle').onclick=async()=>{if(config.mode==='github'){status('Profiländerungen bitte über das GitHub-Feedback unten mitteilen. Deine ausdrücklichen Wünsche haben Vorrang.');$('feedback-section').scrollIntoView({behavior:'smooth'});return;}if(config?.api===null){status('Interessenprofil wird nach Verbindung des privaten Dienstes verfügbar.');return;}try{const data=await api('/api/profile');currentProfile=data.profile;$('topics').replaceChildren();for(const [topic,value] of Object.entries(currentProfile.topics)){const label=el('label',topic);const select=el('select');select.dataset.topic=topic;for(const [v,t] of [[5,'Sehr hoch'],[4,'Hoch'],[3,'Mittel'],[2,'Ergänzend'],[1,'Gering'],[0,'Ausblenden']]){const o=el('option',t);o.value=v;select.append(o);}select.value=value;label.append(select);$('topics').append(label);}$('rules').value=currentProfile.rules;$('profile-history').replaceChildren(el('p','Lernsignale (maximal ±0,5; explizite Prioritäten bleiben maßgeblich): '+JSON.stringify(data.learning)));for(const h of data.history)$('profile-history').append(el('p',fmt(h.at)+' · '+h.reason));$('profile').hidden=!$('profile').hidden;}catch(e){status(e.message);}};
+
+async function showPreferenceSummary() {
+  const summary=$('preference-feedback'),token=DirectFeedback.readToken();
+  summary.replaceChildren(el('p','Lese deine bisherigen Bewertungen aus deinem privaten GitHub-Repository …','small'));
+  if(!token){
+    summary.replaceChildren(el('p','Auf diesem Gerät ist noch kein GitHub-Zugang verbunden. Die Auswahlregeln oben kannst du trotzdem lesen; nach dem Verbinden ganz unten werden hier deine gespeicherten Bewertungen angezeigt.'));
+    return;
+  }
+  try{
+    const history=await DirectFeedback.feedbackHistory(token);
+    if($('profile').hidden)return;
+    if(!history.length){
+      summary.replaceChildren(el('p','Bisher keine auswertbaren echten Bewertungen gefunden. Test-Feedback wird bewusst ignoriert.'));
+      return;
+    }
+    const items=history.flatMap(entry=>entry.ratings.map(r=>({...r,date:entry.date})));
+    const tally=label=>items.filter(r=>r.value===label).length;
+    const feedbackCount=history.filter(h=>h.feedback.trim()).length;
+    const top=el('p',history.length+' bewertete Ausgabe(n) · '+items.length+' Artikelbewertungen · '+feedbackCount+' allgemeine Rückmeldung(en).');
+    const count=el('p','Sehr relevant: '+tally('Sehr relevant')+' · Teilweise relevant: '+tally('Teilweise relevant')+' · Nicht relevant: '+tally('Nicht relevant'),'small');
+    const dateMap=new Map(),days=[...new Set(history.map(h=>h.date))].slice(0,20);
+    for(const day of days){
+      try{
+        const ed=await GitHubPaper.edition(day);
+        for(const item of [...(ed.articles||[]),...(ed.headlines||[])]){
+          const id=await GitHubPaper.ratingId(item);
+          dateMap.set(day+':'+id,{title:item.title,topic:item.topic||item.region||'Nachrichten'});
+        }
+      }catch(_){/* Not all older editions remain in the current public index. */}
+    }
+    if($('profile').hidden)return;
+    const list=el('ul',undefined,'preference-list');
+    for(const item of items.filter(r=>r.value).slice(-7).reverse()){
+      const meta=dateMap.get(item.date+':'+item.id);
+      const title=meta?.title||'Artikel '+item.id.slice(0,8);
+      const text=item.value+': '+title+(item.reason?' – '+item.reason:'')+' ('+item.date+')';
+      list.append(el('li',text));
+    }
+    summary.replaceChildren(top,count);
+    if(list.childElementCount){
+      summary.append(el('p','Zuletzt bewertete Artikel:','small'),list);
+    }
+    const recentNegative=items.filter(r=>r.value==='Nicht relevant');
+    const recentPositive=items.filter(r=>r.value==='Sehr relevant');
+    const signals=[];
+    if(recentPositive.length)signals.push('Mehr Gewicht für Inhalte, die du ausdrücklich als sehr relevant markiert hast.');
+    if(recentNegative.length)signals.push('Weniger Gewicht für ähnliche Beiträge, die du als nicht relevant markiert hast.');
+    if(!signals.length)signals.push('Deine Rückmeldungen sind noch kein eindeutiges positives oder negatives Themen-Signal.');
+    $('preference-learning-status').textContent='Bisheriges Feedback als Auswahlhinweis: '+signals.join(' ')+' Die tatsächliche Umsetzung in späteren, neu zusammengestellten Ausgaben ist noch nicht verlässlich nachgewiesen; daher wird hier keine bereits erfolgte Änderung behauptet.';
+  }catch(error){
+    summary.replaceChildren(el('p','Deine privaten Bewertungen konnten nicht geladen werden: '+error.message+'. Die Auswahlregeln bleiben sichtbar.','small'));
+  }
+}
+$('profile-close').onclick=()=>{
+  $('profile').hidden=true;
+  $('profile-toggle').setAttribute('aria-expanded','false');
+};
+$('profile-toggle').onclick=async()=>{if(config.mode==='github'){
+  $('profile').hidden=!$('profile').hidden;
+  $('profile-toggle').setAttribute('aria-expanded',String(!$('profile').hidden));
+  if(!$('profile').hidden){
+    $('profile').scrollIntoView({behavior:'smooth',block:'start'});
+    await showPreferenceSummary();
+  }
+  return;}if(config?.api===null){status('Interessenprofil wird nach Verbindung des privaten Dienstes verfügbar.');return;}try{const data=await api('/api/profile');currentProfile=data.profile;$('topics').replaceChildren();for(const [topic,value] of Object.entries(currentProfile.topics)){const label=el('label',topic);const select=el('select');select.dataset.topic=topic;for(const [v,t] of [[5,'Sehr hoch'],[4,'Hoch'],[3,'Mittel'],[2,'Ergänzend'],[1,'Gering'],[0,'Ausblenden']]){const o=el('option',t);o.value=v;select.append(o);}select.value=value;label.append(select);$('topics').append(label);}$('rules').value=currentProfile.rules;$('profile-history').replaceChildren(el('p','Lernsignale (maximal ±0,5; explizite Prioritäten bleiben maßgeblich): '+JSON.stringify(data.learning)));for(const h of data.history)$('profile-history').append(el('p',fmt(h.at)+' · '+h.reason));$('profile').hidden=!$('profile').hidden;}catch(e){status(e.message);}};
 $('profile-form').onsubmit=async e=>{e.preventDefault();const topics=Object.fromEntries([...$('topics').querySelectorAll('select')].map(s=>[s.dataset.topic,Number(s.value)]));try{currentProfile=await api('/api/profile',{topics,rules:$('rules').value,version:currentProfile.version});$('profile-status').textContent='Gespeichert · gilt für den nächsten Recherchelauf';}catch(e){$('profile-status').textContent=e.message;}};
 $('feedback-form').onsubmit=async e=>{e.preventDefault();if(config.mode==='github'){
   const b=e.submitter||$('feedback-form').querySelector('button[type=submit]');
@@ -187,7 +251,7 @@ $('github-setup-form').onsubmit=async e=>{
     $('github-setup-status').textContent=err.message+' Kein Token gespeichert.';
   }finally{button.disabled=false;}
 };
-$('github-disconnect').onclick=()=>{
+if($('github-disconnect')) $('github-disconnect').onclick=()=>{
   DirectFeedback.clearToken();
   refreshGitHubConnection();
   feedbackStatus('GitHub-Verbindung auf diesem Gerät entfernt. Bereits gespeicherte GitHub-Rückmeldungen bleiben erhalten.');
