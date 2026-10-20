@@ -8,6 +8,7 @@ const assert=require('node:assert/strict');
  await page.addInitScript(()=>{
    window.__feedbackTestRequests=[];
    window.__failFeedbackTest=false;
+   window.__feedbackTestIssueBody=null;
    const originalFetch=window.fetch.bind(window);
    window.fetch=async(url,opts={})=>{
      const address=String(url);
@@ -17,7 +18,9 @@ const assert=require('node:assert/strict');
      window.__feedbackTestRequests.push({url:address,method,body:opts.body?JSON.parse(opts.body):null,
        authPresent:opts.headers?.Authorization==='Bearer github_pat_BROWSER_TEST_123456789'});
      if(window.__failFeedbackTest)return new Response(JSON.stringify({message:'offline'}),{status:503,headers:{'Content-Type':'application/json'}});
-     const result=method==='GET'?{private:true,full_name:'fabian-stoeckl/morgenzeitung-feedback'}:
+     if(method==='POST'||method==='PATCH')window.__feedbackTestIssueBody=JSON.parse(opts.body).body;
+     const result=method==='GET'?
+       (address.endsWith('/issues/23')?{number:23,body:window.__feedbackTestIssueBody}:{private:true,full_name:'fabian-stoeckl/morgenzeitung-feedback'}):
        {number:23,html_url:'https://github.com/fabian-stoeckl/morgenzeitung-feedback/issues/23'};
      return new Response(JSON.stringify(result),{status:200,headers:{'Content-Type':'application/json'}});
    };
@@ -30,8 +33,13 @@ const assert=require('node:assert/strict');
  assert.equal(await page.locator('.tabs button').count(),2);
  assert.equal(await page.locator('#tab-headlines').getAttribute('aria-pressed'),'true');
  assert.equal(await page.locator('#headlines h2').allTextContents().then(a=>a.join(', ')),'Österreich, International');
+ await page.locator('#headlines .news-item').first().getByLabel('Nicht relevant',{exact:true}).check();
+ await page.locator('#headlines .news-item').first().locator('textarea').fill('Doppelte Nachricht');
  await page.locator('#tab-articles').click();
- assert.equal(await page.locator('article').count(),5);
+ assert.equal(await page.locator('article').count(),2);
+ assert.equal(await page.locator('#headlines .news-item').count(),3);
+ assert.equal(await page.locator('#feedback-settings #github-setup').count(),1);
+ assert.equal(await page.evaluate(()=>document.querySelector('#feedback-settings').compareDocumentPosition(document.querySelector('#feedback-section'))&Node.DOCUMENT_POSITION_PRECEDING),2);
  assert(await page.locator('#github-setup').isVisible());
  await page.locator('article').first().getByLabel('Sehr relevant',{exact:true}).check();
  await page.locator('article').first().locator('textarea').fill('Mehr Zahlen');
@@ -45,20 +53,26 @@ const assert=require('node:assert/strict');
  await page.waitForFunction(()=>document.querySelector('#github-connected')?.hidden===false);
  assert(await page.locator('#github-setup').isHidden());
  assert.equal((await calls())[0].method,'GET');
- await page.locator('#feedback-form button[type=submit]').click();
- await page.waitForFunction(()=>document.querySelector('#feedback-status').textContent.includes('Erfolgreich'));
+ await page.locator('#tab-headlines').click();
+ await page.locator('#headlines .section-save button').click();
+ await page.waitForFunction(()=>document.querySelector('#feedback-status').textContent.includes('erfolgreich'));
  const post=(await calls()).find(r=>r.method==='POST');
  assert(post && post.authPresent);
  assert.match(post.body.body,/Mehr Zahlen/);
+ assert.match(post.body.body,/Doppelte Nachricht/);
+ assert.match(post.body.body,/Bereich: Heute wichtig/);
+ assert.match(post.body.body,/Bereich: Vertiefungen/);
  assert.match(post.body.body,/Mehr Handelsblatt/);
  assert.equal(new URL(post.url).pathname,'/repos/fabian-stoeckl/morgenzeitung-feedback/issues');
  assert.match(await page.locator('#feedback-issue-link').getAttribute('href'),/issues\/23/);
- await page.locator('#feedback-form button[type=submit]').click();
- await page.waitForFunction(()=>document.querySelector('#feedback-status').textContent.includes('Bereits'));
+ await page.locator('#tab-articles').click();
+ await page.locator('#articles .section-save button').click();
+ await page.waitForFunction(()=>document.querySelector('#feedback-status').textContent.includes('bereits'));
  assert.equal((await calls()).filter(r=>r.method==='POST').length,1);
  await page.locator('#feedback').fill('Mehr KI und Industrie');
- await page.locator('#feedback-form button[type=submit]').click();
+ await page.locator('#articles .section-save button').click();
  await page.waitForFunction(()=>document.querySelector('#feedback-status').textContent.includes('aktualisiert'));
+ assert.match((await calls()).find(r=>r.method==='PATCH').body.body,/Bereich: Heute wichtig/);
  assert.equal((await calls()).filter(r=>r.method==='PATCH').length,1);
  assert(new URL((await calls()).find(r=>r.method==='PATCH').url).pathname.endsWith('/issues/23'));
  await page.evaluate(()=>{window.__failFeedbackTest=true;});
@@ -71,6 +85,10 @@ const assert=require('node:assert/strict');
  await page.reload();
  await page.waitForSelector('#headlines li a');
  assert(await page.locator('#github-connected').isVisible());
+ await page.waitForFunction(()=>document.querySelector('#headlines .news-item input[type=radio][value="Nicht relevant"]')?.checked===true);
+ await page.locator('#tab-articles').click();
+ await page.waitForFunction(()=>document.querySelector('#articles article input[type=radio][value="Sehr relevant"]')?.checked===true);
+ await page.locator('#tab-headlines').click();
  for(const width of [1440,390]){
    await page.setViewportSize({width,height:1000});
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
