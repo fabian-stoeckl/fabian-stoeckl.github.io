@@ -16,7 +16,8 @@ const DirectFeedback = (() => {
     return value;
   }
   async function request(token,path,method='GET',body,transport=fetch) {
-    if(!/^(\/issues(?:\/\d+)?|)$/.test(path)) throw Error('Unzulässiger GitHub-Pfad.');
+    if(!/^(\/issues(?:\/\d+)?|\/issues\?state=all&per_page=100&page=[123]|)$/.test(path)) throw Error('Unzulässiger GitHub-Pfad.');
+    if(path.includes('?')&&method!=='GET')throw Error('Nur lesender Aufruf erlaubt.');
     const response=await transport(API+path,{
       method,credentials:'omit',redirect:'error',referrerPolicy:'no-referrer',
       cache:'no-store',
