@@ -35,3 +35,18 @@ main{max-width:860px}.lead-grid{display:block;padding:0;border:0}.lead-grid arti
 .headline-columns li small{font-size:12px}
 .tabs{margin-top:24px}
 @media(max-width:760px){.headline-columns li a{font-size:21px}.headline-columns h2{font-size:26px}}
+
+/* Feedback controls are available in each reading section; GitHub settings are last. */
+.headline-columns .rating-dots{border:0;border-top:1px dashed var(--line);padding:12px 0 4px;margin:15px 0 0;gap:8px 18px}
+.headline-columns .rating-dots legend{font-size:11px}
+.headline-columns .rating-dots>label{font-size:12px}
+.headline-columns .rating-dots .reason textarea{font-size:12px;margin-bottom:3px;min-height:42px}
+.headline-columns li small{margin-top:6px}
+.section-save{border-top:1px solid var(--line);padding:18px 0 12px;margin-top:18px}
+.section-save button{font-size:13px;background:var(--ink);color:var(--paper)}
+.section-save p{margin:6px 0 0}
+#github-settings{border-top:1px solid var(--line);margin:14px 0 38px;padding-top:13px}
+#github-settings summary{cursor:pointer;font-size:12px;color:var(--muted)}
+#github-settings details[open] summary{margin-bottom:14px}
+#github-setup{margin:8px 0 20px}
+#github-connected{margin:8px 0 20px}
