@@ -23,7 +23,12 @@ const assert=require('node:assert/strict');
        sessionStorage.setItem('__feedbackMockIssueBody',window.__feedbackTestIssueBody);
      }
      const result=method==='GET'?
-       (address.endsWith('/issues/23')?{number:23,body:window.__feedbackTestIssueBody}:{private:true,full_name:'fabian-stoeckl/morgenzeitung-feedback'}):
+       (address.includes('/issues?')?(window.__feedbackTestIssueBody?[{
+         number:23,title:'[Morgenzeitung] Sammelbewertung 2026-10-18',body:window.__feedbackTestIssueBody,
+         updated_at:'2026-10-20T02:00:00Z'
+       },{number:3,title:'[TEST – NICHT AUSWERTEN] Kontrollfall',body:'TEST: true'}]:[]):
+       address.endsWith('/issues/23')?{number:23,body:window.__feedbackTestIssueBody}:
+       {private:true,full_name:'fabian-stoeckl/morgenzeitung-feedback'}):
        {number:23,html_url:'https://github.com/fabian-stoeckl/morgenzeitung-feedback/issues/23'};
      return new Response(JSON.stringify(result),{status:200,headers:{'Content-Type':'application/json'}});
    };
@@ -100,9 +105,29 @@ const assert=require('node:assert/strict');
    await page.screenshot({path:'artifacts/screenshots/morgenzeitung-analysen-'+width+'.png',fullPage:true});
    await page.locator('#tab-headlines').click();
  }
- await page.locator('#github-disconnect').click();
- assert(await page.locator('#github-setup').isVisible());
- assert.equal(await page.evaluate(()=>localStorage.getItem('morgenzeitung:github-token:v1')),null);
+
+ assert.equal(await page.locator('#github-disconnect').count(),0);
+ assert.equal(await page.locator('#profile-toggle').innerText(),'Meine Präferenzen');
+ await page.locator('#profile-toggle').click();
+ assert(await page.locator('#profile').isVisible());
+ assert.equal(await page.locator('#profile-toggle').getAttribute('aria-expanded'),'true');
+ await page.waitForFunction(()=>document.querySelector('#preference-feedback')?.textContent.includes('2 Artikelbewertungen'));
+ assert.match(await page.locator('#preference-learning-status').innerText(),/nicht verlässlich nachgewiesen/);
+ await page.locator('#preference-comment').fill('Bitte mehr zu Arbeitsproduktivität berichten.');
+ await page.locator('#preference-comment-form button[type=submit]').click();
+ await page.waitForFunction(()=>document.querySelector('#preference-comment-status')?.textContent.includes('erfolgreich'));
+ const afterPreference=(await calls()).filter(r=>r.method==='PATCH').at(-1);
+ assert(afterPreference);
+ assert.match(afterPreference.body.body,/Bitte mehr zu Arbeitsproduktivität berichten/);
+ assert.match(afterPreference.body.body,/Bereich: Heute wichtig/);
+ assert.match(afterPreference.body.body,/Bereich: Vertiefungen/);
+ assert.match(afterPreference.body.body,/Mehr KI und Industrie/);
+ assert.equal(await page.locator('#preference-comment').inputValue(),'');
+ await page.locator('#profile-close').click();
+ assert(await page.locator('#profile').isHidden());
+ assert.equal(await page.locator('#profile-toggle').getAttribute('aria-expanded'),'false');
+ assert(await page.locator('#github-connected').isVisible());
+
  assert.deepEqual(errors,[]);
  await browser.close();
  console.log('GitHub direct-save UI tests with fully mocked API passed.');
