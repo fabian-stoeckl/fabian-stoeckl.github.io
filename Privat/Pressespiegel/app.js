@@ -55,7 +55,9 @@ function render(){
   for(const region of ['Österreich','International']){
     const sec=el('section');sec.append(el('h2',region));
     const list=el('ul');
-    for(const a of visibleHeadlines.filter(a=>a.region===region)){
+    const regional=visibleHeadlines.filter(a=>a.region===region);
+    if(!regional.length){const note=el('li',e.preview?'Keine zusätzlichen eigenständigen Nachrichten in dieser reduzierten Vorschau.':'Keine weiteren aktuellen Meldungen in dieser Ausgabe.','small empty-region');list.append(note);}
+    for(const a of regional){
       const row=el('li',undefined,'news-item');
       row.append(link(a.title,a.url),el('small',a.source));
       if(config.mode==='github')row.append(githubRating(a,'Heute wichtig'));
