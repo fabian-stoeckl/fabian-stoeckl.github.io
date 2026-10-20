@@ -240,6 +240,8 @@ async function syncPreferencesView(){
     $('notice').hidden=true;
     $('publication-status').hidden=true;
   }else if(edition){
+    // Restore legitimate operational notices when returning to the newspaper.
+    $('notice').hidden=!$('notice').textContent.trim();
     updatePublicationStatus(edition);
   }
   $('profile').hidden=!open;
