@@ -191,3 +191,11 @@ Der Marketing-Satz unter „Morgenzeitung“, der dekorative Footer-Slogan und d
 - Neuer definitiver Pfad `/Privat/Pressespiegel/praeferenzen.html` mit eigenem `preferences.js`. Diese Seite enthält technisch **keinerlei Artikel-, Headlines-, Tab- oder Feedback-Zeitungscontainer**, nicht einmal unsichtbare. Stattdessen nur die Präferenzdarstellung und das gesonderte Freitext-Feedback. `index.html` enthält seinerseits keine Profilsektion mehr, sondern nur den echten Navigationslink. Alte URLs mit `#praeferenzen` werden beim Seitenladen UND bei `hashchange` umgeleitet.
 - Geltendes Datensparprinzip unverändert: `DirectFeedback.readToken()` aus browserlokalem bereits freigegebenem Fine-grained-Token, private GitHub-Feedback-Issues; `DirectFeedback.submit()` liest bei PATCH das bestehende private Issue und **bewahrt alte Bewertungen aus beiden Rubriken**. Nie Token oder konkrete private Bewertungen in öffentliche Dateien übernehmen.
 - Regressions-Browsertest prüft Anzahl `#articles`, `#headlines`, `.tabs`, `#feedback-section` und `article` auf der Präferenzseite gleich **null**. Zusätzlich Mobilbreite, private Kommentar-Speicherung, Zurück/Vorwärts, Reload und Legacy-Hash.
+
+
+## Farbschema im Gleichklang mit dem ETF-Dashboard (Oktober 2026)
+
+- Designbasis aus `Privat/ETFs/index.html`: Hintergrund `#f6f7f9`, Karten `#fff`, Text `#101318`, Sekundärtext `#6f7785`, Linien `#e2e5ea`, dunkle Steuerelemente `#111827`, Fokus und Links `#2563eb`.
+- `Privat/Pressespiegel/style.css` verwaltet beide HTML-Seiten, die Zeitung UND `praeferenzen.html`; deshalb gilt der Farbabgleich auch für die echte separate Präferenzseite. Der redaktionelle Aufbau, die Serif-Schlagzeilen, Bewertungssystem, private GitHub-Issues und URL-Navigation bleiben unverändert.
+- Den Stylesheet-Link in beiden Seiten versionieren, damit bereits auf dem Smartphone gecachte beige/braune Styles nicht erneut angezeigt werden.
+- Regressionstests vergleichen *berechnete* Hintergrund-/Schriftfarben gegen das tatsächliche ETF-Dashboard und erzeugen Desktop-/Mobile-Screenshots. Noch kein Merge ohne Nutzerfreigabe.
