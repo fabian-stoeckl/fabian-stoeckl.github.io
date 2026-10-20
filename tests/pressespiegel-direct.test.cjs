@@ -24,6 +24,7 @@ const transport=async(url,opts)=>{
   calls.push({url,opts});
   if(fail)return {ok:false,status:500,json:async()=>({})};
   if(opts.method==='GET'&&url.endsWith('/issues/'+number))return {ok:true,json:async()=>({body:issueBody,number})};
+  if(opts.method==='GET'&&url.includes('/issues?'))return {ok:true,json:async()=>[{number,title:'[Morgenzeitung] Sammelbewertung 2026-10-20',body:issueBody,updated_at:'2026-10-20T00:00:00Z'},{number:43,title:'[TEST – NICHT AUSWERTEN] Dummy',body:'TEST: true'}]};
   if(opts.method==='GET')return {ok:true,json:async()=>({full_name:feedback.REPO,private:privateRepo})};
   issueBody=JSON.parse(opts.body).body;
   return {ok:true,json:async()=>({number,html_url:'https://github.com/'+feedback.REPO+'/issues/'+number})};
@@ -51,6 +52,11 @@ const saved=await feedback.savedFeedback('2026-10-20',token,s,transport);
 assert.equal(saved.ratings.length,2);
 assert(saved.ratings.some(r=>r.id==='b'.repeat(16)&&r.section==='Heute wichtig'));
 assert.equal(saved.feedback,'Mehr Handelsblatt und KI');
+const history=await feedback.feedbackHistory(token,transport);
+assert.equal(history.length,1);
+assert.equal(history[0].ratings.length,2);
+assert.equal(history[0].feedback,'Mehr Handelsblatt und KI');
+
 const forty=Array.from({length:35},(_,i)=>({id:i.toString(16).padStart(16,'0'),value:'Sehr relevant',reason:'',section:'Heute wichtig'}));
 assert.equal(feedback.buildFeedback('2026-10-20',forty,'').title,'[Morgenzeitung] Sammelbewertung 2026-10-20');
 
