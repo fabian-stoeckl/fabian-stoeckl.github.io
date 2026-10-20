@@ -13,6 +13,11 @@ const visible=GitHubPaper.partition(fixture);
  page.on('pageerror',e=>errors.push(e.message));
  // Intercept only in this isolated test page: no outbound requests to GitHub and no real credentials.
  await page.addInitScript((mockDate)=>{
+   // This simulates an existing owner's token in the browser before rollout.
+   if(!sessionStorage.getItem('__oldTokenSeeded')){
+     localStorage.setItem('morgenzeitung:github-token:v1','github_pat_STALE_BROWSER_ONLY_123456789');
+     sessionStorage.setItem('__oldTokenSeeded','yes');
+   }
    window.__feedbackTestDate=mockDate;
    window.__feedbackTestRequests=[];
    window.__failFeedbackTest=false;
@@ -44,6 +49,16 @@ const visible=GitHubPaper.partition(fixture);
  const calls=()=>page.evaluate(()=>window.__feedbackTestRequests);
  await page.goto('http://127.0.0.1:8765/Privat/Pressespiegel/');
  await page.waitForSelector('#headlines li a');
+ assert.equal(await page.evaluate(()=>localStorage.getItem('morgenzeitung:github-token:v1')),null);
+ assert.match(await page.locator('#github-setup-status').innerText(),/Alter lokal gespeicherter Token gelöscht/);
+ await page.setViewportSize({width:1440,height:1000});
+ const ratingPosition=async parent=>parent.evaluate(box=>{
+   const labels=box.querySelectorAll(':scope > label');
+   const summary=box.querySelector('.rating-reason summary');
+   return {last:labels[labels.length-1].getBoundingClientRect().top,optional:summary.getBoundingClientRect().top};
+ });
+ const headerPosition=await ratingPosition(page.locator('#headlines .news-item .rating-dots').first());
+ assert(Math.abs(headerPosition.last-headerPosition.optional)<18,'News options and explanation must share desktop row');
  assert.equal(await page.locator('#overview').count(),0);
  assert.equal(await page.locator('.deck').count(),0);
  assert.equal(await page.locator('.tabs button').count(),2);
@@ -59,6 +74,8 @@ const visible=GitHubPaper.partition(fixture);
  assert.equal(await page.locator('#feedback-settings #github-setup').count(),1);
  assert.equal(await page.evaluate(()=>document.querySelector('#feedback-settings').compareDocumentPosition(document.querySelector('#feedback-section'))&Node.DOCUMENT_POSITION_PRECEDING),2);
  assert(await page.locator('#github-setup').isVisible());
+ const featurePosition=await ratingPosition(page.locator('#articles article .rating-dots').first());
+ assert(Math.abs(featurePosition.last-featurePosition.optional)<18,'Feature options and explanation must share desktop row');
  await page.locator('article').first().getByLabel('Sehr relevant',{exact:true}).check();
  assert(await page.locator('article').first().locator('textarea').isHidden());
  await page.locator('article').first().locator('.rating-reason summary').click();
