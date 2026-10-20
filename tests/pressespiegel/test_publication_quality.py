@@ -15,6 +15,16 @@ class PublicQualityTests(unittest.TestCase):
     def test_reduced_demo_is_not_mistaken_for_real_daily_issue(self):
         self.assertTrue(self.preview.get("preview"))
         self.assertTrue(validate(self.preview))
+    def test_short_headline_summaries_are_required(self):
+        for day in ("2026-10-18", "2026-10-20"):
+            with self.subTest(day=day):
+                issue=json.loads((ROOT/"Privat/Pressespiegel/data"/(day+".json")).read_text())
+                self.assertTrue(validate(issue))
+                self.assertTrue(all(40<=len(x["summary"])<=320 for x in issue["headlines"]))
+        bad=copy.deepcopy(self.preview)
+        bad["headlines"][0].pop("summary")
+        with self.assertRaisesRegex(ValueError,"Zusammenfassungssatz"):validate(bad)
+
     def test_new_features_require_research_basis(self):
         ed=copy.deepcopy(self.preview)
         ed["preview"]=False
