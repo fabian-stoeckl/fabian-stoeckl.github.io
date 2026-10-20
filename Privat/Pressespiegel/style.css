@@ -174,3 +174,31 @@ body.preferences-view .topline #profile-toggle{display:none!important}
 
 /* Defence in depth: the entire newspaper is a separate DOM view. */
 #newspaper-view[hidden],html.preferences-initial #newspaper-view,body.preferences-view #newspaper-view{display:none!important}
+
+/* Real standalone preference document: no newspaper markup is present there. */
+.topline a#profile-toggle{
+  display:inline-block;
+  white-space:nowrap;
+  padding:8px 12px;
+  border:1px solid var(--ink);
+  border-radius:4px;
+  font-size:12px;
+  font-weight:650;
+  letter-spacing:0;
+  text-decoration:none;
+}
+.topline a#profile-toggle:hover{border-color:var(--accent)}
+.preferences-document h1{font-size:clamp(34px,6vw,62px);margin:28px 0 20px}
+.preferences-document #profile{
+  display:block;
+  min-height:65vh;
+  padding:22px 0 42px;
+  margin:0;
+  border-top:2px solid var(--ink);
+  border-bottom:0;
+}
+.preferences-document #profile .profile-head{margin-bottom:15px}
+@media(max-width:760px){
+  .preferences-document #profile{padding-top:18px}
+  .preferences-document h1{margin:24px 0 15px}
+}
