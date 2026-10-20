@@ -12,7 +12,8 @@ const visible=GitHubPaper.partition(fixture);
  const context=await browser.newContext(),page=await context.newPage(),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  // Intercept only in this isolated test page: no outbound requests to GitHub and no real credentials.
- await page.addInitScript(()=>{
+ await page.addInitScript((mockDate)=>{
+   window.__feedbackTestDate=mockDate;
    window.__feedbackTestRequests=[];
    window.__failFeedbackTest=false;
    window.__feedbackTestIssueBody=sessionStorage.getItem('__feedbackMockIssueBody')||null;
@@ -31,7 +32,7 @@ const visible=GitHubPaper.partition(fixture);
      }
      const result=method==='GET'?
        (address.includes('/issues?')?(window.__feedbackTestIssueBody?[{
-         number:23,title:'[Morgenzeitung] Sammelbewertung 2026-10-18',body:window.__feedbackTestIssueBody,
+         number:23,title:'[Morgenzeitung] Sammelbewertung '+window.__feedbackTestDate,body:window.__feedbackTestIssueBody,
          updated_at:'2026-10-20T02:00:00Z'
        },{number:3,title:'[TEST – NICHT AUSWERTEN] Kontrollfall',body:'TEST: true'}]:[]):
        address.endsWith('/issues/23')?{number:23,body:window.__feedbackTestIssueBody}:
@@ -39,7 +40,7 @@ const visible=GitHubPaper.partition(fixture);
        {number:23,html_url:'https://github.com/fabian-stoeckl/morgenzeitung-feedback/issues/23'};
      return new Response(JSON.stringify(result),{status:200,headers:{'Content-Type':'application/json'}});
    };
- });
+ },currentDate);
  const calls=()=>page.evaluate(()=>window.__feedbackTestRequests);
  await page.goto('http://127.0.0.1:8765/Privat/Pressespiegel/');
  await page.waitForSelector('#headlines li a');
