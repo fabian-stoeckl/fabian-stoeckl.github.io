@@ -9,40 +9,37 @@
 .wrap{max-width:1100px;margin:auto;padding:48px 24px 70px}h1{font-size:clamp(34px,5vw,58px);letter-spacing:-.04em;margin:0 0 10px}.sub{color:var(--muted);margin-bottom:34px}
 .gallery{padding:40px}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px}
-.tile{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;color:white;text-decoration:none;font-weight:800;font-size:clamp(28px,4vw,42px);letter-spacing:-.04em;isolation:isolate;transition:transform .2s}
-.paint{position:absolute;inset:0;width:100%;height:100%;z-index:-1}.tile span{text-shadow:0 2px 8px #0009,0 1px 2px #0008}.tile:hover{transform:rotate(-2deg) scale(1.035)}.tile:focus-visible{outline:3px solid #242321;outline-offset:8px}
-.topic{text-align:center;min-width:0}.tile-press span{font-size:clamp(22px,3vw,32px)}
+.tile{position:relative;aspect-ratio:1.65;min-height:150px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-weight:800;font-size:clamp(28px,4vw,42px);letter-spacing:-.04em;transition:transform .2s,box-shadow .2s;border-radius:0}
+.tile span{position:relative;z-index:1}
+.tile:hover{transform:translateY(-4px) scale(1.025)}
+.tile:focus-visible{outline:3px solid var(--ink);outline-offset:8px}
+.topic{text-align:center;min-width:0}
+.tile-press span{font-size:clamp(22px,3vw,32px)}
 .tile-website span{line-height:1.15;text-align:center}
-/* Single solid fluorescent SVG color per tile, with same-hue neon halo only. */
-.tile .paint{overflow:visible}
-.tile-etf .paint{filter:drop-shadow(0 0 10px #2441ff) drop-shadow(0 0 23px #2441ffb5) drop-shadow(0 0 38px #2441ff88)}
-.tile-press .paint{filter:drop-shadow(0 0 10px #ff5400) drop-shadow(0 0 23px #ff5400b5) drop-shadow(0 0 38px #ff540088)}
-.tile-website .paint{filter:drop-shadow(0 0 10px #39ff14) drop-shadow(0 0 23px #39ff14b5) drop-shadow(0 0 38px #39ff1488)}
-.tile-press{color:#291400}
-.tile-press span{text-shadow:0 1px 1px #ffffff40,0 2px 5px #a82c0055}
-.tile-website{color:#092608}
-.tile-website span{text-shadow:0 1px 1px #ffffff66,0 2px 5px #00700044}
-@media(max-width:700px){.gallery{padding:22px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}}
-@media(max-width:400px){.grid{grid-template-columns:1fr}.tile{max-width:240px;width:100%;margin:auto}}
+.tile-etf{background:#2441ff;color:white;box-shadow:0 0 13px #2441ff,0 0 32px #2441ff99,0 0 55px #2441ff50}
+.tile-etf span{text-shadow:0 2px 7px #0008}
+.tile-press{background:#ff5400;color:#291400;box-shadow:0 0 13px #ff5400,0 0 32px #ff540099,0 0 55px #ff540050}
+.tile-press span{text-shadow:0 1px 2px #ffffff50}
+.tile-website{background:#39ff14;color:#092608;box-shadow:0 0 13px #39ff14,0 0 32px #39ff1499,0 0 55px #39ff1450}
+.tile-website span{text-shadow:0 1px 2px #ffffff70}
+.tile-etf:hover{box-shadow:0 0 20px #2441ff,0 0 45px #2441ffbb,0 0 75px #2441ff70}
+.tile-press:hover{box-shadow:0 0 20px #ff5400,0 0 45px #ff5400bb,0 0 75px #ff540070}
+.tile-website:hover{box-shadow:0 0 20px #39ff14,0 0 45px #39ff14bb,0 0 75px #39ff1470}
+@media(max-width:700px){.gallery{padding:22px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.tile{min-height:115px;aspect-ratio:1.5}.tile-press span{font-size:clamp(15px,3.3vw,24px)}}
+@media(max-width:400px){.grid{grid-template-columns:1fr}.tile{max-width:320px;width:100%;min-height:160px;aspect-ratio:1.7;margin:auto}.tile-press span{font-size:clamp(22px,6vw,30px)}}
 </style>
 </head>
 <body><main class="wrap">
 <h1>Privat</h1><div class="sub">Persönliche Übersichten und Tools.</div>
 <div class="gallery"><section class="grid" aria-label="Private Themen">
 <div class="topic"><a class="tile tile-etf" href="./ETFs/" aria-label="ETF-Übersicht öffnen">
-<svg class="paint" viewBox="0 0 300 300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-<path fill="#2441FF" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/>
-</svg><span>ETF</span></a>
+<span>ETF</span></a>
 </div>
 <div class="topic"><a class="tile tile-press" href="./Pressespiegel/" aria-label="Pressespiegel öffnen">
-<svg class="paint" viewBox="0 0 300 300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-<path fill="#FF5400" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/>
-</svg><span>Pressespiegel</span></a>
+<span>Pressespiegel</span></a>
 </div>
 <div class="topic"><a class="tile tile-website" href="https://chatgpt.com/skills?skill_id=6ac1802fca7c8191bc3470d27b3710df" aria-label="Website ändern – ChatGPT-Skill öffnen">
-<svg class="paint" viewBox="0 0 300 300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-<path fill="#39FF14" d="M29 34 L260 25 L272 250 L249 271 L30 264 L21 226 Z"/>
-</svg><span>Website<br>ändern</span></a>
+<span>Website<br>ändern</span></a>
 </div>
 </section></div>
 </main>
