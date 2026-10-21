@@ -1,12 +1,13 @@
 name: Morgenzeitung Freshness
 on:
   schedule:
-    # UTC 08:30 = 09:30 CET / 10:30 CEST: after the 07:45 Vienna target.
-    - cron: '30 8 * * *'
+    # 08:15 Vienna in CEST / CET respectively. The other UTC occurrence is
+    # a harmless second check in summer or is skipped before the cutoff in winter.
+    - cron: '15 6,7 * * *'
   workflow_dispatch:
     inputs:
       require_today:
-        description: 'Require the current Vienna date (use after the daily cutoff)'
+        description: 'Require current Vienna date (use after daily cutoff)'
         type: boolean
         default: false
   push:
@@ -18,9 +19,12 @@ on:
 
 permissions:
   contents: read
+  issues: write
+
 concurrency:
   group: morgenzeitung-freshness
   cancel-in-progress: false
+
 jobs:
   check-publication:
     runs-on: ubuntu-latest
@@ -30,11 +34,27 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Check Vienna cutoff (07:45 release plus 30-minute grace)
+        id: cutoff
+        shell: bash
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
+            hhmm="$(TZ=Europe/Vienna date +%H%M)"
+            if [[ "$hhmm" < "0815" ]]; then
+              echo "check=false" >> "$GITHUB_OUTPUT"
+              echo "Not yet 08:15 Vienna ($hhmm); the second UTC slot covers winter time."
+              exit 0
+            fi
+          fi
+          echo "check=true" >> "$GITHUB_OUTPUT"
       - name: Validate all committed editions locally
+        if: steps.cutoff.outputs.check == 'true'
         run: python3 scripts/check_morgenzeitung.py
-      - name: Check public HTTPS edition and date
+      - name: Check public HTTPS edition and date (3 attempts)
+        if: steps.cutoff.outputs.check == 'true'
         env:
           REQUIRE_TODAY: ${{ github.event_name == 'schedule' || inputs.require_today == true }}
+        shell: bash
         run: |
           for attempt in 1 2 3; do
             if [ "$REQUIRE_TODAY" = "true" ]; then
@@ -42,8 +62,32 @@ jobs:
             else
               python3 scripts/check_morgenzeitung.py --live && exit 0
             fi
-            echo "::warning::Morgenzeitung nicht erreichbar oder nicht aktuell (Prüfversuch $attempt/3)"
-            sleep 20
+            echo "::warning::Morgenzeitung unavailable or stale (attempt $attempt/3)"
+            if [ "$attempt" -lt 3 ]; then sleep 20; fi
           done
-          echo "::error::Morgenzeitung ist nicht aktuell oder nicht erreichbar – bitte tägliche Recherche-/Veröffentlichungsaufgabe prüfen."
+          echo "::error::Today's Morgenzeitung missing or unreachable. The workflow checks publication but does not generate content."
           exit 1
+      - name: Open or update public failure issue
+        if: failure() && github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          title="[Morgenzeitung] Tagesausgabe fehlt"
+          body="Automatische Prüfung nach 08:15 Europe/Vienna fehlgeschlagen. Zuletzt publizierten Datumsindex und Tagesausgabe prüfen: https://www.fabian-stoeckl.com/Privat/Pressespiegel/ . Run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID . Der Check erstellt keine Artikel; den ChatGPT-Hauptlauf und Ersatzlauf kontrollieren."
+          issue="$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "[Morgenzeitung] Tagesausgabe fehlt") | .number' | head -n1)"
+          if [ -n "$issue" ]; then
+            gh issue comment "$issue" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body"
+          fi
+      - name: Close failure issue after verified recovery
+        if: success() && github.event_name == 'schedule' && steps.cutoff.outputs.check == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          issue="$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "[Morgenzeitung] Tagesausgabe fehlt") | .number' | head -n1)"
+          if [ -n "$issue" ]; then
+            gh issue close "$issue" --comment "Aktuelle Ausgabe am $(TZ=Europe/Vienna date +%Y-%m-%d) erfolgreich über HTTPS validiert. Run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          fi
