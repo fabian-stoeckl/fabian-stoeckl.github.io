@@ -12,8 +12,6 @@ VIENNA = ZoneInfo("Europe/Vienna")
 class FreshnessWatchdogTests(unittest.TestCase):
     def test_scheduled_utc_slots_cover_vienna_0815_with_dst(self):
         # GitHub cron has no Europe/Vienna timezone; both slots are necessary.
-        for day, expected_hour in [(21, 6), (21, 6)]:
-            self.assertTrue(day > 0 and expected_hour == 6)
         scenarios = [
             (datetime(2026, 10, 21, 6, 15, tzinfo=timezone.utc), "0815", True),
             (datetime(2026, 10, 21, 7, 15, tzinfo=timezone.utc), "0915", True),
