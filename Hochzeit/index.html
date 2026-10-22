@@ -11,17 +11,10 @@
     :root{--coral:#f6847d;--mint:#9cccb9;--peach:#fabe8b;--yellow:#fbc451;--wine:#83153e;--cream:#fff8ee;--paper:#fffaf4;--ink:#742443}
     *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font:400 17px/1.55 "Trebuchet MS",Arial,sans-serif;color:var(--wine);background:var(--cream)}
     button,input,textarea{font:inherit}a{color:inherit}button,a,textarea,input{touch-action:manipulation}
-    .hero{min-height:810px;min-height:100svh;max-height:1180px;position:relative;isolation:isolate;overflow:hidden;background:var(--coral)}
-    .hero-bg{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
-    .hero-inner{position:relative;display:flex;flex-direction:column;min-height:810px;min-height:100svh;max-height:1180px;max-width:1100px;margin:auto;padding:56px clamp(28px,8vw,95px) 52px}
-    .hero-top{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;font-weight:700;letter-spacing:.28em}
-    .rings{width:55px;height:28px;overflow:visible}
-    .hero-title{font-family:Impact,"Arial Narrow","Trebuchet MS",sans-serif;font-weight:900;font-stretch:condensed;line-height:1.03;margin:auto 0 6vh;letter-spacing:.07em;font-size:clamp(70px,12vw,151px);color:transparent;-webkit-text-stroke:2px var(--wine);text-shadow:3px 3px 0 transparent}
-    .hero-title .and{display:inline-block;font-size:.75em;margin:.15em 0}
-    .hero-footer{max-width:575px}
-    .date{font-size:clamp(19px,2.6vw,26px);font-weight:700;letter-spacing:.025em}.rule{height:1px;background:var(--wine);opacity:.75;margin:16px 0 26px}
-    .venue{font-size:clamp(19px,2.7vw,27px);font-weight:700;margin-bottom:7px}.place{font-size:clamp(16px,2.1vw,20px)}
-    .cta{display:inline-flex;align-items:center;justify-content:space-between;gap:38px;margin-top:28px;min-width:268px;padding:17px 21px;background:var(--wine);color:#fff;border:2px solid var(--wine);font-size:14px;line-height:1.2;font-weight:700;letter-spacing:.13em;text-decoration:none;border-radius:2px;transition:transform .2s,background .2s}
+    .hero{background:#f48880}
+    .hero-original{position:relative;width:min(100%,831px);margin:auto}
+    .hero-art{display:block;width:100%;height:auto;object-fit:contain}
+    .cta{display:inline-flex;align-items:center;justify-content:space-between;gap:16px;position:absolute;bottom:4%;left:11.5%;min-width:265px;max-width:78%;padding:15px 19px;background:var(--wine);color:#fff;border:2px solid var(--wine);font-size:14px;line-height:1.2;font-weight:700;letter-spacing:.10em;text-decoration:none;border-radius:2px;transition:transform .2s,background .2s}
     .cta:hover,.cta:focus-visible{transform:translateY(-2px);background:#5a0e2b}
     .form-section{padding:88px 20px 108px;background:var(--cream);position:relative;overflow:hidden}
     .form-section:before{content:"";position:absolute;width:340px;height:340px;top:-210px;right:-140px;background:var(--mint);border-radius:52% 48% 46% 54%;transform:rotate(-15deg)}
@@ -43,41 +36,23 @@
     .guest-rows{border-top:1px solid #e9d4cf;margin-top:8px;padding-top:24px}
     .guest-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
     .guest-heading strong{font-size:16px}.count{font-size:12px;white-space:nowrap;color:#865b69}
-    .hint{font-size:12px;color:#865b69;margin:-5px 0 11px}
     .send{border:0;display:flex;justify-content:space-between;align-items:center;width:100%;background:var(--wine);color:#fff;padding:18px 21px;margin-top:13px;text-transform:uppercase;letter-spacing:.12em;font-size:14px;font-weight:700;cursor:pointer}
     .send:hover,.send:focus-visible{background:#5a0e2b}.send:active{transform:translateY(1px)}
     .helper{font-size:12px;line-height:1.6;color:#8a6472;margin:16px 0 0}.error{display:none;color:#a21c35;background:#fff0ec;padding:12px 15px;margin:0 0 18px;border-left:3px solid #a21c35;font-size:14px}.error.visible{display:block}
     .local-option{font-size:13px;display:flex;gap:9px;align-items:flex-start;cursor:pointer;line-height:1.5;margin:4px 0 16px}.local-option input{accent-color:var(--wine);margin-top:3px}
-    .subnote{font-size:13px;padding:14px 17px;margin-top:25px;background:#ffe8cd;color:#7d3952}
     .footer{background:var(--wine);padding:24px 20px;text-align:center;color:#fff1e9;font-size:12px;letter-spacing:.07em}
     [hidden]{display:none!important}
     @media (min-width:1200px){.hero-title{font-size:145px}}
-    @media (max-width:640px){.hero,.hero-inner{min-height:770px;min-height:100svh;max-height:none}.hero-inner{padding:30px 26px 36px}.hero-title{font-size:clamp(57px,13vw,94px);-webkit-text-stroke:1.5px var(--wine);margin:auto 0 9vh}.hero-top{font-size:11px}.rings{width:45px}.form-section{padding:60px 18px 90px}.form-card{box-shadow:7px 7px 0 #f7d2af}.cta{min-width:0;width:100%}}
+    @media (max-width:640px){.cta{min-width:0;left:11.5%;right:11.5%;max-width:none;bottom:3%;padding:12px 14px;font-size:12px}.form-section{padding:60px 18px 90px}.form-card{box-shadow:7px 7px 0 #f7d2af}}
     @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
   </style>
 </head>
 <body>
   <main>
     <header class="hero" id="start">
-      <svg class="hero-bg" viewBox="0 0 1000 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <rect width="1000" height="1080" fill="#f6847d"/>
-        <path d="M260 -125C119 58 194 137 394 169s338 69 293 229 164 189 288 59 140-407 26-531Z" fill="#9cccb9"/>
-        <path d="M0 510c150-190 286-98 265 81S359 699 487 621 623 638 540 772 258 898 0 829Z" fill="#fabe8b"/>
-        <path d="M1014 585C785 490 823 721 611 783S240 821 188 977s66 247 256 261l592 4Z" fill="#fbc451"/>
-      </svg>
-      <div class="hero-inner">
-        <div class="hero-top">
-          <span>WIR HEIRATEN</span>
-          <svg class="rings" viewBox="0 0 60 32" fill="none" stroke="#83153e" stroke-width="1.7" aria-label="Zwei Ringe" role="img"><ellipse cx="23" cy="16" rx="12" ry="14"/><ellipse cx="37" cy="16" rx="12" ry="14"/></svg>
-        </div>
-        <h1 class="hero-title">FABIAN<br><span class="and">UND</span><br>MELANIE</h1>
-        <div class="hero-footer">
-          <div class="date">14.08.2027</div>
-          <div class="rule"></div>
-          <div class="venue">Kavalierhaus Klessheim</div>
-          <div class="place">Salzburg · Trauung um 15 Uhr</div>
-          <a href="#rueckmeldung" class="cta">GÄSTERÜCKMELDUNG <span aria-hidden="true">↗</span></a>
-        </div>
+      <div class="hero-original">
+        <img class="hero-art" src="/Hochzeit/einladung.png" alt="Wir heiraten – Fabian und Melanie, 14. August 2027, Kavalierhaus Klessheim, Salzburg, Trauung um 15 Uhr. Originalmotiv der Hochzeitseinladung." width="831" height="1152">
+        <a href="#rueckmeldung" class="cta">GÄSTERÜCKMELDUNG <span aria-hidden="true">↗</span></a>
       </div>
     </header>
     <section id="rueckmeldung" class="form-section" aria-labelledby="rsvp-title">
@@ -85,7 +60,7 @@
         <div class="form-intro">
           <span class="eyebrow">14. AUGUST 2027</span>
           <h2 class="section-title" id="rsvp-title">Wir freuen uns<br>auf euch.</h2>
-          <p class="intro-copy">Schön, wenn ihr unseren Tag mit uns feiert! Sagt uns bitte kurz Bescheid, ob ihr kommt und wer euch begleitet.</p>
+          <p class="intro-copy">Schön, wenn ihr unseren Tag mit uns feiert! Sagt uns bitte bis 14. Februar 2027 Bescheid, ob ihr kommt und wer euch begleitet.</p>
         </div>
         <form class="form-card" id="rsvpForm" action="https://formsubmit.co/fabian-stoeckl@hotmail.com" method="POST" accept-charset="UTF-8">
           <input type="hidden" name="_subject" id="mailSubject" value="Hochzeit Fabian & Melanie – Gästerückmeldung">
@@ -94,8 +69,8 @@
           <input type="hidden" name="_template" value="table">
           <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
           <div class="row">
-            <div class="field"><label for="contact">Dein Name *</label><input id="contact" name="Kontaktperson" type="text" placeholder="Vor- und Nachname" maxlength="120" autocomplete="name" required></div>
-            <div class="field"><label for="email">Deine E-Mail <span class="optional">(optional)</span></label><input id="email" name="Kontakt E-Mail" type="email" placeholder="name@beispiel.at" maxlength="180" autocomplete="email"></div>
+            <div class="field"><label for="contact">Dein Name *</label><input id="contact" name="Kontaktperson" type="text" maxlength="120" autocomplete="name" required></div>
+            <div class="field"><label for="email">Deine E-Mail <span class="optional">(optional)</span></label><input id="email" name="Kontakt E-Mail" type="email" maxlength="180" autocomplete="email"></div>
           </div>
           <fieldset>
             <legend>Kommst du / kommt ihr? *</legend>
@@ -105,32 +80,24 @@
             </div>
           </fieldset>
           <div class="guest-rows" id="guestRows">
-            <p style="margin:0 0 23px">Tragt bitte alle Personen ein, die mitkommen – <strong>ein Name pro Zeile</strong>.</p>
             <div class="field">
-              <div class="guest-heading"><label for="adults">Erwachsene <span class="optional">(ab 14 Jahren)</span></label><span class="count" id="countAdults">0 Personen</span></div>
-              <textarea id="adults" name="Erwachsene_ab_14" placeholder="z. B. Max Mustermann&#10;Erika Mustermann" maxlength="2200"></textarea>
+              <div class="guest-heading"><label for="adults">Erwachsene</label><span class="count" id="countAdults">0 Personen</span></div>
+              <textarea id="adults" name="Erwachsene_ab_14" maxlength="2200"></textarea>
             </div>
             <div class="field">
-              <div class="guest-heading"><label for="teenagers">Jugendliche <span class="optional">(unter 14, ab 3 Jahren)</span></label><span class="count" id="countTeenagers">0 Personen</span></div>
-              <textarea id="teenagers" name="Jugendliche_3_bis_13" placeholder="Ein Name pro Zeile" maxlength="1500"></textarea>
+              <div class="guest-heading"><label for="teenagers">Jugendliche <span class="optional">U14</span></label><span class="count" id="countTeenagers">0 Personen</span></div>
+              <textarea id="teenagers" name="Jugendliche_3_bis_13" maxlength="1500"></textarea>
             </div>
             <div class="field">
-              <div class="guest-heading"><label for="children">Kinder <span class="optional">(unter 3 Jahren)</span></label><span class="count" id="countChildren">0 Personen</span></div>
-              <textarea id="children" name="Kinder_unter_3" placeholder="Ein Name pro Zeile" maxlength="1500"></textarea>
-            </div>
-            <div class="field">
-              <label for="food">Essenswünsche / Anmerkungen <span class="optional">(optional)</span></label>
-              <textarea id="food" name="Essenswuensche_Anmerkungen" placeholder="z. B. vegetarisch für Max; nähere Menüauswahl folgt" maxlength="1700"></textarea>
-              <p class="hint">Die genaue Menüauswahl können wir später noch ergänzen.</p>
+              <div class="guest-heading"><label for="children">Kinder <span class="optional">U3</span></label><span class="count" id="countChildren">0 Personen</span></div>
+              <textarea id="children" name="Kinder_unter_3" maxlength="1500"></textarea>
             </div>
           </div>
           <div id="formError" class="error" role="alert"></div>
           <label class="local-option"><input type="checkbox" id="remember" checked>Meine Angaben auf diesem Gerät für spätere Änderungen merken.</label>
           <button type="submit" class="send">RÜCKMELDUNG PER E-MAIL SENDEN <span aria-hidden="true">↗</span></button>
           <p class="helper">Ihr könnt eure Angaben später über denselben Link erneut senden. Die neueste E-Mail gilt als aktuelle Rückmeldung; frühere Nachrichten werden nicht automatisch gelöscht.</p>
-          <p class="helper">Die Angaben werden über den Formulardienst FormSubmit an das Brautpaar per E-Mail übermittelt. Beim ersten Einsatz muss die Empfängeradresse einmalig bestätigt werden.</p>
         </form>
-        <p class="subnote">💌 Der QR-Code auf allen Einladungen kann auf <strong>www.fabian-stoeckl.com/Hochzeit</strong> führen – für alle Gäste derselbe Link.</p>
       </div>
     </section>
   </main>
@@ -142,12 +109,13 @@
       const guestRows=document.getElementById("guestRows");
       const error=document.getElementById("formError");
       const remember=document.getElementById("remember");
-      const ids=["contact","email","adults","teenagers","children","food"];
+      const ids=["contact","email","adults","teenagers","children"];
       const names={adults:"countAdults",teenagers:"countTeenagers",children:"countChildren"};
       const num=text=>text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean).length;
       function render() {
         const yes=form.querySelector('input[name="Teilnahme"]:checked').value==="Ja";
         guestRows.hidden=!yes;
+        ["adults","teenagers","children"].forEach(id=>document.getElementById(id).disabled=!yes);
         for(const [id,output] of Object.entries(names)){
           const n=num(document.getElementById(id).value);
           document.getElementById(output).textContent=n===1?"1 Person":n+" Personen";
