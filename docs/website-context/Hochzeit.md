@@ -46,3 +46,6 @@
 
 ## 22.10.2026: Dankeseite – Textanpassung
 - Nach erfolgreicher Rückmeldung lautet der Text jetzt „Wir freuen uns, euch zu sehen!“ statt „Wir freuen uns, von euch zu hören!“. Keine Änderung am Versand oder Spamschutz.
+
+## 22.10.2026: Navigation nach Rückmeldung
+- Der Button auf der Danke-Seite heißt „Zurück zur Hauptseite“ und führt zu `/Hochzeit/` statt direkt zum Rückmeldeformular. Versand und übrige Formularinhalte unverändert.
