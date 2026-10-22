@@ -39,7 +39,6 @@
     .send{border:0;display:flex;justify-content:space-between;align-items:center;width:100%;background:var(--wine);color:#fff;padding:18px 21px;margin-top:13px;text-transform:uppercase;letter-spacing:.12em;font-size:14px;font-weight:700;cursor:pointer}
     .send:hover,.send:focus-visible{background:#5a0e2b}.send:active{transform:translateY(1px)}
     .helper{font-size:12px;line-height:1.6;color:#8a6472;margin:16px 0 0}.error{display:none;color:#a21c35;background:#fff0ec;padding:12px 15px;margin:0 0 18px;border-left:3px solid #a21c35;font-size:14px}.error.visible{display:block}
-    .local-option{font-size:13px;display:flex;gap:9px;align-items:flex-start;cursor:pointer;line-height:1.5;margin:4px 0 16px}.local-option input{accent-color:var(--wine);margin-top:3px}
     .footer{background:var(--wine);padding:24px 20px;text-align:center;color:#fff1e9;font-size:12px;letter-spacing:.07em}
     [hidden]{display:none!important}
     @media (min-width:1200px){.hero-title{font-size:145px}}
@@ -96,9 +95,8 @@
             </div>
           </div>
           <div id="formError" class="error" role="alert"></div>
-          <label class="local-option"><input type="checkbox" id="remember" checked>Meine Angaben auf diesem Gerät für spätere Änderungen merken.</label>
           <button type="submit" class="send">RÜCKMELDUNG ABSCHICKEN <span aria-hidden="true">↗</span></button>
-          <p class="helper">Ihr könnt eure Angaben später über denselben Link erneut senden. Die neueste E-Mail gilt als aktuelle Rückmeldung.</p>
+          <p class="helper">Änderungen? Ihr könnt das Formular jederzeit erneut abschicken.</p>
         </form>
       </div>
     </section>
@@ -106,12 +104,9 @@
   <footer class="footer">FABIAN &amp; MELANIE · 14. AUGUST 2027</footer>
   <script>
     (() => {
-      const key="hochzeit-fabian-melanie-rsvp-v1";
       const form=document.getElementById("rsvpForm");
       const guestRows=document.getElementById("guestRows");
       const error=document.getElementById("formError");
-      const remember=document.getElementById("remember");
-      const ids=["contact","email","adults","teenagers","children"];
       const names={adults:"countAdults",teenagers:"countTeenagers",children:"countChildren"};
       const num=text=>text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean).length;
       function render() {
@@ -124,36 +119,19 @@
         }
         error.classList.remove("visible");
       }
-      function snapshot() {
-        const data={};
-        ids.forEach(id=>data[id]=document.getElementById(id).value);
-        data.attendance=form.querySelector('input[name="Teilnahme"]:checked').value;
-        return data;
-      }
-      try {
-        const data=JSON.parse(localStorage.getItem(key)||"null");
-        if(data && typeof data==="object"){
-          ids.forEach(id=>{if(typeof data[id]==="string")document.getElementById(id).value=data[id]});
-          form.querySelectorAll('input[name="Teilnahme"]').forEach(el=>el.checked=el.value===data.attendance);
-          document.getElementById("mailSubject").value="ÄNDERUNG – Hochzeit Fabian & Melanie – Gästerückmeldung";
-        }
-      } catch(e) { /* private browsing may disable storage */ }
+      // Remove guest details previously saved by older versions of this page.
+      try{localStorage.removeItem("hochzeit-fabian-melanie-rsvp-v1")}catch(e){}
       form.addEventListener("input",render);
       form.addEventListener("change",render);
       render();
       form.addEventListener("submit",event=>{
-        const data=snapshot();
-        if(data.attendance==="Ja" && !["adults","teenagers","children"].some(id=>num(data[id])>0)){
+        const yes=form.querySelector('input[name="Teilnahme"]:checked').value==="Ja";
+        if(yes && !["adults","teenagers","children"].some(id=>num(document.getElementById(id).value)>0)){
           event.preventDefault();
           error.textContent="Bitte tragt mindestens eine teilnehmende Person ein.";
           error.classList.add("visible");
           error.scrollIntoView({behavior:"smooth",block:"center"});
           return;
-        }
-        if(remember.checked){
-          try{localStorage.setItem(key,JSON.stringify(data))}catch(e){/* allowed without browser storage */}
-        }else{
-          try{localStorage.removeItem(key)}catch(e){}
         }
       });
     })();
