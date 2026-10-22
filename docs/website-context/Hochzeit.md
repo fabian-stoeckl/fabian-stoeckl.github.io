@@ -18,7 +18,7 @@
 - Rückmeldung mit Namen, Teilnahme, Namenslisten: Erwachsene / Jugendliche U14 / Kinder U3. Keine vorgegebenen Beispieltexte in den Feldern.
 - Rückmeldefrist: 14. Februar 2027, sichtbar im Einleitungstext.
 - Essenswahl vollständig entfernt; keine dazugehörigen Hinweise auf der Seite.
-- Keine Gastkonten, kein individueller QR-Code. Änderungswünsche: erneute Rückmeldung per Formular; jüngste Mail gilt, keine serverseitige automatische Zusammenführung. Optionales Speichern auf demselben Gerät für bequemes Nachbearbeiten.
+- Keine Gastkonten, kein individueller QR-Code. Änderungswünsche: erneute Rückmeldung per Formular; jüngste Mail gilt, keine serverseitige automatische Zusammenführung. Kein automatisches Speichern auf dem Gerät: Änderungen erfordern erneutes Ausfüllen des Formulars.
 - Statische GitHub-Pages-Seite. E-Mail-Versand über FormSubmit.co, mit `_captcha=false` und bestehendem Honeypot gegen einfache Bots (Restrisiko von Spam und providerseitigen Beschränkungen): Hauptempfänger `fabian-stoeckl@hotmail.com`, Kopie (_cc) an `Melanie.Koch@hotmail.com`. Der Hauptempfänger muss das Formular einmalig aktivieren; eine erfolgreiche Zustellung an beide Adressen muss vor dem realen Einsatz getestet werden.
 - Kein Backend und kein GitHub Token für Gäste. Website sollte von Suchmaschinen nicht indexiert werden.
 - Hochzeitsgästendaten nicht im öffentlichen GitHub-Repository ablegen.
@@ -52,3 +52,8 @@
 
 ## 22.10.2026: Kürzere Schaltfläche
 - Der Absende-Button lautet „RÜCKMELDUNG ABSCHICKEN“ statt „RÜCKMELDUNG PER E-MAIL SENDEN“. Keine Änderungen am Versand.
+
+## 22.10.2026: Rückmeldeseite vereinfacht
+- Hinweis unter Absende-Button auf „Änderungen? Ihr könnt das Formular jederzeit erneut abschicken.“ verkürzt.
+- Checkbox „Meine Angaben auf diesem Gerät ... merken“ entfernt und jede Speicherung von Namen/E-Mail-Angaben in `localStorage` abgeschaltet.
+- Beim ersten Öffnen der neuen Seite werden ggf. zuvor gespeicherte Formulardaten unter dem alten `localStorage`-Schlüssel gelöscht. Die bestehende Teilnahme- und Namensvalidierung bleibt aktiv, FormSubmit-Versand an Fabian und Melanie bleibt unverändert.
