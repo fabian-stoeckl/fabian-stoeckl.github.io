@@ -49,3 +49,6 @@
 
 ## 22.10.2026: Navigation nach Rückmeldung
 - Der Button auf der Danke-Seite heißt „Zurück zur Hauptseite“ und führt zu `/Hochzeit/` statt direkt zum Rückmeldeformular. Versand und übrige Formularinhalte unverändert.
+
+## 22.10.2026: Kürzere Schaltfläche
+- Der Absende-Button lautet „RÜCKMELDUNG ABSCHICKEN“ statt „RÜCKMELDUNG PER E-MAIL SENDEN“. Keine Änderungen am Versand.
