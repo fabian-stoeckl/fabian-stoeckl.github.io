@@ -18,7 +18,7 @@
 - Rückmeldung mit Namen, Teilnahme, Namenslisten: Erwachsene / Jugendliche U14 / Kinder U3. Keine vorgegebenen Beispieltexte in den Feldern.
 - Rückmeldefrist: 14. Februar 2027, sichtbar im Einleitungstext.
 - Essenswahl vollständig entfernt; keine dazugehörigen Hinweise auf der Seite.
-- Keine Gastkonten, kein individueller QR-Code. Änderungswünsche: erneute Rückmeldung per Formular; jüngste Mail gilt, keine serverseitige automatische Zusammenführung. Optionales Speichern auf demselben Gerät für bequemes Nachbearbeiten.
+- Keine Gastkonten, kein individueller QR-Code. Änderungswünsche: erneute Rückmeldung per Formular; jüngste Mail gilt, keine serverseitige automatische Zusammenführung. Die Website speichert keine Rückmeldedaten mehr auf dem Gerät. Bereits durch frühere Versionen lokal gespeicherte Gästendaten werden beim nächsten Besuch der Seite gelöscht.
 - Statische GitHub-Pages-Seite. E-Mail-Versand über FormSubmit.co, mit `_captcha=false` und bestehendem Honeypot gegen einfache Bots (Restrisiko von Spam und providerseitigen Beschränkungen): Hauptempfänger `fabian-stoeckl@hotmail.com`, Kopie (_cc) an `Melanie.Koch@hotmail.com`. Der Hauptempfänger muss das Formular einmalig aktivieren; eine erfolgreiche Zustellung an beide Adressen muss vor dem realen Einsatz getestet werden.
 - Kein Backend und kein GitHub Token für Gäste. Website sollte von Suchmaschinen nicht indexiert werden.
 - Hochzeitsgästendaten nicht im öffentlichen GitHub-Repository ablegen.
@@ -27,7 +27,7 @@
 - PR-Prüfungen und responsives Layout testen, anschließend veröffentlichen und HTTPS prüfen.
 - Einmalige FormSubmit-Empfängeraktivierung, echte Testübermittlung und Prüfung des E-Mail-Eingangs durch den Nutzer.
 - Änderungen am Gästefragebogen nur nach erneuter Abstimmung; Rückmeldeschluss 14.02.2027 ist bereits sichtbar.
-- Optional: geschützter Datenbestand, falls automatische geräteübergreifende Korrekturen statt aktualisierter E-Mails gewünscht werden.
+- Optional: geschützter Datenbestand, falls automatische geräteübergreifende Korrekturen statt aktualisierter E-Mails gewünscht werden; derzeit keine automatische Zusammenführung.
 
 ## 22.10.2026: Vereinfachung auf Nutzerwunsch
 - Sichtbare QR-Code-Anleitung und FormSubmit-Erklärung entfernt.
@@ -52,3 +52,8 @@
 
 ## 22.10.2026: Kürzere Schaltfläche
 - Der Absende-Button lautet „RÜCKMELDUNG ABSCHICKEN“ statt „RÜCKMELDUNG PER E-MAIL SENDEN“. Keine Änderungen am Versand.
+
+## 22.10.2026: Weniger Ablenkung, keine lokale Speicherung
+- Hinweis direkt unter dem Absende-Button gekürzt auf: „Änderungen? Ihr könnt das Formular jederzeit erneut abschicken.“
+- Speicher-Checkbox und alle Schreib-/Lesefunktionen für Gästendaten im Browser entfernt. Ein einmaliger `localStorage.removeItem`-Aufruf entfernt bei erneutem Besuch die durch alte Versionen angelegten Daten.
+- Neues Ausfüllen bei späterer Änderung erforderlich. Rückmeldung geht weiter per FormSubmit an Fabian und Melanie.
