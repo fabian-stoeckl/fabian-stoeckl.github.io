@@ -18,7 +18,7 @@
 - Rückmeldefrist: 14. Februar 2027, sichtbar im Einleitungstext.
 - Essenswahl vollständig entfernt; keine dazugehörigen Hinweise auf der Seite.
 - Keine Gastkonten, kein individueller QR-Code. Änderungswünsche: erneute Rückmeldung per Formular; jüngste Mail gilt, keine serverseitige automatische Zusammenführung. Optionales Speichern auf demselben Gerät für bequemes Nachbearbeiten.
-- Statische GitHub-Pages-Seite. E-Mail-Versand über Drittanbieter FormSubmit.co an die bereits bekannte private Empfängeradresse; dieser Dienst benötigt **eine einmalige Empfängerbestätigung**. Nicht als zugestellten Versand ausgeben, bevor Aktivierung und Test erfolgreich sind.
+- Statische GitHub-Pages-Seite. E-Mail-Versand über FormSubmit.co: Hauptempfänger `fabian-stoeckl@hotmail.com`, Kopie (_cc) an `Melanie.Koch@hotmail.com`. Der Hauptempfänger muss das Formular einmalig aktivieren; eine erfolgreiche Zustellung an beide Adressen muss vor dem realen Einsatz getestet werden.
 - Kein Backend und kein GitHub Token für Gäste. Website sollte von Suchmaschinen nicht indexiert werden.
 - Hochzeitsgästendaten nicht im öffentlichen GitHub-Repository ablegen.
 
@@ -33,3 +33,6 @@
 - Essenswünsche und zugehörige Hinweise entfernt; ebenso die Vortexte (Placeholder) der Eingabefelder und der Hinweis zu einem Namen pro Zeile.
 - Direktes Rendering der Einladungsvorderseite statt CSS-Nachzeichnung.
 - Lowercase-URL `/hochzeit/` ergänzt.
+
+## 22.10.2026: Beide Eltern erhalten Rückmeldungen
+- Jede neue Rückmeldung soll per E-Mail gleichzeitig an Fabian (Hauptempfänger) und Melanie (CC) gehen. Technisch über FormSubmits offizielles `_cc`-Feld umgesetzt, ohne Änderung der sichtbaren Website.
