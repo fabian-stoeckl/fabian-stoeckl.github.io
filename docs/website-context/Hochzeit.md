@@ -19,7 +19,7 @@
 - Kein Backend und kein GitHub Token für Gäste. Website sollte von Suchmaschinen nicht indexiert werden.
 - Hochzeitsgästendaten nicht im öffentlichen GitHub-Repository ablegen.
 
-## Aufgaben vor endgültigem Produktivbetrieb
+## Offene Aufgaben vor endgültigem Produktivbetrieb
 - PR-Prüfungen und responsives Layout testen, anschließend veröffentlichen und HTTPS prüfen.
 - Einmalige FormSubmit-Empfängeraktivierung, echte Testübermittlung und Prüfung des E-Mail-Eingangs durch den Nutzer.
 - Gegebenenfalls echte Menüwahloptionen ergänzen und Rückmeldeschluss kommunizieren.
