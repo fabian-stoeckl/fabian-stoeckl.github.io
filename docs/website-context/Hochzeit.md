@@ -19,7 +19,7 @@
 - Rückmeldefrist: 14. Februar 2027, sichtbar im Einleitungstext.
 - Essenswahl vollständig entfernt; keine dazugehörigen Hinweise auf der Seite.
 - Keine Gastkonten, kein individueller QR-Code. Änderungswünsche: erneute Rückmeldung per Formular; jüngste Mail gilt, keine serverseitige automatische Zusammenführung. Optionales Speichern auf demselben Gerät für bequemes Nachbearbeiten.
-- Statische GitHub-Pages-Seite. E-Mail-Versand über FormSubmit.co, mit `_captcha=false` und bestehendem Honeypot gegen einfache Bots (Restrisiko von Spam und providerseitigen Beschränkungen): Hauptempfänger `fabian-stoeckl@hotmail.com`, Kopie (_cc) an `Melanie.Koch@hotmail.com`. Der Hauptempfänger muss das Formular einmalig aktivieren; eine erfolgreiche Zustellung an beide Adressen muss vor dem realen Einsatz getestet werden.
+- Statische GitHub-Pages-Seite. E-Mail-Versand über FormSubmit.co, mit standardmäßig aktivem CAPTCHA und zusätzlichem Honeypot gegen einfache Bots (Restrisiko von Spam): Hauptempfänger `fabian-stoeckl@hotmail.com`, Kopie (_cc) an `Melanie.Koch@hotmail.com`. Der Hauptempfänger muss das Formular einmalig aktivieren; eine erfolgreiche Zustellung an beide Adressen muss vor dem realen Einsatz getestet werden.
 - Kein Backend und kein GitHub Token für Gäste. Website sollte von Suchmaschinen nicht indexiert werden.
 - Hochzeitsgästendaten nicht im öffentlichen GitHub-Repository ablegen.
 
@@ -43,3 +43,6 @@
 - Sichtbaren Hinweis zu früheren E-Mails gekürzt; Danke-Seite sagt nur „an uns übermittelt“.
 - FormSubmits offizielles Feld `_captcha=false` deaktiviert das bisher eingeblendete Google-reCAPTCHA; Honeypot `_honey` bleibt bestehen. FormSubmit bleibt technisch für die automatische E-Mail-Zustellung notwendig. Anbieter warnt bei deaktiviertem CAPTCHA vor möglichen Schutz-/Technikbeschränkungen.
 - Alternative ohne FormSubmit würde ein separat eingerichtetes Backend (z. B. Google Apps Script mit manueller Freigabe durch Kontoinhaber) oder `mailto:` mit Versand per E-Mail-App der Gäste erfordern. Ohne verlässlich konfigurierten Versandweg nicht austauschen.
+
+## 22.10.2026: CAPTCHA wieder aktiviert
+- Auf Nutzerwunsch bleibt FormSubmit als einfachste Versandlösung. Die explizite Abschaltung durch `_captcha=false` wurde entfernt; FormSubmits standardmäßiger CAPTCHA-Schutz ist wieder aktiv. Kein SMTP-Server und keine weitere Registrierung der Gäste.
