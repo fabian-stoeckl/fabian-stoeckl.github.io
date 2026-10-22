@@ -43,3 +43,6 @@
 - Sichtbaren Hinweis zu früheren E-Mails gekürzt; Danke-Seite sagt nur „an uns übermittelt“.
 - FormSubmits offizielles Feld `_captcha=false` deaktiviert das bisher eingeblendete Google-reCAPTCHA; Honeypot `_honey` bleibt bestehen. FormSubmit bleibt technisch für die automatische E-Mail-Zustellung notwendig. Anbieter warnt bei deaktiviertem CAPTCHA vor möglichen Schutz-/Technikbeschränkungen.
 - Alternative ohne FormSubmit würde ein separat eingerichtetes Backend (z. B. Google Apps Script mit manueller Freigabe durch Kontoinhaber) oder `mailto:` mit Versand per E-Mail-App der Gäste erfordern. Ohne verlässlich konfigurierten Versandweg nicht austauschen.
+
+## 22.10.2026: Dankeseite – Textanpassung
+- Nach erfolgreicher Rückmeldung lautet der Text jetzt „Wir freuen uns, euch zu sehen!“ statt „Wir freuen uns, von euch zu hören!“. Keine Änderung am Versand oder Spamschutz.
