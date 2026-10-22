@@ -34,5 +34,5 @@
 - Direktes Rendering der Einladungsvorderseite statt CSS-Nachzeichnung.
 - Lowercase-URL `/hochzeit/` ergänzt.
 
-## 22.10.2026: Beide Eltern erhalten Rückmeldungen
+## 22.10.2026: Beide Brautleute erhalten Rückmeldungen
 - Jede neue Rückmeldung soll per E-Mail gleichzeitig an Fabian (Hauptempfänger) und Melanie (CC) gehen. Technisch über FormSubmits offizielles `_cc`-Feld umgesetzt, ohne Änderung der sichtbaren Website.
