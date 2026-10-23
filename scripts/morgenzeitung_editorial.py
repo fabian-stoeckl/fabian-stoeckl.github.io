@@ -5,6 +5,7 @@ factual relevance, verification, diversity or freshness gates.
 """
 from collections import Counter
 from scripts.morgenzeitung_feedback import topic_family
+from scripts.morgenzeitung_feedback import topic_family
 
 def select_articles(candidates, profile, limit=10, max_per_source=4):
     if not isinstance(candidates, list) or limit < 1:
