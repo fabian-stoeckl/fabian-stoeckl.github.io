@@ -66,6 +66,33 @@ class LearningTests(unittest.TestCase):
         self.assertIn("juristische Details", result["feedback_observations"][0]["reason"])
         self.assertEqual(result, learn(result, [issue], editions)[0])
 
+    def test_uncategorized_real_feedback_reaches_editorial_queue(self):
+        edition = {"2026-10-23": {"headlines": [
+            {"id": "451a044c6532f9a7", "title": "Sozialhilfe", "source": "ORF"},
+            {"id": "5fb5c9ccbe27ed04", "title": "SLAPP", "source": "ORF"}],
+            "articles": []}}
+        issue = {"number": 6, "title": "[Morgenzeitung] Sammelbewertung 2026-10-23",
+                 "updated_at": "2026-10-23T11:39:55Z",
+                 "body": ("Ausgabe: 2026-10-23\n"
+                          "Bereich: Heute wichtig\nArtikel-ID: 451a044c6532f9a7\n"
+                          "Bewertung: Sehr relevant\nBegründung: –\n\n"
+                          "Bereich: Heute wichtig\nArtikel-ID: 5fb5c9ccbe27ed04\n"
+                          "Bewertung: Nicht relevant\n"
+                          "Begründung: Juristische Randdetails interessieren mich nicht")}
+        first, report = learn(self.profile, [issue], edition)
+        second, again = learn(first, [issue], edition)
+        self.assertEqual(first, second)
+        self.assertEqual(report, again)
+        self.assertEqual(report["ratings"], 2)
+        self.assertEqual(first["computed_learning_signals"], [])
+        queue = first["editorial_review_queue"]
+        self.assertEqual(len(queue), 2)
+        self.assertEqual({item["article_id"] for item in queue},
+                         {"451a044c6532f9a7", "5fb5c9ccbe27ed04"})
+        self.assertTrue(all(item["topic"] is None for item in queue))
+        self.assertTrue(all(item["scope"] == "article_only_no_topic_inference" for item in queue))
+        self.assertIn("Juristische Randdetails", queue[1]["reason"])
+
     def test_tests_excluded(self):
         issue = self.issue(1, "TEST: true")
         _, report = learn(self.profile, [issue], self.editions)
