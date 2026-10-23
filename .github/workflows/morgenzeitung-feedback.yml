@@ -6,7 +6,13 @@ on:
         description: 'Write private profile after successful dry run'
         type: boolean
         default: false
-  # Enable scheduled runs only after the manual end-to-end validation.
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/morgenzeitung-feedback.yml'
+      - 'scripts/morgenzeitung_feedback.py'
+      - 'tests/test_morgenzeitung_feedback.py'
+  # Scheduled runs will be enabled after the first verified dry run.
 permissions:
   contents: read
 jobs:
