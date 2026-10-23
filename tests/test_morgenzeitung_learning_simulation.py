@@ -2,8 +2,8 @@
 import unittest
 from scripts.morgenzeitung_feedback import learn
 
-TOPICS = ("KI & Produktivität", "Industriepolitik", "Promi-News", "Juristische Randdetails")
-PREFER = {TOPICS[0]: 1, TOPICS[1]: 1, TOPICS[2]: -1, TOPICS[3]: -1}
+TOPICS = ("Promi-News", "KI & Produktivität", "Juristische Randdetails", "Industriepolitik")
+PREFER = {"KI & Produktivität": 1, "Industriepolitik": 1, "Promi-News": -1, "Juristische Randdetails": -1}
 
 def simulate(rounds=12):
     profile = {"computed_learning_signals": [], "processed_feedback": []}
@@ -21,10 +21,10 @@ def simulate(rounds=12):
                      "title": "Synthetic %s" % topic}
                     for i, topic in enumerate(ranking)]
         editions[date] = {"articles": articles, "headlines": []}
-        body = "Ausgabe: %s\\n" % date
+        body = "Ausgabe: %s\n" % date
         for a in articles:
             vote = "Sehr relevant" if PREFER[a["topic"]] > 0 else "Nicht relevant"
-            body += "Bereich: Vertiefungen\\nArtikel-ID: %s\\nBewertung: %s\\nBegründung: –\\n\\n" % (a["id"], vote)
+            body += "Bereich: Vertiefungen\nArtikel-ID: %s\nBewertung: %s\nBegründung: –\n\n" % (a["id"], vote)
         issues.append({"number": day, "title": "[Morgenzeitung] Sammelbewertung " + date,
                        "body": body, "updated_at": date + "T12:00:00Z"})
         profile, report = learn(profile, issues, editions)
