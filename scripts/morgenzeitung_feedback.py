@@ -12,6 +12,20 @@ from pathlib import Path
 ENTRY = re.compile(r"(?:Bereich: (?P<section>[^\n]+)\n)?Artikel-ID: (?P<id>[a-f0-9]{16})\nBewertung: (?P<rating>Sehr relevant|Teilweise relevant|Nicht relevant|Keine Auswahl)\nBegründung: (?P<reason>[^\n]*)")
 WEIGHTS = {"Sehr relevant": 1, "Teilweise relevant": 0, "Nicht relevant": -1}
 
+FAMILY_PREFIXES = frozenset({
+    "Industrie", "KI", "Produktivität", "Klima", "Wissenschaft",
+    "Fiskalpolitik", "Technologie", "Wirtschaft"
+})
+
+def topic_family(topic):
+    """Group only explicitly tagged topics; never infer from region or text."""
+    if not isinstance(topic, str):
+        return None
+    topic = topic.strip()
+    prefix, separator, _ = topic.partition(" & ")
+    return prefix if separator and prefix in FAMILY_PREFIXES else topic
+
+
 def parse_issue(issue):
     title = issue.get("title", "")
     if not re.fullmatch(r"\[Morgenzeitung\] Sammelbewertung \d{4}-\d{2}-\d{2}", title):
@@ -80,6 +94,24 @@ def learn(profile, issues, editions):
                 "negative": row["Nicht relevant"],
                 "net_score": row["Sehr relevant"] - row["Nicht relevant"],
                 "status": "insufficient_evidence" if total < 2 else "review_required"})
+
+    # Broader families need at least three votes; exact topics need two.
+    families = {}
+    for topic, topic_counts in counts.items():
+        family = topic_family(topic)
+        if family == topic:
+            continue
+        row = families.setdefault(family, Counter())
+        row.update(topic_counts)
+    family_evidence = []
+    for family, row in sorted(families.items()):
+        family_evidence.append({
+            "topic": family, "ratings": sum(row.values()),
+            "positive": row["Sehr relevant"], "neutral": row["Teilweise relevant"],
+            "negative": row["Nicht relevant"],
+            "net_score": row["Sehr relevant"] - row["Nicht relevant"],
+            "scope": "explicit_topic_family"
+        })
     signals = []
     for topic, counts_for_topic in sorted(counts.items()):
         total = sum(counts_for_topic.values())
@@ -87,7 +119,18 @@ def learn(profile, issues, editions):
         if total < 2 or abs(score) < 2:
             continue
         signals.append({"topic": topic, "direction": "positive" if score > 0 else "negative", "confidence": "preliminary", "ratings": total, "net_score": score})
+
+    for family, row in sorted(families.items()):
+        total = sum(row.values())
+        score = sum(WEIGHTS[k] * v for k, v in row.items())
+        if total < 3 or abs(score) < 2 or any(s["topic"] == family for s in signals):
+            continue
+        signals.append({"topic": family, "direction": "positive" if score > 0 else "negative",
+                        "confidence": "preliminary", "ratings": total, "net_score": score,
+                        "scope": "explicit_topic_family"})
+    signals.sort(key=lambda s: s["topic"])
     output = dict(profile)
+    output["topic_family_evidence"] = family_evidence
     output["computed_learning_signals"] = signals
     output["topic_evidence"] = topic_evidence
     output["processed_feedback"] = sorted(processed, key=lambda x: x["issue"])
