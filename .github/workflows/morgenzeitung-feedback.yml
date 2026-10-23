@@ -59,6 +59,26 @@ jobs:
               issues.extend(i for i in batch if 'pull_request' not in i)
               if len(batch)<100:break
               page+=1
+          # Include structured feedback revisions posted as issue comments.
+          # Only the repository owner's comments may alter the private profile.
+          for issue in issues:
+              if not issue.get('comments') or not issue.get('title','').startswith('[Morgenzeitung] Sammelbewertung '):
+                  continue
+              comments=[]
+              n=1
+              while True:
+                  batch=api(f"/issues/{issue['number']}/comments?per_page=100&page={n}")
+                  comments.extend(batch)
+                  if len(batch)<100:break
+                  n+=1
+              for comment in sorted(comments,key=lambda item:(item.get('created_at',''),item.get('id',0))):
+                  if comment.get('user',{}).get('login')!='fabian-stoeckl':
+                      continue
+                  body=comment.get('body') or ''
+                  if 'Artikel-ID:' not in body or 'Bewertung:' not in body:
+                      continue
+                  issue['body']=(issue.get('body') or '')+'\n\n'+body
+                  issue['updated_at']=max(issue['updated_at'],comment.get('updated_at') or issue['updated_at'])
           p=api('/contents/profile.json')
           import base64
           original=json.loads(base64.b64decode(p['content']))
