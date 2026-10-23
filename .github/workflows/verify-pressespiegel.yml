@@ -1,7 +1,7 @@
 name: Verify Morgenzeitung
 on:
   pull_request:
-    paths: ['Privat/Pressespiegel/**', 'services/morgenzeitung/**', 'tests/pressespiegel/**', 'tests/pressespiegel-github*', 'tests/pressespiegel-direct*', 'scripts/check_morgenzeitung.py', '.github/workflows/verify-pressespiegel.yml']
+    paths: ['Privat/Pressespiegel/**', 'services/morgenzeitung/**', 'tests/pressespiegel/**', 'tests/pressespiegel-github*', 'tests/pressespiegel-direct*', 'scripts/check_morgenzeitung.py', '.github/workflows/morgenzeitung-feedback.yml', '.github/workflows/verify-pressespiegel.yml']
   push:
     paths: ['Privat/Pressespiegel/**', 'services/morgenzeitung/**', 'tests/pressespiegel/**', 'tests/pressespiegel-github*', '.github/workflows/verify-pressespiegel.yml']
 permissions:
