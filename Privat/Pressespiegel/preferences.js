@@ -47,6 +47,7 @@ async function showPreferenceSummary() {
   const summary=$('preference-feedback'),token=DirectFeedback.readToken();
   summary.replaceChildren(el('p','Lese deine bisherigen Bewertungen aus deinem privaten GitHub-Repository …','small'));
   if(!token){
+    $('preference-timeline').textContent='Verbinde deinen privaten GitHub-Zugang, um die Entwicklung deiner Bewertungen zu sehen.';
     summary.replaceChildren(el('p','Auf diesem Gerät ist noch kein GitHub-Zugang verbunden. Die Auswahlregeln oben kannst du trotzdem lesen; nach dem Verbinden ganz unten werden hier deine gespeicherten Bewertungen angezeigt.'));
     await renderSelectionHistory();
     return;
@@ -57,6 +58,7 @@ async function showPreferenceSummary() {
     if($('profile').hidden)return;
     if(!history.length){
       summary.replaceChildren(el('p','Bisher keine auswertbaren echten Bewertungen gefunden. Test-Feedback wird bewusst ignoriert.'));
+      $('preference-timeline').textContent='Noch keine bewerteten Artikel mit bekannten Themen vorhanden.';
       return;
     }
     const items=history.flatMap(entry=>entry.ratings.map(r=>({...r,date:entry.date})));
@@ -70,11 +72,31 @@ async function showPreferenceSummary() {
         const ed=await GitHubPaper.edition(day);
         for(const item of [...(ed.articles||[]),...(ed.headlines||[])]){
           const id=await GitHubPaper.ratingId(item);
-          dateMap.set(day+':'+id,{title:item.title,topic:item.topic||item.region||'Nachrichten'});
+          dateMap.set(day+':'+id,{title:item.title,topic:item.topic||null});
         }
       }catch(_){/* Not all older editions remain in the current public index. */}
     }
     if($('profile').hidden)return;
+    const timeline=$('preference-timeline');
+    const events=PreferenceTimeline.calculate(history,dateMap);
+    timeline.replaceChildren();
+    if(!events.length){
+      timeline.append(el('p','Noch keine thematisch zuordenbaren Bewertungen. Nachrichtenschlagzeilen ohne Thema werden bewusst nicht interpretiert.','small'));
+    }else{
+      const timelineList=el('ol',undefined,'preference-list preference-timeline-list');
+      for(const event of events){
+        const li=el('li');
+        li.append(el('strong',event.date));
+        const details=el('ul',undefined,'preference-list');
+        for(const change of event.entries){
+          const sign=change.delta>0?'+':'';
+          const movement=change.delta>0?'gestiegen':change.delta<0?'gesunken':'unverändert';
+          details.append(el('li',change.topic+': '+change.before+' → '+change.after+' ('+sign+change.delta+', '+movement+'; '+change.ratings+' Bewertung(en))'));
+        }
+        li.append(details);timelineList.append(li);
+      }
+      timeline.append(timelineList);
+    }
     const list=el('ul',undefined,'preference-list');
     for(const item of items.filter(r=>r.value).slice(-7).reverse()){
       const meta=dateMap.get(item.date+':'+item.id);
@@ -95,6 +117,7 @@ async function showPreferenceSummary() {
     $('preference-learning-status').textContent='Bisheriges Feedback als Auswahlhinweis: '+signals.join(' ')+' Die tatsächliche Umsetzung in späteren, neu zusammengestellten Ausgaben ist noch nicht verlässlich nachgewiesen; daher wird hier keine bereits erfolgte Änderung behauptet.';
   }catch(error){
     summary.replaceChildren(el('p','Deine privaten Bewertungen konnten nicht geladen werden: '+error.message+'. Die Auswahlregeln bleiben sichtbar.','small'));
+    $('preference-timeline').textContent='Präferenzverlauf konnte nicht geladen werden.';
   }
 }
 
