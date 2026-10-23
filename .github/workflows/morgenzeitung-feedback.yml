@@ -104,6 +104,8 @@ jobs:
                       return json.load(response)
               index=public_json('index.json')
               dates=index.get('dates',[])
+              if not dates or not isinstance(dates,list):
+                  raise ValueError('Empty or invalid public edition index')
               if dates:
                   newest=dates[0]
                   if not isinstance(newest,str) or not __import__('re').fullmatch(r'\d{4}-\d{2}-\d{2}',newest):
