@@ -26,6 +26,14 @@ class LearningTests(unittest.TestCase):
     def test_unknown_id_fails(self):
         with self.assertRaises(ValueError):
             learn(self.profile, [self.issue(4, "Artikel-ID: ffffffffffffffff\nBewertung: Sehr relevant\nBegründung: –")], self.editions)
+    def test_uncategorized_news_does_not_become_region_preference(self):
+        edition = {"2026-10-22": {"headlines": [
+            {"id": "3333333333333333", "region": "Österreich", "title": "News"},
+            {"id": "4444444444444444", "region": "Österreich", "title": "News 2"}], "articles": []}}
+        body = "Bereich: Heute wichtig\\nArtikel-ID: 3333333333333333\\nBewertung: Nicht relevant\\nBegründung: –\\n\\nBereich: Heute wichtig\\nArtikel-ID: 4444444444444444\\nBewertung: Nicht relevant\\nBegründung: –"
+        profile, report = learn(self.profile, [self.issue(5, body)], edition)
+        self.assertEqual(profile["computed_learning_signals"], [])
+        self.assertEqual(report["ratings"], 2)
     def test_tests_excluded(self):
         issue = self.issue(1, "TEST: true")
         _, report = learn(self.profile, [issue], self.editions)
