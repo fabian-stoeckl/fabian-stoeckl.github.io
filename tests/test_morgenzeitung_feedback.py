@@ -30,7 +30,7 @@ class LearningTests(unittest.TestCase):
         edition = {"2026-10-22": {"headlines": [
             {"id": "3333333333333333", "region": "Österreich", "title": "News"},
             {"id": "4444444444444444", "region": "Österreich", "title": "News 2"}], "articles": []}}
-        body = "Bereich: Heute wichtig\\nArtikel-ID: 3333333333333333\\nBewertung: Nicht relevant\\nBegründung: –\\n\\nBereich: Heute wichtig\\nArtikel-ID: 4444444444444444\\nBewertung: Nicht relevant\\nBegründung: –"
+        body = "Bereich: Heute wichtig\nArtikel-ID: 3333333333333333\nBewertung: Nicht relevant\nBegründung: –\n\nBereich: Heute wichtig\nArtikel-ID: 4444444444444444\nBewertung: Nicht relevant\nBegründung: –"
         profile, report = learn(self.profile, [self.issue(5, body)], edition)
         self.assertEqual(profile["computed_learning_signals"], [])
         self.assertEqual(report["ratings"], 2)
