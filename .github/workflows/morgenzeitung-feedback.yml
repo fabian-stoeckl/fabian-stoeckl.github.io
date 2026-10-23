@@ -12,7 +12,9 @@ on:
       - '.github/workflows/morgenzeitung-feedback.yml'
       - 'scripts/morgenzeitung_feedback.py'
       - 'tests/test_morgenzeitung_feedback.py'
-  # Scheduled runs will be enabled after the first verified dry run.
+  schedule:
+    - cron: '15 5 * * *'
+  # Daily run at 05:15 UTC; profile writes use explicit apply mode for scheduled events.
 permissions:
   contents: read
 jobs:
@@ -37,7 +39,7 @@ jobs:
       - name: Read feedback, compute profile, write and verify privately
         env:
           GH_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
-          APPLY_CHANGES: ${{ inputs.apply == true }}
+          APPLY_CHANGES: ${{ github.event_name == 'schedule' || inputs.apply == true }}
         shell: bash
         run: |
           set -euo pipefail
