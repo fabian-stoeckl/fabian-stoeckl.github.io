@@ -49,7 +49,7 @@ def learn(profile, issues, editions):
                 raise ValueError("Wrong section for " + rating["id"])
             key = (day, rating["id"])
             candidate = (parsed["updated_at"], parsed["issue"], rating, article)
-            if key not in latest or candidate[:2] > latest[key][:2]:
+            if key not in latest or candidate[:2] >= latest[key][:2]:
                 latest[key] = candidate
     counts = {}
     observations = []
