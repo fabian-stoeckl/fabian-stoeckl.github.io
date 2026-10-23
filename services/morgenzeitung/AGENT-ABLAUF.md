@@ -70,3 +70,17 @@ python3 -m scripts.morgenzeitung_selection_audit \
 `scripts/morgenzeitung_feedback.py::topic_family` fasst **ausschließlich ausdrücklich vorhandene** zusammengesetzte Themenbezeichnungen aus der festen Whitelist zusammen, z. B. `Industrie & Rohstoffe` und `Industrie & Welthandel` zur Familie `Industrie`. Familien brauchen mindestens drei echte, eindeutig zuordenbare Bewertungen und einen absoluten Nettowert von mindestens zwei; exakte Einzelthemen brauchen mindestens zwei Bewertungen und Nettowert mindestens zwei. Widersprüchliche oder neutrale Stimmen werden mitgezählt. Ein spezifisches Einzelthemensignal hat in der Auswahl Vorrang vor dem breiteren Familiensignal. Aus Ortsangaben, freien Kommentaren oder ungekennzeichneten Schlagzeilen dürfen keine Familien konstruiert werden.
 
 Der produktive GitHub-Workflow `.github/workflows/morgenzeitung-feedback.yml` aktualisiert das **private** Profil bei planmäßigen Läufen und nach erfolgreich zusammengeführten Änderungen an der Lernlogik auf `main`. Voraussetzung sind vorhandenes privates Repository-Token, bestandene Tests, geprüfte Live-Ausgabe und erfolgreicher privater Rücklesecheck. Der Push-Workflow ist ein **Feedback-/Profil-Lauf**, kein Nachweis, dass die Redaktion die Signale schon in einer neuen Ausgabe eingesetzt hat. Für Letzteres bleibt der oben beschriebene private Kontrollvergleich mit finaler HTTPS-Ausgabe verpflichtend.
+
+
+## Verifikation der realen Veröffentlichungswirkung
+
+Nach erfolgreichem HTTPS-Deployment des Tages-JSONs den **privaten** Auswahl-Audit (aus `scripts/morgenzeitung_selection_audit.py`) gegen die tatsächlich ausgelieferte Tagesausgabe prüfen:
+
+```sh
+python3 -m scripts.morgenzeitung_publication_audit \
+  --date YYYY-MM-DD \
+  --private-selection-audit /tmp/morgenzeitung-private-selection-audit.json \
+  --private-output /tmp/morgenzeitung-private-publication-audit.json
+```
+
+Das Tool lädt `index.json` und die Tagesausgabe über öffentliches HTTPS und verlangt identische, geordnete Artikel-IDs. Es bestätigt `editorial_effect_verified` nur, wenn außerdem die dokumentierte kontrafaktische Auswahl durch echte Signale verändert wurde. Den privaten Ergebnisbericht und die verwendeten Profil-/Issue-Versionen in `runs/YYYY-MM-DD.json` archivieren; ohne echten Profil-Provenienznachweis ist auch ein positiver Publikationsvergleich noch kein vollständiger Ende-zu-Ende-Lernbeweis. Fehlende, abweichende oder noch nicht veröffentlichte Ausgaben bleiben `PARTIAL` oder `FAIL`, niemals `PASS`. Der tägliche private Feedback-Workflow startet um 04:15 UTC, also vor der redaktionellen Ausgabe um 06:45 Europe/Vienna sowohl während der Sommer- als auch Winterzeit.

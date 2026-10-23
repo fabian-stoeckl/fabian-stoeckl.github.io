@@ -11,10 +11,13 @@ on:
     paths:
       - '.github/workflows/morgenzeitung-feedback.yml'
       - 'scripts/morgenzeitung_feedback.py'
-      - 'tests/test_morgenzeitung_feedback.py'
+      - 'tests/test_morgenzeitung*.py'
+      - 'scripts/morgenzeitung_editorial.py'
+      - 'scripts/morgenzeitung_selection_audit.py'
+      - 'scripts/morgenzeitung_publication_audit.py'
   schedule:
-    - cron: '15 5 * * *'
-  # Daily run at 05:15 UTC; trusted main pushes of learner/workflow code also apply verified profile changes.
+    - cron: '15 4 * * *'
+  # Daily run at 04:15 UTC (05:15/06:15 Vienna, before the 06:45 edition); trusted main pushes of learner/workflow code also apply verified profile changes.
 permissions:
   contents: read
 jobs:
@@ -27,7 +30,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Unit tests
-        run: python3 -m unittest discover -s tests -p test_morgenzeitung_feedback.py -v
+        run: python3 -m unittest discover -s tests -p 'test_morgenzeitung*.py' -v
       - name: Require private repository token
         env:
           PRIVATE_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}

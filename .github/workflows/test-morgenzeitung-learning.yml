@@ -5,6 +5,7 @@ on:
       - 'scripts/morgenzeitung_feedback.py'
       - 'scripts/morgenzeitung_editorial.py'
       - 'scripts/morgenzeitung_selection_audit.py'
+      - 'scripts/morgenzeitung_publication_audit.py'
       - 'tests/test_morgenzeitung*.py'
       - '.github/workflows/test-morgenzeitung-learning.yml'
   push:
@@ -13,6 +14,7 @@ on:
       - 'scripts/morgenzeitung_feedback.py'
       - 'scripts/morgenzeitung_editorial.py'
       - 'scripts/morgenzeitung_selection_audit.py'
+      - 'scripts/morgenzeitung_publication_audit.py'
       - 'tests/test_morgenzeitung*.py'
       - '.github/workflows/test-morgenzeitung-learning.yml'
   workflow_dispatch:
