@@ -69,6 +69,17 @@ def learn(profile, issues, editions):
         row = counts.setdefault(topic, Counter())
         if rating["rating"] != "Keine Auswahl":
             row[rating["rating"]] += 1
+    # Preserve sparse per-article evidence without treating it as a strong preference.
+    # These candidates are for editorial review, not automatic personalization.
+    topic_evidence = []
+    for topic, row in sorted(counts.items()):
+        total = sum(row.values())
+        if total:
+            topic_evidence.append({"topic": topic, "ratings": total,
+                "positive": row["Sehr relevant"], "neutral": row["Teilweise relevant"],
+                "negative": row["Nicht relevant"],
+                "net_score": row["Sehr relevant"] - row["Nicht relevant"],
+                "status": "insufficient_evidence" if total < 2 else "review_required"})
     signals = []
     for topic, counts_for_topic in sorted(counts.items()):
         total = sum(counts_for_topic.values())
@@ -78,6 +89,7 @@ def learn(profile, issues, editions):
         signals.append({"topic": topic, "direction": "positive" if score > 0 else "negative", "confidence": "preliminary", "ratings": total, "net_score": score})
     output = dict(profile)
     output["computed_learning_signals"] = signals
+    output["topic_evidence"] = topic_evidence
     output["processed_feedback"] = sorted(processed, key=lambda x: x["issue"])
     # Only in private profile: free-text is evidence for editorial review,
     # never a command and never automatically a preference.
