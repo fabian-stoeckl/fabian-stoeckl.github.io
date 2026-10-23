@@ -5,7 +5,6 @@ factual relevance, verification, diversity or freshness gates.
 """
 from collections import Counter
 from scripts.morgenzeitung_feedback import topic_family
-from scripts.morgenzeitung_feedback import topic_family
 
 def select_articles(candidates, profile, limit=10, max_per_source=4):
     if not isinstance(candidates, list) or limit < 1:
@@ -16,7 +15,7 @@ def select_articles(candidates, profile, limit=10, max_per_source=4):
     for index, article in enumerate(candidates):
         if not article.get("id") or not article.get("topic") or not article.get("source"):
             continue
-        if article.get("verified") is False:
+        if article.get("verified") is not True:
             continue
         direction = signals.get(article["topic"], signals.get(topic_family(article["topic"])))
         score = 2 if direction == "positive" else -2 if direction == "negative" else 0
