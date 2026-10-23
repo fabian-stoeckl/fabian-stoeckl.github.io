@@ -101,6 +101,21 @@ def learn(profile, issues, editions):
          "evidence_count": s["ratings"], "status": "pending_editorial_review"}
         for s in signals
     ]
+    # Keep uncategorized votes visible to the editor without inventing a topic.
+    # These private queue entries do not alter automated ranking.
+    for (day, article_id), (_, issue_number, rating, article) in sorted(latest.items()):
+        if article.get("topic") or rating["rating"] == "Keine Auswahl":
+            continue
+        reason = rating["reason"].strip()
+        if reason in ("–", "-", "—"):
+            reason = ""
+        output["editorial_review_queue"].append({
+            "edition": day, "article_id": article_id, "issue": issue_number,
+            "rating": rating["rating"], "reason": reason,
+            "title": article.get("title", ""), "source": article.get("source"),
+            "topic": None, "status": "pending_editorial_review",
+            "scope": "article_only_no_topic_inference"
+        })
     return output, {"ratings": len(latest), "issues": len(processed), "signals": len(signals), "categorized_ratings": sum(sum(v.values()) for v in counts.values()), "text_feedback": len(observations)}
 
 def main():
