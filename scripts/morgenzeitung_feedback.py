@@ -82,6 +82,13 @@ def learn(profile, issues, editions):
     # Only in private profile: free-text is evidence for editorial review,
     # never a command and never automatically a preference.
     output["feedback_observations"] = observations
+    # Private audit queue: a human/editorial agent must review these items.
+    # Recording a candidate does not prove it affected a published edition.
+    output["editorial_review_queue"] = [
+        {"topic": s["topic"], "direction": s["direction"],
+         "evidence_count": s["ratings"], "status": "pending_editorial_review"}
+        for s in signals
+    ]
     return output, {"ratings": len(latest), "issues": len(processed), "signals": len(signals), "categorized_ratings": sum(sum(v.values()) for v in counts.values()), "text_feedback": len(observations)}
 
 def main():
