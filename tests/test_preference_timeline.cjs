@@ -19,3 +19,17 @@ test('replayed identical ratings do not duplicate',()=>{
  const issue={date:'2026-10-21',updated_at:'2026-10-21T12:00:00Z',ratings:[{id:'a',value:'Sehr relevant'}]};
  assert.equal(timeline.calculate([issue,issue],m)[0].entries[0].after,1);
 });
+
+test('summary uses only latest revision of each article, consistent with timeline',()=>{
+ const h=[
+  {date:'2026-10-22',updated_at:'2026-10-22T09:00:00Z',ratings:[{id:'a',value:'Nicht relevant'}]},
+  {date:'2026-10-22',updated_at:'2026-10-22T12:00:00Z',ratings:[{id:'a',value:'Sehr relevant'}]},
+  {date:'2026-10-23',updated_at:'2026-10-23T12:00:00Z',ratings:[{id:'b',value:'Teilweise relevant'}]}];
+ const rows=timeline.reconcile(h);
+ assert.equal(rows.length,2);
+ assert.equal(rows.find(r=>r.id==='a').value,'Sehr relevant');
+ assert.equal(rows.find(r=>r.id==='b').value,'Teilweise relevant');
+ const m=new Map([['2026-10-22:a',{topic:'KI'}],['2026-10-23:b',{topic:'KI'}]]);
+ const events=timeline.calculate(h,m);
+ assert.equal(events[0].entries[0].after,1);
+});

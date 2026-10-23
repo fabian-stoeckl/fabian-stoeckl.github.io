@@ -1,7 +1,7 @@
 /* Private browser-only preference history. No user data is published. */
 'use strict';
 const PreferenceTimeline = {
-  calculate(history, metadata) {
+  reconcile(history) {
     const latest=new Map();
     for(const entry of history){
       for(const rating of entry.ratings||[]){
@@ -13,8 +13,11 @@ const PreferenceTimeline = {
         }
       }
     }
+    return [...latest.values()].sort((a,b)=>a.date.localeCompare(b.date)||a.updated_at.localeCompare(b.updated_at));
+  },
+  calculate(history, metadata) {
     const byDay=new Map();
-    for(const rating of latest.values()){
+    for(const rating of this.reconcile(history)){
       const info=metadata.get(rating.date+':'+rating.id);
       // Only explicitly tagged in-depth articles; never infer topic from geography.
       if(!info?.topic)continue;

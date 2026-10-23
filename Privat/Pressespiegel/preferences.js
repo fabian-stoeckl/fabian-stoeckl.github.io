@@ -61,7 +61,7 @@ async function showPreferenceSummary() {
       $('preference-timeline').textContent='Noch keine bewerteten Artikel mit bekannten Themen vorhanden.';
       return;
     }
-    const items=history.flatMap(entry=>entry.ratings.map(r=>({...r,date:entry.date})));
+    const items=PreferenceTimeline.reconcile(history);
     const tally=label=>items.filter(r=>r.value===label).length;
     const feedbackCount=history.filter(h=>h.feedback.trim()).length;
     const top=el('p',history.length+' bewertete Ausgabe(n) · '+items.length+' Artikelbewertungen · '+feedbackCount+' allgemeine Rückmeldung(en).');
