@@ -4,6 +4,7 @@ on:
     paths:
       - 'scripts/morgenzeitung_feedback.py'
       - 'scripts/morgenzeitung_editorial.py'
+      - 'scripts/morgenzeitung_selection_audit.py'
       - 'tests/test_morgenzeitung*.py'
       - '.github/workflows/test-morgenzeitung-learning.yml'
   push:
@@ -11,6 +12,7 @@ on:
     paths:
       - 'scripts/morgenzeitung_feedback.py'
       - 'scripts/morgenzeitung_editorial.py'
+      - 'scripts/morgenzeitung_selection_audit.py'
       - 'tests/test_morgenzeitung*.py'
       - '.github/workflows/test-morgenzeitung-learning.yml'
   workflow_dispatch:
