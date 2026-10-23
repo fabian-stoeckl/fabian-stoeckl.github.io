@@ -1,0 +1,67 @@
+name: Morgenzeitung deterministic feedback
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * *'
+permissions:
+  contents: read
+jobs:
+  feedback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit tests
+        run: python3 -m unittest discover -s tests -p test_morgenzeitung_feedback.py -v
+      - name: Require private repository token
+        env:
+          PRIVATE_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+        run: |
+          if [ -z "$PRIVATE_TOKEN" ]; then
+            echo "::error::Configure MORGENZEITUNG_FEEDBACK_TOKEN with private repo Issues read and Contents read/write."
+            exit 1
+          fi
+      - name: Read feedback, compute profile, write and verify privately
+        env:
+          GH_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/morgenzeitung
+          python3 - <<'PY'
+          import json, os, subprocess, urllib.request, pathlib
+          root='https://api.github.com/repos/fabian-stoeckl/morgenzeitung-feedback'
+          token=os.environ['GH_TOKEN']
+          def api(path, method='GET', body=None):
+              req=urllib.request.Request(root+path,data=json.dumps(body).encode() if body is not None else None,method=method,
+                headers={'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'})
+              with urllib.request.urlopen(req,timeout=30) as response:return json.load(response)
+          issues=[]
+          page=1
+          while True:
+              batch=api(f'/issues?state=all&per_page=100&page={page}')
+              issues.extend(i for i in batch if 'pull_request' not in i)
+              if len(batch)<100:break
+              page+=1
+          p=api('/contents/profile.json')
+          import base64
+          original=json.loads(base64.b64decode(p['content']))
+          d=pathlib.Path('/tmp/morgenzeitung')
+          (d/'issues.json').write_text(json.dumps(issues))
+          (d/'profile.json').write_text(json.dumps(original))
+          subprocess.run(['python3','scripts/morgenzeitung_feedback.py','--profile',str(d/'profile.json'),
+            '--issues',str(d/'issues.json'),'--editions','Privat/Pressespiegel/data',
+            '--output',str(d/'next.json'),'--report',str(d/'report.json')],check=True)
+          updated=json.loads((d/'next.json').read_text())
+          report=json.loads((d/'report.json').read_text())
+          if updated!=original:
+              data=base64.b64encode((d/'next.json').read_bytes()).decode()
+              api('/contents/profile.json','PUT',{'message':'Refresh deterministic feedback profile',
+                'content':data,'sha':p['sha']})
+          check=api('/contents/profile.json')
+          assert json.loads(base64.b64decode(check['content']))==updated,'Private readback mismatch'
+          print('Private feedback verified:',json.dumps(report))
+          PY
