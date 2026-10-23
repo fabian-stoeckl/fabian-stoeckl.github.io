@@ -4,6 +4,7 @@ Call after source verification, before publishing. Feedback never overrides
 factual relevance, verification, diversity or freshness gates.
 """
 from collections import Counter
+from scripts.morgenzeitung_feedback import topic_family
 
 def select_articles(candidates, profile, limit=10, max_per_source=4):
     if not isinstance(candidates, list) or limit < 1:
@@ -16,7 +17,7 @@ def select_articles(candidates, profile, limit=10, max_per_source=4):
             continue
         if article.get("verified") is False:
             continue
-        direction = signals.get(article["topic"])
+        direction = signals.get(article["topic"], signals.get(topic_family(article["topic"])))
         score = 2 if direction == "positive" else -2 if direction == "negative" else 0
         ranked.append((score, index, article, direction))
     ranked.sort(key=lambda row: (-row[0], row[1]))
