@@ -39,6 +39,13 @@ class EditorialEndToEnd(unittest.TestCase):
                            sum(preference(a) > 0 for a in baseline))
         self.assertTrue(any(a["learning_direction"] == "positive" for a in audit))
         self.assertEqual(len(audit), 10)
+    def test_missing_verification_is_never_selected(self):
+        items = [{"id": "1", "topic": "KI", "source": "A"},
+                 {"id": "2", "topic": "KI", "source": "B", "verified": True}]
+        selected, audit = select_articles(items, {}, limit=2)
+        self.assertEqual([a["id"] for a in selected], ["2"])
+        self.assertEqual(len(audit), 1)
+
     def test_unverified_candidates_and_source_caps(self):
         candidates = [
             {"id": "1", "topic": "KI", "source": "A", "verified": False},
