@@ -1,6 +1,11 @@
 name: Morgenzeitung deterministic feedback
 on:
   workflow_dispatch:
+    inputs:
+      apply:
+        description: 'Write private profile after successful dry run'
+        type: boolean
+        default: false
   # Enable scheduled runs only after the manual end-to-end validation.
 permissions:
   contents: read
@@ -26,6 +31,7 @@ jobs:
       - name: Read feedback, compute profile, write and verify privately
         env:
           GH_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+          APPLY_CHANGES: ${{ inputs.apply == true }}
         shell: bash
         run: |
           set -euo pipefail
@@ -56,11 +62,12 @@ jobs:
             '--output',str(d/'next.json'),'--report',str(d/'report.json')],check=True)
           updated=json.loads((d/'next.json').read_text())
           report=json.loads((d/'report.json').read_text())
-          if updated!=original:
+          if updated!=original and os.environ.get('APPLY_CHANGES')=='true':
               data=base64.b64encode((d/'next.json').read_bytes()).decode()
               api('/contents/profile.json','PUT',{'message':'Refresh deterministic feedback profile',
                 'content':data,'sha':p['sha']})
           check=api('/contents/profile.json')
-          assert json.loads(base64.b64decode(check['content']))==updated,'Private readback mismatch'
-          print('Private feedback verified:',json.dumps(report))
+          expected=updated if os.environ.get('APPLY_CHANGES')=='true' else original
+          assert json.loads(base64.b64decode(check['content']))==expected,'Private readback mismatch'
+          print('Private feedback checked:',json.dumps(report),'applied:',os.environ.get('APPLY_CHANGES'))
           PY
