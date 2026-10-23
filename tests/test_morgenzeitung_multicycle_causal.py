@@ -42,7 +42,7 @@ def issue(cycle, day, items):
         "number": cycle + 10,
         "title": f"[Morgenzeitung] Sammelbewertung {day}",
         "updated_at": f"{day}T23:00:00Z",
-        "body": f"Typ: Sammelbewertung\\nAusgabe: {day}\\n\\n" + "\\n".join(entries),
+        "body": f"Typ: Sammelbewertung\nAusgabe: {day}\n\n" + "\n".join(entries),
     }
 
 class MultiCycleCausalReplay(unittest.TestCase):
