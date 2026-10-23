@@ -56,11 +56,11 @@ class LearningTests(unittest.TestCase):
             "articles": []}}
         issue = {"number": 6, "title": "[Morgenzeitung] Sammelbewertung 2026-10-23",
                  "updated_at": "2026-10-23T11:39:55Z",
-                 "body": ("Ausgabe: 2026-10-23\\n"
-                          "Bereich: Heute wichtig\\nArtikel-ID: 451a044c6532f9a7\\n"
-                          "Bewertung: Sehr relevant\\nBegründung: –\\n\\n"
-                          "Bereich: Heute wichtig\\nArtikel-ID: 5fb5c9ccbe27ed04\\n"
-                          "Bewertung: Nicht relevant\\n"
+                 "body": ("Ausgabe: 2026-10-23\n"
+                          "Bereich: Heute wichtig\nArtikel-ID: 451a044c6532f9a7\n"
+                          "Bewertung: Sehr relevant\nBegründung: –\n\n"
+                          "Bereich: Heute wichtig\nArtikel-ID: 5fb5c9ccbe27ed04\n"
+                          "Bewertung: Nicht relevant\n"
                           "Begründung: Juristische Randdetails interessieren mich nicht")}
         first, report = learn(self.profile, [issue], edition)
         second, again = learn(first, [issue], edition)
