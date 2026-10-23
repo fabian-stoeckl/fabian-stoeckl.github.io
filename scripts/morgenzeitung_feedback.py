@@ -6,7 +6,7 @@ import re
 from collections import Counter
 from pathlib import Path
 
-ENTRY = re.compile(r"(?:Bereich: (?P<section>[^\n]+)\n)?Artikel-ID: (?P<id>[a-f0-9]{16})\nBewertung: (?P<rating>Sehr relevant|Teilweise relevant|Nicht relevant)\nBegründung: (?P<reason>[^\n]*)")
+ENTRY = re.compile(r"(?:Bereich: (?P<section>[^\n]+)\n)?Artikel-ID: (?P<id>[a-f0-9]{16})\nBewertung: (?P<rating>Sehr relevant|Teilweise relevant|Nicht relevant|Keine Auswahl)\nBegründung: (?P<reason>[^\n]*)")
 WEIGHTS = {"Sehr relevant": 1, "Teilweise relevant": 0, "Nicht relevant": -1}
 
 def parse_issue(issue):
@@ -52,7 +52,8 @@ def learn(profile, issues, editions):
     for _, _, rating, article in latest.values():
         topic = article.get("topic") or ("Nachrichten: " + article.get("region", "Allgemein"))
         row = counts.setdefault(topic, Counter())
-        if rating["rating"] != "Keine Auswahl":\n            row[rating["rating"]] += 1
+        if rating["rating"] != "Keine Auswahl":
+            row[rating["rating"]] += 1
     signals = []
     for topic, counts_for_topic in sorted(counts.items()):
         total = sum(counts_for_topic.values())
