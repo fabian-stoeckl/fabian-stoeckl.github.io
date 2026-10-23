@@ -60,5 +60,25 @@ class CounterfactualAuditTests(unittest.TestCase):
         self.assertEqual(result["selected_ids"], [pool[1]["id"]])
         self.assertEqual(len(result["effective_signals"]), 3)
 
+
+    def test_actual_twenty_published_stories_can_be_counterfactually_reranked(self):
+        import json
+        from pathlib import Path
+        pool = []
+        for day in ("2026-10-22", "2026-10-23"):
+            edition = json.loads(Path("Privat/Pressespiegel/data", day + ".json").read_text())
+            pool.extend(dict(item, verified=True) for item in edition["articles"])
+        pool.sort(key=lambda item: item["id"])
+        self.assertEqual(len(pool), 20)
+        baseline_topics = {item["topic"] for item in pool[:10]}
+        target = next(item for item in pool[10:] if item["topic"] not in baseline_topics)
+        profile = {"computed_learning_signals": [
+            {"topic": target["topic"], "direction": "positive", "confidence": "preliminary"}]}
+        result = compare(pool, profile, limit=10, max_per_source=10)
+        self.assertTrue(result["counterfactual_effect_verified"])
+        self.assertIn(target["id"], result["newly_selected_ids"])
+        self.assertGreaterEqual(result["changed_top_n_count"], 1)
+        self.assertFalse(result["editorial_effect_verified"])
+
 if __name__ == "__main__":
     unittest.main()
