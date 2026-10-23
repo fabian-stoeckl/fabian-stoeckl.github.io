@@ -3,12 +3,14 @@ on:
   pull_request:
     paths:
       - 'scripts/morgenzeitung_feedback.py'
+      - 'scripts/morgenzeitung_editorial.py'
       - 'tests/test_morgenzeitung*.py'
       - '.github/workflows/test-morgenzeitung-learning.yml'
   push:
     branches: [main]
     paths:
       - 'scripts/morgenzeitung_feedback.py'
+      - 'scripts/morgenzeitung_editorial.py'
       - 'tests/test_morgenzeitung*.py'
       - '.github/workflows/test-morgenzeitung-learning.yml'
   workflow_dispatch:
