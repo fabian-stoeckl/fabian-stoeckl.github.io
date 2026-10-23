@@ -68,7 +68,7 @@ const DirectFeedback = (() => {
   }
   async function feedbackHistory(token,transport=fetch) {
     const issues=[];
-    for(let page=1;page<=3;page++){
+    for(let page=1;page<=20;page++){
       const batch=await request(token,'/issues?state=all&per_page=100&page='+page,'GET',undefined,transport);
       if(!Array.isArray(batch))throw Error('GitHub hat keine gültige Feedback-Liste zurückgegeben.');
       for(const issue of batch){
@@ -82,12 +82,9 @@ const DirectFeedback = (() => {
       }
       if(batch.length<100)break;
     }
-    const latest=new Map();
-    for(const item of issues){
-      const old=latest.get(item.date);
-      if(!old||item.updated_at>=old.updated_at)latest.set(item.date,item);
-    }
-    return [...latest.values()].sort((a,b)=>b.date.localeCompare(a.date));
+    // Keep all real issues, including parallel submissions from another device.
+    // A consumer must reconcile per article using the latest explicit revision.
+    return issues.sort((a,b)=>b.updated_at.localeCompare(a.updated_at));
   }
   function buildFeedback(date,ratings,feedback) {
     if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Array.isArray(ratings)||ratings.length>40||
@@ -118,18 +115,29 @@ const DirectFeedback = (() => {
     const receipts=readReceipts(store),previous=receipts[date];
     // Reload the canonical saved issue before patching: an update from either tab
     // must never erase ratings previously submitted in the other tab.
-    const saved=await savedFeedback(date,token,store,transport);
+    let saved=await savedFeedback(date,token,store,transport);
+    // A browser without a local receipt must not silently create a second
+    // canonical issue when an earlier device already submitted feedback.
+    if(!previous){
+      const matching=(await feedbackHistory(token,transport)).filter(i=>i.date===date);
+      if(matching.length){
+        const existing=matching[0];
+        receipts[date]={number:existing.number,url:'https://github.com/'+REPO+'/issues/'+existing.number};
+        saved={date,ratings:existing.ratings,feedback:existing.feedback};
+      }
+    }
     const merged=new Map((saved?.ratings||[]).map(r=>[r.id,r]));
     for(const r of ratings)merged.set(r.id,r);
     const combined=[...merged.values()];
     const combinedFeedback=feedback.trim()?feedback:saved?.feedback||'';
     const issue=buildFeedback(date,combined,combinedFeedback);
     const hash=await fingerprint(issue.body,cryptoAPI);
-    if(previous?.hash===hash&&Number.isSafeInteger(previous.number)) {
-      return {ok:true,existing:true,html_url:previous.url};
+    if(receipts[date]?.hash===hash&&Number.isSafeInteger(receipts[date].number)) {
+      return {ok:true,existing:true,html_url:receipts[date].url};
     }
-    const patch=!!(previous&&Number.isSafeInteger(previous.number)&&previous.number>0);
-    const result=await request(token,patch?'/issues/'+previous.number:'/issues',patch?'PATCH':'POST',issue,transport);
+    const target=receipts[date];
+    const patch=!!(target&&Number.isSafeInteger(target.number)&&target.number>0);
+    const result=await request(token,patch?'/issues/'+target.number:'/issues',patch?'PATCH':'POST',issue,transport);
     if(!Number.isSafeInteger(result.number)||result.number<=0||
       typeof result.html_url!=='string'||
       !result.html_url.startsWith('https://github.com/'+REPO+'/issues/')) {
