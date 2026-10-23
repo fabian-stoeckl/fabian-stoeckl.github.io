@@ -106,6 +106,8 @@ jobs:
               dates=index.get('dates',[])
               if not dates or not isinstance(dates,list):
                   raise ValueError('Empty or invalid public edition index')
+              if dates != sorted(set(dates),reverse=True):
+                  raise ValueError('Public index dates are unsorted or duplicated')
               if dates:
                   newest=dates[0]
                   if not isinstance(newest,str) or not __import__('re').fullmatch(r'\d{4}-\d{2}-\d{2}',newest):
@@ -113,6 +115,13 @@ jobs:
                   edition=public_json(newest+'.json')
                   if edition.get('date')!=newest:
                       raise ValueError('Live edition/index mismatch')
+                  if edition.get('preview'):
+                      raise ValueError('Latest live edition is only a preview')
+                  if not isinstance(edition.get('articles'),list) or not isinstance(edition.get('headlines'),list):
+                      raise ValueError('Latest live edition lacks article sections')
+                  if len(edition['articles'])<10 or len(edition['headlines'])<15:
+                      if not edition.get('limitations'):
+                          raise ValueError('Incomplete live edition without limitations')
                   # Do not retroactively certify editorial impact or prior run completion.
                   print('Verified public edition:',newest,
                         'private last_successful_edition remains independent until S7 audit')
