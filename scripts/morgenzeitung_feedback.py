@@ -52,6 +52,16 @@ def learn(profile, issues, editions):
             if key not in latest or candidate[:2] > latest[key][:2]:
                 latest[key] = candidate
     counts = {}
+    observations = []
+    for (day, article_id), (_, issue_number, rating, article) in sorted(latest.items()):
+        reason = rating["reason"].strip()
+        if reason in ("–", "-", "—"):
+            reason = ""
+        if reason:
+            observations.append({"edition": day, "article_id": article_id,
+                "issue": issue_number, "rating": rating["rating"],
+                "reason": reason, "topic": article.get("topic"),
+                "source": article.get("source")})
     for _, _, rating, article in latest.values():
         topic = article.get("topic")
         if not topic:
@@ -69,7 +79,10 @@ def learn(profile, issues, editions):
     output = dict(profile)
     output["computed_learning_signals"] = signals
     output["processed_feedback"] = sorted(processed, key=lambda x: x["issue"])
-    return output, {"ratings": len(latest), "issues": len(processed), "signals": len(signals), "categorized_ratings": sum(sum(v.values()) for v in counts.values())}
+    # Only in private profile: free-text is evidence for editorial review,
+    # never a command and never automatically a preference.
+    output["feedback_observations"] = observations
+    return output, {"ratings": len(latest), "issues": len(processed), "signals": len(signals), "categorized_ratings": sum(sum(v.values()) for v in counts.values()), "text_feedback": len(observations)}
 
 def main():
     p = argparse.ArgumentParser()
