@@ -1,8 +1,7 @@
 name: Morgenzeitung deterministic feedback
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 5 * * *'
+  # Enable scheduled runs only after the manual end-to-end validation.
 permissions:
   contents: read
 jobs:
