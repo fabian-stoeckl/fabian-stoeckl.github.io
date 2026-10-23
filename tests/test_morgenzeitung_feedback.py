@@ -24,6 +24,12 @@ class LearningTests(unittest.TestCase):
         b = self.issue(5, "Artikel-ID: 1111111111111111\nBewertung: Nicht relevant\nBegründung: –", "2026-10-22T11:00:00Z")
         _, report = learn(self.profile, [a,b], self.editions)
         self.assertEqual(report["ratings"], 1)
+    def test_later_entry_in_same_issue_replaces_previous(self):
+        body = ("Artikel-ID: 1111111111111111\nBewertung: Sehr relevant\nBegründung: –\n\n"
+                "Artikel-ID: 1111111111111111\nBewertung: Nicht relevant\nBegründung: Neue Einschätzung")
+        profile, report = learn(self.profile, [self.issue(4, body)], self.editions)
+        self.assertEqual(report["ratings"], 1)
+        self.assertEqual(profile["feedback_observations"][0]["rating"], "Nicht relevant")
     def test_unknown_id_fails(self):
         with self.assertRaises(ValueError):
             learn(self.profile, [self.issue(4, "Artikel-ID: ffffffffffffffff\nBewertung: Sehr relevant\nBegründung: –")], self.editions)
