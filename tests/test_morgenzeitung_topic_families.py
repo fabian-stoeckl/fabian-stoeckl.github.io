@@ -2,6 +2,7 @@
 import unittest
 from scripts.morgenzeitung_feedback import learn, topic_family
 from scripts.morgenzeitung_editorial import select_articles
+from scripts.morgenzeitung_selection_audit import compare
 
 DAY = "2026-11-01"
 def article(i, topic):
@@ -30,6 +31,10 @@ class FamilyLearning(unittest.TestCase):
         selected, audit = select_articles(candidates, p, limit=1)
         self.assertEqual(selected[0]["id"], candidates[1]["id"])
         self.assertEqual(audit[0]["learning_direction"], "positive")
+        comparison = compare(candidates, p, limit=1)
+        self.assertTrue(comparison["counterfactual_effect_verified"])
+        self.assertEqual(comparison["newly_selected_ids"], [candidates[1]["id"]])
+        self.assertFalse(comparison["editorial_effect_verified"])
         self.assertEqual(p, learn(p, [issue(a, ["Sehr relevant", "Sehr relevant", "Sehr relevant", "Teilweise relevant"])],
                                   {DAY: {"headlines": [], "articles": a}})[0])
     def test_two_votes_are_insufficient_for_broad_family(self):
