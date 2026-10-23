@@ -47,7 +47,9 @@ def compare(candidate_pool, profile, *, limit=10, max_per_source=4):
         "displaced_ids": removed,
         "changed_top_n_count": len(added),
         "selection_changed": baseline_ids != selected_ids,
-        "counterfactual_effect_verified": bool(effective_signals) and baseline_ids != selected_ids,\n        "publication_verified": False,\n        "editorial_effect_verified": False,
+        "counterfactual_effect_verified": bool(effective_signals) and baseline_ids != selected_ids,
+        "publication_verified": False,
+        "editorial_effect_verified": False,
         "note": "Counterfactual ranking effect only. Real published editorial impact requires an independently verified publication and matching final article IDs."
     }
 
