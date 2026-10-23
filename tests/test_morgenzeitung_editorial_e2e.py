@@ -9,7 +9,7 @@ class EditorialEndToEnd(unittest.TestCase):
     def test_research_replay_changes_production_selector(self):
         original = [json.loads(Path("Privat/Pressespiegel/data", d + ".json").read_text())
                     for d in ("2026-10-22", "2026-10-23")]
-        pool = [dict(a) for edition in original for a in edition["articles"]]
+        pool = [dict(a, verified=True) for edition in original for a in edition["articles"]]
         self.assertEqual(len(pool), 20)
         # Research simulation reuses published, verified articles as candidate pool.
         # Fixed deterministic order prevents the test from passing by lucky input ordering.
@@ -39,12 +39,19 @@ class EditorialEndToEnd(unittest.TestCase):
                            sum(preference(a) > 0 for a in baseline))
         self.assertTrue(any(a["learning_direction"] == "positive" for a in audit))
         self.assertEqual(len(audit), 10)
+    def test_missing_verification_is_never_selected(self):
+        items = [{"id": "1", "topic": "KI", "source": "A"},
+                 {"id": "2", "topic": "KI", "source": "B", "verified": True}]
+        selected, audit = select_articles(items, {}, limit=2)
+        self.assertEqual([a["id"] for a in selected], ["2"])
+        self.assertEqual(len(audit), 1)
+
     def test_unverified_candidates_and_source_caps(self):
         candidates = [
             {"id": "1", "topic": "KI", "source": "A", "verified": False},
-            {"id": "2", "topic": "KI", "source": "A"},
-            {"id": "3", "topic": "KI", "source": "A"},
-            {"id": "4", "topic": "KI", "source": "B"}]
+            {"id": "2", "topic": "KI", "source": "A", "verified": True},
+            {"id": "3", "topic": "KI", "source": "A", "verified": True},
+            {"id": "4", "topic": "KI", "source": "B", "verified": True}]
         p = {"computed_learning_signals": [{"topic": "KI", "direction": "positive", "confidence": "preliminary"}]}
         chosen, audit = select_articles(candidates, p, limit=3, max_per_source=1)
         self.assertEqual([a["id"] for a in chosen], ["2", "4"])

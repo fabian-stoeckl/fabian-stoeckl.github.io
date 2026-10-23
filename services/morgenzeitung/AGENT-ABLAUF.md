@@ -42,3 +42,24 @@ GitHub Actions `morgenzeitung-freshness.yml` kontrolliert nur die öffentliche F
 ## Soforttest und technische Grenzen (23.10.2026)
 
 Der Workflow `morgenzeitung-feedback.yml` prüft im produktiven Schreibmodus den öffentlichen HTTPS-Index und die neueste Tages-JSON. Das ist ein Live-Publikationscheck, aber **kein** Beleg für redaktionelle Lernwirkung und ersetzt keinen privaten S7-Laufbericht. Ein manuell gestarteter Workflow mit `apply=false` ist ausdrücklich ein Dry-Run; ohne `apply=true` werden keine privaten Profiländerungen geschrieben. Nach Änderungen zuerst PR-Checks prüfen, danach nur bei erfolgreichen Checks mergen und den produktiven Workflow erneut ausführen. Bei fehlenden Berechtigungen oder nicht verfügbarem Workflow-Dispatch keine Ausführung behaupten.
+
+
+## Verbindlicher kontrafaktischer Auswahltest (ab 23.10.2026)
+
+**Nach S4 RESEARCH, vor S5 QUALITY:** Die recherchierten Kandidaten müssen zuerst einzeln auf Originalquelle, Aktualität und Dubletten geprüft werden. Die private Kandidatenliste enthält für **jeden** Kandidaten `id`, `topic`, `source` und `verified: true`; fehlende Verifizierung ist ein harter Testfehler. Allgemeine Schlagzeilen in `Heute wichtig` sind davon unabhängig und dürfen nicht allein aufgrund von Präferenzsignalen ausgeblendet werden.
+
+Für die Vertiefungen aus dem identischen Kandidatenpool die geprüfte Funktion `scripts/morgenzeitung_editorial.py::select_articles` verwenden. Die private Audit-Funktion `scripts/morgenzeitung_selection_audit.py::compare` führt zusätzlich einen Kontrolllauf **ohne** Lernsignale durch und schreibt die Vorher-/Nachher-Reihung mit verdrängten und hinzugekommenen Artikel-IDs. CLI-Beispiel (Dateien außerhalb des öffentlichen Repositories, private Ablage!):
+
+```sh
+python3 -m scripts.morgenzeitung_selection_audit \
+  --candidates /tmp/morgenzeitung-verified-candidates.json \
+  --profile /tmp/morgenzeitung-private-profile.json \
+  --output /tmp/morgenzeitung-private-selection-audit.json
+```
+
+**Strikte Beweisstufen:**
+1. `counterfactual_effect_verified: true` beweist nur eine veränderte Auswahl *im Kontrollvergleich*; bei leerem `computed_learning_signals` bleibt dies `false`.
+2. `publication_verified` und `editorial_effect_verified` bleiben im automatisch erzeugten Audit bewusst `false`. Sie dürfen erst nach Abgleich von finalen Artikel-IDs, privatem S7-Laufbericht, öffentlichem GitHub-Commit und tatsächlicher HTTPS-Veröffentlichung durch einen gesonderten Prüfschritt bestätigt werden.
+3. Falls redaktionell von der maschinellen Rangfolge abgewichen wird, Entscheidung und Grund privat dokumentieren; nicht automatisch als wirksames Lernen zählen.
+4. Kein privates Feedback, keine Kandidatenprofile, keine synthetischen Bewertungen und keine internen Auswahl-Audits ins öffentliche Pages-Repository committen. Isolierte Tests bleiben isoliert.
+5. Täglich kontrollieren: Zahl kategorisierter Ratings, Zahl hinreichend belegter Signale, geänderte Top-10-Artikel und Zahl tatsächlich publizierter signalbedingt gewählter Artikel. Wenn der Nachweis fehlt: `PARTIAL`, nicht `PASS`.
