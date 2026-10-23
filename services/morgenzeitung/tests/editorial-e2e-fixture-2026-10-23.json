@@ -1,0 +1,46 @@
+{
+  "kind": "editorial_e2e_fixture",
+  "test_only": true,
+  "not_a_daily_edition": true,
+  "date": "2026-10-23",
+  "private_plan_reference": "plans/2026-10-24.json",
+  "profile_blob_sha": "b7d9818e379e530ee2a14aa369965652a7ab44d7",
+  "articles": [
+    {
+      "title": "KI-Boom treibt das Wachstum der britischen Wirtschaft an",
+      "source": "Handelsblatt",
+      "published": "2026-10-21",
+      "url": "https://www.handelsblatt.com/politik/international/grossbritannien-ki-boom-treibt-das-wachstum-der-britischen-wirtschaft-an/100263358.html",
+      "topic": "KI & Produktivität",
+      "summary": "Der Bericht beschreibt Hinweise auf Produktivitätsgewinne durch KI in Großbritannien und verweist auf eine IWF-Wachstumsprognose von 1,3 Prozent. Er ist für die Testauswahl wegen der vorab dokumentierten Priorität KI und Produktivität relevant; der zugängliche Text erlaubt keinen kausalen Nachweis der gesamten Wachstumsentwicklung.",
+      "access": "teaser_or_excerpt",
+      "selection_reason": "Included because the private prospective plan prioritized KI/productivity."
+    },
+    {
+      "title": "Klimawandel kostet Österreich Milliarden",
+      "source": "ORF",
+      "published": "2026-10-22",
+      "url": "https://science.orf.at/stories/3237838/",
+      "topic": "Klima & volkswirtschaftliche Kosten",
+      "summary": "Erste COIN-2.0-Ergebnisse beziffern wetter- und klimabedingte Schäden 2017–2024 auf jährlich 1,9 bis 6,1 Milliarden Euro. Die Forschenden warnen vor einer Unterschätzung, weil indirekte Kosten nicht vollständig erfasst sind.",
+      "access": "original_full",
+      "selection_reason": "Included because the private prospective plan prioritized fiscal and economic climate impacts."
+    },
+    {
+      "title": "Zwischen Höhenflug und Absturz: Wo Europas Industrie wächst",
+      "source": "Der Standard",
+      "published": "2026-10-20",
+      "url": "https://www.derstandard.at/story/3000000344434/zwischen-hoehenflug-und-absturz-wo-europas-industrie-waechst-und-wo-der-aufwind-ausbleibt",
+      "topic": "Industrie & Wettbewerbsfähigkeit",
+      "summary": "Die Analyse vergleicht europäische Industrieentwicklungen: Dänemarks Pharma- und Energiewirtschaft sowie der niederländische Chipmaschinenbau sind Wachstumstreiber, während Österreichs Erholung verhalten bleibt.",
+      "access": "original_excerpt",
+      "selection_reason": "Included because the private prospective plan prioritized industrial transformation and competitiveness."
+    }
+  ],
+  "limitations": [
+    "Isolated fixture; not a new daily edition and not part of data/index.json",
+    "Sources from 20–22 October intentionally used to test selection, not daily freshness",
+    "No private rating values are included",
+    "HTTPS readback and S7 certification pending"
+  ]
+}
