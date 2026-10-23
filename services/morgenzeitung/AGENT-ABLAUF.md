@@ -63,3 +63,10 @@ python3 -m scripts.morgenzeitung_selection_audit \
 3. Falls redaktionell von der maschinellen Rangfolge abgewichen wird, Entscheidung und Grund privat dokumentieren; nicht automatisch als wirksames Lernen zählen.
 4. Kein privates Feedback, keine Kandidatenprofile, keine synthetischen Bewertungen und keine internen Auswahl-Audits ins öffentliche Pages-Repository committen. Isolierte Tests bleiben isoliert.
 5. Täglich kontrollieren: Zahl kategorisierter Ratings, Zahl hinreichend belegter Signale, geänderte Top-10-Artikel und Zahl tatsächlich publizierter signalbedingt gewählter Artikel. Wenn der Nachweis fehlt: `PARTIAL`, nicht `PASS`.
+
+
+## Konservative Themenfamilien und produktive Profilerneuerung (24.10.2026)
+
+`scripts/morgenzeitung_feedback.py::topic_family` fasst **ausschließlich ausdrücklich vorhandene** zusammengesetzte Themenbezeichnungen aus der festen Whitelist zusammen, z. B. `Industrie & Rohstoffe` und `Industrie & Welthandel` zur Familie `Industrie`. Familien brauchen mindestens drei echte, eindeutig zuordenbare Bewertungen und einen absoluten Nettowert von mindestens zwei; exakte Einzelthemen brauchen mindestens zwei Bewertungen und Nettowert mindestens zwei. Widersprüchliche oder neutrale Stimmen werden mitgezählt. Ein spezifisches Einzelthemensignal hat in der Auswahl Vorrang vor dem breiteren Familiensignal. Aus Ortsangaben, freien Kommentaren oder ungekennzeichneten Schlagzeilen dürfen keine Familien konstruiert werden.
+
+Der produktive GitHub-Workflow `.github/workflows/morgenzeitung-feedback.yml` aktualisiert das **private** Profil bei planmäßigen Läufen und nach erfolgreich zusammengeführten Änderungen an der Lernlogik auf `main`. Voraussetzung sind vorhandenes privates Repository-Token, bestandene Tests, geprüfte Live-Ausgabe und erfolgreicher privater Rücklesecheck. Der Push-Workflow ist ein **Feedback-/Profil-Lauf**, kein Nachweis, dass die Redaktion die Signale schon in einer neuen Ausgabe eingesetzt hat. Für Letzteres bleibt der oben beschriebene private Kontrollvergleich mit finaler HTTPS-Ausgabe verpflichtend.
