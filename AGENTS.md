@@ -12,3 +12,7 @@
 - Preserve unrelated work and financial data. Record the tested commit and use a PR; never bypass required checks or branch protection.
 - Run `npm run context:update` after adding or renaming a protocol, then `npm run check:context`. Registry generation and validation discover areas dynamically from protocol metadata.
 - `docs/` is excluded from Jekyll output. This repository is public: exclusions do not make repository documentation confidential. Do not commit secrets or private chat transcripts.
+
+## Morgenzeitung agent protocol
+
+For every scheduled Morgenzeitung publication and fallback, follow `services/morgenzeitung/AGENT-ABLAUF.md` in order. Do not claim a complete run unless public publication, private feedback processing and private run audit are verified. The historical Python/SQLite prototype is not the production learning pipeline. Never commit private feedback to this public repository.
