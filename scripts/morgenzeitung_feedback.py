@@ -52,7 +52,7 @@ def learn(profile, issues, editions):
     for _, _, rating, article in latest.values():
         topic = article.get("topic") or ("Nachrichten: " + article.get("region", "Allgemein"))
         row = counts.setdefault(topic, Counter())
-        row[rating["rating"]] += 1
+        if rating["rating"] != "Keine Auswahl":\n            row[rating["rating"]] += 1
     signals = []
     for topic, counts_for_topic in sorted(counts.items()):
         total = sum(counts_for_topic.values())
@@ -61,7 +61,7 @@ def learn(profile, issues, editions):
             continue
         signals.append({"topic": topic, "direction": "positive" if score > 0 else "negative", "confidence": "preliminary", "ratings": total, "net_score": score})
     output = dict(profile)
-    output["learning_signals"] = signals
+    output["computed_learning_signals"] = signals
     output["processed_feedback"] = sorted(processed, key=lambda x: x["issue"])
     return output, {"ratings": len(latest), "issues": len(processed), "signals": len(signals)}
 
