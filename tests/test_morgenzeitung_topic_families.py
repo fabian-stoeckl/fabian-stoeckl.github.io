@@ -49,6 +49,31 @@ class FamilyLearning(unittest.TestCase):
         p, _ = learn({}, [issue(a, ["Sehr relevant", "Nicht relevant", "Teilweise relevant"])],
                      {DAY: {"headlines": [], "articles": a}})
         self.assertEqual(p["computed_learning_signals"], [])
+    def test_three_negative_votes_downrank_related_family_topics(self):
+        a = [article(1, "KI & Kapitalmarkt"), article(2, "KI & Unternehmensfinanzierung"),
+             article(3, "KI & Produktentwicklung")]
+        p, _ = learn({}, [issue(a, ["Nicht relevant"] * 3)],
+                     {DAY: {"headlines": [], "articles": a}})
+        self.assertEqual(p["computed_learning_signals"][0]["topic"], "KI")
+        self.assertEqual(p["computed_learning_signals"][0]["direction"], "negative")
+        pool = [article(4, "KI & Forschung"), article(5, "Industrie & Rohstoffe")]
+        selection, audit = select_articles(pool, p, limit=2)
+        self.assertEqual([item["id"] for item in selection], [pool[1]["id"], pool[0]["id"]])
+        self.assertEqual(audit[-1]["learning_score"], -2)
+
+    def test_family_signal_disappears_after_rating_correction(self):
+        a = [article(1, "Industrie & Rohstoffe"), article(2, "Industrie & Handelspolitik"),
+             article(3, "Industrie & Welthandel")]
+        positive = issue(a, ["Sehr relevant"] * 3)
+        p, _ = learn({}, [positive], {DAY: {"headlines": [], "articles": a}})
+        self.assertEqual(p["computed_learning_signals"][0]["direction"], "positive")
+        corrected = dict(positive, number=101, updated_at=DAY+"T13:00:00Z")
+        corrected["body"] = issue(a, ["Nicht relevant", "Sehr relevant", "Teilweise relevant"])["body"]
+        q, report = learn(p, [positive, corrected], {DAY: {"headlines": [], "articles": a}})
+        self.assertEqual(report["ratings"], 3)
+        self.assertEqual(q["computed_learning_signals"], [])
+        self.assertEqual(q, learn(q, [positive, corrected], {DAY: {"headlines": [], "articles": a}})[0])
+
     def test_uncategorized_headlines_do_not_infer_geography(self):
         self.assertIsNone(topic_family(None))
         self.assertEqual(topic_family("Österreich"), "Österreich")
