@@ -1,0 +1,29 @@
+name: Preference timeline tests
+on:
+  pull_request:
+    paths:
+      - 'Privat/Pressespiegel/preferences.js'
+      - 'Privat/Pressespiegel/preference-timeline.js'
+      - 'Privat/Pressespiegel/praeferenzen.html'
+      - 'tests/test_preference_timeline.cjs'
+      - '.github/workflows/test-preference-timeline.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'Privat/Pressespiegel/preferences.js'
+      - 'Privat/Pressespiegel/preference-timeline.js'
+      - 'Privat/Pressespiegel/praeferenzen.html'
+      - 'tests/test_preference_timeline.cjs'
+      - '.github/workflows/test-preference-timeline.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/test_preference_timeline.cjs
