@@ -56,7 +56,7 @@ class LearningTests(unittest.TestCase):
             {"id": "5fb5c9ccbe27ed04", "title": "Gesetz gegen SLAPP-Klagen vorgelegt", "source": "ORF", "region": "Österreich"}], "articles": []}}
         issue = {"number": 6, "title": "[Morgenzeitung] Sammelbewertung 2026-10-23",
                  "updated_at": "2026-10-23T11:39:55Z",
-                 "body": "Ausgabe: 2026-10-23\\nBereich: Heute wichtig\\nArtikel-ID: 451a044c6532f9a7\\nBewertung: Sehr relevant\\nBegründung: –\\n\\nBereich: Heute wichtig\\nArtikel-ID: 5fb5c9ccbe27ed04\\nBewertung: Nicht relevant\\nBegründung: So juristische Details interessieren mich nicht wenn es um Randbereiche geht die nicht zentrale Interessen betreffen."}
+                 "body": "Ausgabe: 2026-10-23\nBereich: Heute wichtig\nArtikel-ID: 451a044c6532f9a7\nBewertung: Sehr relevant\nBegründung: –\n\nBereich: Heute wichtig\nArtikel-ID: 5fb5c9ccbe27ed04\nBewertung: Nicht relevant\nBegründung: So juristische Details interessieren mich nicht wenn es um Randbereiche geht die nicht zentrale Interessen betreffen."}
         result, report = learn(self.profile, [issue], editions)
         self.assertEqual(report["ratings"], 2)
         self.assertEqual(result["processed_feedback"][0]["issue"], 6)
