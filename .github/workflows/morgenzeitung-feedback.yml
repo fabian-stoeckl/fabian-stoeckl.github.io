@@ -14,6 +14,7 @@ on:
       - 'tests/test_morgenzeitung*.py'
       - 'scripts/morgenzeitung_editorial.py'
       - 'scripts/morgenzeitung_selection_audit.py'
+      - 'scripts/morgenzeitung_publication_audit.py'
   schedule:
     - cron: '15 4 * * *'
   # Daily run at 04:15 UTC (05:15/06:15 Vienna, before the 06:45 edition); trusted main pushes of learner/workflow code also apply verified profile changes.
