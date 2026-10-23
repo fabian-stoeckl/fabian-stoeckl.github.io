@@ -4,6 +4,9 @@ import argparse
 import json
 import re
 from collections import Counter
+
+# Geography is context, not a user preference. Only explicit topical metadata
+# is suitable for preference signals; uncategorized news stays neutral.
 from pathlib import Path
 
 ENTRY = re.compile(r"(?:Bereich: (?P<section>[^\n]+)\n)?Artikel-ID: (?P<id>[a-f0-9]{16})\nBewertung: (?P<rating>Sehr relevant|Teilweise relevant|Nicht relevant|Keine Auswahl)\nBegründung: (?P<reason>[^\n]*)")
@@ -50,7 +53,9 @@ def learn(profile, issues, editions):
                 latest[key] = candidate
     counts = {}
     for _, _, rating, article in latest.values():
-        topic = article.get("topic") or ("Nachrichten: " + article.get("region", "Allgemein"))
+        topic = article.get("topic")
+        if not topic:
+            continue
         row = counts.setdefault(topic, Counter())
         if rating["rating"] != "Keine Auswahl":
             row[rating["rating"]] += 1
@@ -64,7 +69,7 @@ def learn(profile, issues, editions):
     output = dict(profile)
     output["computed_learning_signals"] = signals
     output["processed_feedback"] = sorted(processed, key=lambda x: x["issue"])
-    return output, {"ratings": len(latest), "issues": len(processed), "signals": len(signals)}
+    return output, {"ratings": len(latest), "issues": len(processed), "signals": len(signals), "categorized_ratings": sum(sum(v.values()) for v in counts.values())}
 
 def main():
     p = argparse.ArgumentParser()
