@@ -17,7 +17,7 @@ class LearningTests(unittest.TestCase):
         second, again = learn(first, issues, self.editions)
         self.assertEqual(first, second)
         self.assertEqual(report, again)
-        self.assertEqual(first["learning_signals"][0]["direction"], "positive")
+        self.assertEqual(first["computed_learning_signals"][0]["direction"], "positive")
     def test_revisions_replace_not_add(self):
         a = self.issue(4, "Artikel-ID: 1111111111111111\nBewertung: Sehr relevant\nBegründung: –")
         b = self.issue(5, "Artikel-ID: 1111111111111111\nBewertung: Nicht relevant\nBegründung: –", "2026-10-22T11:00:00Z")
