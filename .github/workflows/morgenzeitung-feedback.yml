@@ -90,16 +90,11 @@ jobs:
             '--output',str(d/'next.json'),'--report',str(d/'report.json')],check=True)
           updated=json.loads((d/'next.json').read_text())
           report=json.loads((d/'report.json').read_text())
-          if updated!=original and os.environ.get('APPLY_CHANGES')=='true':
-              data=base64.b64encode((d/'next.json').read_bytes()).decode()
-              api('/contents/profile.json','PUT',{'message':'Refresh deterministic feedback profile',
-                'content':data,'sha':p['sha']})
           # Publication metadata is recorded only after a verified live readback.
           # The public index alone is not evidence of successful deployment.
-          if os.environ.get('APPLY_CHANGES')=='true':
-              from datetime import datetime
-              from zoneinfo import ZoneInfo
-              from urllib.parse import urljoin
+          # Always validate public publication, including dry runs.
+          from urllib.parse import urljoin
+          if True:
               public='https://www.fabian-stoeckl.com/Privat/Pressespiegel/data/'
               def public_json(name):
                   req=urllib.request.Request(urljoin(public,name),
@@ -119,6 +114,10 @@ jobs:
                   # Do not retroactively certify editorial impact or prior run completion.
                   print('Verified public edition:',newest,
                         'private last_successful_edition remains independent until S7 audit')
+          if updated!=original and os.environ.get('APPLY_CHANGES')=='true':
+              data=base64.b64encode((d/'next.json').read_bytes()).decode()
+              api('/contents/profile.json','PUT',{'message':'Refresh deterministic feedback profile',
+                'content':data,'sha':p['sha']})
           check=api('/contents/profile.json')
           expected=updated if os.environ.get('APPLY_CHANGES')=='true' else original
           assert json.loads(base64.b64decode(check['content']))==expected,'Private readback mismatch'
