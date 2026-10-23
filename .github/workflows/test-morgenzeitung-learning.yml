@@ -1,0 +1,27 @@
+name: Morgenzeitung learning regression and simulation
+on:
+  pull_request:
+    paths:
+      - 'scripts/morgenzeitung_feedback.py'
+      - 'tests/test_morgenzeitung*.py'
+      - '.github/workflows/test-morgenzeitung-learning.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/morgenzeitung_feedback.py'
+      - 'tests/test_morgenzeitung*.py'
+      - '.github/workflows/test-morgenzeitung-learning.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  learning-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run feedback regression and 12-cycle simulation
+        run: python -m unittest discover -s tests -p 'test_morgenzeitung*.py' -v
