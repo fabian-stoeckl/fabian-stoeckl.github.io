@@ -49,6 +49,23 @@ class LearningTests(unittest.TestCase):
         self.assertEqual(report, again)
         self.assertEqual(report["text_feedback"], 1)
         self.assertEqual(first["feedback_observations"][0]["reason"], "Mehr Industriepolitik bitte")
+    def test_real_2026_10_23_uncategorized_feedback_preserved_without_invented_topic(self):
+        """Regression for real feedback #6: avoid mistaking geography for a topic."""
+        editions = {"2026-10-23": {"headlines": [
+            {"id": "451a044c6532f9a7", "title": "Strengere Regeln und neue Kindersätze", "source": "ORF", "region": "Österreich"},
+            {"id": "5fb5c9ccbe27ed04", "title": "Gesetz gegen SLAPP-Klagen vorgelegt", "source": "ORF", "region": "Österreich"}], "articles": []}}
+        issue = {"number": 6, "title": "[Morgenzeitung] Sammelbewertung 2026-10-23",
+                 "updated_at": "2026-10-23T11:39:55Z",
+                 "body": "Ausgabe: 2026-10-23\\nBereich: Heute wichtig\\nArtikel-ID: 451a044c6532f9a7\\nBewertung: Sehr relevant\\nBegründung: –\\n\\nBereich: Heute wichtig\\nArtikel-ID: 5fb5c9ccbe27ed04\\nBewertung: Nicht relevant\\nBegründung: So juristische Details interessieren mich nicht wenn es um Randbereiche geht die nicht zentrale Interessen betreffen."}
+        result, report = learn(self.profile, [issue], editions)
+        self.assertEqual(report["ratings"], 2)
+        self.assertEqual(result["processed_feedback"][0]["issue"], 6)
+        self.assertEqual(result["computed_learning_signals"], [])
+        self.assertEqual(result["topic_evidence"], [])
+        self.assertEqual(len(result["feedback_observations"]), 1)
+        self.assertIn("juristische Details", result["feedback_observations"][0]["reason"])
+        self.assertEqual(result, learn(result, [issue], editions)[0])
+
     def test_tests_excluded(self):
         issue = self.issue(1, "TEST: true")
         _, report = learn(self.profile, [issue], self.editions)
