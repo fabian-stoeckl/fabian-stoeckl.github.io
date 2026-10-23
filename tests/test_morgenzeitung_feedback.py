@@ -35,7 +35,7 @@ class LearningTests(unittest.TestCase):
         self.assertEqual(profile["computed_learning_signals"], [])
         self.assertEqual(report["ratings"], 2)
     def test_free_text_is_preserved_idempotently(self):
-        issue = self.issue(4, "Artikel-ID: 1111111111111111\\nBewertung: Keine Auswahl\\nBegründung: Mehr Industriepolitik bitte")
+        issue = self.issue(4, "Artikel-ID: 1111111111111111\nBewertung: Keine Auswahl\nBegründung: Mehr Industriepolitik bitte")
         first, report = learn(self.profile, [issue], self.editions)
         second, again = learn(first, [issue], self.editions)
         self.assertEqual(first, second)
