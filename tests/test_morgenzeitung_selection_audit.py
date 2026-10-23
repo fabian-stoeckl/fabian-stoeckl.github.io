@@ -80,5 +80,27 @@ class CounterfactualAuditTests(unittest.TestCase):
         self.assertGreaterEqual(result["changed_top_n_count"], 1)
         self.assertFalse(result["editorial_effect_verified"])
 
+    def test_real_industry_family_signal_changes_three_of_ten_in_historical_replay(self):
+        """Actual rated topic family, actual Oct 22/23 story metadata; offline only."""
+        import json
+        from pathlib import Path
+        pool = []
+        for day in ("2026-10-22", "2026-10-23"):
+            edition = json.loads(Path("Privat/Pressespiegel/data", day + ".json").read_text())
+            pool.extend(dict(item, verified=True) for item in edition["articles"])
+        pool.sort(key=lambda item: item["id"])
+        # 4 real Industrie & ... votes: 3 very relevant, 1 neutral.
+        profile = {"computed_learning_signals": [
+            {"topic": "Industrie", "direction": "positive", "confidence": "preliminary",
+             "ratings": 4, "net_score": 3, "scope": "explicit_topic_family"}]}
+        result = compare(pool, profile, limit=10, max_per_source=4)
+        self.assertEqual(result["candidate_count"], 20)
+        self.assertEqual(result["changed_top_n_count"], 3)
+        self.assertEqual(len(result["newly_selected_ids"]), 3)
+        self.assertEqual(len(result["displaced_ids"]), 3)
+        self.assertTrue(result["counterfactual_effect_verified"])
+        self.assertFalse(result["publication_verified"])
+        self.assertFalse(result["editorial_effect_verified"])
+
 if __name__ == "__main__":
     unittest.main()
