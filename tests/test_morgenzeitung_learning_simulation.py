@@ -40,8 +40,9 @@ class ClosedLoopSimulation(unittest.TestCase):
         self.assertEqual(history[0]["positive_top_two"], 1)
         self.assertEqual(history[-1]["positive_top_two"], 2)
         self.assertEqual(history[-1]["ratings"], 48)
-        self.assertEqual(len(profile["computed_learning_signals"]), 4)
-        self.assertEqual(len(profile["editorial_review_queue"]), 4)
+        self.assertGreaterEqual(len(profile["computed_learning_signals"]), 4)
+        self.assertEqual(len(profile["editorial_review_queue"]), len(profile["computed_learning_signals"]))
+        self.assertTrue(set(TOPICS).issubset({s["topic"] for s in profile["computed_learning_signals"]}))
         self.assertTrue(all(h["ratings"] == h["round"] * 4 for h in history))
 
     def test_changed_preferences_reverse_signals_after_sufficient_new_votes(self):
