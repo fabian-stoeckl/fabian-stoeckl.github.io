@@ -38,3 +38,7 @@ Die befristete tägliche Feedbackkontrolle bis einschließlich 14.11.2026 prüft
 
 ## Grenzen
 GitHub Actions `morgenzeitung-freshness.yml` kontrolliert nur die öffentliche Frische und publiziert nicht. Der historische SQLite/Python-Dienst `services/morgenzeitung/core.py` ist nicht der produktive Lernagent. Ein Prompt allein ist kein nachgewiesener Ende-zu-Ende-Test. GitHub-Browser-Token liegt lokal und muss auf vertrauenswürdigen Geräten geschützt werden.
+
+## Soforttest und technische Grenzen (23.10.2026)
+
+Der Workflow `morgenzeitung-feedback.yml` prüft im produktiven Schreibmodus den öffentlichen HTTPS-Index und die neueste Tages-JSON. Das ist ein Live-Publikationscheck, aber **kein** Beleg für redaktionelle Lernwirkung und ersetzt keinen privaten S7-Laufbericht. Ein manuell gestarteter Workflow mit `apply=false` ist ausdrücklich ein Dry-Run; ohne `apply=true` werden keine privaten Profiländerungen geschrieben. Nach Änderungen zuerst PR-Checks prüfen, danach nur bei erfolgreichen Checks mergen und den produktiven Workflow erneut ausführen. Bei fehlenden Berechtigungen oder nicht verfügbarem Workflow-Dispatch keine Ausführung behaupten.
