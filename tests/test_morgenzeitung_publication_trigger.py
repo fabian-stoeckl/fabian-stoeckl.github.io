@@ -8,6 +8,12 @@ WORKFLOW = ROOT / ".github/workflows/morgenzeitung-private-live-audit.yml"
 
 
 class PublicationTriggerTests(unittest.TestCase):
+    def test_private_audit_runs_are_serialized(self):
+        workflow = WORKFLOW.read_text()
+        self.assertIn('concurrency:', workflow)
+        self.assertIn('group: morgenzeitung-private-live-audit', workflow)
+        self.assertIn('cancel-in-progress: false', workflow)
+
     def test_push_path_is_monitored(self):
         workflow = WORKFLOW.read_text()
         self.assertIn("  push:", workflow)
