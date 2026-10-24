@@ -27,6 +27,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
           REQUESTED_DATE: ${{ inputs.date }}
+          TRIGGER_EVENT: ${{ github.event_name }}
         run: |
           set -euo pipefail
           python3 - <<'PY'
@@ -45,6 +46,12 @@ jobs:
               obj=request('/contents/'+path)
               return base64.b64decode(obj['content']),obj['sha']
           date=os.environ.get('REQUESTED_DATE') or ''
+          if not date and os.environ.get('TRIGGER_EVENT')=='push':
+              changed=subprocess.check_output(['git','diff-tree','--no-commit-id','--name-only','-r','HEAD'],text=True).splitlines()
+              edition_files=[p for p in changed if re.fullmatch(r'Privat/Pressespiegel/data/\\d{4}-\\d{2}-\\d{2}\\.json',p)]
+              if len(edition_files)!=1:
+                  raise SystemExit('No unique published edition in push; scheduled audit will retry')
+              date=pathlib.Path(edition_files[0]).stem
           if not date:
               from scripts.morgenzeitung_publication_audit import live_json
               date=live_json('index.json')['dates'][0]
