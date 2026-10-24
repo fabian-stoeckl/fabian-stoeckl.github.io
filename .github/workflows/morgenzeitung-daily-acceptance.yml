@@ -22,6 +22,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   real-publisher-smoke:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
@@ -52,7 +53,7 @@ jobs:
           retention-days: 30
   verify-and-archive-daily:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    needs: real-publisher-smoke
+    # The production archive must run even when an unrelated smoke test fails.
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
