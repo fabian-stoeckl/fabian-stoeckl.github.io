@@ -6,6 +6,16 @@ import json
 from pathlib import Path
 
 
+def missing_evidence_report(date, missing_paths):
+    """Report missing original snapshots without claiming a real learning result."""
+    required = ("candidates/", "snapshots/")
+    missing = sorted(set(missing_paths))
+    if not missing or not all(p.startswith(required) for p in missing):
+        raise ValueError("Missing genuine preselection paths required")
+    return {"date": date, "verdict": "PARTIAL",
+            "missing_original_evidence": missing,
+            "note": "Original preselection evidence absent; cannot establish productive learning. Do not reconstruct."}
+
 def acceptance(audit):
     statuses = audit.get("statuses") or {}
     checks = {

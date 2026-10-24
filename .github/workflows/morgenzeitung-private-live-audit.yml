@@ -78,11 +78,27 @@ jobs:
               raise SystemExit('Invalid edition date')
           # Only preselection snapshots saved by the publishing agent are acceptable.
           # Never reconstruct candidates from public output.
+          def report_missing(path):
+              from scripts.morgenzeitung_acceptance_report import missing_evidence_report
+              diagnostic=missing_evidence_report(date,[path])
+              print('PARTIAL:',json.dumps(diagnostic))
+              dest='audits/'+date+'-missing-evidence.json'
+              payload={'message':'Record incomplete learning audit','content':base64.b64encode(json.dumps(diagnostic).encode()).decode()}
+              try:
+                  request('/contents/'+dest,'PUT',payload)
+              except urllib.error.HTTPError as error:
+                  if error.code not in (409,422):raise
+              saved,_=read_private(dest)
+              if json.loads(saved)!=diagnostic:raise RuntimeError('Diagnostic readback mismatch')
+              if os.environ.get('GITHUB_STEP_SUMMARY'):
+                  with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as summary:
+                      summary.write('### Productive learning: PARTIAL\\nMissing original: '+path+'\\n')
           candidate_path='candidates/'+date+'.json'
           try:
               candidates,_=read_private(candidate_path)
           except urllib.error.HTTPError as error:
               if error.code==404:
+                  report_missing(candidate_path)
                   raise SystemExit('PARTIAL: missing genuine preselection candidate snapshot: '+candidate_path)
               raise
           # Snapshot must be saved before selection, not fetched retrospectively.
@@ -91,6 +107,7 @@ jobs:
               profile,profile_blob_sha=read_private(profile_snapshot_path)
           except urllib.error.HTTPError as error:
               if error.code==404:
+                  report_missing(profile_snapshot_path)
                   raise SystemExit('PARTIAL: missing preselection profile snapshot: '+profile_snapshot_path)
               raise
           # Issue versions must be from the same preselection moment.
@@ -99,6 +116,7 @@ jobs:
               issue_bytes,_=read_private(issue_snapshot_path)
           except urllib.error.HTTPError as error:
               if error.code==404:
+                  report_missing(issue_snapshot_path)
                   raise SystemExit('PARTIAL: missing preselection issue snapshot: '+issue_snapshot_path)
               raise
           issues=json.loads(issue_bytes)
@@ -107,6 +125,7 @@ jobs:
               parameter_bytes,_=read_private(parameter_path)
           except urllib.error.HTTPError as error:
               if error.code==404:
+                  report_missing(parameter_path)
                   raise SystemExit('PARTIAL: missing preselection selection parameters: '+parameter_path)
               raise
           parameters=json.loads(parameter_bytes)
