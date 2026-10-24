@@ -1,7 +1,7 @@
 import json
 import unittest
 from unittest.mock import patch
-from scripts.morgenzeitung_prepublication_gate import verify_edition, verify_index
+from scripts.morgenzeitung_prepublication_gate import verify_edition, validate_published_count, verify_index
 
 
 class Repo:
@@ -22,6 +22,15 @@ class Repo:
 
 
 class GateTests(unittest.TestCase):
+    def test_publication_count_boundary(self):
+        for n in (0, 1, 9, 16):
+            with self.subTest(n=n), self.assertRaisesRegex(ValueError, "10 to 15"):
+                validate_published_count({"articles": [{}] * n})
+        for n in (10, 15):
+            self.assertTrue(validate_published_count({"articles": [{}] * n}))
+        with self.assertRaises(ValueError):
+            validate_published_count({"articles": None})
+
     def test_valid_index(self):
         self.assertTrue(verify_index({"dates": ["2026-10-25", "2026-10-24"]}, "2026-10-25"))
 
