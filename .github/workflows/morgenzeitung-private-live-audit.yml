@@ -129,7 +129,7 @@ jobs:
                   raise SystemExit('PARTIAL: missing preselection selection parameters: '+parameter_path)
               raise
           parameters=json.loads(parameter_bytes)
-          if set(parameters)!={'limit','max_per_source'} or not isinstance(parameters['limit'],int) or not 1<=parameters['limit']<=15 or not isinstance(parameters['max_per_source'],int) or parameters['max_per_source']<1:
+          if set(parameters)!={'limit','max_per_source'} or type(parameters['limit']) is not int or not 1<=parameters['limit']<=15 or type(parameters['max_per_source']) is not int or parameters['max_per_source']<1:
               raise SystemExit('Invalid preselection selection parameters')
 
           work=pathlib.Path('/tmp/morgenzeitung-private-audit')

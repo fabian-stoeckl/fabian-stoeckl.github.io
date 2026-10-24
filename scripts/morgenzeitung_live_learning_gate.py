@@ -14,7 +14,7 @@ from scripts.morgenzeitung_publication_audit import verify_live_with_retry, live
 def audit(date, candidates_bytes, profile_bytes, issues, limit=10, max_per_source=4):
     candidates = json.loads(candidates_bytes)
     profile = json.loads(profile_bytes)
-    if limit < 1 or max_per_source < 1:
+    if type(limit) is not int or type(max_per_source) is not int or not 1 <= limit <= 15 or max_per_source < 1:
         raise ValueError("Selection parameters must be positive")
     if not isinstance(issues, list) or not all(
         isinstance(i, dict) and isinstance(i.get("number"), int)

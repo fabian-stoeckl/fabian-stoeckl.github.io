@@ -95,7 +95,7 @@ def capture(repo, date, candidates_bytes, *, limit=10, max_per_source=4):
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date):
         raise ValueError("Invalid date")
     validate_candidates(candidates_bytes)
-    if not 1 <= limit <= 15 or max_per_source < 1:
+    if type(limit) is not int or type(max_per_source) is not int or not 1 <= limit <= 15 or max_per_source < 1:
         raise ValueError('Invalid editorial selection parameters')
     profile_entry = repo.read("profile.json")
     if profile_entry is None:
@@ -159,7 +159,7 @@ def verify_existing(repo, date):
     parameters = json.loads(entries["parameters"])
     if not isinstance(profile, dict) or not isinstance(issues, list):
         raise ValueError("Invalid original profile or issues snapshot")
-    if set(parameters) != {"limit", "max_per_source"} or not isinstance(parameters["limit"], int) or not 1 <= parameters["limit"] <= 15 or not isinstance(parameters["max_per_source"], int) or parameters["max_per_source"] < 1:
+    if set(parameters) != {"limit", "max_per_source"} or type(parameters["limit"]) is not int or not 1 <= parameters["limit"] <= 15 or type(parameters["max_per_source"]) is not int or parameters["max_per_source"] < 1:
         raise ValueError("Invalid original selection parameters")
     return {"date": date, "candidate_sha256": hashlib.sha256(entries["candidates"]).hexdigest(),
             "profile_sha256": hashlib.sha256(entries["profile"]).hexdigest(),
