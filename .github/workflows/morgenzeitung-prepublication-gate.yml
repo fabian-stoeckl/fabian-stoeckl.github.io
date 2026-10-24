@@ -1,21 +1,9 @@
 name: Morgenzeitung prepublication gate
 on:
+  # Always emit the required status for every PR. Path-filtered required checks
+  # stay pending on unrelated PRs and can deadlock branch protection.
   pull_request:
     branches: [main]
-    paths:
-      - 'Privat/Pressespiegel/data/*.json'
-      - 'scripts/morgenzeitung_prepublication_gate.py'
-      - 'scripts/morgenzeitung_capture_preselection.py'
-      - 'scripts/morgenzeitung_selection_audit.py'
-      - 'scripts/morgenzeitung_source_evidence.py'
-      - 'scripts/morgenzeitung_live_source_check.py'
-      - 'scripts/morgenzeitung_publisher_date_evidence.py'
-      - 'tests/test_morgenzeitung_publisher_date_evidence.py'
-      - 'tests/test_morgenzeitung_live_source_check.py'
-      - 'tests/test_morgenzeitung_source_evidence.py'
-      - 'tests/test_morgenzeitung_prepublication_gate.py'
-      - 'tests/test_morgenzeitung_gate_workflow_coverage.py'
-      - '.github/workflows/morgenzeitung-prepublication-gate.yml'
   push:
     branches: [main]
     paths:
