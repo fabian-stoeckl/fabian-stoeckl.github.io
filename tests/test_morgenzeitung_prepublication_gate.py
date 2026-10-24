@@ -1,5 +1,6 @@
 import json
 import unittest
+from unittest.mock import patch
 from scripts.morgenzeitung_prepublication_gate import verify_edition, verify_index
 
 
@@ -52,6 +53,31 @@ class GateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Missing original"):
             verify_edition(repo, "2026-10-25", {
                 "date": "2026-10-25", "articles": [{"id": "a"}, {"id": "b"}]})
+
+    def test_live_check_runs_only_after_exact_replay(self):
+        with patch("scripts.morgenzeitung_prepublication_gate.check_candidates") as check:
+            verify_edition(Repo(), "2026-10-25", {
+                "date": "2026-10-25", "articles": [{"id": "a"}, {"id": "b"}]},
+                check_live=True)
+            self.assertEqual(len(check.call_args.args[0]), 2)
+        with patch("scripts.morgenzeitung_prepublication_gate.check_candidates") as check:
+            with self.assertRaisesRegex(ValueError, "does not match"):
+                verify_edition(Repo(), "2026-10-25", {
+                    "date": "2026-10-25", "articles": [{"id": "b"}, {"id": "a"}]},
+                    check_live=True)
+            check.assert_not_called()
+
+    def test_unselected_candidates_not_live_checked(self):
+        repo = Repo()
+        pool = json.loads(repo.files["candidates/2026-10-25.json"])
+        pool.append({"id": "c", "topic": "Politik", "source": "SZ",
+                     "source_url": "https://sz.de/article", "verified": True})
+        repo.files["candidates/2026-10-25.json"] = json.dumps(pool).encode()
+        with patch("scripts.morgenzeitung_prepublication_gate.check_candidates") as check:
+            verify_edition(repo, "2026-10-25", {
+                "date": "2026-10-25", "articles": [{"id": "a"}, {"id": "b"}]},
+                check_live=True)
+            self.assertEqual([x["id"] for x in check.call_args.args[0]], ["a", "b"])
 
     def test_preview_rejected(self):
         with self.assertRaisesRegex(ValueError, "preview"):

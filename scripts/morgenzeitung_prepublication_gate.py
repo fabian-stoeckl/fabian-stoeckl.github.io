@@ -31,7 +31,6 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
     source_evidence = audit_sources(candidates)
     if not source_evidence["source_url_structure_verified"]:
         raise ValueError("Unverified original publisher source URLs in archived candidates")
-    live_sources = check_candidates(candidates, date) if check_live else None
     comparison = compare(candidates, profile, **params)
     if edition.get("date") != date or edition.get("preview") is True:
         raise ValueError("Incorrect or preview edition")
@@ -41,6 +40,9 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
     actual = [a.get("id") for a in articles]
     if actual != comparison["selected_ids"]:
         raise ValueError("Edition does not match independently replayed archived selection")
+    selected_ids = set(actual)
+    selected_candidates = [item for item in candidates if item["id"] in selected_ids]
+    live_sources = check_candidates(selected_candidates, date) if check_live else None
     return {
         "date": date,
         "prepublication_gate_verified": True,
