@@ -8,8 +8,8 @@ class Repo:
         day = "2026-10-25"
         self.files = {
             f"candidates/{day}.json": json.dumps([
-                {"id": "a", "topic": "Industrie", "source": "FAZ", "verified": True},
-                {"id": "b", "topic": "Klima", "source": "ORF", "verified": True},
+                {"id": "a", "topic": "Industrie", "source": "FAZ", "source_url": "https://www.faz.net/aktuell/wirtschaft/a", "verified": True},
+                {"id": "b", "topic": "Klima", "source": "ORF", "source_url": "https://orf.at/stories/b", "verified": True},
             ]).encode(),
             f"snapshots/{day}-profile.json": b'{"computed_learning_signals":[]}',
             f"snapshots/{day}-issues.json": b'[]',
