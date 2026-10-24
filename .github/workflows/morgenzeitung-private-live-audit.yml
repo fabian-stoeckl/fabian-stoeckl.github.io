@@ -56,7 +56,7 @@ jobs:
               if error.code==404:
                   raise SystemExit('PARTIAL: missing genuine preselection candidate snapshot: '+candidate_path)
               raise
-          profile,profile_blob_sha=read_private('profile.json')
+          # Snapshot must be saved before selection, not fetched retrospectively.\n          profile_snapshot_path='snapshots/'+date+'-profile.json'\n          try:\n              profile,profile_blob_sha=read_private(profile_snapshot_path)\n          except urllib.error.HTTPError as error:\n              if error.code==404:\n                  raise SystemExit('PARTIAL: missing preselection profile snapshot: '+profile_snapshot_path)\n              raise
           issues=[]
           page=1
           while True:
@@ -77,7 +77,7 @@ jobs:
               '--private-output',str(result_path)],check=True)
           result=json.loads(result_path.read_text())
           result['private_profile_blob_sha']=profile_blob_sha
-          result['candidate_snapshot_path']=candidate_path
+          result['candidate_snapshot_path']=candidate_path\n          result['profile_snapshot_path']=profile_snapshot_path
           result['public_commit']=os.environ['GITHUB_SHA']
           result['provenance_limitations']='Issue versions are current at audit time; publication-time snapshots must be separately captured by the editorial agent.'
           # A separate file avoids overwriting a genuine existing runs/YYYY-MM-DD.json.
