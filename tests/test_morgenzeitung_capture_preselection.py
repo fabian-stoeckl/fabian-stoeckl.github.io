@@ -35,10 +35,18 @@ class CaptureTests(unittest.TestCase):
         repo = MemoryPrivateRepo()
         result = capture(repo, "2026-10-24", self.pool)
         self.assertEqual(result["issue_count"], 1)
-        self.assertEqual(len(repo.writes), 3)
+        self.assertEqual(len(repo.writes), 4)
         capture(repo, "2026-10-24", self.pool)
-        self.assertEqual(len(repo.writes), 6)
+        self.assertEqual(len(repo.writes), 8)
         self.assertEqual(json.loads(repo.files["snapshots/2026-10-24-issues.json"][0])[0]["number"], 3)
+
+    def test_selection_parameters_preserved(self):
+        repo = MemoryPrivateRepo()
+        capture(repo, "2026-10-24", self.pool, limit=15, max_per_source=3)
+        settings = json.loads(repo.files["snapshots/2026-10-24-selection-parameters.json"][0])
+        self.assertEqual(settings, {"limit": 15, "max_per_source": 3})
+        with self.assertRaisesRegex(ValueError, "Conflicting"):
+            capture(repo, "2026-10-24", self.pool, limit=10, max_per_source=3)
 
     def test_conflict_prevents_any_new_write(self):
         repo = MemoryPrivateRepo()
