@@ -78,11 +78,19 @@ jobs:
               raise SystemExit('Invalid edition date')
           # Only preselection snapshots saved by the publishing agent are acceptable.
           # Never reconstruct candidates from public output.
+          def report_missing(path):
+              from scripts.morgenzeitung_acceptance_report import missing_evidence_report
+              diagnostic=missing_evidence_report(date,[path])
+              print('PARTIAL:',json.dumps(diagnostic))
+              if os.environ.get('GITHUB_STEP_SUMMARY'):
+                  with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as summary:
+                      summary.write('### Productive learning: PARTIAL\\nMissing original: '+path+'\\n')
           candidate_path='candidates/'+date+'.json'
           try:
               candidates,_=read_private(candidate_path)
           except urllib.error.HTTPError as error:
               if error.code==404:
+                  report_missing(candidate_path)
                   raise SystemExit('PARTIAL: missing genuine preselection candidate snapshot: '+candidate_path)
               raise
           # Snapshot must be saved before selection, not fetched retrospectively.
