@@ -15,7 +15,9 @@ from scripts.morgenzeitung_source_evidence import validate_source_url
 
 MAX_BYTES = 262144
 DATE_KEYS = {"article:published_time", "datepublished", "pubdate",
-             "publishdate", "date", "dc.date.issued", "dc.date", "datecreated"}
+             "publishdate", "dc.date.issued"}
+ARTICLE_TYPES = {"Article", "NewsArticle", "BlogPosting", "ReportageNewsArticle",
+                 "AnalysisNewsArticle", "OpinionNewsArticle", "LiveBlogPosting"}
 
 
 class MetadataParser(HTMLParser):
@@ -46,19 +48,30 @@ class MetadataParser(HTMLParser):
                 data = json.loads("".join(self._json_chunks))
             except (ValueError, TypeError):
                 return
-            def visit(node, depth=0):
+            def visit(node, depth=0, *, root=False):
                 if depth > 12:
                     return
-                if isinstance(node, dict):
-                    if isinstance(node.get("datePublished"), str):
-                        self.timestamps.append(("jsonld:datePublished", node["datePublished"]))
-                    for value in node.values():
-                        if isinstance(value, (dict, list)):
-                            visit(value, depth + 1)
-                elif isinstance(node, list):
+                if isinstance(node, list):
                     for value in node:
                         visit(value, depth + 1)
-            visit(data)
+                elif isinstance(node, dict):
+                    types = node.get("@type", [])
+                    if isinstance(types, str):
+                        types = [types]
+                    if isinstance(types, list) and any(
+                        isinstance(t, str) and t.rsplit("/", 1)[-1] in ARTICLE_TYPES
+                        for t in types
+                    ):
+                        if isinstance(node.get("datePublished"), str):
+                            self.timestamps.append(("jsonld:datePublished", node["datePublished"]))
+                        # Nested related/recommended articles must not contradict
+                        # the publication date of the main page.
+                        return
+                    for key, value in node.items():
+                        if key in ("@graph", "mainEntity", "mainEntityOfPage") or root:
+                            if isinstance(value, (dict, list)):
+                                visit(value, depth + 1)
+            visit(data, root=True)
 
 
 def normalize_timestamp(value):
