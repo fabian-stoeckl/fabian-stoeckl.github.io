@@ -6,6 +6,9 @@ on:
       - 'scripts/morgenzeitung_editorial.py'
       - 'scripts/morgenzeitung_selection_audit.py'
       - 'scripts/morgenzeitung_publication_audit.py'
+      - 'scripts/morgenzeitung_capture_preselection.py'
+      - 'scripts/morgenzeitung_live_learning_gate.py'
+      - '.github/workflows/morgenzeitung-private-live-audit.yml'
       - 'tests/test_morgenzeitung*.py'
       - '.github/workflows/test-morgenzeitung-learning.yml'
   push:
@@ -15,6 +18,9 @@ on:
       - 'scripts/morgenzeitung_editorial.py'
       - 'scripts/morgenzeitung_selection_audit.py'
       - 'scripts/morgenzeitung_publication_audit.py'
+      - 'scripts/morgenzeitung_capture_preselection.py'
+      - 'scripts/morgenzeitung_live_learning_gate.py'
+      - '.github/workflows/morgenzeitung-private-live-audit.yml'
       - 'tests/test_morgenzeitung*.py'
       - '.github/workflows/test-morgenzeitung-learning.yml'
   workflow_dispatch:

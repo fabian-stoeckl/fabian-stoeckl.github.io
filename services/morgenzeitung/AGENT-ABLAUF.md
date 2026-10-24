@@ -110,3 +110,18 @@ Erst nach erfolgreichem privatem Rücklesetest die **genau diese** Kandidatenlis
 Die neue tägliche Action `.github/workflows/morgenzeitung-private-live-audit.yml` liest ausschließlich die vor der Auswahl privat gespeicherten Dateien `candidates/YYYY-MM-DD.json` und `snapshots/YYYY-MM-DD-profile.json`. **Der veröffentlichende Agent MUSS beide Dateien unmittelbar nach S4 und vor der Auswahl in S5 in `fabian-stoeckl/morgenzeitung-feedback` anlegen und zurücklesen.** Keine Rekonstruktion aus veröffentlichten Artikeln, keine synthetischen Daten, kein späteres Nachtragen. Die Kandidatenliste muss aus den tatsächlich recherchierten, quellenverifizierten Vertiefungskandidaten bestehen und für jedes Element `id`, `topic`, `source`, `verified: true` enthalten. Der Profil-Snapshot muss das exakt für die Auswahl verwendete private Profil enthalten. Existiert eine Datei bereits, nur bei Byte-Gleichheit fortfahren; bei Abweichung abbrechen und Konflikt melden. Die echte Issue-Versionsliste ebenfalls vor der Auswahl festhalten.
 
 **Danach** `scripts.morgenzeitung_selection_audit.compare` auf diesen unveränderten Snapshots ausführen und die ermittelte `selected_ids`-Reihenfolge für die Vertiefungen publizieren. Die nachgelagerte Action um 09:15 UTC prüft das HTTPS-Ergebnis und archiviert einen separaten privaten Audit. Sie ersetzt weder die echte Snapshot-Erstellung durch den Agenten noch den S7-Laufbericht. Wenn die Daten fehlen, lautet das Ergebnis `PARTIAL`; der Workflow darf nicht durch eine Rückwärtsrekonstruktion „repariert“ werden. Für eine vollständige `PASS`-Bewertung müssen zusätzlich Issue-Versionen zum Auswahlzeitpunkt, S7-Profilpersistenz und CI-/Commitnachweise übereinstimmen.
+
+
+## Ausführbarer Preselection-Capture (24.10.2026)
+
+Nicht nur eine Arbeitsanweisung: vor jeder Auswahl muss der tägliche Veröffentlichungsagent den **vollständigen recherchierten, quellenverifizierten Vertiefungs-Kandidatenpool** als lokale JSON-Datei erzeugen und folgendes Kommando erfolgreich ausführen:
+
+```sh
+MORGENZEITUNG_FEEDBACK_TOKEN=<privates GitHub-Secret aus sicherer Laufzeit> \
+  python3 -m scripts.morgenzeitung_capture_preselection \
+  --date YYYY-MM-DD --candidates /tmp/morgenzeitung-verified-candidates.json
+```
+
+Der Token darf niemals in Chat/Logs, öffentlichen Commits oder Argumentlisten erscheinen; im regulären Betrieb als geschützte Umgebungsvariable bereitstellen. Das Programm liest das private aktuelle Profil und die echten Issue-Versionen, prüft die Kandidaten und legt **vor der Auswahl** drei unveränderliche Dateien im privaten Repository an: `candidates/YYYY-MM-DD.json`, `snapshots/YYYY-MM-DD-profile.json`, `snapshots/YYYY-MM-DD-issues.json`. Alle drei werden zurückgelesen. Bei Konflikt oder fehlendem Zugriff **nicht auswählen/publizieren**, sondern als `PARTIAL` melden. Erst anschließend die Auswahl mit dem gespeicherten Profil-Snapshot ausführen, nicht mit einem zwischenzeitlich veränderten Profil. Nach dem Merge der Ausgabe vergleicht der tägliche Audit-Workflow genau diese drei Snapshots mit dem öffentlichen HTTPS-Ergebnis. Er belegt noch nicht selbst die S7-Persistenz oder den Veröffentlichungskommit; diese Beweise müssen separat im privaten `runs/YYYY-MM-DD.json` abgelegt und geprüft werden.
+
+**Wichtig:** GitHub Actions recherchiert und publiziert weiterhin keine Artikel. Ohne tatsächlichen Agentenaufruf des Capture-Kommandos entstehen keine Snapshots. Das ist ein klarer offener Produktionsanschluss, kein bestandener Ende-zu-Ende-Test.

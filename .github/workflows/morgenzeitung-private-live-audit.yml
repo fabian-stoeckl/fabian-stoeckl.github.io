@@ -64,14 +64,15 @@ jobs:
               if error.code==404:
                   raise SystemExit('PARTIAL: missing preselection profile snapshot: '+profile_snapshot_path)
               raise
-          issues=[]
-          page=1
-          while True:
-              batch=request('/issues?state=all&per_page=100&page='+str(page))
-              issues.extend({'number':i['number'],'updated_at':i['updated_at']} for i in batch
-                  if 'pull_request' not in i and i.get('number') not in (1,2))
-              if len(batch)<100:break
-              page+=1
+          # Issue versions must be from the same preselection moment.
+          issue_snapshot_path='snapshots/'+date+'-issues.json'
+          try:
+              issue_bytes,_=read_private(issue_snapshot_path)
+          except urllib.error.HTTPError as error:
+              if error.code==404:
+                  raise SystemExit('PARTIAL: missing preselection issue snapshot: '+issue_snapshot_path)
+              raise
+          issues=json.loads(issue_bytes)
           work=pathlib.Path('/tmp/morgenzeitung-private-audit')
           work.mkdir(exist_ok=True)
           (work/'candidates.json').write_bytes(candidates)
@@ -86,8 +87,9 @@ jobs:
           result['private_profile_blob_sha']=profile_blob_sha
           result['candidate_snapshot_path']=candidate_path
           result['profile_snapshot_path']=profile_snapshot_path
-          result['public_commit']=os.environ['GITHUB_SHA']
-          result['provenance_limitations']='Issue versions are current at audit time; publication-time snapshots must be separately captured by the editorial agent.'
+          result['audit_code_commit']=os.environ['GITHUB_SHA']
+          result['issue_snapshot_path']=issue_snapshot_path
+          result['provenance_limitations']='Publication commit and S7 run persistence must be independently verified; no productive PASS inferred.'
           # A separate file avoids overwriting a genuine existing runs/YYYY-MM-DD.json.
           dest='audits/'+date+'-live-learning.json'
           encoded=base64.b64encode((json.dumps(result,ensure_ascii=False,indent=2)+chr(10)).encode()).decode()
