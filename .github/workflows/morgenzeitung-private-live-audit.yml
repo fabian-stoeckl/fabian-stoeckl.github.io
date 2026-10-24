@@ -6,6 +6,10 @@ on:
         description: 'Published edition date (YYYY-MM-DD); blank uses latest public edition'
         required: false
         type: string
+  push:
+    branches: [main]
+    paths:
+      - 'Privat/Pressespiegel/data/*.json'
   schedule:
     - cron: '15 9 * * *'
 permissions:
