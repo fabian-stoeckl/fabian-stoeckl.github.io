@@ -63,7 +63,7 @@ def check_http(url, opener=None, *, retries=2, sleep=time.sleep):
     raise ValueError("Source URL not confirmed reachable (HTTP " + str(status) + ")")
 
 
-def check_candidates(candidates, edition_date, opener=None):
+def check_candidates(candidates, edition_date, opener=None, *, publisher_dates=False):
     if not isinstance(candidates, list) or not candidates:
         raise ValueError("Candidates required")
     results = []
@@ -72,9 +72,16 @@ def check_candidates(candidates, edition_date, opener=None):
             raise ValueError("Invalid candidate")
         stamp = check_date(candidate.get("published_at"), edition_date)
         response = check_http(candidate.get("source_url"), opener=opener)
-        results.append({"id": candidate.get("id"), "published_at": stamp,
-                        "http_status": response["status"],
-                        "paywall_or_access_restricted": response["paywall_or_access_restricted"]})
+        record = {"id": candidate.get("id"), "published_at": stamp,
+                  "http_status": response["status"],
+                  "paywall_or_access_restricted": response["paywall_or_access_restricted"]}
+        if publisher_dates:
+            from scripts.morgenzeitung_publisher_date_evidence import fetch_publisher_metadata
+            record["publisher_date_evidence"] = fetch_publisher_metadata(
+                candidate["source_url"], stamp, opener=opener)
+            if record["publisher_date_evidence"]["status"] in ("mismatch", "conflict"):
+                raise ValueError("Publisher publication metadata contradict archived date")
+        results.append(record)
     return {"live_source_checks_passed": True, "checked": results,
             "limitation": "HEAD 200 and a declared publication time do not verify article body or independent timestamp. Access-restricted sources are rejected until independently verified."}
 

@@ -9,6 +9,8 @@ on:
       - 'scripts/morgenzeitung_selection_audit.py'
       - 'scripts/morgenzeitung_source_evidence.py'
       - 'scripts/morgenzeitung_live_source_check.py'
+      - 'scripts/morgenzeitung_publisher_date_evidence.py'
+      - 'tests/test_morgenzeitung_publisher_date_evidence.py'
       - 'tests/test_morgenzeitung_live_source_check.py'
       - 'tests/test_morgenzeitung_source_evidence.py'
       - '.github/workflows/morgenzeitung-prepublication-gate.yml'
