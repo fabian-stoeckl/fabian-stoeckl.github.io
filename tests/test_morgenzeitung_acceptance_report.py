@@ -27,6 +27,7 @@ class AcceptanceReportTests(unittest.TestCase):
                          "counterfactual_effect": "PASS", "live_publication": "PASS"},
             "publication_audit": {"publication_verified": True},
             "selection_comparison": {"counterfactual_effect_verified": True},
+            "chronological_provenance": {"chronology_verified": True},
             "publication_commit_verified": True,
             "private_run_persistence_verified": True,
         })

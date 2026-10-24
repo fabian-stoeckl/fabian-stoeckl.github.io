@@ -53,6 +53,10 @@ def acceptance(audit):
             "status": "PASS" if statuses.get("profile_learning") == "PASS" else "PARTIAL",
             "reason": "Verified profile update from real feedback required",
         },
+        "chronological_provenance": {
+            "status": "PASS" if (audit.get("chronological_provenance") or {}).get("chronology_verified") is True else "PARTIAL",
+            "reason": "All four original private commits must precede the public edition commit; this is necessary but not proof of selector execution",
+        },
         "production_provenance": {
             "status": "PASS" if audit.get("publication_commit_verified") is True
                 and audit.get("private_run_persistence_verified") is True else "PARTIAL",
