@@ -170,6 +170,30 @@ def learn(profile, issues, editions):
         })
     return output, {"ratings": len(latest), "issues": len(processed), "signals": len(signals), "categorized_ratings": sum(sum(v.values()) for v in counts.values()), "text_feedback": len(observations)}
 
+def write_profile_if_unchanged(api, original_sha, original, updated, apply):
+    """Optimistic lock: reject concurrent profile updates, never overwrite them."""
+    import base64
+    import urllib.error
+    current = api("/contents/profile.json")
+    current_profile = json.loads(base64.b64decode(current["content"]))
+    if current["sha"] != original_sha or current_profile != original:
+        raise RuntimeError("Private profile changed concurrently; rerun feedback ingestion")
+    if not apply or updated == original:
+        return False
+    payload = base64.b64encode((json.dumps(updated, ensure_ascii=False, indent=2) + "\\n").encode()).decode()
+    try:
+        api("/contents/profile.json", "PUT", {
+            "message": "Refresh deterministic feedback profile",
+            "content": payload, "sha": original_sha})
+    except urllib.error.HTTPError as error:
+        if error.code in (409, 422):
+            raise RuntimeError("Concurrent profile write conflict; rerun feedback ingestion") from error
+        raise
+    check = api("/contents/profile.json")
+    if json.loads(base64.b64decode(check["content"])) != updated:
+        raise RuntimeError("Private profile readback mismatch")
+    return True
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--profile", required=True)
