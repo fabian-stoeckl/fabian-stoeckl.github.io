@@ -61,6 +61,16 @@ class CaptureTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 validate_candidates(json.dumps(items).encode())
 
+    def test_rejects_missing_or_unsafe_source_url(self):
+        for url in (None, "http://example.org/story", "https://localhost/story",
+                    "https://user:pass@example.org/story", "https://example.org/story#frag"):
+            candidate = {"id": "a", "topic": "Industrie", "source": "FAZ",
+                         "verified": True}
+            if url is not None:
+                candidate["source_url"] = url
+            with self.subTest(url=url), self.assertRaisesRegex(ValueError, "source_url"):
+                validate_candidates(json.dumps([candidate]).encode())
+
     def test_invalid_date_before_write(self):
         repo = MemoryPrivateRepo()
         with self.assertRaises(ValueError):
