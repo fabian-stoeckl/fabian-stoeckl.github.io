@@ -1,5 +1,5 @@
 import unittest
-from scripts.morgenzeitung_feedback import learn
+from scripts.morgenzeitung_feedback import learn, ordered_owner_feedback_comments
 
 class LearningTests(unittest.TestCase):
     def setUp(self):
@@ -92,6 +92,21 @@ class LearningTests(unittest.TestCase):
         self.assertTrue(all(item["topic"] is None for item in queue))
         self.assertTrue(all(item["scope"] == "article_only_no_topic_inference" for item in queue))
         self.assertIn("Juristische Randdetails", queue[1]["reason"])
+
+    def test_edited_comment_supersedes_later_created_comment(self):
+        def comment(id, created, updated, rating, owner="fabian-stoeckl"):
+            return {"id": id, "created_at": created, "updated_at": updated,
+                    "user": {"login": owner}, "body":
+                    "Artikel-ID: 1111111111111111\nBewertung: " + rating + "\nBegründung: –"}
+        comments = [comment(1, "2026-10-22T10:00:00Z", "2026-10-22T13:00:00Z", "Sehr relevant"),
+                    comment(2, "2026-10-22T11:00:00Z", "2026-10-22T11:00:00Z", "Nicht relevant"),
+                    comment(3, "2026-10-22T12:00:00Z", "2026-10-22T12:00:00Z", "Sehr relevant", "other")]
+        revisions = ordered_owner_feedback_comments(comments)
+        self.assertEqual([item["id"] for item in revisions], [2, 1])
+        issue = self.issue(4, "\n\n".join(item["body"] for item in revisions))
+        profile, report = learn(self.profile, [issue], self.editions)
+        self.assertEqual(report["ratings"], 1)
+        self.assertEqual(profile["computed_learning_signals"], [])
 
     def test_tests_excluded(self):
         issue = self.issue(1, "TEST: true")
