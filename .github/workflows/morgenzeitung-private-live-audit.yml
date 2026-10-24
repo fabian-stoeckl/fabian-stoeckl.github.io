@@ -145,7 +145,12 @@ jobs:
               result=previous
               print('Idempotent existing private audit:',dest)
           else:
-              request('/contents/'+dest,'PUT',{'message':'Archive live Morgenzeitung audit '+date,'content':encoded})
+              try:
+                  request('/contents/'+dest,'PUT',{'message':'Archive live Morgenzeitung audit '+date,'content':encoded})
+              except urllib.error.HTTPError as error:
+                  if error.code not in (409,422):raise
+                  saved,_=read_private(dest)
+                  if json.loads(saved)!=result:raise SystemExit('Conflicting private audit content')
           saved,_=read_private(dest)
           if json.loads(saved)!=result:
               raise SystemExit('Private audit readback mismatch')
