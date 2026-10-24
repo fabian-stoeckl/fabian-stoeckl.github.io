@@ -1,6 +1,6 @@
 """Conservative live source and publication-date checks.
 
-A paywall response is evidence of a reachable publisher, not article verification.
+A paywall response is NOT proof that an article exists.
 Never follow HTTP redirects automatically (avoid redirect-based SSRF).
 """
 import argparse
@@ -57,8 +57,8 @@ def check_http(url, opener=None, *, retries=2, sleep=time.sleep):
             continue
         break
     if status in (401, 402, 403):
-        return {"status": status, "reachable": True, "paywall_or_access_restricted": True}
-    if 200 <= status < 300:
+        raise ValueError("Publisher access restricted: article existence unverified (HTTP " + str(status) + ")")
+    if status == 200:
         return {"status": status, "reachable": True, "paywall_or_access_restricted": False}
     raise ValueError("Source URL not confirmed reachable (HTTP " + str(status) + ")")
 
@@ -76,7 +76,7 @@ def check_candidates(candidates, edition_date, opener=None):
                         "http_status": response["status"],
                         "paywall_or_access_restricted": response["paywall_or_access_restricted"]})
     return {"live_source_checks_passed": True, "checked": results,
-            "limitation": "HTTP status and declared publication time do not verify article body or independent timestamp."}
+            "limitation": "HEAD 200 and a declared publication time do not verify article body or independent timestamp. Access-restricted sources are rejected until independently verified."}
 
 
 def main():
