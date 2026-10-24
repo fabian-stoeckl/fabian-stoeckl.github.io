@@ -27,7 +27,7 @@ def verify_edition(repo, date, edition, index=None):
     candidates = json.loads(repo.read("candidates/" + date + ".json")[0])
     profile = json.loads(repo.read("snapshots/" + date + "-profile.json")[0])
     params = evidence["parameters"]
-    source_evidence = audit_sources(candidates)
+    source_evidence = audit_sources(candidates)\n    if not source_evidence["source_url_structure_verified"]:\n        raise ValueError("Unverified original publisher source URLs in archived candidates")
     comparison = compare(candidates, profile, **params)
     if edition.get("date") != date or edition.get("preview") is True:
         raise ValueError("Incorrect or preview edition")
