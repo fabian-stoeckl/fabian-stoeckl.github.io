@@ -52,6 +52,29 @@ class LiveSourceTests(unittest.TestCase):
             with self.subTest(status=status), self.assertRaises(ValueError):
                 check_http("https://example.org/story", Opener(status))
 
+    def test_head_not_allowed_falls_back_to_get(self):
+        class HeadBlocked:
+            methods = []
+            def open(self, req, timeout):
+                self.methods.append(req.get_method())
+                if req.get_method() == "HEAD":
+                    raise urllib.error.HTTPError(req.full_url, 405, "no HEAD", {}, None)
+                self.assert_range = req.get_header("Range")
+                return Response()
+        opener = HeadBlocked()
+        result = check_http("https://example.org/story", opener)
+        self.assertEqual(opener.methods, ["HEAD", "GET"])
+        self.assertEqual(opener.assert_range, "bytes=0-0")
+        self.assertEqual(result["method"], "GET")
+
+    def test_head_fallback_does_not_accept_paywall(self):
+        class Blocked:
+            def open(self, req, timeout):
+                code = 501 if req.get_method() == "HEAD" else 403
+                raise urllib.error.HTTPError(req.full_url, code, "blocked", {}, None)
+        with self.assertRaisesRegex(ValueError, "existence unverified"):
+            check_http("https://example.org/story", Blocked())
+
     def test_transient_http_recovery(self):
         class Flaky:
             calls = 0
