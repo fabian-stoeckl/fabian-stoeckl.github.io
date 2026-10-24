@@ -79,6 +79,14 @@ class GateTests(unittest.TestCase):
                 check_live=True)
             self.assertEqual([x["id"] for x in check.call_args.args[0]], ["a", "b"])
 
+    def test_live_source_metadata_contradiction_blocks(self):
+        with patch("scripts.morgenzeitung_prepublication_gate.check_candidates",
+                   side_effect=ValueError("Publisher publication metadata contradict archived date")):
+            with self.assertRaisesRegex(ValueError, "contradict"):
+                verify_edition(Repo(), "2026-10-25", {
+                    "date": "2026-10-25", "articles": [{"id": "a"}, {"id": "b"}]},
+                    check_live=True)
+
     def test_preview_rejected(self):
         with self.assertRaisesRegex(ValueError, "preview"):
             verify_edition(Repo(), "2026-10-25", {
