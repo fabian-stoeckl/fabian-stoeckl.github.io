@@ -47,7 +47,17 @@ jobs:
               req=urllib.request.Request(root+path,data=data,method=method,headers={
                   'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json',
                   'X-GitHub-Api-Version':'2022-11-28'})
-              with urllib.request.urlopen(req,timeout=30) as resp:return json.load(resp)
+              for attempt in range(3):
+                  try:
+                      with urllib.request.urlopen(req,timeout=30) as resp:
+                          return json.load(resp)
+                  except urllib.error.HTTPError as error:
+                      if error.code not in (429,500,502,503,504) or attempt==2:
+                          raise
+                  except (urllib.error.URLError,TimeoutError):
+                      if attempt==2:
+                          raise
+                  time.sleep(2*(attempt+1))
           def read_private(path):
               obj=request('/contents/'+path)
               return base64.b64decode(obj['content']),obj['sha']
@@ -145,7 +155,12 @@ jobs:
               result=previous
               print('Idempotent existing private audit:',dest)
           else:
-              request('/contents/'+dest,'PUT',{'message':'Archive live Morgenzeitung audit '+date,'content':encoded})
+              try:
+                  request('/contents/'+dest,'PUT',{'message':'Archive live Morgenzeitung audit '+date,'content':encoded})
+              except urllib.error.HTTPError as error:
+                  if error.code not in (409,422):raise
+                  saved,_=read_private(dest)
+                  if json.loads(saved)!=result:raise SystemExit('Conflicting private audit content')
           saved,_=read_private(dest)
           if json.loads(saved)!=result:
               raise SystemExit('Private audit readback mismatch')
@@ -164,7 +179,14 @@ jobs:
               if json.loads(base64.b64decode(report_existing['content']))!=report:
                   raise SystemExit('Existing immutable acceptance report differs: '+report_dest)
           else:
-              request('/contents/'+report_dest,'PUT',{'message':'Archive Morgenzeitung acceptance '+date,'content':report_encoded})
+              try:
+                  request('/contents/'+report_dest,'PUT',{'message':'Archive Morgenzeitung acceptance '+date,'content':report_encoded})
+              except urllib.error.HTTPError as error:
+                  if error.code not in (409,422):
+                      raise
+                  current,_=read_private(report_dest)
+                  if json.loads(current)!=report:
+                      raise SystemExit('Conflicting acceptance report')
           report_saved,_=read_private(report_dest)
           if json.loads(report_saved)!=report:
               raise SystemExit('Acceptance report readback mismatch')
