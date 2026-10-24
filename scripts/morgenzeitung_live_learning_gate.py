@@ -8,7 +8,7 @@ import hashlib
 import json
 from pathlib import Path
 from scripts.morgenzeitung_selection_audit import compare
-from scripts.morgenzeitung_publication_audit import verify_live_with_retry
+from scripts.morgenzeitung_publication_audit import verify_live_with_retry, live_json
 
 
 def audit(date, candidates_bytes, profile_bytes, issues, limit=10, max_per_source=4):
@@ -24,7 +24,7 @@ def audit(date, candidates_bytes, profile_bytes, issues, limit=10, max_per_sourc
     if len({i["number"] for i in issues}) != len(issues):
         raise ValueError("Duplicate issue versions")
     comparison = compare(candidates, profile, limit=limit, max_per_source=max_per_source)
-    publication = verify_live_with_retry(comparison, date)
+    publication = verify_live_with_retry(comparison, date, fetch=live_json)
     return {
         "date": date,
         "candidate_pool_sha256": hashlib.sha256(candidates_bytes).hexdigest(),
