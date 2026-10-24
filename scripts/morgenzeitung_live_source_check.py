@@ -26,8 +26,10 @@ def check_date(published_at, edition_date, max_age_hours=72):
         raise ValueError("Invalid source or edition date") from exc
     if stamp.tzinfo is None:
         raise ValueError("Publication timestamp needs timezone")
-    local_date = stamp.astimezone(dt.timezone.utc).date()
-    if not (edition - dt.timedelta(days=4) <= local_date <= edition + dt.timedelta(days=1)):
+    edition_end = dt.datetime.combine(edition + dt.timedelta(days=1), dt.time.min,
+                                      tzinfo=dt.timezone.utc)
+    if not (edition_end - dt.timedelta(hours=max_age_hours)
+            <= stamp.astimezone(dt.timezone.utc) <= edition_end):
         raise ValueError("Publication date outside edition review window")
     return stamp.isoformat()
 
