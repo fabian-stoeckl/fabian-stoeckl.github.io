@@ -43,7 +43,7 @@ def verify(index, edition, audit, date):
 
 def live_json(filename, *, attempts=4, delay=15, sleep=time.sleep):
     """Retry transient deployment/network errors, never schema or redirect failures."""
-    if not re.fullmatch(r"(?:index|\\d{4}-\\d{2}-\\d{2})\\.json", filename):
+    if not re.fullmatch(r"(?:index|\d{4}-\d{2}-\d{2})\.json", filename):
         raise ValueError("Invalid public JSON filename")
     if attempts < 1:
         raise ValueError("attempts must be positive")
