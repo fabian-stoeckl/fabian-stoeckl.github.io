@@ -97,7 +97,7 @@ class LearningTests(unittest.TestCase):
         def comment(id, created, updated, rating, owner="fabian-stoeckl"):
             return {"id": id, "created_at": created, "updated_at": updated,
                     "user": {"login": owner}, "body":
-                    "Artikel-ID: 1111111111111111\\nBewertung: " + rating + "\\nBegründung: –"}
+                    "Artikel-ID: 1111111111111111\nBewertung: " + rating + "\nBegründung: –"}
         comments = [comment(1, "2026-10-22T10:00:00Z", "2026-10-22T13:00:00Z", "Sehr relevant"),
                     comment(2, "2026-10-22T11:00:00Z", "2026-10-22T11:00:00Z", "Nicht relevant"),
                     comment(3, "2026-10-22T12:00:00Z", "2026-10-22T12:00:00Z", "Sehr relevant", "other")]
