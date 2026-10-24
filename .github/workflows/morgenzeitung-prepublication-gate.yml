@@ -1,0 +1,56 @@
+name: Morgenzeitung prepublication gate
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Privat/Pressespiegel/data/*.json'
+      - 'scripts/morgenzeitung_prepublication_gate.py'
+      - 'scripts/morgenzeitung_capture_preselection.py'
+      - 'scripts/morgenzeitung_selection_audit.py'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Date to verify (YYYY-MM-DD)'
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  prepublication-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Replay private original selection against edition
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+          REQUESTED_DATE: ${{ inputs.date }}
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os, pathlib, re, subprocess
+          if not os.environ.get('MORGENZEITUNG_FEEDBACK_TOKEN'):
+              raise SystemExit('Missing private repo token: publication gate cannot pass')
+          if os.environ.get('EVENT_NAME')=='pull_request':
+              base=os.environ['BASE_SHA']
+              changed=subprocess.check_output(['git','diff','--name-only',base,'HEAD'],text=True).splitlines()
+              editions=[pathlib.Path(p).stem for p in changed
+                  if re.fullmatch(r'Privat/Pressespiegel/data/\d{4}-\d{2}-\d{2}\.json',p)]
+              if not editions:
+                  print('No edition JSON changed; no publication to gate')
+                  raise SystemExit(0)
+          else:
+              editions=[os.environ['REQUESTED_DATE']]
+          for day in sorted(set(editions)):
+              if not re.fullmatch(r'\d{4}-\d{2}-\d{2}',day):
+                  raise SystemExit('Invalid edition date')
+              subprocess.run(['python3','-m','scripts.morgenzeitung_prepublication_gate',
+                  '--date',day,'--edition','Privat/Pressespiegel/data/'+day+'.json'],check=True)
+          PY
