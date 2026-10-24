@@ -103,7 +103,7 @@ class LearningTests(unittest.TestCase):
                     comment(3, "2026-10-22T12:00:00Z", "2026-10-22T12:00:00Z", "Sehr relevant", "other")]
         revisions = ordered_owner_feedback_comments(comments)
         self.assertEqual([item["id"] for item in revisions], [2, 1])
-        issue = self.issue(4, "\\n\\n".join(item["body"] for item in revisions))
+        issue = self.issue(4, "\n\n".join(item["body"] for item in revisions))
         profile, report = learn(self.profile, [issue], self.editions)
         self.assertEqual(report["ratings"], 1)
         self.assertEqual(profile["computed_learning_signals"], [])
