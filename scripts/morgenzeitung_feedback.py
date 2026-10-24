@@ -26,6 +26,15 @@ def topic_family(topic):
     return prefix if separator and prefix in FAMILY_PREFIXES else topic
 
 
+def ordered_owner_feedback_comments(comments, owner="fabian-stoeckl"):
+    """Only structured owner revisions; edited comments sort by last update."""
+    eligible = [item for item in comments
+                if item.get("user", {}).get("login") == owner
+                and "Artikel-ID:" in (item.get("body") or "")
+                and "Bewertung:" in (item.get("body") or "")]
+    return sorted(eligible, key=lambda item: (
+        item.get("updated_at") or item.get("created_at") or "", item.get("id", 0)))
+
 def parse_issue(issue):
     title = issue.get("title", "")
     if not re.fullmatch(r"\[Morgenzeitung\] Sammelbewertung \d{4}-\d{2}-\d{2}", title):
