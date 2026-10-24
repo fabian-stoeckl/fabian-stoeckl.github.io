@@ -57,6 +57,13 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
     }
 
 
+def validate_published_count(edition):
+    articles = edition.get('articles') if isinstance(edition, dict) else None
+    if not isinstance(articles, list) or not 10 <= len(articles) <= 15:
+        raise ValueError('Published edition must contain 10 to 15 articles')
+    return True
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--date", required=True)
@@ -66,7 +73,9 @@ def main():
     args = p.parse_args()
     import os
     repo = PrivateRepo(os.environ.get("MORGENZEITUNG_FEEDBACK_TOKEN"))
-    result = verify_edition(repo, args.date, json.loads(args.edition.read_text()),
+    edition = json.loads(args.edition.read_text())
+    validate_published_count(edition)
+    result = verify_edition(repo, args.date, edition,
                             json.loads(args.index.read_text()) if args.index else None,
                             check_live=args.check_live_sources)
     print(json.dumps(result, ensure_ascii=False))
