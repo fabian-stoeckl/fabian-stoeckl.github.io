@@ -20,9 +20,17 @@ def acceptance(audit):
     statuses = audit.get("statuses") or {}
     checks = {
         "preselection_evidence": {
-            "status": "PASS" if all(audit.get(k) for k in (
-                "candidate_pool_sha256", "profile_sha256", "issue_versions",
-                "selection_parameters")) else "PARTIAL",
+            "status": "PASS" if (
+                all(isinstance(audit.get(k), str) and len(audit[k]) == 64
+                    and all(ch in "0123456789abcdef" for ch in audit[k])
+                    for k in ("candidate_pool_sha256", "profile_sha256"))
+                and isinstance(audit.get("issue_versions"), list)
+                and isinstance(audit.get("selection_parameters"), dict)
+                and type(audit["selection_parameters"].get("limit")) is int
+                and 1 <= audit["selection_parameters"]["limit"] <= 15
+                and type(audit["selection_parameters"].get("max_per_source")) is int
+                and audit["selection_parameters"]["max_per_source"] >= 1
+            ) else "PARTIAL",
             "reason": "Immutable candidate, profile, issue-version and parameter evidence required",
         },
         "live_publication": {

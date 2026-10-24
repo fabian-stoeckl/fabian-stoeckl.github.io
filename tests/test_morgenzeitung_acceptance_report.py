@@ -20,7 +20,7 @@ class AcceptanceReportTests(unittest.TestCase):
 
     def test_all_independent_evidence_can_pass(self):
         result = acceptance({
-            "candidate_pool_sha256": "abc", "profile_sha256": "def",
+            "candidate_pool_sha256": "a" * 64, "profile_sha256": "b" * 64,
             "issue_versions": [{"number": 3, "updated_at": "2026-10-24"}],
             "selection_parameters": {"limit": 10, "max_per_source": 4},
             "statuses": {"feedback": "PASS", "profile_learning": "PASS",
