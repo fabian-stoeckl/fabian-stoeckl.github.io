@@ -12,6 +12,7 @@ import pathlib
 import re
 import urllib.error
 import urllib.request
+import time
 
 API = "https://api.github.com/repos/fabian-stoeckl/morgenzeitung-feedback"
 
@@ -47,8 +48,17 @@ class PrivateRepo:
                      "Accept": "application/vnd.github+json",
                      "X-GitHub-Api-Version": "2022-11-28"},
         )
-        with urllib.request.urlopen(req, timeout=30) as response:
-            return json.load(response)
+        for attempt in range(3):
+            try:
+                with urllib.request.urlopen(req, timeout=30) as response:
+                    return json.load(response)
+            except urllib.error.HTTPError as error:
+                if error.code not in (429,500,502,503,504) or attempt == 2:
+                    raise
+            except (urllib.error.URLError, TimeoutError):
+                if attempt == 2:
+                    raise
+            time.sleep(2 * (attempt + 1))
 
     def read(self, path):
         try:
@@ -65,10 +75,17 @@ class PrivateRepo:
             if existing[0] != data:
                 raise ValueError("Conflicting immutable private snapshot: " + path)
             return
-        self.api("/contents/" + path, "PUT", {
-            "message": "Capture preselection evidence " + path,
-            "content": base64.b64encode(data).decode(),
-        })
+        try:
+            self.api("/contents/" + path, "PUT", {
+                "message": "Capture preselection evidence " + path,
+                "content": base64.b64encode(data).decode(),
+            })
+        except urllib.error.HTTPError as error:
+            if error.code not in (409, 422):
+                raise
+            concurrent = self.read(path)
+            if concurrent is None or concurrent[0] != data:
+                raise ValueError("Conflicting concurrent private snapshot: " + path) from error
         saved = self.read(path)
         if saved is None or saved[0] != data:
             raise ValueError("Private snapshot readback failed: " + path)
