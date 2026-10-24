@@ -204,6 +204,8 @@ def smoke():
              for name, url, stamp in REAL_ARTICLES]
     observed = inspect_publisher_pages(pages, count=len(pages))
     statuses = [item["evidence"]["status"] for item in observed]
+    for item in observed:
+        print("Real publisher:", item["source"], json.dumps(item["evidence"], ensure_ascii=False))
     return {"tested_real_pages": observed, "match_count": statuses.count("match"),
             "mismatch_count": statuses.count("mismatch"),
             "conflict_count": statuses.count("conflict"),
