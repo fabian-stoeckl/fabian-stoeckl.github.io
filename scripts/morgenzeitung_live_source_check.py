@@ -17,7 +17,7 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
-def check_date(published_at, edition_date, max_age_hours=72):
+def check_date(published_at, edition_date, max_age_hours=72, *, as_of=None):
     if not isinstance(published_at, str):
         raise ValueError("Missing source publication timestamp")
     try:
@@ -29,8 +29,12 @@ def check_date(published_at, edition_date, max_age_hours=72):
         raise ValueError("Publication timestamp needs timezone")
     edition_end = dt.datetime.combine(edition + dt.timedelta(days=1), dt.time.min,
                                       tzinfo=dt.timezone.utc)
+    now = as_of if as_of is not None else dt.datetime.now(dt.timezone.utc)
+    if now.tzinfo is None:
+        raise ValueError("Verification time needs timezone")
+    latest = min(edition_end, now.astimezone(dt.timezone.utc) + dt.timedelta(minutes=5))
     if not (edition_end - dt.timedelta(hours=max_age_hours)
-            <= stamp.astimezone(dt.timezone.utc) <= edition_end):
+            <= stamp.astimezone(dt.timezone.utc) <= latest):
         raise ValueError("Publication date outside edition review window")
     return stamp.isoformat()
 
