@@ -64,6 +64,7 @@ jobs:
               page+=1
           # Include structured feedback revisions posted as issue comments.
           # Only the repository owner's comments may alter the private profile.
+          from scripts.morgenzeitung_feedback import ordered_owner_feedback_comments
           for issue in issues:
               if not issue.get('comments') or not issue.get('title','').startswith('[Morgenzeitung] Sammelbewertung '):
                   continue
@@ -74,7 +75,7 @@ jobs:
                   comments.extend(batch)
                   if len(batch)<100:break
                   n+=1
-              for comment in sorted(comments,key=lambda item:(item.get('updated_at') or item.get('created_at',''),item.get('id',0))):
+              for comment in ordered_owner_feedback_comments(comments):
                   if comment.get('user',{}).get('login')!='fabian-stoeckl':
                       continue
                   body=comment.get('body') or ''
