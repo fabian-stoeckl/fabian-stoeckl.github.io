@@ -37,6 +37,8 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
     articles = edition.get("articles")
     if not isinstance(articles, list) or any(not isinstance(a, dict) for a in articles):
         raise ValueError("Invalid edition articles")
+    if not 10 <= len(articles) <= 15:
+        raise ValueError("Published edition must contain 10 to 15 articles")
     actual = [a.get("id") for a in articles]
     if actual != comparison["selected_ids"]:
         raise ValueError("Edition does not match independently replayed archived selection")
