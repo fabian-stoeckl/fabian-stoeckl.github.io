@@ -29,7 +29,7 @@ class MemoryPrivateRepo:
 class CaptureTests(unittest.TestCase):
     def setUp(self):
         self.pool = json.dumps([{"id": "a", "topic": "Industrie",
-                                 "source": "FAZ", "verified": True}]).encode()
+                                 "source": "FAZ", "source_url": "https://www.faz.net/aktuell/wirtschaft/test", "verified": True}]).encode()
 
     def test_capture_and_idempotence(self):
         repo = MemoryPrivateRepo()
