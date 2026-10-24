@@ -74,10 +74,12 @@ class PrivateRepo:
             raise ValueError("Private snapshot readback failed: " + path)
 
 
-def capture(repo, date, candidates_bytes):
+def capture(repo, date, candidates_bytes, *, limit=10, max_per_source=4):
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date):
         raise ValueError("Invalid date")
     validate_candidates(candidates_bytes)
+    if not 1 <= limit <= 15 or max_per_source < 1:
+        raise ValueError('Invalid editorial selection parameters')
     profile_entry = repo.read("profile.json")
     if profile_entry is None:
         raise ValueError("Private profile missing")
@@ -100,6 +102,7 @@ def capture(repo, date, candidates_bytes):
         "candidates/" + date + ".json": candidates_bytes,
         "snapshots/" + date + "-profile.json": profile_bytes,
         "snapshots/" + date + "-issues.json": versions_bytes,
+        "snapshots/" + date + "-selection-parameters.json": (json.dumps({"limit": limit, "max_per_source": max_per_source}, sort_keys=True) + "\\n").encode(),
     }
     # Preflight all paths before any write, preventing known conflicts.
     for path, data in paths.items():
@@ -120,9 +123,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--date", required=True)
     parser.add_argument("--candidates", required=True, type=pathlib.Path)
+    parser.add_argument("--limit", type=int, default=10)
+    parser.add_argument("--max-per-source", type=int, default=4)
     args = parser.parse_args()
     result = capture(PrivateRepo(os.environ.get("MORGENZEITUNG_FEEDBACK_TOKEN")),
-                     args.date, args.candidates.read_bytes())
+                     args.date, args.candidates.read_bytes(), limit=args.limit,
+                     max_per_source=args.max_per_source)
     print(json.dumps(result, ensure_ascii=False))
 
 
