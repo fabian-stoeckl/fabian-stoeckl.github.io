@@ -1,0 +1,33 @@
+"""Guard against broken edition-path detection in the live audit workflow."""
+import pathlib
+import re
+import unittest
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+WORKFLOW = ROOT / ".github/workflows/morgenzeitung-private-live-audit.yml"
+
+
+class PublicationTriggerTests(unittest.TestCase):
+    def test_push_path_is_monitored(self):
+        workflow = WORKFLOW.read_text()
+        self.assertIn("  push:", workflow)
+        self.assertIn("'Privat/Pressespiegel/data/*.json'", workflow)
+        self.assertIn("  schedule:", workflow)
+
+    def test_edition_filename_regex_matches_real_paths(self):
+        pattern = r"Privat/Pressespiegel/data/\d{4}-\d{2}-\d{2}\.json"
+        workflow = WORKFLOW.read_text()
+        self.assertIn(pattern, workflow)
+        self.assertTrue(re.fullmatch(pattern, "Privat/Pressespiegel/data/2026-10-24.json"))
+        self.assertFalse(re.fullmatch(pattern, "Privat/Pressespiegel/data/index.json"))
+        self.assertFalse(re.fullmatch(pattern, "Privat/Pressespiegel/data/2026-10-24.json.bak"))
+
+    def test_date_validation_regex(self):
+        pattern = r"\d{4}-\d{2}-\d{2}"
+        self.assertIn(pattern, WORKFLOW.read_text())
+        self.assertTrue(re.fullmatch(pattern, "2026-10-24"))
+        self.assertFalse(re.fullmatch(pattern, "../2026-10-24"))
+
+
+if __name__ == "__main__":
+    unittest.main()
