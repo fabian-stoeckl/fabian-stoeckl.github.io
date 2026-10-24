@@ -97,14 +97,16 @@ def compare_publisher_timestamp(html, declared):
     valid = [(source, value) for source, value in observations if value is not None]
     if not valid:
         return {"status": "inconclusive", "reason": "No timezone-aware publication metadata"}
-    unique = {value for _, value in valid}
+    # Publisher meta tags sometimes omit only the fractional seconds while
+    # JSON-LD retains them. Both still identify the same publication second.
+    unique = {value.replace(microsecond=0) for _, value in valid}
     if len(unique) > 1:
         # Expose bounded timestamp provenance for genuine publisher diagnostics;
         # never silently pick the date most convenient for the local edition.
         return {"status": "conflict", "reason": "Publisher publication metadata disagree",
                 "observations": [{"source": source, "timestamp_utc": value.isoformat()}
                                  for source, value in valid[:12]]}
-    observed = next(iter(unique))
+    observed = max((value for _, value in valid), key=lambda value: value.microsecond)
     # Newsrooms often display only HH:MM on the published article page. When
     # the declared timestamp has zero seconds, compare at that stated minute
     # precision (e.g. 14:11 vs internal JSON-LD 14:11:52). Do not round
