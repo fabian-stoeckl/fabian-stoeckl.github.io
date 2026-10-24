@@ -145,4 +145,22 @@ jobs:
               raise SystemExit('Private audit readback mismatch')
           print('Private audit saved and verified:',dest)
           print('Evidence statuses:',result['statuses'])
+          from scripts.morgenzeitung_acceptance_report import acceptance
+          report=acceptance(result)
+          report_dest='audits/'+date+'-acceptance.json'
+          report_encoded=base64.b64encode((json.dumps(report,ensure_ascii=False,indent=2) + chr(10)).encode()).decode()
+          try:
+              report_existing=request('/contents/'+report_dest)
+          except urllib.error.HTTPError as error:
+              if error.code!=404:raise
+              report_existing=None
+          if report_existing:
+              if json.loads(base64.b64decode(report_existing['content']))!=report:
+                  raise SystemExit('Existing immutable acceptance report differs: '+report_dest)
+          else:
+              request('/contents/'+report_dest,'PUT',{'message':'Archive Morgenzeitung acceptance '+date,'content':report_encoded})
+          report_saved,_=read_private(report_dest)
+          if json.loads(report_saved)!=report:
+              raise SystemExit('Acceptance report readback mismatch')
+          print('Productive acceptance:',report['verdict'],report_dest)
           PY
