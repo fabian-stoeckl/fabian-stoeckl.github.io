@@ -55,81 +55,85 @@ jobs:
               req=urllib.request.Request(root+path,data=json.dumps(body).encode() if body is not None else None,method=method,
                 headers={'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'})
               with urllib.request.urlopen(req,timeout=30) as response:return json.load(response)
-          issues=[]
-          page=1
-          while True:
-              batch=api(f'/issues?state=all&per_page=100&page={page}')
-              issues.extend(i for i in batch if 'pull_request' not in i)
-              if len(batch)<100:break
-              page+=1
-          # Include structured feedback revisions posted as issue comments.
-          # Only the repository owner's comments may alter the private profile.
-          from scripts.morgenzeitung_feedback import ordered_owner_feedback_comments
-          for issue in issues:
-              if not issue.get('comments') or not issue.get('title','').startswith('[Morgenzeitung] Sammelbewertung '):
-                  continue
-              comments=[]
-              n=1
+          from scripts.morgenzeitung_feedback import retry_feedback_ingestion
+          def run_once():
+              issues=[]
+              page=1
               while True:
-                  batch=api(f"/issues/{issue['number']}/comments?per_page=100&page={n}")
-                  comments.extend(batch)
+                  batch=api(f'/issues?state=all&per_page=100&page={page}')
+                  issues.extend(i for i in batch if 'pull_request' not in i)
                   if len(batch)<100:break
-                  n+=1
-              for comment in ordered_owner_feedback_comments(comments):
-                  if comment.get('user',{}).get('login')!='fabian-stoeckl':
+                  page+=1
+              # Include structured feedback revisions posted as issue comments.
+              # Only the repository owner's comments may alter the private profile.
+              from scripts.morgenzeitung_feedback import ordered_owner_feedback_comments
+              for issue in issues:
+                  if not issue.get('comments') or not issue.get('title','').startswith('[Morgenzeitung] Sammelbewertung '):
                       continue
-                  body=comment.get('body') or ''
-                  if 'Artikel-ID:' not in body or 'Bewertung:' not in body:
-                      continue
-                  issue['body']=(issue.get('body') or '')+'\n\n'+body
-                  issue['updated_at']=max(issue['updated_at'],comment.get('updated_at') or issue['updated_at'])
-          p=api('/contents/profile.json')
-          import base64
-          original=json.loads(base64.b64decode(p['content']))
-          d=pathlib.Path('/tmp/morgenzeitung')
-          (d/'issues.json').write_text(json.dumps(issues))
-          (d/'profile.json').write_text(json.dumps(original))
-          subprocess.run(['python3','scripts/morgenzeitung_feedback.py','--profile',str(d/'profile.json'),
-            '--issues',str(d/'issues.json'),'--editions','Privat/Pressespiegel/data',
-            '--output',str(d/'next.json'),'--report',str(d/'report.json')],check=True)
-          updated=json.loads((d/'next.json').read_text())
-          report=json.loads((d/'report.json').read_text())
-          # Publication metadata is recorded only after a verified live readback.
-          # The public index alone is not evidence of successful deployment.
-          # Always validate public publication, including dry runs.
-          from urllib.parse import urljoin
-          if True:
-              public='https://www.fabian-stoeckl.com/Privat/Pressespiegel/data/'
-              def public_json(name):
-                  req=urllib.request.Request(urljoin(public,name),
-                    headers={'User-Agent':'Morgenzeitung-publication-audit/1.0',
-                             'Cache-Control':'no-cache'})
-                  with urllib.request.urlopen(req,timeout=30) as response:
-                      return json.load(response)
-              index=public_json('index.json')
-              dates=index.get('dates',[])
-              if not dates or not isinstance(dates,list):
-                  raise ValueError('Empty or invalid public edition index')
-              if dates != sorted(set(dates),reverse=True):
-                  raise ValueError('Public index dates are unsorted or duplicated')
-              newest=dates[0]
-              if not isinstance(newest,str) or not __import__('re').fullmatch(r'\d{4}-\d{2}-\d{2}',newest):
-                  raise ValueError('Invalid public index date')
-              edition=public_json(newest+'.json')
-              if edition.get('date')!=newest:
-                  raise ValueError('Live edition/index mismatch')
-              if edition.get('preview'):
-                  raise ValueError('Latest live edition is only a preview')
-              if not isinstance(edition.get('articles'),list) or not isinstance(edition.get('headlines'),list):
-                  raise ValueError('Latest live edition lacks article sections')
-              if len(edition['articles'])<10 or len(edition['headlines'])<15:
-                  if not edition.get('limitations'):
-                      raise ValueError('Incomplete live edition without limitations')
-              # Do not retroactively certify editorial impact or prior run completion.
-              print('Verified public edition:',newest,
-                    'private last_successful_edition remains independent until S7 audit')
-          from scripts.morgenzeitung_feedback import write_profile_if_unchanged
-          applied=write_profile_if_unchanged(api,p['sha'],original,updated,
-            os.environ.get('APPLY_CHANGES')=='true')
-          print('Private feedback checked:',json.dumps(report),'applied:',applied)
+                  comments=[]
+                  n=1
+                  while True:
+                      batch=api(f"/issues/{issue['number']}/comments?per_page=100&page={n}")
+                      comments.extend(batch)
+                      if len(batch)<100:break
+                      n+=1
+                  for comment in ordered_owner_feedback_comments(comments):
+                      if comment.get('user',{}).get('login')!='fabian-stoeckl':
+                          continue
+                      body=comment.get('body') or ''
+                      if 'Artikel-ID:' not in body or 'Bewertung:' not in body:
+                          continue
+                      issue['body']=(issue.get('body') or '')+'\n\n'+body
+                      issue['updated_at']=max(issue['updated_at'],comment.get('updated_at') or issue['updated_at'])
+              p=api('/contents/profile.json')
+              import base64
+              original=json.loads(base64.b64decode(p['content']))
+              d=pathlib.Path('/tmp/morgenzeitung')
+              (d/'issues.json').write_text(json.dumps(issues))
+              (d/'profile.json').write_text(json.dumps(original))
+              subprocess.run(['python3','scripts/morgenzeitung_feedback.py','--profile',str(d/'profile.json'),
+                '--issues',str(d/'issues.json'),'--editions','Privat/Pressespiegel/data',
+                '--output',str(d/'next.json'),'--report',str(d/'report.json')],check=True)
+              updated=json.loads((d/'next.json').read_text())
+              report=json.loads((d/'report.json').read_text())
+              # Publication metadata is recorded only after a verified live readback.
+              # The public index alone is not evidence of successful deployment.
+              # Always validate public publication, including dry runs.
+              from urllib.parse import urljoin
+              if True:
+                  public='https://www.fabian-stoeckl.com/Privat/Pressespiegel/data/'
+                  def public_json(name):
+                      req=urllib.request.Request(urljoin(public,name),
+                        headers={'User-Agent':'Morgenzeitung-publication-audit/1.0',
+                                 'Cache-Control':'no-cache'})
+                      with urllib.request.urlopen(req,timeout=30) as response:
+                          return json.load(response)
+                  index=public_json('index.json')
+                  dates=index.get('dates',[])
+                  if not dates or not isinstance(dates,list):
+                      raise ValueError('Empty or invalid public edition index')
+                  if dates != sorted(set(dates),reverse=True):
+                      raise ValueError('Public index dates are unsorted or duplicated')
+                  newest=dates[0]
+                  if not isinstance(newest,str) or not __import__('re').fullmatch(r'\d{4}-\d{2}-\d{2}',newest):
+                      raise ValueError('Invalid public index date')
+                  edition=public_json(newest+'.json')
+                  if edition.get('date')!=newest:
+                      raise ValueError('Live edition/index mismatch')
+                  if edition.get('preview'):
+                      raise ValueError('Latest live edition is only a preview')
+                  if not isinstance(edition.get('articles'),list) or not isinstance(edition.get('headlines'),list):
+                      raise ValueError('Latest live edition lacks article sections')
+                  if len(edition['articles'])<10 or len(edition['headlines'])<15:
+                      if not edition.get('limitations'):
+                          raise ValueError('Incomplete live edition without limitations')
+                  # Do not retroactively certify editorial impact or prior run completion.
+                  print('Verified public edition:',newest,
+                        'private last_successful_edition remains independent until S7 audit')
+              from scripts.morgenzeitung_feedback import write_profile_if_unchanged
+              applied=write_profile_if_unchanged(api,p['sha'],original,updated,
+                os.environ.get('APPLY_CHANGES')=='true')
+              print('Private feedback checked:',json.dumps(report),'applied:',applied)
+              return report,applied
+          report,applied=retry_feedback_ingestion(run_once,attempts=3)
           PY
