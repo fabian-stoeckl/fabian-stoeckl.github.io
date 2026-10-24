@@ -20,6 +20,22 @@ class PublisherTimestampEvidenceTests(unittest.TestCase):
                 '<meta name="datePublished" content="2026-10-24T08:00:00Z">')
         self.assertEqual(compare_publisher_timestamp(html, "2026-10-24T08:00:00Z")["status"], "conflict")
 
+    def test_nested_recommended_article_does_not_create_conflict(self):
+        html = ('<script type="application/ld+json">'
+                '{"@type":"NewsArticle","datePublished":"2026-10-24T08:00:00Z",'
+                '"relatedLink":{"@type":"NewsArticle","datePublished":"2026-10-21T08:00:00Z"}}'
+                '</script>')
+        self.assertEqual(compare_publisher_timestamp(html, "2026-10-24T08:00:00Z")["status"], "match")
+
+    def test_ambiguous_modification_meta_is_not_publication_evidence(self):
+        html = ('<meta name="dateCreated" content="2026-10-23T08:00:00Z">'
+                '<meta property="article:published_time" content="2026-10-24T08:00:00Z">')
+        self.assertEqual(compare_publisher_timestamp(html, "2026-10-24T08:00:00Z")["status"], "match")
+
+    def test_untyped_jsonld_date_is_not_publication_evidence(self):
+        html = '<script type="application/ld+json">{"@type":"WebPage","datePublished":"2026-10-21T08:00:00Z"}</script>'
+        self.assertEqual(compare_publisher_timestamp(html, "2026-10-24T08:00:00Z")["status"], "inconclusive")
+
     def test_missing_metadata_inconclusive(self):
         self.assertEqual(compare_publisher_timestamp("<html></html>", "2026-10-24T08:00:00Z")["status"], "inconclusive")
 
