@@ -8,6 +8,8 @@ import argparse
 import json
 import re
 import urllib.request
+import urllib.error
+import time
 from pathlib import Path
 
 PUBLIC_BASE = "https://www.fabian-stoeckl.com/Privat/Pressespiegel/data/"
@@ -39,14 +41,30 @@ def verify(index, edition, audit, date):
             "newly_selected_ids": audit["newly_selected_ids"],
             "note": "Live HTTPS article IDs match the documented learned selection; compare audit with genuine feedback provenance separately"}
 
-def live_json(filename):
-    request = urllib.request.Request(PUBLIC_BASE + filename,
-        headers={"User-Agent": "Morgenzeitung-publication-learning-audit/1.0",
-                 "Cache-Control": "no-cache"})
-    with urllib.request.urlopen(request, timeout=30) as response:
-        if response.geturl().split("?", 1)[0] != PUBLIC_BASE + filename:
-            raise ValueError("Unexpected HTTPS redirect")
-        return json.load(response)
+def live_json(filename, *, attempts=4, delay=15, sleep=time.sleep):
+    """Retry transient deployment/network errors, never schema or redirect failures."""
+    if not re.fullmatch(r"(?:index|\\d{4}-\\d{2}-\\d{2})\\.json", filename):
+        raise ValueError("Invalid public JSON filename")
+    if attempts < 1:
+        raise ValueError("attempts must be positive")
+    url = PUBLIC_BASE + filename
+    for attempt in range(attempts):
+        request = urllib.request.Request(url, headers={
+            "User-Agent": "Morgenzeitung-publication-learning-audit/1.0",
+            "Cache-Control": "no-cache"})
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+                if response.geturl().split("?", 1)[0] != url:
+                    raise ValueError("Unexpected HTTPS redirect")
+                return json.load(response)
+        except urllib.error.HTTPError as exc:
+            if exc.code not in (404, 408, 429, 500, 502, 503, 504) or attempt == attempts - 1:
+                raise
+        except (urllib.error.URLError, TimeoutError):
+            if attempt == attempts - 1:
+                raise
+        sleep(delay * (attempt + 1))
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
