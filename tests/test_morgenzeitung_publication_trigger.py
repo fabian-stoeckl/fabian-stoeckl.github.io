@@ -8,6 +8,13 @@ WORKFLOW = ROOT / ".github/workflows/morgenzeitung-private-live-audit.yml"
 
 
 class PublicationTriggerTests(unittest.TestCase):
+    def test_push_diff_uses_complete_history_and_event_range(self):
+        workflow = WORKFLOW.read_text()
+        self.assertIn('fetch-depth: 0', workflow)
+        self.assertIn('PUSH_BEFORE: ${{ github.event.before }}', workflow)
+        self.assertIn("['git','diff','--name-only',before,os.environ['GITHUB_SHA']]", workflow)
+        self.assertNotIn("'diff-tree'", workflow)
+
     def test_private_audit_runs_are_serialized(self):
         workflow = WORKFLOW.read_text()
         self.assertIn('concurrency:', workflow)
