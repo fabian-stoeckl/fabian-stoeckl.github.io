@@ -17,16 +17,21 @@ class SourceEvidenceTests(unittest.TestCase):
                 validate_source_url(url)
 
     def test_missing_urls_reported_without_false_verification(self):
-        result = audit_sources([{"id": "a"}, {"id": "b", "original_url": "http://example.com"}])
+        result = audit_sources([{"id": "a"}, {"id": "b", "source_url": "http://example.com"}])
         self.assertFalse(result["source_url_structure_verified"])
         self.assertEqual(result["missing_original_url_ids"], ["a"])
         self.assertEqual(result["invalid_original_url_ids"], ["b"])
 
-    def test_positive_offline_replay_reports_url_gap(self):
+    def test_conflicting_source_alias_rejected(self):
+        result = audit_sources([{"id": "a", "source_url": "https://faz.net/a",
+                                 "original_url": "https://faz.net/b"}])
+        self.assertFalse(result["source_url_structure_verified"])
+
+    def test_positive_offline_replay_verifies_url_structure(self):
         result = verify_edition(Repo(), "2026-10-25", {
             "date": "2026-10-25", "articles": [{"id": "a"}, {"id": "b"}]})
         self.assertTrue(result["prepublication_gate_verified"])
-        self.assertFalse(result["source_evidence"]["source_url_structure_verified"])
+        self.assertTrue(result["source_evidence"]["source_url_structure_verified"])
 
 
 if __name__ == "__main__":
