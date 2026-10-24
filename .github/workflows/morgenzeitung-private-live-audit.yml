@@ -148,7 +148,7 @@ jobs:
           from scripts.morgenzeitung_acceptance_report import acceptance
           report=acceptance(result)
           report_dest='audits/'+date+'-acceptance.json'
-          report_encoded=base64.b64encode((json.dumps(report,ensure_ascii=False,indent=2)+'\\n').encode()).decode()
+          report_encoded=base64.b64encode((json.dumps(report,ensure_ascii=False,indent=2) + chr(10)).encode()).decode()
           try:
               report_existing=request('/contents/'+report_dest)
           except urllib.error.HTTPError as error:
