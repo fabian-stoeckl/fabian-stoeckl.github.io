@@ -4,6 +4,7 @@ Call BEFORE running the selector. Candidate input is the full researched,
 source-verified pool, never an already published or selected list.
 """
 import argparse
+import datetime as dt
 import base64
 import hashlib
 import json
@@ -41,6 +42,15 @@ def validate_candidates(raw):
             raise ValueError("Candidate source_url must be a direct HTTPS URL")
         if parsed.hostname.lower() in ("localhost", "127.0.0.1", "::1"):
             raise ValueError("Local source_url is not acceptable")
+        stamp = item.get("published_at")
+        if not isinstance(stamp, str):
+            raise ValueError("Every candidate needs timezone-aware published_at")
+        try:
+            parsed_stamp = dt.datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+        except ValueError as exc:
+            raise ValueError("Invalid candidate published_at") from exc
+        if parsed_stamp.tzinfo is None or parsed_stamp.utcoffset() is None:
+            raise ValueError("Candidate published_at needs timezone")
         ids.append(item["id"])
     if len(set(ids)) != len(ids):
         raise ValueError("Duplicate candidate IDs")

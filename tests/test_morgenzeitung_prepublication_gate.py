@@ -9,8 +9,8 @@ class Repo:
         day = "2026-10-25"
         self.files = {
             f"candidates/{day}.json": json.dumps([
-                {"id": "a", "topic": "Industrie", "source": "FAZ", "source_url": "https://www.faz.net/aktuell/wirtschaft/a", "verified": True},
-                {"id": "b", "topic": "Klima", "source": "ORF", "source_url": "https://orf.at/stories/b", "verified": True},
+                {"id": "a", "topic": "Industrie", "source": "FAZ", "source_url": "https://www.faz.net/aktuell/wirtschaft/a", "verified": True, "published_at": "2026-10-24T08:00:00Z"},
+                {"id": "b", "topic": "Klima", "source": "ORF", "source_url": "https://orf.at/stories/b", "verified": True, "published_at": "2026-10-24T08:00:00Z"},
             ]).encode(),
             f"snapshots/{day}-profile.json": b'{"computed_learning_signals":[]}',
             f"snapshots/{day}-issues.json": b'[]',
@@ -71,7 +71,7 @@ class GateTests(unittest.TestCase):
         repo = Repo()
         pool = json.loads(repo.files["candidates/2026-10-25.json"])
         pool.append({"id": "c", "topic": "Politik", "source": "SZ",
-                     "source_url": "https://sz.de/article", "verified": True})
+                     "source_url": "https://sz.de/article", "verified": True, "published_at": "2026-10-24T08:00:00Z"})
         repo.files["candidates/2026-10-25.json"] = json.dumps(pool).encode()
         with patch("scripts.morgenzeitung_prepublication_gate.check_candidates") as check:
             verify_edition(repo, "2026-10-25", {
