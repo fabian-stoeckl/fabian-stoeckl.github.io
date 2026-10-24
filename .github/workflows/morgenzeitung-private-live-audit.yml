@@ -169,7 +169,14 @@ jobs:
               if json.loads(base64.b64decode(report_existing['content']))!=report:
                   raise SystemExit('Existing immutable acceptance report differs: '+report_dest)
           else:
-              request('/contents/'+report_dest,'PUT',{'message':'Archive Morgenzeitung acceptance '+date,'content':report_encoded})
+              try:
+                  request('/contents/'+report_dest,'PUT',{'message':'Archive Morgenzeitung acceptance '+date,'content':report_encoded})
+              except urllib.error.HTTPError as error:
+                  if error.code not in (409,422):
+                      raise
+                  current,_=read_private(report_dest)
+                  if json.loads(current)!=report:
+                      raise SystemExit('Conflicting acceptance report')
           report_saved,_=read_private(report_dest)
           if json.loads(report_saved)!=report:
               raise SystemExit('Acceptance report readback mismatch')
