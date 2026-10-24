@@ -29,11 +29,12 @@ class LiveSourceTests(unittest.TestCase):
         self.assertEqual(check_http("https://example.org/story", Opener(200))["status"], 200)
 
     def test_paywall_not_treated_as_body_verified(self):
-        result = check_http("https://example.org/story", Opener(403))
-        self.assertTrue(result["paywall_or_access_restricted"])
+        for status in (401, 402, 403):
+            with self.subTest(status=status), self.assertRaisesRegex(ValueError, "existence unverified"):
+                check_http("https://example.org/story", Opener(status))
 
     def test_dead_and_redirect_sources_fail(self):
-        for status in (301, 302, 404, 500):
+        for status in (204, 301, 302, 404, 500):
             with self.subTest(status=status), self.assertRaises(ValueError):
                 check_http("https://example.org/story", Opener(status))
 
