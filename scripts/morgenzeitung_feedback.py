@@ -170,6 +170,20 @@ def learn(profile, issues, editions):
         })
     return output, {"ratings": len(latest), "issues": len(processed), "signals": len(signals), "categorized_ratings": sum(sum(v.values()) for v in counts.values()), "text_feedback": len(observations)}
 
+def retry_feedback_ingestion(run_once, attempts=3):
+    """Reread all feedback and profile on a write conflict; never reuse stale inputs."""
+    if attempts < 1:
+        raise ValueError("At least one attempt required")
+    for attempt in range(attempts):
+        try:
+            return run_once()
+        except RuntimeError as error:
+            if not (str(error).startswith("Private profile changed concurrently;") or
+                    str(error).startswith("Concurrent profile write conflict;")):
+                raise
+            if attempt == attempts - 1:
+                raise RuntimeError("Feedback ingestion exhausted conflict retries") from error
+
 def write_profile_if_unchanged(api, original_sha, original, updated, apply):
     """Optimistic lock: reject concurrent profile updates, never overwrite them."""
     import base64
