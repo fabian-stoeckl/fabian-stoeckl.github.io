@@ -13,7 +13,7 @@ import urllib.request
 from scripts.morgenzeitung_live_source_check import NoRedirect
 from scripts.morgenzeitung_source_evidence import validate_source_url
 
-MAX_BYTES = 262144
+MAX_BYTES = 2097152
 DATE_KEYS = {"article:published_time", "datepublished", "pubdate",
              "publishdate", "dc.date.issued"}
 ARTICLE_TYPES = {"Article", "NewsArticle", "BlogPosting", "ReportageNewsArticle",
@@ -97,11 +97,25 @@ def compare_publisher_timestamp(html, declared):
     valid = [(source, value) for source, value in observations if value is not None]
     if not valid:
         return {"status": "inconclusive", "reason": "No timezone-aware publication metadata"}
-    unique = {value for _, value in valid}
+    # Publisher meta tags sometimes omit only the fractional seconds while
+    # JSON-LD retains them. Both still identify the same publication second.
+    unique = {value.replace(microsecond=0) for _, value in valid}
     if len(unique) > 1:
-        return {"status": "conflict", "reason": "Publisher publication metadata disagree"}
-    observed = next(iter(unique))
-    return {"status": "match" if observed == expected else "mismatch",
+        # Expose bounded timestamp provenance for genuine publisher diagnostics;
+        # never silently pick the date most convenient for the local edition.
+        return {"status": "conflict", "reason": "Publisher publication metadata disagree",
+                "observations": [{"source": source, "timestamp_utc": value.isoformat()}
+                                 for source, value in valid[:12]]}
+    observed = max((value for _, value in valid), key=lambda value: value.microsecond)
+    # Newsrooms often display only HH:MM on the published article page. When
+    # the declared timestamp has zero seconds, compare at that stated minute
+    # precision (e.g. 14:11 vs internal JSON-LD 14:11:52). Do not round
+    # explicitly second-precision declarations or ignore a date/hour change.
+    exact = observed == expected
+    minute_level = (expected.second == 0 and expected.microsecond == 0
+                    and observed.replace(second=0, microsecond=0) == expected)
+    return {"status": "match" if exact or minute_level else "mismatch",
+            "resolution": "exact" if exact else "declared-minute" if minute_level else "different",
             "publisher_published_at": observed.isoformat(),
             "declared_published_at": expected.isoformat(),
             "metadata_sources": sorted({source for source, _ in valid})}

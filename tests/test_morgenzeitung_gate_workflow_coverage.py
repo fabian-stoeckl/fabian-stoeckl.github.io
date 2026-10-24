@@ -1,18 +1,15 @@
-"""Guard against silent CI trigger regressions for source-check changes."""
+"""Guard against silent required-check trigger regressions."""
 from pathlib import Path
 import unittest
 
 
 class GateWorkflowCoverageTests(unittest.TestCase):
-    def test_source_validation_changes_trigger_gate(self):
+    def test_required_gate_runs_on_every_main_pull_request(self):
         workflow = Path(".github/workflows/morgenzeitung-prepublication-gate.yml").read_text()
-        for path in (
-            "scripts/morgenzeitung_source_evidence.py",
-            "scripts/morgenzeitung_live_source_check.py",
-            "scripts/morgenzeitung_prepublication_gate.py",
-        ):
-            with self.subTest(path=path):
-                self.assertIn("      - '" + path + "'", workflow)
+        block = workflow.split("  pull_request:", 1)[1].split("  push:", 1)[0]
+        self.assertIn("branches: [main]", block)
+        self.assertNotIn("paths:", block, "Required checks must not be path-filtered")
+        self.assertIn("  prepublication-gate:", workflow)
 
     def test_direct_main_push_date_pattern_matches_real_edition(self):
         import re

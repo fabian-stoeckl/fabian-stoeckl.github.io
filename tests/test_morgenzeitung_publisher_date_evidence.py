@@ -11,9 +11,40 @@ class PublisherTimestampEvidenceTests(unittest.TestCase):
         html = '<script type="application/ld+json">{"@type":"NewsArticle","datePublished":"2026-10-24T08:00:00Z"}</script>'
         self.assertEqual(compare_publisher_timestamp(html, "2026-10-24T08:00:00Z")["status"], "match")
 
+    def test_actual_publisher_seconds_with_displayed_minute_precision(self):
+        # Observed in genuine 23 Oct 2026 ORF/Presse JSON-LD: the site shows
+        # HH:MM while the machine field retains second/millisecond precision.
+        orf = '<script type="application/ld+json">{"@type":"NewsArticle","datePublished":"2026-10-23T12:28:01.469Z"}</script>'
+        presse = '<meta property="article:published_time" content="2026-10-23T12:11:52Z">'
+        self.assertEqual(compare_publisher_timestamp(orf, "2026-10-23T14:28:00+02:00")["status"], "match")
+        evidence = compare_publisher_timestamp(presse, "2026-10-23T14:11:00+02:00")
+        self.assertEqual(evidence["status"], "match")
+        self.assertEqual(evidence["resolution"], "declared-minute")
+
+    def test_minute_tolerance_does_not_hide_next_minute(self):
+        meta = '<meta property="article:published_time" content="2026-10-23T12:12:01Z">'
+        self.assertEqual(compare_publisher_timestamp(meta, "2026-10-23T14:11:00+02:00")["status"], "mismatch")
+
+    def test_precise_declared_second_is_not_rounded(self):
+        meta = '<meta property="article:published_time" content="2026-10-23T12:11:52Z">'
+        self.assertEqual(compare_publisher_timestamp(meta, "2026-10-23T12:11:51Z")["status"], "mismatch")
+
     def test_mismatch(self):
         html = '<meta property="article:published_time" content="2026-10-23T08:00:00Z">'
         self.assertEqual(compare_publisher_timestamp(html, "2026-10-24T08:00:00Z")["status"], "mismatch")
+
+    def test_real_handelsblatt_jsonld_fractional_seconds_not_conflict(self):
+        html = ('<script type="application/ld+json">'
+                '{"@type":"NewsArticle","datePublished":"2026-10-23T16:09:01.912Z"}'
+                '</script><meta property="article:published_time" content="2026-10-23T16:09:01Z">')
+        result = compare_publisher_timestamp(html, "2026-10-23T18:09:00+02:00")
+        self.assertEqual(result["status"], "match")
+
+    def test_different_publisher_seconds_are_not_automatically_equivalent(self):
+        html = ('<script type="application/ld+json">'
+                '{"@type":"NewsArticle","datePublished":"2026-10-23T16:09:01Z"}'
+                '</script><meta property="article:published_time" content="2026-10-23T16:09:03Z">')
+        self.assertEqual(compare_publisher_timestamp(html, "2026-10-23T18:09:00+02:00")["status"], "conflict")
 
     def test_conflicting_metadata(self):
         html = ('<meta property="article:published_time" content="2026-10-23T08:00:00Z">'
