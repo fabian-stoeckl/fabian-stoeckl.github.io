@@ -17,7 +17,7 @@ permissions:
 jobs:
   private-live-audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -124,8 +124,16 @@ jobs:
               existing=None
           if existing:
               old=base64.b64decode(existing['content'])
-              if json.loads(old)!=result:
-                  raise SystemExit('Existing private audit differs; refusing overwrite: '+dest)
+              previous=json.loads(old)
+              # Two audit triggers (publication push and scheduled fallback) may
+              # legitimately run different code commits. Preserve the first
+              # immutable audit if the evidence and verdict are unchanged.
+              stable_keys=('date','candidate_pool_sha256','profile_sha256',
+                  'issue_versions','selection_parameters','selection_comparison',
+                  'publication_audit','statuses')
+              if any(previous.get(k)!=result.get(k) for k in stable_keys):
+                  raise SystemExit('Existing private audit has different evidence; refusing overwrite: '+dest)
+              result=previous
               print('Idempotent existing private audit:',dest)
           else:
               request('/contents/'+dest,'PUT',{'message':'Archive live Morgenzeitung audit '+date,'content':encoded})
