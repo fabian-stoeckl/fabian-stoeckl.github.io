@@ -39,7 +39,7 @@ def audit_sources(candidates):
         if not isinstance(item, dict):
             invalid.append(i)
             continue
-        url = item.get("original_url")
+        url = item.get("source_url")\n        original = item.get("original_url")\n        if original is not None and original != url:\n            invalid.append(item.get("id", i))\n            continue
         if url is None:
             missing.append(item.get("id", i))
             continue
