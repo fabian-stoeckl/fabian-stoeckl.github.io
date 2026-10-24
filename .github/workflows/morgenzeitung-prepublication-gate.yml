@@ -11,6 +11,7 @@ on:
       - 'scripts/morgenzeitung_live_source_check.py'
       - 'tests/test_morgenzeitung_live_source_check.py'
       - 'tests/test_morgenzeitung_source_evidence.py'
+      - '.github/workflows/morgenzeitung-prepublication-gate.yml'
   workflow_dispatch:
     inputs:
       date:
