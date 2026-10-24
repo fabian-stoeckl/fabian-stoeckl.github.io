@@ -66,6 +66,26 @@ def live_json(filename, *, attempts=4, delay=15, sleep=time.sleep):
         sleep(delay * (attempt + 1))
 
 
+def verify_live_with_retry(audit, date, *, attempts=4, delay=20,
+                           fetch=live_json, sleep=time.sleep):
+    """Retry a stale Pages deployment, but not invalid editorial evidence."""
+    if attempts < 1:
+        raise ValueError("attempts must be positive")
+    for attempt in range(attempts):
+        index = fetch("index.json")
+        edition = fetch(date + ".json")
+        try:
+            return verify(index, edition, audit, date)
+        except ValueError as exc:
+            # Pages may serve an older index or edition after a successful deploy.
+            transient = str(exc) in (
+                "Edition not listed in live index",
+                "Published article order/IDs differ from audited selection",
+            )
+            if not transient or attempt == attempts - 1:
+                raise
+            sleep(delay * (attempt + 1))
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--date", required=True)
@@ -75,7 +95,7 @@ def main():
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", args.date):
         parser.error("Date must be YYYY-MM-DD")
     audit = json.loads(Path(args.private_selection_audit).read_text())
-    result = verify(live_json("index.json"), live_json(args.date + ".json"), audit, args.date)
+    result = verify_live_with_retry(audit, args.date)
     Path(args.private_output).write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
     print(json.dumps({"publication_verified": result["publication_verified"],
                       "editorial_effect_verified": result["editorial_effect_verified"],
