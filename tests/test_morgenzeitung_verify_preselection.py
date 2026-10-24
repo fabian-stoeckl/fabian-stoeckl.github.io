@@ -38,6 +38,18 @@ class VerifyExistingTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             verify_existing(repo, DATE)
 
+    def test_duplicate_issue_versions_fail(self):
+        repo = Repo()
+        repo.data[f"snapshots/{DATE}-issues.json"] = b'[{"number":3,"updated_at":"2026-10-24T10:00:00Z"},{"number":3,"updated_at":"2026-10-24T11:00:00Z"}]'
+        with self.assertRaisesRegex(ValueError, "Duplicate original issue"):
+            verify_existing(repo, DATE)
+
+    def test_malformed_issue_versions_fail(self):
+        repo = Repo()
+        repo.data[f"snapshots/{DATE}-issues.json"] = b'[{"number":true,"updated_at":"2026-10-24T10:00:00Z"}]'
+        with self.assertRaisesRegex(ValueError, "Invalid original issue"):
+            verify_existing(repo, DATE)
+
     def test_invalid_parameters_fail(self):
         repo = Repo()
         repo.data[f"snapshots/{DATE}-selection-parameters.json"] = b'{"limit":20,"max_per_source":4}'
