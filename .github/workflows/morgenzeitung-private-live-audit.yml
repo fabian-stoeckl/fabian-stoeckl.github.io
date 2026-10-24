@@ -82,6 +82,14 @@ jobs:
               from scripts.morgenzeitung_acceptance_report import missing_evidence_report
               diagnostic=missing_evidence_report(date,[path])
               print('PARTIAL:',json.dumps(diagnostic))
+              dest='audits/'+date+'-missing-evidence.json'
+              payload={'message':'Record incomplete learning audit','content':base64.b64encode(json.dumps(diagnostic).encode()).decode()}
+              try:
+                  request('/contents/'+dest,'PUT',payload)
+              except urllib.error.HTTPError as error:
+                  if error.code not in (409,422):raise
+              saved,_=read_private(dest)
+              if json.loads(saved)!=diagnostic:raise RuntimeError('Diagnostic readback mismatch')
               if os.environ.get('GITHUB_STEP_SUMMARY'):
                   with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as summary:
                       summary.write('### Productive learning: PARTIAL\\nMissing original: '+path+'\\n')
