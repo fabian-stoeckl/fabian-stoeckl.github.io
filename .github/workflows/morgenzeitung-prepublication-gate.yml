@@ -55,5 +55,6 @@ jobs:
                   raise SystemExit('Invalid edition date')
               subprocess.run(['python3','-m','scripts.morgenzeitung_prepublication_gate',
                   '--date',day,'--edition','Privat/Pressespiegel/data/'+day+'.json',
-                  '--index','Privat/Pressespiegel/data/index.json'],check=True)
+                  '--index','Privat/Pressespiegel/data/index.json',
+                  '--check-live-sources'],check=True)
           PY

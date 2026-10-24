@@ -9,6 +9,7 @@ from pathlib import Path
 from scripts.morgenzeitung_capture_preselection import PrivateRepo, verify_existing
 from scripts.morgenzeitung_selection_audit import compare
 from scripts.morgenzeitung_source_evidence import audit_sources
+from scripts.morgenzeitung_live_source_check import check_candidates
 
 
 def verify_index(index, date):
@@ -20,7 +21,7 @@ def verify_index(index, date):
     return True
 
 
-def verify_edition(repo, date, edition, index=None):
+def verify_edition(repo, date, edition, index=None, check_live=False):
     if index is not None:
         verify_index(index, date)
     evidence = verify_existing(repo, date)
@@ -30,6 +31,7 @@ def verify_edition(repo, date, edition, index=None):
     source_evidence = audit_sources(candidates)
     if not source_evidence["source_url_structure_verified"]:
         raise ValueError("Unverified original publisher source URLs in archived candidates")
+    live_sources = check_candidates(candidates, date) if check_live else None
     comparison = compare(candidates, profile, **params)
     if edition.get("date") != date or edition.get("preview") is True:
         raise ValueError("Incorrect or preview edition")
@@ -46,6 +48,7 @@ def verify_edition(repo, date, edition, index=None):
         "profile_sha256": evidence["profile_sha256"],
         "parameters": params,
         "source_evidence": source_evidence,
+        "live_source_evidence": live_sources,
         "selected_ids": actual,
         "counterfactual_effect_verified": comparison["counterfactual_effect_verified"],
         "limitation": "This gate verifies exact archived-input replay, not the original research or chronology.",
@@ -57,11 +60,13 @@ def main():
     p.add_argument("--date", required=True)
     p.add_argument("--edition", type=Path, required=True)
     p.add_argument("--index", type=Path)
+    p.add_argument("--check-live-sources", action="store_true")
     args = p.parse_args()
     import os
     repo = PrivateRepo(os.environ.get("MORGENZEITUNG_FEEDBACK_TOKEN"))
     result = verify_edition(repo, args.date, json.loads(args.edition.read_text()),
-                            json.loads(args.index.read_text()) if args.index else None)
+                            json.loads(args.index.read_text()) if args.index else None,
+                            check_live=args.check_live_sources)
     print(json.dumps(result, ensure_ascii=False))
 
 
