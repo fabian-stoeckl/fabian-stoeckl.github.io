@@ -31,14 +31,23 @@ def verify(index, edition, audit, date):
         return {"date": date, "publication_verified": True,
                 "editorial_effect_verified": False, "changed_top_n_count": 0,
                 "note": "Live edition matches audit, but feedback caused no documented selection change"}
-    if not audit.get("newly_selected_ids") or audit.get("changed_top_n_count") != len(audit["newly_selected_ids"]):
+    baseline = audit.get("baseline_ids")
+    if not isinstance(baseline, list) or len(baseline) != len(set(baseline)):
+        raise ValueError("Missing or duplicate baseline IDs")
+    actual_added = [item for item in selected if item not in baseline]
+    actual_removed = [item for item in baseline if item not in selected]
+    if (baseline == selected or
+            audit.get("newly_selected_ids") != actual_added or
+            audit.get("displaced_ids") != actual_removed or
+            audit.get("changed_top_n_count") != len(actual_added)):
         raise ValueError("Counterfactual change evidence incomplete")
     if not audit.get("effective_signals"):
         raise ValueError("No effective learning signals")
     return {"date": date, "publication_verified": True,
             "editorial_effect_verified": True,
-            "changed_top_n_count": audit["changed_top_n_count"],
-            "newly_selected_ids": audit["newly_selected_ids"],
+            "changed_top_n_count": len(actual_added),
+            "ranking_only_change": not actual_added,
+            "newly_selected_ids": actual_added,
             "note": "Live HTTPS article IDs match the documented learned selection; compare audit with genuine feedback provenance separately"}
 
 def live_json(filename, *, attempts=4, delay=15, sleep=time.sleep):
