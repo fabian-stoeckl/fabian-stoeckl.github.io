@@ -90,8 +90,7 @@ jobs:
           result['provenance_limitations']='Issue versions are current at audit time; publication-time snapshots must be separately captured by the editorial agent.'
           # A separate file avoids overwriting a genuine existing runs/YYYY-MM-DD.json.
           dest='audits/'+date+'-live-learning.json'
-          encoded=base64.b64encode((json.dumps(result,ensure_ascii=False,indent=2)+'
-').encode()).decode()
+          encoded=base64.b64encode((json.dumps(result,ensure_ascii=False,indent=2)+chr(10)).encode()).decode()
           try:
               existing=request('/contents/'+dest)
           except urllib.error.HTTPError as error:
