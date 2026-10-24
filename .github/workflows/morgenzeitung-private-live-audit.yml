@@ -26,7 +26,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import base64, datetime, json, os, pathlib, re, subprocess, urllib.error, urllib.request
+          import base64, datetime, json, os, pathlib, re, subprocess, time, urllib.error, urllib.request
           token=os.environ.get('GH_TOKEN','')
           if not token:
               raise SystemExit('Missing MORGENZEITUNG_FEEDBACK_TOKEN')
@@ -42,9 +42,8 @@ jobs:
               return base64.b64decode(obj['content']),obj['sha']
           date=os.environ.get('REQUESTED_DATE') or ''
           if not date:
-              public='https://www.fabian-stoeckl.com/Privat/Pressespiegel/data/index.json'
-              with urllib.request.urlopen(urllib.request.Request(public,headers={'Cache-Control':'no-cache'}),timeout=30) as resp:
-                  date=json.load(resp)['dates'][0]
+              from scripts.morgenzeitung_publication_audit import live_json
+              date=live_json('index.json')['dates'][0]
           if not re.fullmatch(r'\d{4}-\d{2}-\d{2}',date):
               raise SystemExit('Invalid edition date')
           # Only preselection snapshots saved by the publishing agent are acceptable.
