@@ -102,7 +102,7 @@ def capture(repo, date, candidates_bytes, *, limit=10, max_per_source=4):
         "candidates/" + date + ".json": candidates_bytes,
         "snapshots/" + date + "-profile.json": profile_bytes,
         "snapshots/" + date + "-issues.json": versions_bytes,
-        "snapshots/" + date + "-selection-parameters.json": (json.dumps({"limit": limit, "max_per_source": max_per_source}, sort_keys=True) + "\\n").encode(),
+        "snapshots/" + date + "-selection-parameters.json": (json.dumps({"limit": limit, "max_per_source": max_per_source}, sort_keys=True) + "\n").encode(),
     }
     # Preflight all paths before any write, preventing known conflicts.
     for path, data in paths.items():
