@@ -37,6 +37,49 @@ class LiveSourceTests(unittest.TestCase):
             with self.subTest(status=status), self.assertRaises(ValueError):
                 check_http("https://example.org/story", Opener(status))
 
+    def test_transient_http_recovery(self):
+        class Flaky:
+            calls = 0
+            def open(self, req, timeout):
+                self.calls += 1
+                if self.calls < 3:
+                    raise urllib.error.HTTPError(req.full_url, 503, "busy", {}, None)
+                return Response()
+        opener = Flaky()
+        delays = []
+        result = check_http("https://example.org/story", opener, sleep=delays.append)
+        self.assertEqual(result["status"], 200)
+        self.assertEqual(opener.calls, 3)
+        self.assertEqual(delays, [1, 2])
+
+    def test_persistent_transient_failure(self):
+        delays = []
+        with self.assertRaises(ValueError):
+            check_http("https://example.org/story", Opener(503), sleep=delays.append)
+        self.assertEqual(delays, [1, 2])
+
+    def test_network_recovery(self):
+        class Flaky:
+            calls = 0
+            def open(self, req, timeout):
+                self.calls += 1
+                if self.calls == 1:
+                    raise urllib.error.URLError("temporary")
+                return Response()
+        self.assertEqual(check_http("https://example.org/story", Flaky(),
+                                    sleep=lambda _: None)["status"], 200)
+
+    def test_permanent_error_no_retry(self):
+        class Counting:
+            calls = 0
+            def open(self, req, timeout):
+                self.calls += 1
+                raise urllib.error.HTTPError(req.full_url, 404, "missing", {}, None)
+        opener = Counting()
+        with self.assertRaises(ValueError):
+            check_http("https://example.org/story", opener, sleep=lambda _: None)
+        self.assertEqual(opener.calls, 1)
+
     def test_candidate_aggregate(self):
         pool = [{"id": "a", "source_url": "https://example.org/story",
                  "published_at": "2026-10-24T06:00:00Z"}]
