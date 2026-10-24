@@ -159,6 +159,12 @@ def verify_existing(repo, date):
     parameters = json.loads(entries["parameters"])
     if not isinstance(profile, dict) or not isinstance(issues, list):
         raise ValueError("Invalid original profile or issues snapshot")
+    if any(not isinstance(i, dict) or type(i.get("number")) is not int
+           or not isinstance(i.get("updated_at"), str) or not i["updated_at"]
+           for i in issues):
+        raise ValueError("Invalid original issue-version entries")
+    if len({i["number"] for i in issues}) != len(issues):
+        raise ValueError("Duplicate original issue versions")
     if set(parameters) != {"limit", "max_per_source"} or type(parameters["limit"]) is not int or not 1 <= parameters["limit"] <= 15 or type(parameters["max_per_source"]) is not int or parameters["max_per_source"] < 1:
         raise ValueError("Invalid original selection parameters")
     return {"date": date, "candidate_sha256": hashlib.sha256(entries["candidates"]).hexdigest(),
