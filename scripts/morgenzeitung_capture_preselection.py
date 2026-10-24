@@ -136,16 +136,52 @@ def capture(repo, date, candidates_bytes, *, limit=10, max_per_source=4):
     }
 
 
+
+def verify_existing(repo, date):
+    """Fail closed unless all four original preselection files exist and agree."""
+    if not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", date):
+        raise ValueError("Invalid date")
+    names = {
+        "candidates": "candidates/" + date + ".json",
+        "profile": "snapshots/" + date + "-profile.json",
+        "issues": "snapshots/" + date + "-issues.json",
+        "parameters": "snapshots/" + date + "-selection-parameters.json",
+    }
+    entries = {}
+    for key, path in names.items():
+        item = repo.read(path)
+        if item is None:
+            raise ValueError("Missing original preselection evidence: " + path)
+        entries[key] = item[0]
+    validate_candidates(entries["candidates"])
+    profile = json.loads(entries["profile"])
+    issues = json.loads(entries["issues"])
+    parameters = json.loads(entries["parameters"])
+    if not isinstance(profile, dict) or not isinstance(issues, list):
+        raise ValueError("Invalid original profile or issues snapshot")
+    if set(parameters) != {"limit", "max_per_source"} or not isinstance(parameters["limit"], int) or not 1 <= parameters["limit"] <= 15 or not isinstance(parameters["max_per_source"], int) or parameters["max_per_source"] < 1:
+        raise ValueError("Invalid original selection parameters")
+    return {"date": date, "candidate_sha256": hashlib.sha256(entries["candidates"]).hexdigest(),
+            "profile_sha256": hashlib.sha256(entries["profile"]).hexdigest(),
+            "issue_count": len(issues), "parameters": parameters, "verified_paths": list(names.values())}
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--date", required=True)
-    parser.add_argument("--candidates", required=True, type=pathlib.Path)
+    parser.add_argument("--candidates", type=pathlib.Path)
+    parser.add_argument("--verify-existing", action="store_true", help="Require all four immutable private snapshots before publication")
     parser.add_argument("--limit", type=int, default=10)
     parser.add_argument("--max-per-source", type=int, default=4)
     args = parser.parse_args()
-    result = capture(PrivateRepo(os.environ.get("MORGENZEITUNG_FEEDBACK_TOKEN")),
-                     args.date, args.candidates.read_bytes(), limit=args.limit,
-                     max_per_source=args.max_per_source)
+    repo = PrivateRepo(os.environ.get("MORGENZEITUNG_FEEDBACK_TOKEN"))
+    if args.verify_existing:
+        result = verify_existing(repo, args.date)
+    else:
+        if args.candidates is None:
+            parser.error("--candidates required when capturing")
+        result = capture(repo, args.date, args.candidates.read_bytes(), limit=args.limit,
+                         max_per_source=args.max_per_source)
+        result["verification"] = verify_existing(repo, args.date)
     print(json.dumps(result, ensure_ascii=False))
 
 
