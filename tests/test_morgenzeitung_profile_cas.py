@@ -16,6 +16,7 @@ class ProfileCASTests(unittest.TestCase):
         def api(path, method="GET", body=None):
             if method == "PUT":
                 self.assertEqual(body["sha"], "a")
+                self.assertEqual(json.loads(base64.b64decode(body["content"])), updated)
                 state[0] = entry(updated, "b")
             return state[0]
         self.assertTrue(write_profile_if_unchanged(api, "a", original, updated, True))
