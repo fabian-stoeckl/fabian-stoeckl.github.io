@@ -45,16 +45,24 @@ def check_http(url, opener=None, *, retries=2, sleep=time.sleep):
     req = urllib.request.Request(url, headers={"User-Agent": "MorgenzeitungSourceCheck/1.0",
                                               "Accept": "text/html,application/xhtml+xml"},
                                  method="HEAD")
-    for attempt in range(retries + 1):
+    method = "HEAD"
+    for attempt in range(retries + 2):
+        if method == "GET":
+            req = urllib.request.Request(url, headers={"User-Agent": "MorgenzeitungSourceCheck/1.0",
+                                                       "Accept": "text/html,application/xhtml+xml",
+                                                       "Range": "bytes=0-0"}, method="GET")
         try:
             with opener.open(req, timeout=8) as response:
                 status = response.status
         except urllib.error.HTTPError as exc:
             status = exc.code
         except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
-            if attempt == retries:
+            if attempt >= retries:
                 raise ValueError("Source network check inconclusive after retries") from exc
             sleep(attempt + 1)
+            continue
+        if status in (405, 501) and method == "HEAD":
+            method = "GET"
             continue
         if status in (429, 500, 502, 503, 504) and attempt < retries:
             sleep(attempt + 1)
@@ -62,8 +70,9 @@ def check_http(url, opener=None, *, retries=2, sleep=time.sleep):
         break
     if status in (401, 402, 403):
         raise ValueError("Publisher access restricted: article existence unverified (HTTP " + str(status) + ")")
-    if status == 200:
-        return {"status": status, "reachable": True, "paywall_or_access_restricted": False}
+    if status == 200 or (method == "GET" and status == 206):
+        return {"status": status, "reachable": True, "paywall_or_access_restricted": False,
+                "method": method}
     raise ValueError("Source URL not confirmed reachable (HTTP " + str(status) + ")")
 
 
