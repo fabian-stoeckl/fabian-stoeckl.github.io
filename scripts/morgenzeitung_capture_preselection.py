@@ -139,7 +139,7 @@ def capture(repo, date, candidates_bytes, *, limit=10, max_per_source=4):
 
 def verify_existing(repo, date):
     """Fail closed unless all four original preselection files exist and agree."""
-    if not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", date):
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date):
         raise ValueError("Invalid date")
     names = {
         "candidates": "candidates/" + date + ".json",
