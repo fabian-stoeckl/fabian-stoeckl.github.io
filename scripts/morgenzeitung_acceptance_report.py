@@ -52,7 +52,7 @@ def acceptance(audit):
         },
     }
     verdict = "PASS" if all(c["status"] == "PASS" for c in checks.values()) else "PARTIAL"
-    if any(statuses.get(k) == "FAIL" for k in ("live_publication", "productive_learning")):
+    if any(value == "FAIL" for value in statuses.values()):
         verdict = "FAIL"
     return {"date": audit.get("date"), "verdict": verdict, "checks": checks,
             "note": "Never infer productive PASS from tests, simulated ratings, or incomplete evidence."}
