@@ -12,6 +12,9 @@ on:
       - 'Privat/Pressespiegel/data/*.json'
   schedule:
     - cron: '15 9 * * *'
+concurrency:
+  group: morgenzeitung-private-live-audit
+  cancel-in-progress: false
 permissions:
   contents: read
 jobs:
