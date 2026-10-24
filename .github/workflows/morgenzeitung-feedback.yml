@@ -74,7 +74,7 @@ jobs:
                   comments.extend(batch)
                   if len(batch)<100:break
                   n+=1
-              for comment in sorted(comments,key=lambda item:(item.get('created_at',''),item.get('id',0))):
+              for comment in sorted(comments,key=lambda item:(item.get('updated_at') or item.get('created_at',''),item.get('id',0))):
                   if comment.get('user',{}).get('login')!='fabian-stoeckl':
                       continue
                   body=comment.get('body') or ''
