@@ -42,7 +42,7 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
         raise ValueError("Edition does not match independently replayed archived selection")
     selected_ids = set(actual)
     selected_candidates = [item for item in candidates if item["id"] in selected_ids]
-    live_sources = check_candidates(selected_candidates, date) if check_live else None
+    live_sources = check_candidates(selected_candidates, date, publisher_dates=True) if check_live else None
     return {
         "date": date,
         "prepublication_gate_verified": True,
