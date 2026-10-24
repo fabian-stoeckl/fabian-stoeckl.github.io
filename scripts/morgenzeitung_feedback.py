@@ -194,7 +194,7 @@ def write_profile_if_unchanged(api, original_sha, original, updated, apply):
         raise RuntimeError("Private profile changed concurrently; rerun feedback ingestion")
     if not apply or updated == original:
         return False
-    payload = base64.b64encode((json.dumps(updated, ensure_ascii=False, indent=2) + "\\n").encode()).decode()
+    payload = base64.b64encode((json.dumps(updated, ensure_ascii=False, indent=2) + "\n").encode()).decode()
     try:
         api("/contents/profile.json", "PUT", {
             "message": "Refresh deterministic feedback profile",
