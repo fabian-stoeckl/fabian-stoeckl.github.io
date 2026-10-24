@@ -7,7 +7,7 @@ from collections import Counter
 from scripts.morgenzeitung_feedback import topic_family
 
 def select_articles(candidates, profile, limit=10, max_per_source=4):
-    if not isinstance(candidates, list) or limit < 1:
+    if not isinstance(candidates, list) or type(limit) is not int or type(max_per_source) is not int or not 1 <= limit <= 15 or max_per_source < 1:
         raise ValueError("Invalid candidates or limit")
     signals = {s["topic"]: s["direction"] for s in profile.get("computed_learning_signals", [])
                if s.get("confidence") == "preliminary" and s.get("direction") in ("positive", "negative")}
