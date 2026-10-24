@@ -1,6 +1,6 @@
 import json
 import unittest
-from scripts.morgenzeitung_prepublication_gate import verify_edition
+from scripts.morgenzeitung_prepublication_gate import verify_edition, verify_index
 
 
 class Repo:
@@ -21,6 +21,21 @@ class Repo:
 
 
 class GateTests(unittest.TestCase):
+    def test_valid_index(self):
+        self.assertTrue(verify_index({"dates": ["2026-10-25", "2026-10-24"]}, "2026-10-25"))
+
+    def test_index_missing_edition(self):
+        with self.assertRaisesRegex(ValueError, "Edition missing"):
+            verify_index({"dates": ["2026-10-24"]}, "2026-10-25")
+
+    def test_index_duplicates(self):
+        with self.assertRaisesRegex(ValueError, "Edition missing"):
+            verify_index({"dates": ["2026-10-25", "2026-10-25"]}, "2026-10-25")
+
+    def test_index_wrong_order(self):
+        with self.assertRaisesRegex(ValueError, "Edition missing"):
+            verify_index({"dates": ["2026-10-24", "2026-10-25"]}, "2026-10-25")
+
     def test_independent_replay_accepts_exact_order(self):
         result = verify_edition(Repo(), "2026-10-25", {
             "date": "2026-10-25", "articles": [{"id": "a"}, {"id": "b"}]})
