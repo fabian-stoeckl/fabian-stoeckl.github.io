@@ -73,6 +73,17 @@ jobs:
                   raise SystemExit('PARTIAL: missing preselection issue snapshot: '+issue_snapshot_path)
               raise
           issues=json.loads(issue_bytes)
+          parameter_path='snapshots/'+date+'-selection-parameters.json'
+          try:
+              parameter_bytes,_=read_private(parameter_path)
+          except urllib.error.HTTPError as error:
+              if error.code==404:
+                  raise SystemExit('PARTIAL: missing preselection selection parameters: '+parameter_path)
+              raise
+          parameters=json.loads(parameter_bytes)
+          if set(parameters)!={'limit','max_per_source'} or not isinstance(parameters['limit'],int) or not 1<=parameters['limit']<=15 or not isinstance(parameters['max_per_source'],int) or parameters['max_per_source']<1:
+              raise SystemExit('Invalid preselection selection parameters')
+
           work=pathlib.Path('/tmp/morgenzeitung-private-audit')
           work.mkdir(exist_ok=True)
           (work/'candidates.json').write_bytes(candidates)
@@ -82,13 +93,16 @@ jobs:
           subprocess.run(['python3','-m','scripts.morgenzeitung_live_learning_gate',
               '--date',date,'--candidates',str(work/'candidates.json'),
               '--profile',str(work/'profile.json'),'--issue-versions',str(work/'issues.json'),
-              '--private-output',str(result_path)],check=True)
+              '--private-output',str(result_path),
+              '--limit',str(parameters['limit']),
+              '--max-per-source',str(parameters['max_per_source'])],check=True)
           result=json.loads(result_path.read_text())
           result['private_profile_blob_sha']=profile_blob_sha
           result['candidate_snapshot_path']=candidate_path
           result['profile_snapshot_path']=profile_snapshot_path
           result['audit_code_commit']=os.environ['GITHUB_SHA']
           result['issue_snapshot_path']=issue_snapshot_path
+          result['selection_parameters_snapshot_path']=parameter_path
           result['provenance_limitations']='Publication commit and S7 run persistence must be independently verified; no productive PASS inferred.'
           # A separate file avoids overwriting a genuine existing runs/YYYY-MM-DD.json.
           dest='audits/'+date+'-live-learning.json'
