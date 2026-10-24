@@ -29,7 +29,7 @@ class MemoryPrivateRepo:
 class CaptureTests(unittest.TestCase):
     def setUp(self):
         self.pool = json.dumps([{"id": "a", "topic": "Industrie",
-                                 "source": "FAZ", "source_url": "https://www.faz.net/aktuell/wirtschaft/test", "verified": True}]).encode()
+                                 "source": "FAZ", "source_url": "https://www.faz.net/aktuell/wirtschaft/test", "published_at": "2026-10-23T12:00:00+02:00", "verified": True}]).encode()
 
     def test_capture_and_idempotence(self):
         repo = MemoryPrivateRepo()
@@ -69,6 +69,15 @@ class CaptureTests(unittest.TestCase):
             if url is not None:
                 candidate["source_url"] = url
             with self.subTest(url=url), self.assertRaisesRegex(ValueError, "source_url"):
+                validate_candidates(json.dumps([candidate]).encode())
+
+    def test_rejects_missing_or_naive_publication_time(self):
+        for stamp in (None, "2026-10-23T12:00:00", "not-a-date"):
+            candidate = {"id": "a", "topic": "Industrie", "source": "FAZ",
+                         "source_url": "https://www.faz.net/aktuell/wirtschaft/test", "verified": True}
+            if stamp is not None:
+                candidate["published_at"] = stamp
+            with self.subTest(stamp=stamp), self.assertRaisesRegex(ValueError, "published_at"):
                 validate_candidates(json.dumps([candidate]).encode())
 
     def test_invalid_date_before_write(self):
