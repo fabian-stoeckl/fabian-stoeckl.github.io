@@ -1,0 +1,112 @@
+name: Morgenzeitung private live learning audit
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Published edition date (YYYY-MM-DD); blank uses latest public edition'
+        required: false
+        type: string
+  schedule:
+    - cron: '15 9 * * *'
+permissions:
+  contents: read
+jobs:
+  private-live-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit real preselection evidence against published HTTPS
+        env:
+          GH_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+          REQUESTED_DATE: ${{ inputs.date }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import base64, datetime, json, os, pathlib, re, subprocess, urllib.error, urllib.request
+          token=os.environ.get('GH_TOKEN','')
+          if not token:
+              raise SystemExit('Missing MORGENZEITUNG_FEEDBACK_TOKEN')
+          root='https://api.github.com/repos/fabian-stoeckl/morgenzeitung-feedback'
+          def request(path,method='GET',body=None):
+              data=json.dumps(body).encode() if body is not None else None
+              req=urllib.request.Request(root+path,data=data,method=method,headers={
+                  'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json',
+                  'X-GitHub-Api-Version':'2022-11-28'})
+              with urllib.request.urlopen(req,timeout=30) as resp:return json.load(resp)
+          def read_private(path):
+              obj=request('/contents/'+path)
+              return base64.b64decode(obj['content']),obj['sha']
+          date=os.environ.get('REQUESTED_DATE') or ''
+          if not date:
+              public='https://www.fabian-stoeckl.com/Privat/Pressespiegel/data/index.json'
+              with urllib.request.urlopen(urllib.request.Request(public,headers={'Cache-Control':'no-cache'}),timeout=30) as resp:
+                  date=json.load(resp)['dates'][0]
+          if not re.fullmatch(r'\d{4}-\d{2}-\d{2}',date):
+              raise SystemExit('Invalid edition date')
+          # Only preselection snapshots saved by the publishing agent are acceptable.
+          # Never reconstruct candidates from public output.
+          candidate_path='candidates/'+date+'.json'
+          try:
+              candidates,_=read_private(candidate_path)
+          except urllib.error.HTTPError as error:
+              if error.code==404:
+                  raise SystemExit('PARTIAL: missing genuine preselection candidate snapshot: '+candidate_path)
+              raise
+          # Snapshot must be saved before selection, not fetched retrospectively.
+          profile_snapshot_path='snapshots/'+date+'-profile.json'
+          try:
+              profile,profile_blob_sha=read_private(profile_snapshot_path)
+          except urllib.error.HTTPError as error:
+              if error.code==404:
+                  raise SystemExit('PARTIAL: missing preselection profile snapshot: '+profile_snapshot_path)
+              raise
+          issues=[]
+          page=1
+          while True:
+              batch=request('/issues?state=all&per_page=100&page='+str(page))
+              issues.extend({'number':i['number'],'updated_at':i['updated_at']} for i in batch
+                  if 'pull_request' not in i and i.get('number') not in (1,2))
+              if len(batch)<100:break
+              page+=1
+          work=pathlib.Path('/tmp/morgenzeitung-private-audit')
+          work.mkdir(exist_ok=True)
+          (work/'candidates.json').write_bytes(candidates)
+          (work/'profile.json').write_bytes(profile)
+          (work/'issues.json').write_text(json.dumps(issues))
+          result_path=work/'audit.json'
+          subprocess.run(['python3','-m','scripts.morgenzeitung_live_learning_gate',
+              '--date',date,'--candidates',str(work/'candidates.json'),
+              '--profile',str(work/'profile.json'),'--issue-versions',str(work/'issues.json'),
+              '--private-output',str(result_path)],check=True)
+          result=json.loads(result_path.read_text())
+          result['private_profile_blob_sha']=profile_blob_sha
+          result['candidate_snapshot_path']=candidate_path
+          result['profile_snapshot_path']=profile_snapshot_path
+          result['public_commit']=os.environ['GITHUB_SHA']
+          result['provenance_limitations']='Issue versions are current at audit time; publication-time snapshots must be separately captured by the editorial agent.'
+          # A separate file avoids overwriting a genuine existing runs/YYYY-MM-DD.json.
+          dest='audits/'+date+'-live-learning.json'
+          encoded=base64.b64encode((json.dumps(result,ensure_ascii=False,indent=2)+'
+').encode()).decode()
+          try:
+              existing=request('/contents/'+dest)
+          except urllib.error.HTTPError as error:
+              if error.code!=404:raise
+              existing=None
+          if existing:
+              old=base64.b64decode(existing['content'])
+              if json.loads(old)!=result:
+                  raise SystemExit('Existing private audit differs; refusing overwrite: '+dest)
+              print('Idempotent existing private audit:',dest)
+          else:
+              request('/contents/'+dest,'PUT',{'message':'Archive live Morgenzeitung audit '+date,'content':encoded})
+          saved,_=read_private(dest)
+          if json.loads(saved)!=result:
+              raise SystemExit('Private audit readback mismatch')
+          print('Private audit saved and verified:',dest)
+          print('Evidence statuses:',result['statuses'])
+          PY
