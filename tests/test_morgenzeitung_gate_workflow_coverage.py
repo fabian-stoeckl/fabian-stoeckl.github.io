@@ -14,6 +14,18 @@ class GateWorkflowCoverageTests(unittest.TestCase):
             with self.subTest(path=path):
                 self.assertIn("      - '" + path + "'", workflow)
 
+    def test_direct_main_push_date_pattern_matches_real_edition(self):
+        import re
+        workflow = Path(".github/workflows/morgenzeitung-prepublication-gate.yml").read_text()
+        self.assertIn("  push:", workflow)
+        self.assertIn("POST-PUBLICATION AUDIT ONLY", workflow)
+        line = next(line for line in workflow.splitlines()
+                    if "if re.fullmatch(" in line and "Privat/Pressespiegel/data/" in line
+                    and "p)]" in line and "elif " not in line)
+        pattern = line.split("r'", 1)[1].split("'", 1)[0]
+        self.assertIsNotNone(re.fullmatch(pattern, "Privat/Pressespiegel/data/2026-10-25.json"))
+        self.assertIsNone(re.fullmatch(pattern, "Privat/Pressespiegel/data/index.json"))
+
     def test_real_edition_requires_live_source_check(self):
         workflow = Path(".github/workflows/morgenzeitung-prepublication-gate.yml").read_text()
         self.assertIn("'--check-live-sources'", workflow)
