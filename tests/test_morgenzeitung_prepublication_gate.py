@@ -79,6 +79,24 @@ class GateTests(unittest.TestCase):
                 check_live=True)
             self.assertEqual([x["id"] for x in check.call_args.args[0]], ["a", "b"])
 
+    def test_live_source_checks_replay_and_archive(self):
+        with patch("scripts.morgenzeitung_live_source_check.check_http") as http:
+            with patch("scripts.morgenzeitung_publisher_date_evidence.fetch_publisher_metadata") as metadata:
+                http.return_value = {"status": 200, "paywall_or_access_restricted": False}
+                metadata.return_value = {"status": "match"}
+                repo = Repo()
+                pool = json.loads(repo.files["candidates/2026-10-25.json"])
+                for item in pool:
+                    item["published_at"] = "2026-10-24T08:00:00Z"
+                repo.files["candidates/2026-10-25.json"] = json.dumps(pool).encode()
+                result = verify_edition(repo, "2026-10-25", {
+                    "date": "2026-10-25", "articles": [{"id": "a"}, {"id": "b"}]},
+                    {"dates": ["2026-10-25", "2026-10-24"]}, check_live=True)
+                self.assertEqual(result["selected_ids"], ["a", "b"])
+                self.assertEqual(http.call_count, 2)
+                self.assertEqual(metadata.call_count, 2)
+                self.assertEqual(len(result["live_source_evidence"]["checked"]), 2)
+
     def test_live_source_metadata_contradiction_blocks(self):
         with patch("scripts.morgenzeitung_prepublication_gate.check_candidates",
                    side_effect=ValueError("Publisher publication metadata contradict archived date")):
