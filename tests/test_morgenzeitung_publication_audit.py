@@ -11,6 +11,7 @@ AUDIT = {"selected_ids": ["new", "old"],
          "counterfactual_effect_verified": True,
          "changed_top_n_count": 1,
          "newly_selected_ids": ["new"],
+         "displaced_ids": ["replaced"],
          "effective_signals": [{"topic": "Industrie", "direction": "positive"}]}
 
 class PublicationAudit(unittest.TestCase):
