@@ -1,4 +1,5 @@
 import unittest
+import datetime as dt
 import urllib.error
 from scripts.morgenzeitung_live_source_check import check_date, check_http, check_candidates
 
@@ -24,6 +25,19 @@ class LiveSourceTests(unittest.TestCase):
                       "2026-10-24T10:00:00"):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 check_date(value, "2026-10-24")
+
+    def test_future_today_is_rejected_at_morning_publication(self):
+        morning = dt.datetime(2026, 10, 24, 6, 45, tzinfo=dt.timezone.utc)
+        with self.assertRaisesRegex(ValueError, "outside edition review window"):
+            check_date("2026-10-24T15:00:00Z", "2026-10-24", as_of=morning)
+        self.assertTrue(check_date("2026-10-24T06:47:00Z", "2026-10-24", as_of=morning))
+        with self.assertRaises(ValueError):
+            check_date("2026-10-24T06:51:00Z", "2026-10-24", as_of=morning)
+
+    def test_naive_verification_clock_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "Verification time needs timezone"):
+            check_date("2026-10-24T06:00:00Z", "2026-10-24",
+                       as_of=dt.datetime(2026, 10, 24, 7))
 
     def test_accessible(self):
         self.assertEqual(check_http("https://example.org/story", Opener(200))["status"], 200)
