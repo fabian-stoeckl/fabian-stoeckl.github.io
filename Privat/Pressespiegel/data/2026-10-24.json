@@ -12,28 +12,6 @@
   ],
   "articles": [
     {
-      "title": "Von Autos bis Maschinen: Chinas aggressive Exporte lassen Europas Motor stottern",
-      "url": "https://www.derstandard.de/story/3000000345164/von-autos-bis-maschinen-chinas-aggressive-exporte-lassen-europas-motor-stottern",
-      "source": "Der Standard",
-      "published_at": "2026-10-23T18:00:00+02:00",
-      "region": "International",
-      "summary": "Der Beitrag zeigt, wie Chinas Wettbewerbsdruck inzwischen traditionelle deutsche Exportstärken erreicht. Das Institut der deutschen Wirtschaft erwartet ein Handelsdefizit gegenüber China von mehr als 100 Milliarden Euro; 2019 waren es 14 Milliarden. Im Maschinenbau könnte sich der damalige Überschuss von zehn Milliarden in ein Defizit von einer Milliarde Euro verwandeln. Energieintensive Branchen erklären laut Analyse nur einen kleinen Teil der gesamten Lücke. Das spricht gegen eine ausschließlich auf Energiepreise reduzierte Standortdiagnose. Ein Handelsdefizit allein beweist allerdings keinen Wohlstandsverlust: Entscheidend sind Wertschöpfung, Wettbewerbsbedingungen und die Fähigkeit der Unternehmen, neue Märkte und Produkte zu erschließen. Die Zahlen für das Gesamtjahr sind Prognosen.",
-      "id": "86b00f725f3e5ecc",
-      "event": "https://www.derstandard.de/story/3000000345164/von-autos-bis-maschinen-chinas-aggressive-exporte-lassen-europas-motor-stottern",
-      "paywall": true,
-      "access": "full",
-      "research_access": "original_full",
-      "research_checked_at": "2026-10-24T04:54:28.786631+00:00",
-      "topic": "Industrie & Welthandel",
-      "kind": "Hintergrundanalyse",
-      "facts": [
-        "Das IW prognostiziert ein deutsches China-Handelsdefizit von über 100 Milliarden Euro.",
-        "Im Maschinenbau steht einem Überschuss von zehn Milliarden Euro 2019 ein erwartetes Defizit von einer Milliarde gegenüber."
-      ],
-      "novelty": "Neue sektorale Handelszahlen und IW-Prognosen statt Wiederholung der früheren allgemeinen China-Industrieanalyse.",
-      "treat": false
-    },
-    {
       "title": "BASF und Evonik – die besondere Rolle des Michael Vassiliadis",
       "url": "https://www.handelsblatt.com/politik/deutschland/chemie-basf-und-evonik-die-besondere-rolle-des-michael-vassiliadis/100263453.html",
       "source": "Handelsblatt",
@@ -53,6 +31,28 @@
         "Der zugängliche Text beschreibt eine Anhebung des Angebots von 22,15 auf 24 Euro je Aktie."
       ],
       "novelty": "",
+      "treat": false
+    },
+    {
+      "title": "Von Autos bis Maschinen: Chinas aggressive Exporte lassen Europas Motor stottern",
+      "url": "https://www.derstandard.de/story/3000000345164/von-autos-bis-maschinen-chinas-aggressive-exporte-lassen-europas-motor-stottern",
+      "source": "Der Standard",
+      "published_at": "2026-10-23T18:00:00+02:00",
+      "region": "International",
+      "summary": "Der Beitrag zeigt, wie Chinas Wettbewerbsdruck inzwischen traditionelle deutsche Exportstärken erreicht. Das Institut der deutschen Wirtschaft erwartet ein Handelsdefizit gegenüber China von mehr als 100 Milliarden Euro; 2019 waren es 14 Milliarden. Im Maschinenbau könnte sich der damalige Überschuss von zehn Milliarden in ein Defizit von einer Milliarde Euro verwandeln. Energieintensive Branchen erklären laut Analyse nur einen kleinen Teil der gesamten Lücke. Das spricht gegen eine ausschließlich auf Energiepreise reduzierte Standortdiagnose. Ein Handelsdefizit allein beweist allerdings keinen Wohlstandsverlust: Entscheidend sind Wertschöpfung, Wettbewerbsbedingungen und die Fähigkeit der Unternehmen, neue Märkte und Produkte zu erschließen. Die Zahlen für das Gesamtjahr sind Prognosen.",
+      "id": "86b00f725f3e5ecc",
+      "event": "https://www.derstandard.de/story/3000000345164/von-autos-bis-maschinen-chinas-aggressive-exporte-lassen-europas-motor-stottern",
+      "paywall": true,
+      "access": "full",
+      "research_access": "original_full",
+      "research_checked_at": "2026-10-24T04:54:28.786631+00:00",
+      "topic": "Industrie & Welthandel",
+      "kind": "Hintergrundanalyse",
+      "facts": [
+        "Das IW prognostiziert ein deutsches China-Handelsdefizit von über 100 Milliarden Euro.",
+        "Im Maschinenbau steht einem Überschuss von zehn Milliarden Euro 2019 ein erwartetes Defizit von einer Milliarde gegenüber."
+      ],
+      "novelty": "Neue sektorale Handelszahlen und IW-Prognosen statt Wiederholung der früheren allgemeinen China-Industrieanalyse.",
       "treat": false
     },
     {
