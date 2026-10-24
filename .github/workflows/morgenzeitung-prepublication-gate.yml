@@ -43,6 +43,8 @@ jobs:
               changed=subprocess.check_output(['git','diff','--name-only',base,'HEAD'],text=True).splitlines()
               editions=[pathlib.Path(p).stem for p in changed
                   if re.fullmatch(r'Privat/Pressespiegel/data/\d{4}-\d{2}-\d{2}\.json',p)]
+              if 'Privat/Pressespiegel/data/index.json' in changed and not editions:
+                  raise SystemExit('Index changed without a dated edition: manual review required')
               if not editions:
                   print('No edition JSON changed; no publication to gate')
                   raise SystemExit(0)
@@ -52,5 +54,6 @@ jobs:
               if not re.fullmatch(r'\d{4}-\d{2}-\d{2}',day):
                   raise SystemExit('Invalid edition date')
               subprocess.run(['python3','-m','scripts.morgenzeitung_prepublication_gate',
-                  '--date',day,'--edition','Privat/Pressespiegel/data/'+day+'.json'],check=True)
+                  '--date',day,'--edition','Privat/Pressespiegel/data/'+day+'.json',
+                  '--index','Privat/Pressespiegel/data/index.json'],check=True)
           PY
