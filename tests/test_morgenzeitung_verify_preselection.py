@@ -9,7 +9,7 @@ DATE = "2026-10-25"
 class Repo:
     def __init__(self):
         self.data = {
-            f"candidates/{DATE}.json": json.dumps([{"id": "article1", "topic": "Industrie", "source": "Handelsblatt", "verified": True}]).encode(),
+            f"candidates/{DATE}.json": json.dumps([{"id": "article1", "topic": "Industrie", "source": "Handelsblatt", "source_url": "https://www.handelsblatt.com/politik/test", "verified": True}]).encode(),
             f"snapshots/{DATE}-profile.json": b'{"computed_learning_signals":[]}',
             f"snapshots/{DATE}-issues.json": b'[]',
             f"snapshots/{DATE}-selection-parameters.json": b'{"limit":10,"max_per_source":4}',

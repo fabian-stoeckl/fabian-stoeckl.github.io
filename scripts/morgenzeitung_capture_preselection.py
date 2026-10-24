@@ -13,6 +13,7 @@ import re
 import urllib.error
 import urllib.request
 import time
+from urllib.parse import urlsplit
 
 API = "https://api.github.com/repos/fabian-stoeckl/morgenzeitung-feedback"
 
@@ -28,6 +29,18 @@ def validate_candidates(raw):
             for key in ("id", "topic", "source")
         ) or item.get("verified") is not True:
             raise ValueError("Every candidate needs id, topic, source, verified=true")
+        # Source evidence must be a direct HTTPS article URL, not a search,
+        # archive proxy, or an uncheckable assertion of verification.
+        source_url = item.get("source_url")
+        if not isinstance(source_url, str) or not source_url.strip():
+            raise ValueError("Every candidate requires a source_url")
+        parsed = urlsplit(source_url)
+        if (parsed.scheme != "https" or not parsed.hostname
+                or parsed.username is not None or parsed.password is not None
+                or parsed.fragment):
+            raise ValueError("Candidate source_url must be a direct HTTPS URL")
+        if parsed.hostname.lower() in ("localhost", "127.0.0.1", "::1"):
+            raise ValueError("Local source_url is not acceptable")
         ids.append(item["id"])
     if len(set(ids)) != len(ids):
         raise ValueError("Duplicate candidate IDs")
