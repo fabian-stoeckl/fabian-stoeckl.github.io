@@ -14,7 +14,7 @@ from scripts.morgenzeitung_publication_audit import live_json, verify
 def audit(date, candidates_bytes, profile_bytes, issues, limit=10, max_per_source=4):
     candidates = json.loads(candidates_bytes)
     profile = json.loads(profile_bytes)
-    if not isinstance(issues, list) or not all(
+    if limit < 1 or max_per_source < 1:\n        raise ValueError("Selection parameters must be positive")\n    if not isinstance(issues, list) or not all(
         isinstance(i, dict) and isinstance(i.get("number"), int)
         and isinstance(i.get("updated_at"), str) and i["updated_at"] for i in issues
     ):
