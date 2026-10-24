@@ -48,7 +48,7 @@ jobs:
           date=os.environ.get('REQUESTED_DATE') or ''
           if not date and os.environ.get('TRIGGER_EVENT')=='push':
               changed=subprocess.check_output(['git','diff-tree','--no-commit-id','--name-only','-r','HEAD'],text=True).splitlines()
-              edition_files=[p for p in changed if re.fullmatch(r'Privat/Pressespiegel/data/\\d{4}-\\d{2}-\\d{2}\\.json',p)]
+              edition_files=[p for p in changed if re.fullmatch(r'Privat/Pressespiegel/data/\d{4}-\d{2}-\d{2}\.json',p)]
               if len(edition_files)!=1:
                   raise SystemExit('No unique published edition in push; scheduled audit will retry')
               date=pathlib.Path(edition_files[0]).stem
