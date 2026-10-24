@@ -33,6 +33,19 @@ class PublisherTimestampEvidenceTests(unittest.TestCase):
         html = '<meta property="article:published_time" content="2026-10-23T08:00:00Z">'
         self.assertEqual(compare_publisher_timestamp(html, "2026-10-24T08:00:00Z")["status"], "mismatch")
 
+    def test_real_handelsblatt_jsonld_fractional_seconds_not_conflict(self):
+        html = ('<script type="application/ld+json">'
+                '{"@type":"NewsArticle","datePublished":"2026-10-23T16:09:01.912Z"}'
+                '</script><meta property="article:published_time" content="2026-10-23T16:09:01Z">')
+        result = compare_publisher_timestamp(html, "2026-10-23T18:09:00+02:00")
+        self.assertEqual(result["status"], "match")
+
+    def test_different_publisher_seconds_are_not_automatically_equivalent(self):
+        html = ('<script type="application/ld+json">'
+                '{"@type":"NewsArticle","datePublished":"2026-10-23T16:09:01Z"}'
+                '</script><meta property="article:published_time" content="2026-10-23T16:09:03Z">')
+        self.assertEqual(compare_publisher_timestamp(html, "2026-10-23T18:09:00+02:00")["status"], "conflict")
+
     def test_conflicting_metadata(self):
         html = ('<meta property="article:published_time" content="2026-10-23T08:00:00Z">'
                 '<meta name="datePublished" content="2026-10-24T08:00:00Z">')
