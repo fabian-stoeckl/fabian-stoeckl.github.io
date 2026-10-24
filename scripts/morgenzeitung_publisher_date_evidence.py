@@ -99,7 +99,11 @@ def compare_publisher_timestamp(html, declared):
         return {"status": "inconclusive", "reason": "No timezone-aware publication metadata"}
     unique = {value for _, value in valid}
     if len(unique) > 1:
-        return {"status": "conflict", "reason": "Publisher publication metadata disagree"}
+        # Expose bounded timestamp provenance for genuine publisher diagnostics;
+        # never silently pick the date most convenient for the local edition.
+        return {"status": "conflict", "reason": "Publisher publication metadata disagree",
+                "observations": [{"source": source, "timestamp_utc": value.isoformat()}
+                                 for source, value in valid[:12]]}
     observed = next(iter(unique))
     # Newsrooms often display only HH:MM on the published article page. When
     # the declared timestamp has zero seconds, compare at that stated minute
