@@ -204,6 +204,10 @@ Der Marketing-Satz unter „Morgenzeitung“, der dekorative Footer-Slogan und d
 
 ## Quellenoffene weltweite Recherche – Nutzerpräzisierung 24.10.2026
 
+### Laufzeitanschluss korrigiert (25.10.2026)
+
+Die Capture-CLI unterstützt neben dem geschützten Token nun den vorhandenen GitHub-Connector: private Vorbereitung mit Profil-Blob-SHA, atomarer Commit der vier unveränderlichen Dateien durch den Connector und erneuter Abgleich eines remote gelesenen, commitgebundenen Exports. Lokale Vorbereitung ist ausdrücklich kein Persistenznachweis. Der unabhängige Prepublication-Gate und seine Actions-Secrets bleiben unverändert. Keine zusätzlichen Tokens im Chat und keine neuen Dienste erforderlich. Verbindlicher Ablauf und Exportformate stehen am Anfang von `services/morgenzeitung/AGENT-ABLAUF.md`.
+
 **Aktuelle, verbindliche Entscheidung:** FAZ, Süddeutsche Zeitung, Handelsblatt, Der Standard, ORF, Die Presse und Krone sind lediglich beispielhaft genannte, oft passende deutschsprachige Quellen. Financial Times, The New York Times, The Washington Post, The Guardian (London) sowie weitere internationale und lokale Zeitungen, Nachrichtenagenturen, Fachmedien und Originalstudien sind **genauso ausdrücklich erwünscht**. Auch Quellen außerhalb dieser Beispiele müssen aktiv recherchiert werden. Keine starre Publisher-Liste, keine vorgeschriebenen Anteile, keine Beschränkung auf bereits getestete Websites.
 
 Der tägliche Agent soll **zuerst die relevanten Themen recherchieren und erst anschließend die besten belegten Beiträge auswählen**. Handelsblatt wegen häufiger thematischer Relevanz sorgfältig mit durchsuchen, ohne anderen Verlagen einen inhaltlich gleichwertigen oder besseren Artikel vorzuenthalten. „Heute wichtig“ bleibt breit und nach allgemeiner Nachrichtenrelevanz, „Vertiefungen“ sind profil- und substanzorientiert, nicht verlagsorientiert. Deutschsprachige Zusammenfassungen auch bei englischen Originalartikeln; Original-URL, genaue Quelle, Paywall- und Zugriffstransparenz weiterhin wie bisher.
