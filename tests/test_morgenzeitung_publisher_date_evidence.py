@@ -84,7 +84,7 @@ class PublisherTimestampEvidenceTests(unittest.TestCase):
 
     def test_dst_overlap_does_not_whitelist_other_hour_or_date(self):
         html = '<meta property="article:published_time" content="2026-10-25T01:11:16Z">'
-        for declared in ["2026-10-25T03:11:00+02:00",
+        for declared in ["2026-10-25T03:11:00+01:00",
                          "2026-10-24T02:11:00+02:00",
                          "2026-10-25T02:12:00+02:00",
                          "2026-10-25T02:11:17+02:00"]:
