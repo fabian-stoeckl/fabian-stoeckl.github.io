@@ -57,7 +57,8 @@ def _same_article_publisher_redirect(original_url, location):
     same_publisher = (a == b or (a in standard and b in standard))
     if (not same_publisher or before.path != after.path
             or before.query != after.query or before.port != after.port):
-        raise ValueError("Publisher redirect changes host or article identity")
+        raise ValueError("Publisher redirect changes host or article identity: "
+                         + a + before.path + " -> " + b + after.path)
     return target
 
 
