@@ -62,7 +62,8 @@ const visible=GitHubPaper.partition(fixture);
  assert(Math.abs(headerPosition.lastTop-headerPosition.optionalTop)<18,'News options and explanation must share desktop row');
  assert(headerPosition.optionalLeft>=headerPosition.lastRight&&headerPosition.optionalLeft-headerPosition.lastRight<30,'Optional explanation must sit directly after news options, not right-aligned');
  assert.equal(await page.locator('#headlines .news-item .news-summary').count(),visible.headlines.length);
- assert.equal(await page.locator('#headlines .news-item .news-summary').first().innerText(),visible.headlines[0].summary);
+ assert.equal(await page.locator('#headlines .news-item .news-summary').first().innerText(),
+   (visible.headlines.find(item=>item.region==='Österreich')||visible.headlines[0]).summary);
  assert(await page.locator('#notice').isHidden(),'Routine research limitations are not user-visible errors');
  assert.equal(await page.locator('nav.tabs').evaluate(el=>getComputedStyle(el).position),'sticky');
  await page.evaluate(()=>window.scrollTo(0,900));
