@@ -114,6 +114,39 @@ class GateTests(unittest.TestCase):
                     "date": "2026-10-25", "articles": [{"id": "a"}, {"id": "b"}]},
                     check_live=True)
 
+    def test_standard_canonical_article_is_independently_checked(self):
+        repo = Repo()
+        pool = json.loads(repo.files['candidates/2026-10-25.json'])
+        pool[0]['source'] = 'Der Standard'
+        original = 'https://www.derstandard.de/story/3000000345625/aktienmaerkte'
+        canonical = 'https://www.derstandard.at/story/3000000345625/aktienmaerkte'
+        pool[0]['source_url'] = original
+        repo.files['candidates/2026-10-25.json'] = json.dumps(pool).encode()
+        def check(items, day, publisher_dates):
+            return {'checked': [{'id': item['id'], 'http_status': 200} for item in items]}
+        with patch('scripts.morgenzeitung_prepublication_gate.check_candidates', side_effect=check) as check_mock:
+            result = verify_edition(repo, '2026-10-25',
+                                    {'date':'2026-10-25',
+                                     'articles':[{'id':'a','url':canonical},
+                                                 {'id':'b','url':'https://orf.at/stories/b'}]}, check_live=True)
+        self.assertEqual(check_mock.call_args_list[0].args[0][0]['source_url'], canonical)
+        self.assertEqual(result['live_source_evidence']['checked'][0]['archived_source_url'], original)
+
+    def test_standard_canonical_alias_cannot_change_story(self):
+        repo = Repo()
+        pool = json.loads(repo.files['candidates/2026-10-25.json'])
+        pool[0]['source'] = 'Der Standard'
+        pool[0]['source_url'] = 'https://www.derstandard.de/story/3000000345625/aktienmaerkte'
+        repo.files['candidates/2026-10-25.json'] = json.dumps(pool).encode()
+        malicious = 'https://www.derstandard.at/story/3000000345625/other'
+        with patch('scripts.morgenzeitung_prepublication_gate.check_candidates') as check:
+            with self.assertRaisesRegex(ValueError, 'changes host or article identity'):
+                verify_edition(repo, '2026-10-25',
+                               {'date':'2026-10-25',
+                                'articles':[{'id':'a','url':malicious},
+                                            {'id':'b','url':'https://orf.at/stories/b'}]}, check_live=True)
+            check.assert_not_called()
+
     def test_preview_rejected(self):
         with self.assertRaisesRegex(ValueError, "preview"):
             verify_edition(Repo(), "2026-10-25", {
