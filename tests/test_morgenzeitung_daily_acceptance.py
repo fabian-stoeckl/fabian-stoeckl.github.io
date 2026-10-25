@@ -4,10 +4,16 @@ import json
 import unittest
 
 from scripts.morgenzeitung_daily_acceptance import (
-    REQUIRED, evaluate, inspect_publisher_pages, smoke, REAL_ARTICLES, immutable_acceptance_path
+    REQUIRED, evaluate as _evaluate, inspect_publisher_pages, smoke, REAL_ARTICLES, immutable_acceptance_path
 )
 
 DATE = "2026-10-25"
+
+
+def evaluate(date, index, edition, private_files, publisher_checks):
+    """Existing pure fixtures model the matching committed file explicitly."""
+    return _evaluate(date, index, edition, private_files, publisher_checks,
+                     committed_edition=edition)
 
 
 def fixture():
@@ -33,7 +39,8 @@ def fixture():
         "audits/"+DATE+"-live-learning.json": json.dumps(audit).encode(),
         "audits/"+DATE+"-acceptance.json": json.dumps(acceptance).encode()}
     metadata = [{"evidence": {"status": "match"}}]
-    return {"dates": [DATE]}, {"date": DATE, "preview": False, "articles": articles}, values, metadata
+    return {"dates": [DATE]}, {"date": DATE, "preview": False, "articles": articles,
+                              "headlines": [{"id": f"{i:016x}"} for i in range(15)]}, values, metadata
 
 
 class DailyAcceptanceTests(unittest.TestCase):
@@ -122,6 +129,33 @@ class DailyAcceptanceTests(unittest.TestCase):
                                    (DATE, "123", "4/../5")):
             with self.subTest(date=date, run=run, attempt=attempt), self.assertRaises(ValueError):
                 immutable_acceptance_path(date, run, attempt)
+
+    def test_live_headline_order_must_match_committed_edition(self):
+        index, edition, files, publisher = fixture()
+        self.assertEqual(_evaluate(DATE, index, edition, files, publisher,
+                                   committed_edition=edition)["verdict"], "PASS")
+        committed = {**edition, "headlines": list(reversed(edition["headlines"]))}
+        report = _evaluate(DATE, index, edition, files, publisher,
+                           committed_edition=committed)
+        self.assertEqual(report["verdict"], "PARTIAL")
+        self.assertFalse(report["checks"]["public_headlines_match_committed"])
+
+    def test_missing_committed_file_or_bad_live_headlines_never_pass(self):
+        index, edition, files, publisher = fixture()
+        self.assertEqual(_evaluate(DATE, index, edition, files, publisher,
+                                   committed_edition=None)["verdict"], "PARTIAL")
+        for bad in (
+            {**edition, "headlines": edition["headlines"][:14]},
+            {**edition, "headlines": edition["headlines"][:14] + edition["headlines"][:1]},
+            {**edition, "headlines": [{"id": "not-a-valid-id"}] + edition["headlines"][1:]},
+            {**edition, "headlines": list(reversed(edition["headlines"]))},
+            {**edition, "headlines": []},
+        ):
+            with self.subTest(bad=bad["headlines"]):
+                report = _evaluate(DATE, index, bad, files, publisher,
+                                   committed_edition=edition)
+                self.assertEqual(report["verdict"], "PARTIAL")
+                self.assertFalse(report["checks"]["public_headlines_match_committed"])
 
     def test_missing_snapshot_cannot_be_recreated_or_pass(self):
         index, edition, files, publisher = fixture()
