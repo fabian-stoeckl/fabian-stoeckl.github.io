@@ -39,42 +39,79 @@ def check_date(published_at, edition_date, max_age_hours=72, *, as_of=None):
     return stamp.isoformat()
 
 
+def _same_article_publisher_redirect(original_url, location):
+    """Permit only publisher-controlled canonical redirects to the IDENTICAL article path.
+
+    In particular, Der Standard uses .de and .at frontends with the same story
+    path. Never auto-follow to login, tracking, another article, or another host.
+    """
+    from urllib.parse import urljoin, urlsplit
+    if not location or not isinstance(location, str):
+        raise ValueError("Publisher redirect lacks a Location")
+    target = urljoin(original_url, location)
+    validate_source_url(target)
+    before, after = urlsplit(original_url), urlsplit(target)
+    a, b = before.hostname.lower(), after.hostname.lower()
+    standard = {'www.derstandard.de', 'www.derstandard.at',
+                'derstandard.de', 'derstandard.at'}
+    same_publisher = (a == b or (a in standard and b in standard))
+    if (not same_publisher or before.path != after.path
+            or before.query != after.query or before.port != after.port):
+        raise ValueError("Publisher redirect changes host or article identity")
+    return target
+
+
 def check_http(url, opener=None, *, retries=2, sleep=time.sleep):
     validate_source_url(url)
     opener = opener or urllib.request.build_opener(NoRedirect)
-    req = urllib.request.Request(url, headers={"User-Agent": "MorgenzeitungSourceCheck/1.0",
-                                              "Accept": "text/html,application/xhtml+xml"},
-                                 method="HEAD")
+    current = url
     method = "HEAD"
-    for attempt in range(retries + 2):
+    retries_used = 0
+    redirects = 0
+    while True:
+        headers = {"User-Agent": "MorgenzeitungSourceCheck/1.0",
+                   "Accept": "text/html,application/xhtml+xml"}
         if method == "GET":
-            req = urllib.request.Request(url, headers={"User-Agent": "MorgenzeitungSourceCheck/1.0",
-                                                       "Accept": "text/html,application/xhtml+xml",
-                                                       "Range": "bytes=0-0"}, method="GET")
+            headers["Range"] = "bytes=0-0"
+        req = urllib.request.Request(current, headers=headers, method=method)
+        location = None
         try:
             with opener.open(req, timeout=8) as response:
                 status = response.status
+                location = response.headers.get('Location')
         except urllib.error.HTTPError as exc:
             status = exc.code
+            location = exc.headers.get('Location') if exc.headers else None
         except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
-            if attempt >= retries:
+            if retries_used >= retries:
                 raise ValueError("Source network check inconclusive after retries") from exc
-            sleep(attempt + 1)
+            retries_used += 1
+            sleep(retries_used)
             continue
-        # Some publishers reject HEAD with 401/403 but serve their public
-        # article page via GET. Probe GET once; do not accept a restricted GET.
+        if status in (301, 302, 307, 308):
+            if redirects >= 2:
+                raise ValueError("Publisher redirect exceeds safe limit")
+            current = _same_article_publisher_redirect(current, location)
+            redirects += 1
+            # Restart with HEAD at the validated SAME-ARTICLE target.
+            method = "HEAD"
+            continue
         if status in (401, 403, 405, 501) and method == "HEAD":
+            # A HEAD error can be legitimate even when GET serves public HTML.
+            # GET 401/403 remains a hard failure.
             method = "GET"
             continue
-        if status in (429, 500, 502, 503, 504) and attempt < retries:
-            sleep(attempt + 1)
+        if status in (429, 500, 502, 503, 504) and retries_used < retries:
+            retries_used += 1
+            sleep(retries_used)
             continue
         break
     if status in (401, 402, 403):
         raise ValueError("Publisher access restricted: article existence unverified (HTTP " + str(status) + ")")
     if status == 200 or (method == "GET" and status == 206):
         return {"status": status, "reachable": True, "paywall_or_access_restricted": False,
-                "method": method}
+                "method": method, "verified_url": current,
+                "redirects": redirects}
     raise ValueError("Source URL not confirmed reachable (HTTP " + str(status) + ")")
 
 

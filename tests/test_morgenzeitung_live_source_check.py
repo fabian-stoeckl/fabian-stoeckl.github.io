@@ -6,6 +6,7 @@ from scripts.morgenzeitung_live_source_check import check_date, check_http, chec
 
 class Response:
     status = 200
+    headers = {}
     def __enter__(self): return self
     def __exit__(self, *args): pass
 
@@ -88,6 +89,56 @@ class LiveSourceTests(unittest.TestCase):
                 raise urllib.error.HTTPError(req.full_url, code, "blocked", {}, None)
         with self.assertRaisesRegex(ValueError, "existence unverified"):
             check_http("https://example.org/story", Blocked())
+
+    def test_official_same_story_derstandard_redirect(self):
+        old = ('https://www.derstandard.de/story/3000000345625/'
+               'wie-gefaehrdet-sind-die-aktienmaerkte-ist-die-nervositaet-berechtigt')
+        canonical = old.replace('derstandard.de', 'derstandard.at')
+        class Publisher:
+            seen = []
+            def open(self, req, timeout):
+                self.seen.append(req.full_url)
+                if req.full_url == old:
+                    raise urllib.error.HTTPError(req.full_url, 302, 'canonical',
+                                                 {'Location':canonical}, None)
+                if req.full_url != canonical:
+                    raise AssertionError('Redirected to unexpected URL')
+                return Response()
+        publisher = Publisher()
+        result = check_http(old, publisher)
+        self.assertEqual(result['verified_url'], canonical)
+        self.assertEqual(result['redirects'], 1)
+        self.assertEqual(publisher.seen, [old, canonical])
+
+    def test_redirect_to_other_story_login_domain_or_http_is_rejected(self):
+        old = 'https://www.derstandard.de/story/3000000345625/title'
+        targets = [
+            'https://www.derstandard.at/story/3000000345625/other',
+            'https://www.derstandard.at/login',
+            'https://derstandard.at.evil.example/story/3000000345625/title',
+            'https://www.not-derstandard.at/story/3000000345625/title',
+            'http://www.derstandard.at/story/3000000345625/title',
+            'https://www.derstandard.at/story/3000000345625/title?auth=token',
+            'https://127.0.0.1/story/3000000345625/title',
+        ]
+        for target in targets:
+            class Redirect:
+                def open(self, req, timeout):
+                    raise urllib.error.HTTPError(req.full_url, 302, 'redirect',
+                                                 {'Location':target}, None)
+            with self.subTest(target=target), self.assertRaises(ValueError):
+                check_http(old, Redirect())
+
+    def test_redirect_loop_rejected(self):
+        old = 'https://www.derstandard.de/story/3000000345625/title'
+        new = old.replace('derstandard.de', 'derstandard.at')
+        class Loop:
+            def open(self, req, timeout):
+                target = new if req.full_url == old else old
+                raise urllib.error.HTTPError(req.full_url, 302, 'redirect',
+                                             {'Location':target}, None)
+        with self.assertRaisesRegex(ValueError, 'exceeds safe limit'):
+            check_http(old, Loop())
 
     def test_transient_http_recovery(self):
         class Flaky:
