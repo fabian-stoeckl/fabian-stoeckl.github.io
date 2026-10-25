@@ -210,6 +210,17 @@ def evaluate(date, index, edition, private_files, publisher_checks):
             "note": "PASS requires genuine preselection, live selection match, independently verified feedback/profile/run acceptance and publisher evidence. Synthetic tests never count."}
 
 
+def immutable_acceptance_path(date, run_id, attempt):
+    """Unique append-only report per GitHub run *attempt*, including reruns."""
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(date)):
+        raise ValueError("Invalid edition date")
+    if str(run_id) != "manual" and not re.fullmatch(r"[0-9]{1,20}", str(run_id)):
+        raise ValueError("Invalid workflow run ID (numeric or manual)")
+    if not re.fullmatch(r"[1-9][0-9]{0,9}", str(attempt)):
+        raise ValueError("Invalid GitHub workflow run attempt")
+    return "audits/" + date + "-daily-acceptance-" + str(run_id) + "-attempt-" + str(attempt) + ".json"
+
+
 def run_daily(date, run_id, private):
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date):
         raise ValueError("Invalid publication date")
@@ -226,9 +237,12 @@ def run_daily(date, run_id, private):
     report = evaluate(date, index, edition, private_files, publisher)
     report["checked_at_utc"] = dt.datetime.now(dt.timezone.utc).isoformat()
     report["workflow_run_id"] = str(run_id)
+    attempt = os.getenv("GITHUB_RUN_ATTEMPT", "1")
+    report["workflow_run_attempt"] = str(attempt)
     report["verification_commit"] = os.getenv("GITHUB_SHA")
-    # Distinct immutable report for each attempted daily verification.
-    dest = "audits/" + date + "-daily-acceptance-" + str(run_id) + ".json"
+    # On a GitHub Actions rerun GITHUB_RUN_ID remains unchanged while ATTEMPT
+    # increases. Preserve older immutable results instead of overwriting them.
+    dest = immutable_acceptance_path(date, run_id, attempt)
     private.append(dest, report)
     print(json.dumps({"date": date, "verdict": report["verdict"],
                       "checks": report["checks"], "saved_private_path": dest},

@@ -120,3 +120,13 @@ historische Evidenz (auch wenn sie wegen noch ausstehender Verifikation
   Keine synthetischen Akzeptanzbelege. Die journalismusbezogene
   Publisher-HTTP-Unsicherheit bleibt separat `PARTIAL`, falls GitHub
   Zugriffsbeschränkungen nicht unabhängig beheben kann.
+
+## Unveränderliche Tagesabnahme auch nach fehlgeschlagenen GitHub-Reruns
+
+Die automatische Tagesabnahme archiviert ihren unabhängigen Bericht unter
+`audits/YYYY-MM-DD-daily-acceptance-RUNID-attempt-ATTEMPT.json`.
+GitHub vergibt bei einem erneuten Versuch dieselbe `GITHUB_RUN_ID`, aber eine
+höhere `GITHUB_RUN_ATTEMPT`: deshalb bekommt jeder Versuch eine neue Datei,
+statt durch einen Konflikt mit einem unveränderlichen früheren Ergebnis
+zu scheitern. Aufbewahrung/Readback und echtes PARTIAL/FAIL bleiben erhalten.
+Manuelle Ausführung kann `--run-id` mit eigener numerischer Kennung verwenden.
