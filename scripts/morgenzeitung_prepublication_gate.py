@@ -10,7 +10,7 @@ from scripts.morgenzeitung_capture_preselection import PrivateRepo, verify_exist
 from scripts.morgenzeitung_selection_audit import compare
 from scripts.morgenzeitung_source_evidence import audit_sources
 from scripts.morgenzeitung_live_source_check import check_candidates, _same_article_publisher_redirect
-from scripts.morgenzeitung_official_mirror import verify_official_mirror
+from scripts.morgenzeitung_official_mirror import verify_official_mirror, verify_standard_alias
 
 
 def verify_index(index, date):
@@ -74,7 +74,9 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
                 checked.append(record)
             elif published_url != original_url:
                 # Independent publisher confirmation is mandatory for an alias.
-                mirror = verify_official_mirror(candidate, published_url)
+                mirror = (verify_standard_alias(candidate, published_url)
+                          if candidate.get('source') == 'Der Standard'
+                          else verify_official_mirror(candidate, published_url))
                 try:
                     result = check_candidates([candidate], date, publisher_dates=True)
                     record = result["checked"][0]
