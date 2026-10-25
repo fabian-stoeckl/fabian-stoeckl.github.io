@@ -140,6 +140,38 @@ class LiveSourceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'exceeds safe limit'):
             check_http(old, Loop())
 
+    def test_first_party_consent_wall_is_inconclusive_not_falsely_verified(self):
+        article = 'https://www.derstandard.at/story/3000000345625/aktienmaerkte'
+        consent = '/consent/tcf/story/3000000345625/aktienmaerkte'
+        class Consent:
+            def open(self, req, timeout):
+                raise urllib.error.HTTPError(req.full_url, 302, 'consent',
+                                             {'Location': consent}, None)
+        result = check_http(article, Consent())
+        self.assertFalse(result['reachable'])
+        self.assertFalse(result['original_article_http_verified'])
+        self.assertTrue(result['publisher_consent_wall'])
+        audit = check_candidates([{'id':'x', 'source_url':article,
+                                   'published_at':'2026-10-24T08:00:00Z'}],
+                                 '2026-10-25', Consent(), publisher_dates=True)
+        self.assertFalse(audit['live_source_checks_passed'])
+        self.assertEqual(audit['consent_wall_inconclusive_count'], 1)
+        self.assertEqual(audit['checked'][0]['publisher_date_evidence']['status'], 'inconclusive')
+
+    def test_fake_consent_walls_remain_blocked(self):
+        article = 'https://www.derstandard.at/story/3000000345625/aktienmaerkte'
+        bad = ['https://evil.example/consent/tcf/story/3000000345625/aktienmaerkte',
+               'https://www.derstandard.at/consent/tcf/story/3000000345625/other',
+               'https://www.derstandard.at/login/story/3000000345625/aktienmaerkte',
+               'http://www.derstandard.at/consent/tcf/story/3000000345625/aktienmaerkte']
+        for target in bad:
+            class Bad:
+                def open(self, req, timeout):
+                    raise urllib.error.HTTPError(req.full_url, 302, 'bad',
+                                                 {'Location':target}, None)
+            with self.subTest(target=target), self.assertRaises(ValueError):
+                check_http(article,Bad())
+
     def test_transient_http_recovery(self):
         class Flaky:
             calls = 0
