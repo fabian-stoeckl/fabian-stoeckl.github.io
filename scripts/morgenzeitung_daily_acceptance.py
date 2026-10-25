@@ -214,8 +214,8 @@ def immutable_acceptance_path(date, run_id, attempt):
     """Unique append-only report per GitHub run *attempt*, including reruns."""
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(date)):
         raise ValueError("Invalid edition date")
-    if not re.fullmatch(r"[0-9]{1,20}", str(run_id)):
-        raise ValueError("Invalid GitHub workflow run ID")
+    if str(run_id) != "manual" and not re.fullmatch(r"[0-9]{1,20}", str(run_id)):
+        raise ValueError("Invalid workflow run ID (numeric or manual)")
     if not re.fullmatch(r"[1-9][0-9]{0,9}", str(attempt)):
         raise ValueError("Invalid GitHub workflow run attempt")
     return "audits/" + date + "-daily-acceptance-" + str(run_id) + "-attempt-" + str(attempt) + ".json"
