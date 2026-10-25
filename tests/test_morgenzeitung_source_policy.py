@@ -10,7 +10,7 @@ from tests.test_morgenzeitung_prepublication_gate import Repo
 
 ORIGINAL = ('https://www.derstandard.at/story/3000000345625/'
             'wie-gefaehrdet-sind-die-aktienmaerkte-ist-die-nervositaet-berechtigt')
-GOOD = {'id':'a', 'title':'Wie gefährdet sind die Aktienmärkte?',
+GOOD = {'id':'a', 'topic':'Kapitalmärkte', 'title':'Wie gefährdet sind die Aktienmärkte?',
         'source':'Der Standard', 'source_url':ORIGINAL,
         'published_at':'2026-10-24T06:00:00+02:00', 'verified':True}
 
