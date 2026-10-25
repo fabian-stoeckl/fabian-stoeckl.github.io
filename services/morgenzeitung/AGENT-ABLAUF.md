@@ -1,5 +1,34 @@
 # Morgenzeitung – verbindlicher Agentenablauf (Stand 23.10.2026)
 
+## Vorrangige Korrektur des Laufzeitanschlusses (25.10.2026)
+
+ChatGPTs GitHub-Connector und GitHub-Actions-Secrets sind getrennte Berechtigungswege. Ein fehlender `MORGENZEITUNG_FEEDBACK_TOKEN` in ChatGPT bedeutet **nicht**, dass der verbundene Connector keine privaten Dateien schreiben kann. Niemals einen Token aus Browsern, Connectoren oder Actions exportieren oder im Chat verlangen.
+
+Ab sofort sind zwei gleichwertige Transporte zulässig: die bisherige Token-CLI oder der folgende **Connector-Capture**. Diese Ergänzung ersetzt ältere Anforderungen, die ausschließlich die Token-CLI verlangen. Alle Originaldaten-, Chronologie-, Unveränderlichkeits- und unabhängigen Merge-Prüfungen bleiben verbindlich. Kein PASS allein aufgrund lokaler Vorbereitung.
+
+### Connector-Capture ohne zusätzlichen Token
+
+1. Über den GitHub-Connector das private Repository `fabian-stoeckl/morgenzeitung-feedback` prüfen und seinen `main`-Commit festhalten. `profile.json` an genau diesem Commit lesen, mit Blob-SHA aus dessen Git-Tree. Alle echten Issues inklusive vollständiger Pagination lesen; Kommentare und Revisionen nach S1 berücksichtigen. Die lokale Exportdatei liegt außerhalb des öffentlichen Repositories:
+   `{"repository":"fabian-stoeckl/morgenzeitung-feedback","commit_sha":"<private main SHA>","profile":{"content":"<exakte UTF-8-Datei>","blob_sha":"<Git-Blob-SHA>"},"issues_pagination_complete":true,"issues":[<vollständige originale Issue-Objekte>]}`.
+2. Den vollständigen tatsächlich recherchierten Kandidatenpool unverändert als private lokale JSON-Datei anlegen. Noch keine Auswahl ausführen. Quelle/Original-URL (`source_url`), Veröffentlichungszeit, Prüfzeit und `verified:true` müssen belegt sein. Parameter vorher festlegen; Quellenvielfalt redaktionell prüfen, keine festen Verlagsquoten erzwingen (bei `limit=10` kann `max_per_source=10` eine starre Quote deaktivieren).
+3. Dieselbe produktive CLI im Connector-Modus ausführen:
+   ```sh
+   python3 -m scripts.morgenzeitung_capture_preselection --date YYYY-MM-DD \
+     --candidates /private/candidates.json --limit 10 --max-per-source 10 \
+     --connector-input /private/input.json --connector-manifest /private/manifest.json
+   ```
+   Das Ergebnis ist ausdrücklich nur Vorbereitung. `manifest.json` enthält die vier exakten Dateien und ihre Git-Blob-SHAs, den Ausgangscommit und die Profil-Provenienz.
+4. Alle vier Zielpfade auf dem privaten Ausgangscommit prüfen. Bereits vorhandene Dateien dürfen ausschließlich bytegleich sein; bei Konflikt abbrechen. Mit Connector `create_tree`, `create_commit` und `update_ref(expected_sha=<Ausgangscommit>)` alle fehlenden Dateien **in einem privaten Commit** anlegen. Nur die vier Manifestpfade schreiben; niemals ins öffentliche Repository. Bei konkurrierend verändertem Head frisch lesen und alle Konflikte erneut prüfen; kein Force-Push. Ein bestätigter Commit ohne Readback ist kein Erfolg.
+5. Alle vier Dateien erneut **remote** über den Connector an der bestätigten Commit-SHA lesen und Blob-SHAs aus dem Git-Tree abgleichen. Readback-Export: `{"repository":"fabian-stoeckl/morgenzeitung-feedback","commit_sha":"<Snapshot-Commit>","files":{"<Originalpfad>":{"content":"<remote gelesene exakte Datei>","blob_sha":"<remote Git-Tree-SHA>"},...}}`. Den Export niemals aus dem lokalen Manifest kopieren. Dann:
+   ```sh
+   python3 -m scripts.morgenzeitung_capture_preselection --date YYYY-MM-DD --verify-existing \
+     --connector-manifest /private/manifest.json --connector-readback /private/readback.json
+   ```
+   Erst bei `connector_readback_matches:true` darf ausgewählt werden. Dieser lokale Abgleich prüft Inhalt und Integrität des Connector-Exports; die unabhängige Action liest das private Repository vor dem Merge nochmals selbst. Beide Prüfungen sind nötig.
+6. Ausschließlich archivierten Pool, Profil und Parameter für Auswahl und Vergleich verwenden. Manifest, Snapshot-Commit, Readback-Ergebnis und Issue-Versionen privat im S7-Bericht referenzieren. Der bestehende `prepublication-gate` nutzt weiterhin sein geschütztes Actions-Secret und muss grün sein. Live-HTTPS, finaler Audit und Acceptance bleiben anschließend Pflicht.
+
+Fehlt der lokale Token, zuerst den verbundenen Connector-Weg benutzen. Nur wenn **beide** zulässigen Wege nicht nutzbar sind, liegt eine dauerhafte Anschlussblockade vor. Technische Transporttests ausschließlich unter privatem `tests/`, niemals als produktiver Kandidatenpool oder Lernnachweis speichern. Nach Reparatur bestehende Hauptaufgabe reaktivieren; keine zusätzliche Routine erstellen. Eine fehlende Tagesausgabe weiterhin als offen melden, bis sie tatsächlich publiziert wurde.
+
 ## Geltung
 Diese Datei ist die aktuelle Arbeitsanweisung für tägliche ChatGPT-Haupt- und Ersatzläufe. Ältere widersprechende Entwürfe in `GITHUB-BETRIEB.md` und `docs/website-context/Pressespiegel.md` sind historische Dokumentation. Produktiv sind GitHub Pages mit öffentlichen Tages-JSONs und private Issues/Profil im Repository `fabian-stoeckl/morgenzeitung-feedback`. Keine neuen Dienste, Tokens oder Kosten. Niemals ohne nötige Freigabe in `main` schreiben.
 

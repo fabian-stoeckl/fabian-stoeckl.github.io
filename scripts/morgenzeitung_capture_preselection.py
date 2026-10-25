@@ -201,7 +201,34 @@ def main():
     parser.add_argument("--verify-existing", action="store_true", help="Require all four immutable private snapshots before publication")
     parser.add_argument("--limit", type=int, default=10)
     parser.add_argument("--max-per-source", type=int, default=4)
+    parser.add_argument("--connector-input", type=pathlib.Path, help="Pinned private profile and complete issues exported by authenticated GitHub connector")
+    parser.add_argument("--connector-manifest", type=pathlib.Path, help="Private preparation output / original manifest for readback verification")
+    parser.add_argument("--connector-readback", type=pathlib.Path, help="Four files re-fetched from a pinned private commit, never a copy of local preparation")
     args = parser.parse_args()
+    if args.connector_input or args.connector_readback or args.connector_manifest:
+        from scripts.morgenzeitung_connector_capture import prepare, verify_readback
+        if not args.connector_manifest:
+            parser.error('--connector-manifest required')
+        if args.verify_existing:
+            if not args.connector_readback or args.connector_input or args.candidates:
+                parser.error('Connector verification requires readback and original manifest only')
+            result = verify_readback(json.loads(args.connector_manifest.read_text()),
+                                     json.loads(args.connector_readback.read_text()), args.date)
+        else:
+            if not args.connector_input or not args.candidates or args.connector_readback:
+                parser.error('Connector preparation requires input, candidates and manifest')
+            result = prepare(json.loads(args.connector_input.read_text()), args.date,
+                             args.candidates.read_bytes(), limit=args.limit,
+                             max_per_source=args.max_per_source)
+            # Never replace an original preparation with changed data.
+            raw = json.dumps(result, ensure_ascii=False, indent=2) + '\n'
+            if args.connector_manifest.exists() and args.connector_manifest.read_text() != raw:
+                raise ValueError('Conflicting connector manifest')
+            args.connector_manifest.write_text(raw)
+            result = {'date': args.date, 'prepared': True, 'private_persistence_verified': False,
+                      'files': list(result['files']), 'next': 'Commit via connector; export pinned remote readback; run --verify-existing'}
+        print(json.dumps(result, ensure_ascii=False))
+        return
     repo = PrivateRepo(os.environ.get("MORGENZEITUNG_FEEDBACK_TOKEN"))
     if args.verify_existing:
         result = verify_existing(repo, args.date)
