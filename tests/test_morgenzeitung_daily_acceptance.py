@@ -42,6 +42,71 @@ class DailyAcceptanceTests(unittest.TestCase):
         self.assertEqual(report["verdict"], "PASS")
         self.assertTrue(all(report["checks"].values()))
 
+    def final_evidence_fixture(self):
+        index, edition, files, publisher = fixture()
+        files["audits/"+DATE+"-acceptance.json"] = json.dumps({
+            "date": DATE, "verdict": "PARTIAL",
+            "checks": {"feedback_provenance": {"status":"PARTIAL"},
+                       "profile_learning":{"status":"PARTIAL"},
+                       "production_provenance":{"status":"PARTIAL"}}}).encode()
+        files["audits/"+DATE+"-live-learning.json"] = json.dumps({
+            **json.loads(files["audits/"+DATE+"-live-learning.json"]),
+            "publication_audit":{"publication_verified":True,
+                                 "editorial_effect_verified":True}}).encode()
+        files["runs/"+DATE+".json"] = json.dumps({
+            "date":DATE,"status":"PASS","public_merge_commit":"a"*40,
+            "private_readback_verified":True}).encode()
+        final = {"date": DATE, "verdict":"PASS",
+                 "scope":"productive_feedback_learning_and_publication_not_full_publisher_access",
+                 "parent_immutable_acceptance_verdict":"PARTIAL",
+                 "checks":{"feedback_provenance":{"status":"PASS"},
+                           "profile_learning":{"status":"PASS"},
+                           "production_provenance":{"status":"PASS"}},
+                 "evidence":{"real_feedback_verification_path":
+                                "audits/"+DATE+"-real-feedback-and-profile-verification.json",
+                             "live_learning_audit_path":"audits/"+DATE+"-live-learning.json",
+                             "private_s7_run_path":"runs/"+DATE+".json",
+                             "public_merge_commit":"a"*40,
+                             "private_run_readback_verified":True}}
+        fb = {"feedback_provenance":{"status":"PASS",
+                "unique_ratings_reconciled_against_public_original_editions":55},
+              "deterministic_profile_check":{"status":"PASS",
+                "stored_computed_learning_signals_match":True}}
+        files["audits/"+DATE+"-acceptance-final.json"]=json.dumps(final).encode()
+        files["audits/"+DATE+"-real-feedback-and-profile-verification.json"]=json.dumps(fb).encode()
+        return index, edition, files, publisher
+
+    def test_immutable_partial_supplemented_by_genuine_final_evidence(self):
+        report = evaluate(DATE, *self.final_evidence_fixture())
+        self.assertEqual(report["verdict"], "PASS")
+        self.assertTrue(report["checks"]["private_acceptance_pass"])
+
+    def test_final_report_alone_never_upgrades_unverified_feedback(self):
+        index, edition, files, publisher = self.final_evidence_fixture()
+        path = "audits/"+DATE+"-real-feedback-and-profile-verification.json"
+        obj = json.loads(files[path])
+        obj["feedback_provenance"]["status"] = "PARTIAL"
+        files[path] = json.dumps(obj).encode()
+        report = evaluate(DATE,index,edition,files,publisher)
+        self.assertEqual(report["verdict"], "PARTIAL")
+
+    def test_final_report_requires_real_recovered_run_and_live_editorial_effect(self):
+        index, edition, files, publisher = self.final_evidence_fixture()
+        runpath = "runs/"+DATE+".json"
+        d=json.loads(files[runpath]);d["private_readback_verified"]=False
+        files[runpath]=json.dumps(d).encode()
+        self.assertEqual(evaluate(DATE,index,edition,files,publisher)["verdict"], "PARTIAL")
+        index,edition,files,publisher = self.final_evidence_fixture()
+        apath = "audits/"+DATE+"-live-learning.json"
+        audit=json.loads(files[apath]);audit["publication_audit"]["editorial_effect_verified"]=False
+        files[apath]=json.dumps(audit).encode()
+        self.assertEqual(evaluate(DATE,index,edition,files,publisher)["verdict"], "PARTIAL")
+
+    def test_final_acceptance_needs_historical_immutable_partial(self):
+        index,edition,files,publisher=self.final_evidence_fixture()
+        del files["audits/"+DATE+"-acceptance.json"]
+        self.assertEqual(evaluate(DATE,index,edition,files,publisher)["verdict"], "PARTIAL")
+
     def test_missing_snapshot_cannot_be_recreated_or_pass(self):
         index, edition, files, publisher = fixture()
         files.pop("candidates/"+DATE+".json")
