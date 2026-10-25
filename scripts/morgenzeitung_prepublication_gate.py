@@ -10,7 +10,7 @@ from scripts.morgenzeitung_capture_preselection import PrivateRepo, verify_exist
 from scripts.morgenzeitung_selection_audit import compare
 from scripts.morgenzeitung_source_evidence import audit_sources
 from scripts.morgenzeitung_live_source_check import check_candidates, _same_article_publisher_redirect
-from scripts.morgenzeitung_official_mirror import verify_official_mirror
+from scripts.morgenzeitung_official_mirror import verify_official_mirror, verify_standard_alias
 
 
 def verify_index(index, date):
@@ -74,7 +74,9 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
                 checked.append(record)
             elif published_url != original_url:
                 # Independent publisher confirmation is mandatory for an alias.
-                mirror = verify_official_mirror(candidate, published_url)
+                mirror = (verify_standard_alias(candidate, published_url)
+                          if candidate.get('source') == 'Der Standard'
+                          else verify_official_mirror(candidate, published_url))
                 try:
                     result = check_candidates([candidate], date, publisher_dates=True)
                     record = result["checked"][0]
@@ -86,8 +88,14 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
                 checked.append(record)
             else:
                 checked.extend(check_candidates([candidate], date, publisher_dates=True)["checked"])
-        live_sources = {"live_source_checks_passed": True, "checked": checked,
-                        "limitation": "Official publisher mirrors require independent title/date checks and never assert restricted Reuters.com body access."}
+        confirmed = lambda record: (
+            record.get("original_article_http_verified") is True
+            or record.get("http_status") in (200, 206)
+            or record.get("official_publisher_mirror", {}).get("official_mirror_verified") is True)
+        live_sources = {"live_source_checks_passed": all(confirmed(record) for record in checked),
+                        "inconclusive_count": sum(not confirmed(record) for record in checked),
+                        "checked": checked,
+                        "limitation": "Consent walls count only as inconclusive, never verified. Official publisher mirrors require independent title/date checks."}
     return {
         "date": date,
         "prepublication_gate_verified": True,

@@ -57,9 +57,35 @@ def _same_article_publisher_redirect(original_url, location):
     same_publisher = (a == b or (a in standard and b in standard))
     if (not same_publisher or before.path != after.path
             or before.query != after.query or before.port != after.port):
-        raise ValueError("Publisher redirect changes host or article identity: "
-                         + a + before.path + " -> " + b + after.path)
+        raise ValueError("Publisher redirect changes host or article identity")
     return target
+
+
+
+def _is_same_article_consent_wall(original_url, location):
+    """Recognize Der Standard's first-party cookie wall, never a page verification.
+
+    Preserve the entire underlying /story/... path. This DOES NOT mean that
+    the publisher's article body was independently fetched by GitHub Actions.
+    """
+    from urllib.parse import urljoin, urlsplit
+    if not isinstance(location, str) or not location:
+        return False
+    target = urljoin(original_url, location)
+    try:
+        validate_source_url(target)
+        original, consent = urlsplit(original_url), urlsplit(target)
+    except ValueError:
+        return False
+    allowed = {'www.derstandard.at', 'derstandard.at',
+               'www.derstandard.de', 'derstandard.de'}
+    return (original.hostname in allowed and consent.hostname in allowed
+            and original.scheme == consent.scheme == 'https'
+            and original.path.startswith('/story/')
+            and consent.path == '/consent/tcf' + original.path
+            and original.query == consent.query
+            and original.port == consent.port)
+
 
 
 def check_http(url, opener=None, *, retries=2, sleep=time.sleep):
@@ -92,6 +118,15 @@ def check_http(url, opener=None, *, retries=2, sleep=time.sleep):
         if status in (301, 302, 307, 308):
             if redirects >= 2:
                 raise ValueError("Publisher redirect exceeds safe limit")
+            if _is_same_article_consent_wall(current, location):
+                # First-party consent does not prove the article exists. Record
+                # explicit uncertainty instead of faking HTTP 200 or following
+                # to an unrelated consent form.
+                return {"status": status, "reachable": False,
+                        "paywall_or_access_restricted": True,
+                        "publisher_consent_wall": True,
+                        "verified_url": current, "redirects": redirects,
+                        "original_article_http_verified": False}
             current = _same_article_publisher_redirect(current, location)
             redirects += 1
             # Restart with HEAD at the validated SAME-ARTICLE target.
@@ -131,15 +166,26 @@ def check_candidates(candidates, edition_date, opener=None, *, publisher_dates=F
         record = {"id": candidate.get("id"), "published_at": stamp,
                   "http_status": response["status"],
                   "paywall_or_access_restricted": response["paywall_or_access_restricted"]}
+        if response.get("publisher_consent_wall"):
+            record["original_article_http_verified"] = False
+            record["publisher_consent_wall"] = True
+        else:
+            record["original_article_http_verified"] = True
+            record["publisher_consent_wall"] = False
         if publisher_dates:
             from scripts.morgenzeitung_publisher_date_evidence import fetch_publisher_metadata
-            record["publisher_date_evidence"] = fetch_publisher_metadata(
-                candidate["source_url"], stamp, opener=opener)
+            record["publisher_date_evidence"] = (
+                {"status": "inconclusive",
+                 "reason": "First-party consent wall; article contents were not served to GitHub Actions"}
+                if response.get("publisher_consent_wall") else
+                fetch_publisher_metadata(candidate["source_url"], stamp, opener=opener))
             if record["publisher_date_evidence"]["status"] in ("mismatch", "conflict"):
                 raise ValueError("Publisher publication metadata contradict archived date")
         results.append(record)
-    return {"live_source_checks_passed": True, "checked": results,
-            "limitation": "HEAD 200 and a declared publication time do not verify article body or independent timestamp. Access-restricted sources are rejected until independently verified."}
+    return {"live_source_checks_passed": all(r["original_article_http_verified"] for r in results),
+            "consent_wall_inconclusive_count": sum(r["publisher_consent_wall"] for r in results),
+            "checked": results,
+            "limitation": "Same-story first-party consent walls are explicitly INCONCLUSIVE, not HTTP-verified; independent editorial publisher evidence is needed. Unrelated or untrusted redirects remain blocked."}
 
 
 def main():
