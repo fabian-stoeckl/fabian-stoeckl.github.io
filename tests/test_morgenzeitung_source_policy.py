@@ -45,7 +45,7 @@ class SourcePolicyTests(unittest.TestCase):
         ]:
             with self.subTest(candidate=candidate), self.assertIsNone(
                 classify_inconclusive(candidate, ValueError(
-                    'Article identity not independently present in publisher RSS')))
+                    'Article identity not independently present in publisher RSS'))):
 
     def test_inconclusive_budget(self):
         r={'source_verification':'INCONCLUSIVE'}
