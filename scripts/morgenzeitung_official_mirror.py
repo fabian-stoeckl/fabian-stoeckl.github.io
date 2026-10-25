@@ -118,3 +118,65 @@ def verify_official_mirror(candidate, mirror_url, *, opener=None):
             'mirror_url': mirror_url, 'title_matched': True,
             'publication_time_evidence': timestamp['status'],
             'original_blocked': True}
+
+
+def verify_standard_alias(candidate, alias_url, *, opener=None):
+    """Verify a Der Standard .de/.at alias by identical story path AND live publisher HTML.
+
+    An alias is never trusted merely because its URL looks plausible. A real
+    response must match the archived article title and its publication time.
+    """
+    original = validate_source_url(candidate['source_url'])
+    alias_url = validate_source_url(alias_url)
+    src, alt = urlsplit(original), urlsplit(alias_url)
+    hosts = {'derstandard.at', 'www.derstandard.at',
+             'derstandard.de', 'www.derstandard.de'}
+    if (src.hostname not in hosts or alt.hostname not in hosts
+            or src.hostname == alt.hostname or src.path != alt.path
+            or not src.path.startswith('/story/')
+            or src.query or alt.query
+            or candidate.get('source') != 'Der Standard'):
+        raise ValueError('Not an identical Der Standard publisher alias')
+    stamp = dt.datetime.fromisoformat(candidate['published_at'].replace('Z', '+00:00'))
+    if stamp.tzinfo is None:
+        raise ValueError('Publisher alias needs timezone-aware publication date')
+    opener = opener or urllib.request.build_opener(NoRedirect)
+    req = urllib.request.Request(alias_url, method='GET',
+                                 headers={'Accept': 'text/html',
+                                          'User-Agent': 'MorgenzeitungSourceCheck/1.0'})
+    try:
+        with opener.open(req, timeout=10) as response:
+            if response.status != 200:
+                raise ValueError('Publisher alias did not return HTTP 200')
+            if 'text/html' not in response.headers.get('Content-Type', '').lower():
+                raise ValueError('Publisher alias did not return HTML')
+            data = response.read(MAX_HTML_BYTES + 1)
+    except (urllib.error.HTTPError, urllib.error.URLError,
+            TimeoutError, ConnectionError) as exc:
+        raise ValueError('Publisher alias was not independently reachable') from exc
+    if len(data) > MAX_HTML_BYTES:
+        raise ValueError('Publisher alias response exceeded HTML inspection limit')
+    body = data.decode('utf-8', errors='replace')
+    parser = ArticleIdentity()
+    parser.feed(body)
+    expected = _normalized_title(candidate.get('title', ''))
+    if not expected or not any(expected in _normalized_title(title)
+                               for title in parser.titles):
+        raise ValueError('Publisher alias title differs from archived candidate')
+    from scripts.morgenzeitung_publisher_date_evidence import compare_publisher_timestamp
+    timestamp = compare_publisher_timestamp(body, candidate['published_at'])
+    if timestamp['status'] in ('mismatch', 'conflict'):
+        raise ValueError('Publisher alias timestamp contradicts archived candidate')
+    if timestamp['status'] == 'inconclusive':
+        from html import unescape
+        months = ('', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+                  'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember')
+        visible = f'{stamp.day}. {months[stamp.month]} {stamp.year}, {stamp:%H:%M}'
+        flattened = unescape(re.sub(r'<[^>]*>', ' ', body))
+        flattened = re.sub(r'\\s+', ' ', flattened)
+        if visible not in flattened:
+            raise ValueError('Publisher alias has no matching visible date and time')
+    return {'official_mirror_verified': True, 'original_url': original,
+            'mirror_url': alias_url, 'title_matched': True,
+            'publication_time_evidence': timestamp['status'],
+            'same_publisher_story_path': True}
