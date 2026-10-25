@@ -64,7 +64,9 @@ class PublisherFeedTests(unittest.TestCase):
                    'www.derstandard.de/story/3000000345625/foo -> '
                    'www.derstandard.de/consent/tcf/story/3000000345625/foo')
         with patch('scripts.morgenzeitung_live_source_check.check_http',
-                   side_effect=ValueError(consent)):
+                   return_value={'status': 302, 'publisher_consent_wall': True,
+                                 'paywall_or_access_restricted': True,
+                                 'original_article_http_verified': False}):
             with patch('scripts.morgenzeitung_publisher_feed.verify_standard_feed',
                        return_value={'publisher_feed_verified': True,
                                      'publication_time': '2026-10-24T04:00:00+00:00'}) as verify:
@@ -72,6 +74,8 @@ class PublisherFeedTests(unittest.TestCase):
                                           publisher_dates=True)
             self.assertEqual(result['checked'][0]['publisher_date_evidence']['status'], 'match')
             self.assertTrue(result['checked'][0]['paywall_or_access_restricted'])
+            self.assertTrue(result['live_source_checks_passed'])
+            self.assertFalse(result['checked'][0]['original_article_http_verified'])
             verify.assert_called_once()
 
     def test_consent_redirect_without_feed_is_hard_failure(self):
@@ -79,7 +83,9 @@ class PublisherFeedTests(unittest.TestCase):
                    'www.derstandard.de/story/3000000345625/foo -> '
                    'www.derstandard.de/consent/tcf/story/3000000345625/foo')
         with patch('scripts.morgenzeitung_live_source_check.check_http',
-                   side_effect=ValueError(consent)):
+                   return_value={'status': 302, 'publisher_consent_wall': True,
+                                 'paywall_or_access_restricted': True,
+                                 'original_article_http_verified': False}):
             with patch('scripts.morgenzeitung_publisher_feed.verify_standard_feed',
                        side_effect=ValueError('Not in publisher RSS')):
                 with self.assertRaisesRegex(ValueError, 'Not in publisher RSS'):
