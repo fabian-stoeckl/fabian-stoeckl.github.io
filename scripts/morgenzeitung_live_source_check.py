@@ -126,6 +126,23 @@ def check_candidates(candidates, edition_date, opener=None, *, publisher_dates=F
         try:
             response = check_http(candidate.get("source_url"), opener=opener)
         except ValueError as exc:
+            # Consent landing pages are not article evidence. Accept only an
+            # independently fetched exact official RSS item with matching
+            # publisher story URL, title and publication minute.
+            if (candidate.get("source") == "Der Standard"
+                    and "Publisher redirect changes host or article identity:" in str(exc)
+                    and "/consent/tcf/story/" in str(exc)):
+                from scripts.morgenzeitung_publisher_feed import verify_standard_feed
+                feed = verify_standard_feed(candidate, opener=opener)
+                record = {"id": candidate.get("id"), "published_at": stamp,
+                          "http_status": 302, "paywall_or_access_restricted": True,
+                          "publisher_feed_evidence": feed}
+                if publisher_dates:
+                    record["publisher_date_evidence"] = {
+                        "status": "match", "source": "independent_publisher_rss",
+                        "publisher_published_at": feed["publication_time"]}
+                results.append(record)
+                continue
             raise ValueError("Source check failed for " + candidate["source_url"] + ": " + str(exc)) from exc
         record = {"id": candidate.get("id"), "published_at": stamp,
                   "http_status": response["status"],
