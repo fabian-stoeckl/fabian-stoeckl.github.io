@@ -102,13 +102,14 @@ def inspect_publisher_pages(articles, *, count=5, fetch=fetch_publisher_metadata
     return checks
 
 
-def evaluate(date, index, edition, private_files, publisher_checks):
+def evaluate(date, index, edition, private_files, publisher_checks, *, committed_edition=None):
     """Pure fail-closed verdict function; suitable for synthetic regression tests."""
     paths = [p.format(d=date) for p in REQUIRED]
     missing = [p for p in paths if private_files.get(p) is None]
     checks = {"public_edition_current": False, "private_origins_complete": not missing,
               "private_snapshots_match_audit": False,
               "public_matches_audited_selection": False,
+              "public_headlines_match_committed": False,
               "private_run_committed": False, "private_acceptance_pass": False,
               "publisher_metadata_checked": False}
     errors = []
@@ -119,8 +120,25 @@ def evaluate(date, index, edition, private_files, publisher_checks):
             isinstance(dates, list) and dates and dates[0] == date
             and edition.get("date") == date and not edition.get("preview")
             and isinstance(articles, list) and 10 <= len(articles) <= 15)
+    if isinstance(edition, dict) and isinstance(committed_edition, dict):
+        live_heads = edition.get("headlines")
+        committed_heads = committed_edition.get("headlines")
+        if isinstance(live_heads, list) and isinstance(committed_heads, list):
+            live_ids = [h.get("id") if isinstance(h, dict) else None for h in live_heads]
+            committed_ids = [h.get("id") if isinstance(h, dict) else None
+                             for h in committed_heads]
+            checks["public_headlines_match_committed"] = bool(
+                edition.get("date") == date and committed_edition.get("date") == date
+                and 15 <= len(live_ids) <= 20
+                and len(live_ids) == len(committed_ids)
+                and all(isinstance(item, str) and re.fullmatch(r"[0-9a-f]{16}", item)
+                        for item in live_ids)
+                and len(set(live_ids)) == len(live_ids)
+                and live_ids == committed_ids)
     if not checks["public_edition_current"]:
         errors.append("No verified current public edition")
+    if not checks["public_headlines_match_committed"]:
+        errors.append("Live HTTPS headline IDs/order do not match committed edition")
     def parsed(template):
         value = private_files.get(template.format(d=date))
         if value is None:
@@ -234,7 +252,13 @@ def run_daily(date, run_id, private):
             TimeoutError, json.JSONDecodeError) as exc:
         print("HTTPS edition readback unavailable:", type(exc).__name__)
     publisher = inspect_publisher_pages(edition.get("articles", [])) if isinstance(edition, dict) else []
-    report = evaluate(date, index, edition, private_files, publisher)
+    try:
+        committed_edition = json.loads(
+            (Path("Privat/Pressespiegel/data") / (date + ".json")).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        committed_edition = None
+    report = evaluate(date, index, edition, private_files, publisher,
+                      committed_edition=committed_edition)
     report["checked_at_utc"] = dt.datetime.now(dt.timezone.utc).isoformat()
     report["workflow_run_id"] = str(run_id)
     attempt = os.getenv("GITHUB_RUN_ATTEMPT", "1")
