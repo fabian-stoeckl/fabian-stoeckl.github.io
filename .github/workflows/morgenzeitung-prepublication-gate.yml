@@ -29,7 +29,7 @@ jobs:
           python-version: '3.12'
       - name: Run publication gate regression tests
         run: |
-          python3 -m unittest tests.test_morgenzeitung_prepublication_gate tests.test_morgenzeitung_live_source_check tests.test_morgenzeitung_publisher_date_evidence tests.test_morgenzeitung_source_evidence tests.test_morgenzeitung_official_mirror tests.test_morgenzeitung_gate_workflow_coverage
+          python3 -m unittest tests.test_morgenzeitung_prepublication_gate tests.test_morgenzeitung_live_source_check tests.test_morgenzeitung_publisher_date_evidence tests.test_morgenzeitung_source_evidence tests.test_morgenzeitung_official_mirror tests.test_morgenzeitung_publisher_feed tests.test_morgenzeitung_gate_workflow_coverage
       - name: Replay private original selection against edition
         env:
           MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}

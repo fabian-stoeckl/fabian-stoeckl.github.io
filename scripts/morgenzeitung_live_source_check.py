@@ -172,9 +172,20 @@ def check_candidates(candidates, edition_date, opener=None, *, publisher_dates=F
         else:
             record["original_article_http_verified"] = True
             record["publisher_consent_wall"] = False
+        if (response.get("publisher_consent_wall")
+                and candidate.get("source") == "Der Standard"
+                and candidate.get("title")):
+            # The consent page itself proves nothing. An exact live publisher
+            # RSS listing (title, story path, timestamp) is independent evidence.
+            from scripts.morgenzeitung_publisher_feed import verify_standard_feed
+            record["publisher_feed_evidence"] = verify_standard_feed(candidate, opener=opener)
+            record["publisher_feed_verified"] = True
         if publisher_dates:
             from scripts.morgenzeitung_publisher_date_evidence import fetch_publisher_metadata
             record["publisher_date_evidence"] = (
+                {"status": "match", "source": "independent_publisher_rss",
+                 "publisher_published_at": record["publisher_feed_evidence"]["publication_time"]}
+                if record.get("publisher_feed_verified") else
                 {"status": "inconclusive",
                  "reason": "First-party consent wall; article contents were not served to GitHub Actions"}
                 if response.get("publisher_consent_wall") else
@@ -182,8 +193,8 @@ def check_candidates(candidates, edition_date, opener=None, *, publisher_dates=F
             if record["publisher_date_evidence"]["status"] in ("mismatch", "conflict"):
                 raise ValueError("Publisher publication metadata contradict archived date")
         results.append(record)
-    return {"live_source_checks_passed": all(r["original_article_http_verified"] for r in results),
-            "consent_wall_inconclusive_count": sum(r["publisher_consent_wall"] for r in results),
+    return {"live_source_checks_passed": all(r["original_article_http_verified"] or r.get("publisher_feed_verified") is True for r in results),
+            "consent_wall_inconclusive_count": sum(r["publisher_consent_wall"] and not r.get("publisher_feed_verified") for r in results),
             "checked": results,
             "limitation": "Same-story first-party consent walls are explicitly INCONCLUSIVE, not HTTP-verified; independent editorial publisher evidence is needed. Unrelated or untrusted redirects remain blocked."}
 

@@ -91,7 +91,8 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
         confirmed = lambda record: (
             record.get("original_article_http_verified") is True
             or record.get("http_status") in (200, 206)
-            or record.get("official_publisher_mirror", {}).get("official_mirror_verified") is True)
+            or record.get("official_publisher_mirror", {}).get("official_mirror_verified") is True
+            or record.get("publisher_feed_verified") is True)
         live_sources = {"live_source_checks_passed": all(confirmed(record) for record in checked),
                         "inconclusive_count": sum(not confirmed(record) for record in checked),
                         "checked": checked,
