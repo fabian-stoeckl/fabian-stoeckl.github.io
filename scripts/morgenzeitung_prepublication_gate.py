@@ -10,6 +10,7 @@ from scripts.morgenzeitung_capture_preselection import PrivateRepo, verify_exist
 from scripts.morgenzeitung_selection_audit import compare
 from scripts.morgenzeitung_source_evidence import audit_sources
 from scripts.morgenzeitung_live_source_check import check_candidates
+from scripts.morgenzeitung_official_mirror import verify_official_mirror
 
 
 def verify_index(index, date):
@@ -42,7 +43,34 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
         raise ValueError("Edition does not match independently replayed archived selection")
     selected_ids = set(actual)
     selected_candidates = [item for item in candidates if item["id"] in selected_ids]
-    live_sources = check_candidates(selected_candidates, date, publisher_dates=True) if check_live else None
+    live_sources = None
+    if check_live:
+        # Use archived originals for the independent replay. A different link
+        # in the published article must itself be independently verified.
+        # Reuters Breakingviews has an official Breakingviews domain; Reuters.com
+        # may return 401 even for a genuine article. Never treat 401 as proof.
+        edition_by_id = {article["id"]: article for article in articles}
+        checked = []
+        for candidate in selected_candidates:
+            article = edition_by_id[candidate["id"]]
+            published_url = article.get("url")
+            original_url = candidate["source_url"]
+            if published_url != original_url:
+                # Independent publisher confirmation is mandatory for an alias.
+                mirror = verify_official_mirror(candidate, published_url)
+                try:
+                    result = check_candidates([candidate], date, publisher_dates=True)
+                    record = result["checked"][0]
+                except ValueError as exc:
+                    if "HTTP 401" not in str(exc) and "HTTP 403" not in str(exc):
+                        raise
+                    record = {"id": candidate["id"], "original_status": "access_restricted"}
+                record["official_publisher_mirror"] = mirror
+                checked.append(record)
+            else:
+                checked.extend(check_candidates([candidate], date, publisher_dates=True)["checked"])
+        live_sources = {"live_source_checks_passed": True, "checked": checked,
+                        "limitation": "Official publisher mirrors require independent title/date checks and never assert restricted Reuters.com body access."}
     return {
         "date": date,
         "prepublication_gate_verified": True,
