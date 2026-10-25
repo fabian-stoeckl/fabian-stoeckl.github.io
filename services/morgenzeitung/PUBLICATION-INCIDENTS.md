@@ -90,3 +90,33 @@ Bestehende tägliche ChatGPT-Morgenzeitung, Ersatzlauf und Feedback-Lerntest
 verwenden diesen Ablauf; keine zusätzliche kostenpflichtige Infrastruktur
 und keine weitere Scheduled Task. Nur der schon vorhandene tägliche
 Kontrolllauf prüft Folgeausgaben, Ursachen und Verbesserungen.
+
+## Nachträgliche unabhängige Abnahme – append only
+
+Die erste `audits/YYYY-MM-DD-acceptance.json` ist unveränderliche
+historische Evidenz (auch wenn sie wegen noch ausstehender Verifikation
+`PARTIAL` meldet). Eine spätere erfolgreiche Nachprüfung darf diese Datei
+**niemals überschreiben**. Stattdessen:
+
+- Die echten Original-Feedback-Issues, sämtliche Betroffenen-Artikel-IDs
+  aus älteren **öffentlichen** Editionen, profilierte Metadaten und die
+  gesonderten Test-Issues unabhängig abgleichen. Familien-Lernsignal
+  deterministisch neu berechnen und mit originalem Profil-Snapshot vergleichen.
+  Ergebnis privat unter
+  `audits/YYYY-MM-DD-real-feedback-and-profile-verification.json`
+  unveränderlich speichern und zurücklesen.
+- Die Original-Snapshots, vor der Auswahl gespeicherten Versionen, publizierten
+  geordneten IDs und GitHub-Commit-Chronologie mit der echten HTTPS-Ausgabe
+  abgleichen. `runs/YYYY-MM-DD.json` nach der Veröffentlichung als S7-Report
+  **mit erhaltener Fehlversuch-Historie** aktualisieren und per Remote-Readback
+  ausdrücklich bestätigen; fehlende unabhängige Beweise nie durch Behauptungen
+  ersetzen.
+- Nur wenn alle Komponenten tatsächlich nachgewiesen wurden, eine gesonderte
+  `audits/YYYY-MM-DD-acceptance-final.json` anlegen. Diese ergänzt die
+  historische `PARTIAL`-Abnahme. Der tägliche unabhängige
+  `morgenzeitung_daily_acceptance.py` kann diese Ergänzung ausschließlich
+  bei übereinstimmendem echtem S7-Commit, Feedback-Provenienz,
+  deterministischem Profil und HTTPS-Lernwirkung berücksichtigen.
+  Keine synthetischen Akzeptanzbelege. Die journalismusbezogene
+  Publisher-HTTP-Unsicherheit bleibt separat `PARTIAL`, falls GitHub
+  Zugriffsbeschränkungen nicht unabhängig beheben kann.
