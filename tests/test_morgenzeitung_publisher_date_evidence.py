@@ -67,6 +67,35 @@ class PublisherTimestampEvidenceTests(unittest.TestCase):
         html = '<script type="application/ld+json">{"@type":"WebPage","datePublished":"2026-10-21T08:00:00Z"}</script>'
         self.assertEqual(compare_publisher_timestamp(html, "2026-10-24T08:00:00Z")["status"], "inconclusive")
 
+    def test_actual_autumn_2026_handelsblatt_fold_is_ambiguous_not_verified(self):
+        # 25 Oct 2026 Europe/Vienna falls back at 03:00 CEST to 02:00 CET.
+        # The publisher supplies 02:11:16 CET but the stored display time
+        # says 02:11 CEST. These are distinct instants but identical local
+        # wall-clock minutes; do not claim a verified match.
+        html = ('<meta property="article:published_time" '
+                'content="2026-10-25T01:11:16.732Z">'
+                '<script type="application/ld+json">'
+                '{"@type":"NewsArticle","datePublished":"2026-10-25T01:11:16.732Z"}'
+                '</script>')
+        result = compare_publisher_timestamp(html, "2026-10-25T02:11:00+02:00")
+        self.assertEqual(result["status"], "inconclusive")
+        self.assertEqual(result["resolution"], "dst-overlap-minute")
+        self.assertEqual(result["publisher_published_at"], "2026-10-25T01:11:16.732000+00:00")
+
+    def test_dst_overlap_does_not_whitelist_other_hour_or_date(self):
+        html = '<meta property="article:published_time" content="2026-10-25T01:11:16Z">'
+        for declared in ["2026-10-25T03:11:00+02:00",
+                         "2026-10-24T02:11:00+02:00",
+                         "2026-10-25T02:12:00+02:00",
+                         "2026-10-25T02:11:17+02:00"]:
+            with self.subTest(declared=declared):
+                self.assertEqual(compare_publisher_timestamp(html, declared)["status"], "mismatch")
+
+    def test_dst_overlap_does_not_mask_true_conflicting_meta(self):
+        html = ('<meta property="article:published_time" content="2026-10-25T01:11:16Z">'
+                '<meta name="datePublished" content="2026-10-25T00:11:16Z">')
+        self.assertEqual(compare_publisher_timestamp(html,"2026-10-25T02:11:00+02:00")["status"],"conflict")
+
     def test_missing_metadata_inconclusive(self):
         self.assertEqual(compare_publisher_timestamp("<html></html>", "2026-10-24T08:00:00Z")["status"], "inconclusive")
 
