@@ -67,6 +67,20 @@ class LiveSourceTests(unittest.TestCase):
         self.assertEqual(opener.assert_range, "bytes=0-0")
         self.assertEqual(result["method"], "GET")
 
+    def test_head_auth_rejection_get_success_is_allowed(self):
+        class HeadAuthBlocked:
+            methods = []
+            def open(self, req, timeout):
+                self.methods.append(req.get_method())
+                if req.get_method() == "HEAD":
+                    raise urllib.error.HTTPError(req.full_url, 401, "HEAD blocked", {}, None)
+                return Response()
+        opener = HeadAuthBlocked()
+        result = check_http("https://example.org/story", opener)
+        self.assertEqual(opener.methods, ["HEAD", "GET"])
+        self.assertEqual(result["method"], "GET")
+        self.assertFalse(result["paywall_or_access_restricted"])
+
     def test_head_fallback_does_not_accept_paywall(self):
         class Blocked:
             def open(self, req, timeout):
