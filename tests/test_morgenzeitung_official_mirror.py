@@ -3,7 +3,7 @@ import unittest
 import urllib.error
 from unittest.mock import patch
 
-from scripts.morgenzeitung_official_mirror import verify_official_mirror
+from scripts.morgenzeitung_official_mirror import verify_official_mirror, verify_standard_alias
 from scripts.morgenzeitung_prepublication_gate import verify_edition
 from tests.test_morgenzeitung_prepublication_gate import Repo
 
@@ -106,6 +106,66 @@ class PublisherMirrorTests(unittest.TestCase):
                                {'date':'2026-10-25',
                                 'articles':[{'id':'a','url':OFFICIAL},
                                             {'id':'b','url':'https://orf.at/stories/b'}]},check_live=True)
+
+
+class StandardAliasTests(unittest.TestCase):
+    ORIGINAL = ('https://www.derstandard.de/story/3000000345625/'
+                'wie-gefaehrdet-sind-die-aktienmaerkte-ist-die-nervositaet-berechtigt')
+    ALIAS = ORIGINAL.replace('derstandard.de', 'derstandard.at')
+    TITLE = 'Wie gefährdet sind die Aktienmärkte? Ist die Nervosität berechtigt?'
+    CANDIDATE = {'id': 'standard', 'source': 'Der Standard', 'title': TITLE,
+                 'source_url': ORIGINAL, 'published_at': '2026-10-24T06:00:00+02:00'}
+    GOOD = ('<html><head><title>' + TITLE + ' - derStandard.at</title>'
+            '<meta property="article:published_time" content="2026-10-24T04:00:00Z">'
+            '</head><body><h1>' + TITLE + '</h1>'
+            '24. Oktober 2026, 06:00</body></html>')
+
+    class StandardOpener:
+        def __init__(self, html, url):
+            self.html, self.url = html, url
+        def open(self, request, timeout):
+            if request.full_url != self.url or request.get_method() != 'GET':
+                raise AssertionError('Only a live GET of the exact alias is allowed')
+            return Response(self.html)
+
+    def test_identical_publisher_story_with_matching_live_metadata(self):
+        result = verify_standard_alias(
+            self.CANDIDATE, self.ALIAS,
+            opener=self.StandardOpener(self.GOOD, self.ALIAS))
+        self.assertTrue(result['official_mirror_verified'])
+        self.assertTrue(result['same_publisher_story_path'])
+        self.assertEqual(result['publication_time_evidence'], 'match')
+
+    def test_visible_date_fallback_requires_matching_clock(self):
+        html = self.GOOD.replace(
+            '<meta property="article:published_time" content="2026-10-24T04:00:00Z">', '')
+        result = verify_standard_alias(
+            self.CANDIDATE, self.ALIAS,
+            opener=self.StandardOpener(html, self.ALIAS))
+        self.assertEqual(result['publication_time_evidence'], 'inconclusive')
+        with self.assertRaisesRegex(ValueError, 'date and time'):
+            verify_standard_alias(
+                self.CANDIDATE, self.ALIAS,
+                opener=self.StandardOpener(html.replace('06:00', '07:00'), self.ALIAS))
+
+    def test_rejects_wrong_article_host_title_and_time(self):
+        for alias in [
+            self.ALIAS.replace('derstandard.at', 'derstandard.at.evil.example'),
+            self.ALIAS.replace('3000000345625', '3000000345626'),
+            self.ALIAS.replace('derstandard.at', 'othernews.at'),
+        ]:
+            with self.subTest(alias=alias), self.assertRaises(ValueError):
+                verify_standard_alias(
+                    self.CANDIDATE, alias,
+                    opener=self.StandardOpener(self.GOOD, alias))
+        for html in [
+            self.GOOD.replace(self.TITLE, 'A different article'),
+            self.GOOD.replace('2026-10-24T04:00:00Z', '2026-10-23T04:00:00Z'),
+        ]:
+            with self.subTest(html=html[:70]), self.assertRaises(ValueError):
+                verify_standard_alias(
+                    self.CANDIDATE, self.ALIAS,
+                    opener=self.StandardOpener(html, self.ALIAS))
 
 
 if __name__ == '__main__':
