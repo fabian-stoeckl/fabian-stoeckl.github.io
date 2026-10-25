@@ -9,7 +9,7 @@ from pathlib import Path
 from scripts.morgenzeitung_capture_preselection import PrivateRepo, verify_existing
 from scripts.morgenzeitung_selection_audit import compare
 from scripts.morgenzeitung_source_evidence import audit_sources
-from scripts.morgenzeitung_live_source_check import check_candidates
+from scripts.morgenzeitung_live_source_check import check_candidates, _same_article_publisher_redirect
 from scripts.morgenzeitung_official_mirror import verify_official_mirror
 
 
@@ -55,7 +55,24 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
             article = edition_by_id[candidate["id"]]
             original_url = candidate["source_url"]
             published_url = article.get("url") or original_url
-            if published_url != original_url:
+            if (published_url != original_url
+                    and candidate.get("source") == "Der Standard"
+                    and original_url.startswith(("https://www.derstandard.de/story/",
+                                                  "https://derstandard.de/story/"))
+                    and published_url.startswith(("https://www.derstandard.at/story/",
+                                                  "https://derstandard.at/story/"))):
+                # The private original remains immutable. A direct Austrian
+                # canonical URL is acceptable only if exact story path/ID and
+                # HTTPS publisher identity match AND the .at article itself
+                # passes the normal independent live checks. Do not trust the
+                # .de 302 or follow its destination to a login/cookie wall.
+                validated_url = _same_article_publisher_redirect(original_url, published_url)
+                canonical = dict(candidate, source_url=validated_url)
+                record = check_candidates([canonical], date, publisher_dates=True)["checked"][0]
+                record["archived_source_url"] = original_url
+                record["independently_verified_canonical_url"] = validated_url
+                checked.append(record)
+            elif published_url != original_url:
                 # Independent publisher confirmation is mandatory for an alias.
                 mirror = verify_official_mirror(candidate, published_url)
                 try:
