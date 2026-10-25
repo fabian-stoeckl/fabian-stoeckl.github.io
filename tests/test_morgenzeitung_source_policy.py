@@ -43,9 +43,9 @@ class SourcePolicyTests(unittest.TestCase):
             {**GOOD,'source_url':'https://www.derstandard.at/consent/tcf/story/1/x'},
             {**GOOD,'title':''},
         ]:
-            with self.subTest(candidate=candidate), self.assertIsNone(
-                classify_inconclusive(candidate, ValueError(
-                    'Article identity not independently present in publisher RSS'))):
+            with self.subTest(candidate=candidate):
+                self.assertIsNone(classify_inconclusive(candidate, ValueError(
+                    'Article identity not independently present in publisher RSS')))
 
     def test_inconclusive_budget(self):
         r={'source_verification':'INCONCLUSIVE'}
