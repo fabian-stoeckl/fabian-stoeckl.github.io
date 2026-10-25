@@ -11,6 +11,7 @@ from scripts.morgenzeitung_selection_audit import compare
 from scripts.morgenzeitung_source_evidence import audit_sources
 from scripts.morgenzeitung_live_source_check import check_candidates, _same_article_publisher_redirect
 from scripts.morgenzeitung_official_mirror import verify_official_mirror, verify_standard_alias
+from scripts.morgenzeitung_source_policy import classify_inconclusive, check_inconclusive_budget
 
 
 def verify_index(index, date):
@@ -51,6 +52,15 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
         # may return 401 even for a genuine article. Never treat 401 as proof.
         edition_by_id = {article["id"]: article for article in articles}
         checked = []
+        def verify_or_record_inconclusive(item):
+            try:
+                return check_candidates([item], date, publisher_dates=True)["checked"][0]
+            except ValueError as exc:
+                caution = classify_inconclusive(item, exc)
+                if caution is None:
+                    raise
+                return caution
+
         for candidate in selected_candidates:
             article = edition_by_id[candidate["id"]]
             original_url = candidate["source_url"]
@@ -68,7 +78,7 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
                 # .de 302 or follow its destination to a login/cookie wall.
                 validated_url = _same_article_publisher_redirect(original_url, published_url)
                 canonical = dict(candidate, source_url=validated_url)
-                record = check_candidates([canonical], date, publisher_dates=True)["checked"][0]
+                record = verify_or_record_inconclusive(canonical)
                 record["archived_source_url"] = original_url
                 record["independently_verified_canonical_url"] = validated_url
                 checked.append(record)
@@ -87,16 +97,19 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
                 record["official_publisher_mirror"] = mirror
                 checked.append(record)
             else:
-                checked.extend(check_candidates([candidate], date, publisher_dates=True)["checked"])
+                checked.append(verify_or_record_inconclusive(candidate))
         confirmed = lambda record: (
             record.get("original_article_http_verified") is True
             or record.get("http_status") in (200, 206)
             or record.get("official_publisher_mirror", {}).get("official_mirror_verified") is True
             or record.get("publisher_feed_verified") is True)
+        warnings = check_inconclusive_budget(checked)
         live_sources = {"live_source_checks_passed": all(confirmed(record) for record in checked),
                         "inconclusive_count": sum(not confirmed(record) for record in checked),
                         "checked": checked,
-                        "limitation": "Consent walls count only as inconclusive, never verified. Official publisher mirrors require independent title/date checks."}
+                        "limitation": "Consent walls and expired rolling feeds do NOT count as publisher verification. A bounded INCONCLUSIVE allows editorial provenance checks to pass with explicit warnings; contradicted source metadata, dead links and excessive uncertainty still block.",
+                        "source_verification_status": "PARTIAL" if warnings else "PASS",
+                        "warnings": warnings}
     return {
         "date": date,
         "prepublication_gate_verified": True,
@@ -132,6 +145,11 @@ def main():
     result = verify_edition(repo, args.date, edition,
                             json.loads(args.index.read_text()) if args.index else None,
                             check_live=args.check_live_sources)
+    if result["live_source_evidence"] and result["live_source_evidence"]["warnings"]:
+        import sys
+        print("::warning::Source checks PARTIAL: publisher RSS/archive evidence unavailable for "
+              + str(len(result["live_source_evidence"]["warnings"])) + " selected article(s). "
+              "Editorial input replay PASS, publisher verification NOT PASS.", file=sys.stderr)
     print(json.dumps(result, ensure_ascii=False))
 
 
