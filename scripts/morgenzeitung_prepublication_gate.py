@@ -88,8 +88,14 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
                 checked.append(record)
             else:
                 checked.extend(check_candidates([candidate], date, publisher_dates=True)["checked"])
-        live_sources = {"live_source_checks_passed": True, "checked": checked,
-                        "limitation": "Official publisher mirrors require independent title/date checks and never assert restricted Reuters.com body access."}
+        confirmed = lambda record: (
+            record.get("original_article_http_verified") is True
+            or record.get("http_status") in (200, 206)
+            or record.get("official_publisher_mirror", {}).get("official_mirror_verified") is True)
+        live_sources = {"live_source_checks_passed": all(confirmed(record) for record in checked),
+                        "inconclusive_count": sum(not confirmed(record) for record in checked),
+                        "checked": checked,
+                        "limitation": "Consent walls count only as inconclusive, never verified. Official publisher mirrors require independent title/date checks."}
     return {
         "date": date,
         "prepublication_gate_verified": True,
