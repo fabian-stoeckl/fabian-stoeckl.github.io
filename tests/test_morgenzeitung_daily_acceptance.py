@@ -4,7 +4,7 @@ import json
 import unittest
 
 from scripts.morgenzeitung_daily_acceptance import (
-    REQUIRED, evaluate, inspect_publisher_pages, smoke, REAL_ARTICLES
+    REQUIRED, evaluate, inspect_publisher_pages, smoke, REAL_ARTICLES, immutable_acceptance_path
 )
 
 DATE = "2026-10-25"
@@ -106,6 +106,22 @@ class DailyAcceptanceTests(unittest.TestCase):
         index,edition,files,publisher=self.final_evidence_fixture()
         del files["audits/"+DATE+"-acceptance.json"]
         self.assertEqual(evaluate(DATE,index,edition,files,publisher)["verdict"], "PARTIAL")
+
+    def test_reruns_get_new_immutable_report_path_without_overwriting(self):
+        first = immutable_acceptance_path(DATE, 40173569839, 1)
+        retry = immutable_acceptance_path(DATE, 40173569839, 2)
+        self.assertNotEqual(first, retry)
+        self.assertEqual(first, "audits/"+DATE+"-daily-acceptance-40173569839-attempt-1.json")
+        self.assertEqual(retry, "audits/"+DATE+"-daily-acceptance-40173569839-attempt-2.json")
+        self.assertEqual(immutable_acceptance_path(DATE, "manual", "1"),
+                         "audits/"+DATE+"-daily-acceptance-manual-attempt-1.json")
+        for date, run, attempt in ((DATE, "bad/../../name", "1"),
+                                   ("2026/10/25", "123", "1"),
+                                   (DATE, "123", "0"),
+                                   (DATE, "123", "-1"),
+                                   (DATE, "123", "4/../5")):
+            with self.subTest(date=date, run=run, attempt=attempt), self.assertRaises(ValueError):
+                immutable_acceptance_path(date, run, attempt)
 
     def test_missing_snapshot_cannot_be_recreated_or_pass(self):
         index, edition, files, publisher = fixture()
