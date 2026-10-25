@@ -68,7 +68,7 @@ class GateTests(unittest.TestCase):
             verify_edition(Repo(), "2026-10-25", {
                 "date": "2026-10-25", "articles": [{"id": "a"}, {"id": "b"}]},
                 check_live=True)
-            self.assertEqual(len(check.call_args.args[0]), 2)
+            self.assertEqual(sum(len(call.args[0]) for call in check.call_args_list), 2)
         with patch("scripts.morgenzeitung_prepublication_gate.check_candidates") as check:
             with self.assertRaisesRegex(ValueError, "does not match"):
                 verify_edition(Repo(), "2026-10-25", {
