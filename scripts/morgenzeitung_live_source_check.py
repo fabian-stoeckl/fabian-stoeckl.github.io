@@ -180,7 +180,9 @@ def check_candidates(candidates, edition_date, opener=None, *, publisher_dates=F
                 if response.get("publisher_consent_wall") else
                 fetch_publisher_metadata(candidate["source_url"], stamp, opener=opener))
             if record["publisher_date_evidence"]["status"] in ("mismatch", "conflict"):
-                raise ValueError("Publisher publication metadata contradict archived date")
+                raise ValueError("Publisher publication metadata contradict archived date for "
+                                 + candidate["source_url"] + ": "
+                                 + json.dumps(record["publisher_date_evidence"], sort_keys=True))
         results.append(record)
     return {"live_source_checks_passed": all(r["original_article_http_verified"] for r in results),
             "consent_wall_inconclusive_count": sum(r["publisher_consent_wall"] for r in results),
