@@ -9,6 +9,7 @@ import json
 import re
 import urllib.error
 import urllib.request
+from zoneinfo import ZoneInfo
 
 from scripts.morgenzeitung_live_source_check import NoRedirect
 from scripts.morgenzeitung_source_evidence import validate_source_url
@@ -114,6 +115,28 @@ def compare_publisher_timestamp(html, declared):
     exact = observed == expected
     minute_level = (expected.second == 0 and expected.microsecond == 0
                     and observed.replace(second=0, microsecond=0) == expected)
+    if not exact and not minute_level and expected.second == 0 and expected.microsecond == 0:
+        # During Europe's autumn clock rollback, 02:11 occurs twice. An
+        # editor's 02:11+02 and an original publisher's 02:11:16+01 share
+        # the same DISPLAYED minute yet denote different instants. The
+        # original declared offset is therefore not independently supported.
+        # Neither claim a verified timestamp MATCH nor call it an ordinary
+        # contradiction; explicitly return INCONCLUSIVE for that exact fold.
+        zone = ZoneInfo("Europe/Vienna")
+        local_expected, local_observed = expected.astimezone(zone), observed.astimezone(zone)
+        same_wall_minute = (local_expected.year, local_expected.month, local_expected.day,
+                            local_expected.hour, local_expected.minute) == (
+                           local_observed.year, local_observed.month, local_observed.day,
+                           local_observed.hour, local_observed.minute)
+        if (same_wall_minute and local_expected.hour == 2
+                and local_expected.fold != local_observed.fold
+                and abs((expected - observed).total_seconds()) >= 3500
+                and abs((expected - observed).total_seconds()) <= 3660):
+            return {"status": "inconclusive", "resolution": "dst-overlap-minute",
+                    "reason": "Publication minute occurs twice during Europe/Vienna autumn clock rollback; claimed UTC offset remains unverified",
+                    "declared_published_at": expected.isoformat(),
+                    "publisher_published_at": observed.isoformat(),
+                    "metadata_sources": sorted({source for source, _ in valid})}
     return {"status": "match" if exact or minute_level else "mismatch",
             "resolution": "exact" if exact else "declared-minute" if minute_level else "different",
             "publisher_published_at": observed.isoformat(),
