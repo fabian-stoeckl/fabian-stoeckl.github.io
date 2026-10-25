@@ -6,6 +6,7 @@ from scripts.morgenzeitung_live_source_check import check_date, check_http, chec
 
 class Response:
     status = 200
+    headers = {}
     def __enter__(self): return self
     def __exit__(self, *args): pass
 
@@ -130,7 +131,7 @@ class LiveSourceTests(unittest.TestCase):
 
     def test_redirect_loop_rejected(self):
         old = 'https://www.derstandard.de/story/3000000345625/title'
-        new = old.replace('.de', '.at')
+        new = old.replace('derstandard.de', 'derstandard.at')
         class Loop:
             def open(self, req, timeout):
                 target = new if req.full_url == old else old
