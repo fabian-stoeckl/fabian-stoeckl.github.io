@@ -24,6 +24,10 @@ REQUIRED = ("candidates/{d}.json", "snapshots/{d}-profile.json",
             "snapshots/{d}-issues.json", "snapshots/{d}-selection-parameters.json",
             "runs/{d}.json", "audits/{d}-live-learning.json",
             "audits/{d}-acceptance.json")
+# Append-only final proof may supplement a historical immutable PARTIAL
+# acceptance, but may NEVER overwrite it or erase failed prior attempts.
+OPTIONAL = ("audits/{d}-acceptance-final.json",
+            "audits/{d}-real-feedback-and-profile-verification.json")
 REAL_ARTICLES = (
     ("ORF", "https://science.orf.at/stories/3237885/", "2026-10-23T14:28:00+02:00"),
     ("Der Standard", "https://www.derstandard.de/story/3000000345164/von-autos-bis-maschinen-chinas-aggressive-exporte-lassen-europas-motor-stottern", "2026-10-23T18:00:00+02:00"),
@@ -128,6 +132,8 @@ def evaluate(date, index, edition, private_files, publisher_checks):
             return None
     audit = parsed("audits/{d}-live-learning.json")
     acceptance = parsed("audits/{d}-acceptance.json")
+    final_acceptance = parsed("audits/{d}-acceptance-final.json")
+    independent_feedback = parsed("audits/{d}-real-feedback-and-profile-verification.json")
     run = parsed("runs/{d}.json")
     if not missing and isinstance(audit, dict):
         original_candidates = private_files["candidates/" + date + ".json"]
@@ -151,6 +157,43 @@ def evaluate(date, index, edition, private_files, publisher_checks):
             and isinstance(commit, str) and re.fullmatch("[0-9a-f]{40}", commit))
     if isinstance(acceptance, dict):
         checks["private_acceptance_pass"] = acceptance.get("date") == date and acceptance.get("verdict") == "PASS"
+    if not checks["private_acceptance_pass"] and isinstance(final_acceptance, dict):
+        # A historical immutable PARTIAL report is never rewritten to PASS.
+        # A separate final evidence file is accepted only with a genuine owner
+        # issue/profile replay, a readback-verified S7 run, and the independently
+        # verified archived-input -> live-HTTPS article-order comparison.
+        final_evidence = final_acceptance.get("evidence") or {}
+        source_feedback = (independent_feedback or {}).get("feedback_provenance") or {}
+        source_profile = (independent_feedback or {}).get("deterministic_profile_check") or {}
+        final_checks = final_acceptance.get("checks") or {}
+        required_check_names = set((acceptance or {}).get("checks") or {})
+        checks["private_acceptance_pass"] = bool(
+            isinstance(acceptance, dict)
+            and acceptance.get("date") == date
+            and acceptance.get("verdict") == "PARTIAL"
+            and final_acceptance.get("date") == date
+            and final_acceptance.get("verdict") == "PASS"
+            and final_acceptance.get("scope") == "productive_feedback_learning_and_publication_not_full_publisher_access"
+            and final_acceptance.get("parent_immutable_acceptance_verdict") == "PARTIAL"
+            and required_check_names
+            and all((final_checks.get(k) or {}).get("status") == "PASS"
+                    for k in required_check_names)
+            and final_evidence.get("real_feedback_verification_path")
+                  == "audits/" + date + "-real-feedback-and-profile-verification.json"
+            and final_evidence.get("live_learning_audit_path")
+                  == "audits/" + date + "-live-learning.json"
+            and final_evidence.get("private_s7_run_path") == "runs/" + date + ".json"
+            and final_evidence.get("public_merge_commit") == (run or {}).get("public_merge_commit")
+            and (run or {}).get("private_readback_verified") is True
+            and (run or {}).get("status") == "PASS"
+            and final_evidence.get("private_run_readback_verified") is True
+            and source_feedback.get("status") == "PASS"
+            and source_feedback.get("unique_ratings_reconciled_against_public_original_editions", 0) > 0
+            and source_profile.get("status") == "PASS"
+            and source_profile.get("stored_computed_learning_signals_match") is True
+            and isinstance(audit, dict)
+            and (audit.get("publication_audit") or {}).get("editorial_effect_verified") is True
+        )
     statuses = [r.get("evidence", {}).get("status") for r in publisher_checks]
     checks["publisher_metadata_checked"] = ("match" in statuses and
                                              not any(s in ("mismatch", "conflict") for s in statuses))
@@ -171,7 +214,7 @@ def run_daily(date, run_id, private):
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date):
         raise ValueError("Invalid publication date")
     private_files = {path.format(d=date): private.read(path.format(d=date))
-                     for path in REQUIRED}
+                     for path in REQUIRED + OPTIONAL}
     index = edition = None
     try:
         index = live_json("index.json")
