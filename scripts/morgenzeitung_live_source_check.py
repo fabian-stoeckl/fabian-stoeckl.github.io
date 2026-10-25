@@ -61,7 +61,9 @@ def check_http(url, opener=None, *, retries=2, sleep=time.sleep):
                 raise ValueError("Source network check inconclusive after retries") from exc
             sleep(attempt + 1)
             continue
-        if status in (405, 501) and method == "HEAD":
+        # Some publishers reject HEAD with 401/403 but serve their public
+        # article page via GET. Probe GET once; do not accept a restricted GET.
+        if status in (401, 403, 405, 501) and method == "HEAD":
             method = "GET"
             continue
         if status in (429, 500, 502, 503, 504) and attempt < retries:
@@ -84,7 +86,10 @@ def check_candidates(candidates, edition_date, opener=None, *, publisher_dates=F
         if not isinstance(candidate, dict):
             raise ValueError("Invalid candidate")
         stamp = check_date(candidate.get("published_at"), edition_date)
-        response = check_http(candidate.get("source_url"), opener=opener)
+        try:
+            response = check_http(candidate.get("source_url"), opener=opener)
+        except ValueError as exc:
+            raise ValueError("Source check failed for " + candidate["source_url"] + ": " + str(exc)) from exc
         record = {"id": candidate.get("id"), "published_at": stamp,
                   "http_status": response["status"],
                   "paywall_or_access_restricted": response["paywall_or_access_restricted"]}
