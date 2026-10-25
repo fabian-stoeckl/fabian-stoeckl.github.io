@@ -53,8 +53,8 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
         checked = []
         for candidate in selected_candidates:
             article = edition_by_id[candidate["id"]]
-            published_url = article.get("url")
             original_url = candidate["source_url"]
+            published_url = article.get("url") or original_url
             if published_url != original_url:
                 # Independent publisher confirmation is mandatory for an alias.
                 mirror = verify_official_mirror(candidate, published_url)
