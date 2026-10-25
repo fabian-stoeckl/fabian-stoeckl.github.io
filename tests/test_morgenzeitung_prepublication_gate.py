@@ -86,7 +86,7 @@ class GateTests(unittest.TestCase):
             verify_edition(repo, "2026-10-25", {
                 "date": "2026-10-25", "articles": [{"id": "a"}, {"id": "b"}]},
                 check_live=True)
-            self.assertEqual([x["id"] for x in check.call_args.args[0]], ["a", "b"])
+            self.assertEqual([x["id"] for call in check.call_args_list for x in call.args[0]], ["a", "b"])
 
     def test_live_source_checks_replay_and_archive(self):
         with patch("scripts.morgenzeitung_live_source_check.check_http") as http:
