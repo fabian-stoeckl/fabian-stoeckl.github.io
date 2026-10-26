@@ -226,13 +226,14 @@
       "summary": "Der Boom der KI-Rechenzentren verknappt Leiterplatten, die praktisch jedes moderne Elektronikprodukt benötigt. Weil ein großer Teil der Produktion nach Asien verlagert wurde, wird die Abhängigkeit europäischer Industrieunternehmen von internationalen Zulieferern sichtbar.",
       "event": "Industrie-Elektronik",
       "paywall": true,
-      "access": "partial",
+      "access": "teaser",
       "research_access": "original_teaser",
       "research_checked_at": "2026-10-26T08:11:36.138Z",
       "topic": "Industrie & Innovation",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Leiterplatten sind für viele elektronische Produkte unentbehrlich."
+        "Leiterplatten sind für zahlreiche moderne Elektronikprodukte erforderlich.",
+        "Ein großer Teil der Leiterplattenproduktion wurde nach Asien verlagert."
       ],
       "novelty": "",
       "treat": false
@@ -247,13 +248,14 @@
       "summary": "Stihl setzt beim Übergang zu Akku-Geräten auf die Nachfrage seiner Kunden und hält zugleich am Verbrennergeschäft fest. Der Vorstand sieht derzeit wenig Perspektive für neue Fertigung in Deutschland – ein Beispiel für die Standortfrage bei industrieller Transformation.",
       "event": "Stihl-Elektrifizierung",
       "paywall": true,
-      "access": "partial",
+      "access": "teaser",
       "research_access": "original_teaser",
       "research_checked_at": "2026-10-26T08:11:36.138Z",
       "topic": "Industrie & Innovation",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Stihl begann 2009 mit Akku-Heckenscheren."
+        "Stihl begann bereits 2009 mit Akku-Heckenscheren.",
+        "Der Unternehmenschef sieht derzeit kaum Perspektiven für neue Fertigung in Deutschland."
       ],
       "novelty": "",
       "treat": false
@@ -268,14 +270,14 @@
       "summary": "Die Werkstoffhandels-Sparte von Thyssenkrupp soll nach der Verselbstständigung neue Wachstumsmöglichkeiten erhalten. Im Interview erläutert TK-Accelis-Chefin Ilse Henne die Rolle von Übernahmen und die Unabhängigkeit vom Mutterkonzern.",
       "event": "TK-Accelis",
       "paywall": true,
-      "access": "partial",
+      "access": "teaser",
       "research_access": "original_teaser",
       "research_checked_at": "2026-10-26T08:11:36.138Z",
       "topic": "Industrie & Innovation",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Die Sparte Werkstoffhandel wird unter dem Namen TK Accelis eigenständig.",
-        "Ilse Henne erläutert Pläne für Wachstum und Übernahmen."
+        "Thyssenkrupps Werkstoffhandels-Sparte wird unter dem Namen TK Accelis eigenständig.",
+        "Die Geschäftsführung sieht Wachstum und Übernahmen als Themen der neuen Gesellschaft."
       ],
       "novelty": "",
       "treat": false
@@ -290,13 +292,14 @@
       "summary": "Der chinesische Hersteller Leapmotor baut über sein Gemeinschaftsunternehmen mit Stellantis Fahrzeuge in Spanien. Das Modell verbindet chinesische Technologie mit europäischen Produktionskapazitäten und Vertriebsnetzen und zeigt eine neue Form industrieller Arbeitsteilung.",
       "event": "Leapmotor-Europa",
       "paywall": true,
-      "access": "partial",
+      "access": "teaser",
       "research_access": "original_teaser",
       "research_checked_at": "2026-10-26T08:11:36.138Z",
       "topic": "Industrie & Innovation",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Joint Venture 51 Prozent Stellantis und 49 Prozent Leapmotor."
+        "Das Gemeinschaftsunternehmen gehört zu 51 Prozent Stellantis und zu 49 Prozent Leapmotor.",
+        "Die Partner planen, Fahrzeuge des chinesischen Herstellers in Spanien zu bauen."
       ],
       "novelty": "",
       "treat": false
@@ -311,13 +314,14 @@
       "summary": "Mercedes überarbeitet die C-Klasse mit Verbrennungsmotor, obwohl zugleich eine vollelektrische Generation anläuft. Das parallele Angebot verdeutlicht, wie Hersteller auf unterschiedliche Kundennachfrage und die Unsicherheit beim Tempo der Elektrifizierung reagieren.",
       "event": "Mercedes-C-Klasse",
       "paywall": false,
-      "access": "full",
-      "research_access": "publisher_article_metadata_and_excerpt",
+      "access": "teaser",
+      "research_access": "original_teaser",
       "research_checked_at": "2026-10-26T08:14:16.560Z",
       "topic": "Industrie & Innovation",
       "kind": "Nachricht und Analyse",
       "facts": [
-        "Der Bericht nennt einen Einstiegspreis ab 42.982 Euro."
+        "Die überarbeitete Mercedes-C-Klasse mit Verbrennungsmotor soll ab 42.982 Euro angeboten werden.",
+        "Mercedes entwickelt parallel eine vollelektrische C-Klasse."
       ],
       "novelty": "",
       "treat": false
@@ -338,7 +342,8 @@
       "topic": "Österreich & Politik",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Die Angelobung umfasst 1.200 Rekruten."
+        "Am Nationalfeiertag öffnen mehrere österreichische Institutionen ihre Türen.",
+        "Das Bundesheer sieht eine Angelobung von 1.200 Rekruten vor."
       ],
       "novelty": "",
       "treat": false
@@ -359,7 +364,8 @@
       "topic": "Wirtschaft & Fiskalpolitik",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Der Kommissionsvorschlag umfasst 1.985 Milliarden Euro."
+        "Die EU-Kommission schlägt einen Finanzrahmen von 1.985 Milliarden Euro für 2028 bis 2034 vor.",
+        "Bundeskanzler Stocker hat eine österreichische Zustimmung zum aktuellen Entwurf nicht zugesichert."
       ],
       "novelty": "",
       "treat": false
@@ -380,7 +386,8 @@
       "topic": "Welthandel & Geopolitik",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Lula gewann laut Wahlbehörde 51,75 Prozent."
+        "Lula hat die brasilianische Präsidentschaftsstichwahl gewonnen.",
+        "Sein Gegenkandidat Flávio Bolsonaro kündigte eine Anfechtung des Wahlergebnisses an."
       ],
       "novelty": "",
       "treat": false
@@ -401,7 +408,8 @@
       "topic": "Produktivität & Wettbewerbsfähigkeit",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Erhoffte Baukostensenkung um zehn bis fünfzehn Prozent."
+        "Die Bundesregierung plant den sogenannten Gebäudetyp E für einfacheres Bauen.",
+        "Der Bericht nennt eine mögliche Senkung der Baukosten um zehn bis fünfzehn Prozent."
       ],
       "novelty": "",
       "treat": false
@@ -422,7 +430,8 @@
       "topic": "Welthandel & Geopolitik",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Die Studentenliste erreichte laut Prognosen 139 von 250 Sitzen."
+        "Die Studentenliste erreichte nach vorläufigen Angaben 139 von 250 Parlamentssitzen.",
+        "Aleksandar Vučić räumte seine Niederlage bei der Parlamentswahl ein."
       ],
       "novelty": "",
       "treat": false
