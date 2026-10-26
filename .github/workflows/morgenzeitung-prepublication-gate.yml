@@ -30,6 +30,25 @@ jobs:
       - name: Run publication gate regression tests
         run: |
           python3 -m unittest tests.test_morgenzeitung_prepublication_gate tests.test_morgenzeitung_live_source_check tests.test_morgenzeitung_publisher_date_evidence tests.test_morgenzeitung_source_evidence tests.test_morgenzeitung_official_mirror tests.test_morgenzeitung_publisher_feed tests.test_morgenzeitung_source_policy tests.test_morgenzeitung_gate_workflow_coverage
+      - name: One-off independent preflight of private unarchived v2 research
+        if: github.event_name == 'pull_request' && github.head_ref == 'audit/morgenzeitung-v2-preflight-20261026'
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import base64, json, os, pathlib, urllib.request
+          token = os.environ.get("MORGENZEITUNG_FEEDBACK_TOKEN")
+          if not token:
+              raise SystemExit("Missing private repository token")
+          url = "https://api.github.com/repos/fabian-stoeckl/morgenzeitung-feedback/contents/staging/2026-10-26-v2-candidates.json"
+          req = urllib.request.Request(url, headers={"Authorization": "Bearer " + token, "Accept": "application/vnd.github+json"})
+          with urllib.request.urlopen(req, timeout=30) as response:
+              obj = json.load(response)
+          pathlib.Path("/tmp/morgenzeitung-v2-staging.json").write_bytes(base64.b64decode(obj["content"]))
+          print("Loaded staged private candidate pool for independent preflight")
+          PY
+          python3 -m scripts.morgenzeitung_source_preflight --candidates /tmp/morgenzeitung-v2-staging.json --date 2026-10-26 --minimum 15
       - name: Replay private original selection against edition
         env:
           MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
