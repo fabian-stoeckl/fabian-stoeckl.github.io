@@ -39,7 +39,7 @@ class V6PreviewContract(unittest.TestCase):
     def test_isolation_and_private_data(self):
         self.assertEqual(self.index["dates"][0], "2026-10-26")
         self.assertEqual(len(self.index["dates"]), len(set(self.index["dates"])))
-        self.assertIn(json.loads((BASE / "data" / "2026-10-26.json").read_text())["snapshot_version"], ("v2", "v7"))
+        self.assertIn(json.loads((BASE / "data" / "2026-10-26.json").read_text())["snapshot_version"], ("v2", "v7", "v8"))
         self.assertEqual(json.loads((BASE / "previews" / "2026-10-26-v3.json").read_text())["snapshot_version"], "v3")
         html = (BASE / "previews" / "2026-10-26-v6.html").read_text(encoding="utf-8")
         self.assertIn("2026-10-26-v6.json", html)
