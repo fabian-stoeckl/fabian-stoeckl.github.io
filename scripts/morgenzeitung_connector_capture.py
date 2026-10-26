@@ -7,7 +7,7 @@ The existing GitHub Actions gate independently reads those files before merge.
 import hashlib
 import json
 import re
-from scripts.morgenzeitung_capture_preselection import capture, verify_existing
+from scripts.morgenzeitung_capture_preselection import capture, verify_existing, snapshot_paths
 
 REPOSITORY = 'fabian-stoeckl/morgenzeitung-feedback'
 
@@ -69,11 +69,11 @@ class PreparedRepo:
         self.prepared[path] = {'content': content, 'blob_sha': sha}
 
 
-def prepare(export, date, candidates, *, limit=10, max_per_source=4):
+def prepare(export, date, candidates, *, limit=10, max_per_source=4, version=None):
     repo = PreparedRepo(export)
-    capture_result = capture(repo, date, candidates, limit=limit, max_per_source=max_per_source)
-    verify_existing(repo, date)
-    return {'repository': REPOSITORY, 'date': date,
+    capture_result = capture(repo, date, candidates, limit=limit, max_per_source=max_per_source, version=version)
+    verify_existing(repo, date, version=version)
+    return {'repository': REPOSITORY, 'date': date, 'snapshot_version': version,
             'base_commit_sha': export['commit_sha'],
             'profile_blob_sha': export['profile']['blob_sha'],
             'files': repo.prepared, 'capture': capture_result,
@@ -90,25 +90,25 @@ class ReadbackRepo:
         return (item['content'].encode(), item['blob_sha']) if item else None
 
 
-def verify_readback(manifest, readback, date):
+def verify_readback(manifest, readback, date, version=None):
     validate_envelope(readback)
     if manifest.get('repository') != REPOSITORY or manifest.get('date') != date:
         raise ValueError('Manifest date or repository mismatch')
+    if manifest.get('snapshot_version') != version:
+        raise ValueError('Snapshot version mismatch')
     require_sha(manifest.get('base_commit_sha'))
     require_sha(manifest.get('profile_blob_sha'))
-    expected_paths = {'candidates/'+date+'.json',
-                      'snapshots/'+date+'-profile.json',
-                      'snapshots/'+date+'-issues.json',
-                      'snapshots/'+date+'-selection-parameters.json'}
+    names = snapshot_paths(date, version)
+    expected_paths = set(names.values())
     if set(manifest.get('files', {})) != expected_paths or set(readback.get('files', {})) != expected_paths:
         raise ValueError('Exactly four original private files required')
     for path in expected_paths:
         item = readback['files'][path]
         if item != manifest['files'][path] or blob_sha(item['content']) != item['blob_sha']:
             raise ValueError('Remote readback differs from prepared original: '+path)
-    if readback['files']['snapshots/'+date+'-profile.json']['blob_sha'] != manifest['profile_blob_sha']:
+    if readback['files'][names['profile']]['blob_sha'] != manifest['profile_blob_sha']:
         raise ValueError('Profile provenance mismatch')
-    result = verify_existing(ReadbackRepo(readback['files']), date)
+    result = verify_existing(ReadbackRepo(readback['files']), date, version=version)
     result.update(repository=REPOSITORY, snapshot_commit_sha=readback['commit_sha'],
                   profile_blob_sha=manifest['profile_blob_sha'],
                   connector_readback_matches=True,
