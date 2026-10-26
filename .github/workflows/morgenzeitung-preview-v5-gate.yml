@@ -39,6 +39,14 @@ jobs:
           if not os.getenv('MORGENZEITUNG_FEEDBACK_TOKEN'):
               raise SystemExit('FAIL: missing private token')
           repo=PrivateRepo(os.environ['MORGENZEITUNG_FEEDBACK_TOKEN'])
+          from scripts.morgenzeitung_live_source_check import check_candidates
+          pool=json.loads(repo.read('candidates/2026-10-26-v5.json')[0])
+          for candidate in pool:
+              try:
+                  record=check_candidates([candidate],'2026-10-26',publisher_dates=True)['checked'][0]
+                  print('DEEP DIAGNOSTIC',candidate['id'],candidate['source'],record.get('original_article_http_verified'),record.get('publisher_date_status'))
+              except Exception as exc:
+                  print('DEEP BLOCKED',candidate['id'],candidate['source'],type(exc).__name__,str(exc))
           report=verify_edition(repo,'2026-10-26',dict(edition,preview=False),check_live=True)
           evidence=report.get('live_source_evidence') or {}
           print('PRIVATE S4 REPLAY:',json.dumps({'verified':report['prepublication_gate_verified'],'source_status':evidence.get('source_verification_status'),'inconclusive':evidence.get('inconclusive_count')},ensure_ascii=False))
