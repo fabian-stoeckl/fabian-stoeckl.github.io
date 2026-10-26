@@ -1,0 +1,26 @@
+name: Morgenzeitung recovery tests
+on:
+  pull_request:
+    paths:
+      - 'scripts/morgenzeitung_recovery_planner.py'
+      - 'scripts/test_morgenzeitung_recovery_planner.py'
+      - '.github/workflows/morgenzeitung-recovery-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/morgenzeitung_recovery_planner.py'
+      - 'scripts/test_morgenzeitung_recovery_planner.py'
+      - '.github/workflows/morgenzeitung-recovery-tests.yml'
+permissions:
+  contents: read
+jobs:
+  recovery-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run deterministic recovery regression tests
+        run: python3 -m unittest scripts.test_morgenzeitung_recovery_planner -v
