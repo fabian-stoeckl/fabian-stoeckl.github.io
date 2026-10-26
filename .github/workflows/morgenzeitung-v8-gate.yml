@@ -31,7 +31,7 @@ jobs:
           token=os.getenv('MORGENZEITUNG_FEEDBACK_TOKEN')
           if not token: raise SystemExit('FAIL: private token unavailable to CI')
           repo=PrivateRepo(token)
-          raw=repo.read('research/drafts/2026-10-26-v8-preflight.json')
+          raw=repo.read('research/drafts/2026-10-26-v8-preflight-r2.json')
           if raw is None: raise SystemExit('FAIL: missing unarchived candidate draft')
           pool=json.loads(raw[0])
           if len(pool)<15: raise SystemExit('FAIL: fewer than 15 candidates')
