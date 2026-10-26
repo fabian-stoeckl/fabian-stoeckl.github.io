@@ -45,10 +45,12 @@ jobs:
         env:
           MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
         run: |
+          python3 -m unittest discover -s tests/pressespiegel -p test_v7_release.py -v
           python3 - <<'PY'
           import json,pathlib,os
           from scripts.morgenzeitung_capture_preselection import PrivateRepo
           from scripts.morgenzeitung_prepublication_gate import verify_edition
+          from scripts.morgenzeitung_source_preflight import preflight
           edition=json.loads(pathlib.Path('Privat/Pressespiegel/data/2026-10-26.json').read_text())
           if edition.get('snapshot_version')!='v7':
               print('Existing edition is not v7; archival gate deferred')
@@ -59,4 +61,9 @@ jobs:
               print('REPLAY',json.dumps({'verified':result['prepublication_gate_verified'],'sources':e.get('source_verification_status')},ensure_ascii=False))
               if not result['prepublication_gate_verified'] or e.get('source_verification_status')!='PASS':
                   raise SystemExit('FAIL: private replay or independent originals')
+              headlines=[dict(x,source_url=x['url'],verified=True,topic='Heute wichtig') for x in edition['headlines']]
+              h=preflight(headlines,'2026-10-26',minimum=15)
+              print('HEADLINE SOURCES',json.dumps({'ready':h['ready_count'],'blocked':h['blocked']},ensure_ascii=False))
+              if not h['preflight_passed']: raise SystemExit('FAIL: 15 headline originals')
+              print('PASS: all 25 edition originals independently checked')
           PY
