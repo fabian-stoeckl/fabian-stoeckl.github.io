@@ -1,17 +1,16 @@
 {
   "date": "2026-10-26",
   "window_start": "2026-10-25T06:00:00Z",
-  "window_end": "2026-10-26T08:23:33.173Z",
-  "available_at": "2026-10-26T08:23:33.173Z",
-  "researched_at": "2026-10-26T08:23:33.173Z",
+  "window_end": "2026-10-26T08:56:00Z",
+  "available_at": "2026-10-26T08:56:00Z",
+  "researched_at": "2026-10-26T08:56:00Z",
   "preview": false,
-  "snapshot_version": "v2",
+  "snapshot_version": "v3",
   "limitations": [
-    "Vollständiger Neustart nach unabhängigem Quellen-Preflight: 15 Kandidaten aus fünf Verlagen bestätigt, null blockiert. Originale unter versionierten privaten S4-Dateien vor Auswahl archiviert; alte Tagesoriginale unverändert.",
-    "20 Fixverlage einzeln recherchiert und weitere Verlage geprüft; bei mehreren fehlte ein unabhängig bestätigter tagesaktueller Originalartikel. Keine künstliche Verlagsquote und keine Reuters-401-Artikel.",
-    "Der Selektor verwendet echtes vorläufiges Industrie-Feedback; der Vergleich mit derselben Kandidatenbasis ohne Profil tauscht einen Artikel aus. Eine produktive Wirkung gilt erst nach unabhängigem Gate, Merge und HTTPS/S7-Audit als bestätigt.",
-    "Quellen- und Event-Deduplizierung sowie maximal vier Vertiefungen je Verlag verhindern Wiederholungen. Kein ETF-Code geändert.",
-    "20 eigenständige Headlines ohne Überschneidung mit den zehn Vertiefungen: weitere aktuelle Artikel aus offiziellen RSS-Feeds von Guardian, BBC, Politico und Euronews mit Original-URLs und veröffentlichten Zeitstempeln; zusätzlich ORF, Der Standard und Die Presse. RSS-Belege ersetzen keine vollumfängliche Artikeltextprüfung."
+    "ISOLIERTER BRANCH-TEST – diese Datei darf nicht nach main gemergt werden; die bereits publizierte Ausgabe bleibt unverändert.",
+    "15 Kandidaten in neuer versionierter privater S4-Auswahl (v3) nach unabhängigem HTTP-/Datums-Preflight, 5 Verlage, 0 blockiert; ursprüngliche und v2-Snapshots unverändert.",
+    "Die 10 Vertiefungen wurden deterministisch neu aus dem v3-Pool mit echtem privaten Profil ausgewählt. Die 20 Nachrichtenzeilen wurden für diesen Pipeline-Test aus der bestehenden öffentlichen Ausgabe übernommen; deren unabhängige Neurecherche ist NICHT vollständig nachgewiesen.",
+    "Technischer PR-Gate, GitHub Pages HTTPS und privater S7-Audit für v3 stehen zum Zeitpunkt dieses Entwurfs noch aus."
   ],
   "headlines": [
     {
@@ -228,34 +227,12 @@
       "paywall": true,
       "access": "teaser",
       "research_access": "original_teaser",
-      "research_checked_at": "2026-10-26T08:11:36.138Z",
+      "research_checked_at": "2026-10-26T08:52:00Z",
       "topic": "Industrie & Innovation",
       "kind": "Hintergrundanalyse",
       "facts": [
         "KI-Rechenzentren erhöhen die Nachfrage nach Leiterplatten.",
         "Ein großer Teil der Leiterplattenfertigung findet inzwischen in Asien statt."
-      ],
-      "novelty": "",
-      "treat": false
-    },
-    {
-      "id": "29a4cb363c5425a6",
-      "title": "Stihl-Chef sieht für neue Fertigung in Deutschland kaum Perspektiven",
-      "url": "https://www.handelsblatt.com/unternehmen/mittelstand/familienunternehmer/stihl-chef-neue-fertigung-in-deutschland-da-fehlt-mir-derzeit-die-fantasie-01/100262271.html",
-      "source": "Handelsblatt",
-      "published_at": "2026-10-26T06:06:00Z",
-      "region": "International",
-      "summary": "Stihl setzt beim Übergang zu Akku-Geräten auf die Nachfrage seiner Kunden und hält zugleich am Verbrennergeschäft fest. Der Vorstand sieht derzeit wenig Perspektive für neue Fertigung in Deutschland – ein Beispiel für die Standortfrage bei industrieller Transformation.",
-      "event": "Stihl-Elektrifizierung",
-      "paywall": true,
-      "access": "teaser",
-      "research_access": "original_teaser",
-      "research_checked_at": "2026-10-26T08:11:36.138Z",
-      "topic": "Industrie & Innovation",
-      "kind": "Hintergrundanalyse",
-      "facts": [
-        "Stihl verkauft sowohl Akku- als auch Verbrennergeräte.",
-        "Der Unternehmenschef sieht derzeit wenig Perspektive für zusätzliche Fertigung in Deutschland."
       ],
       "novelty": "",
       "treat": false
@@ -272,7 +249,7 @@
       "paywall": true,
       "access": "teaser",
       "research_access": "original_teaser",
-      "research_checked_at": "2026-10-26T08:11:36.138Z",
+      "research_checked_at": "2026-10-26T08:52:00Z",
       "topic": "Industrie & Innovation",
       "kind": "Hintergrundanalyse",
       "facts": [
@@ -294,7 +271,7 @@
       "paywall": true,
       "access": "teaser",
       "research_access": "original_teaser",
-      "research_checked_at": "2026-10-26T08:11:36.138Z",
+      "research_checked_at": "2026-10-26T08:52:00Z",
       "topic": "Industrie & Innovation",
       "kind": "Hintergrundanalyse",
       "facts": [
@@ -314,9 +291,9 @@
       "summary": "Mercedes überarbeitet die C-Klasse mit Verbrennungsmotor, obwohl zugleich eine vollelektrische Generation anläuft. Das parallele Angebot verdeutlicht, wie Hersteller auf unterschiedliche Kundennachfrage und die Unsicherheit beim Tempo der Elektrifizierung reagieren.",
       "event": "Mercedes-C-Klasse",
       "paywall": false,
-      "access": "teaser",
+      "access": "full",
       "research_access": "original_teaser",
-      "research_checked_at": "2026-10-26T08:14:16.560Z",
+      "research_checked_at": "2026-10-26T08:52:00Z",
       "topic": "Industrie & Innovation",
       "kind": "Nachricht und Analyse",
       "facts": [
@@ -325,6 +302,48 @@
       ],
       "novelty": "",
       "treat": false
+    },
+    {
+      "id": "ae7f10c2b5394d21",
+      "title": "Stihl-Chef sieht wenig Perspektive für neue Fertigung in Deutschland",
+      "url": "https://www.handelsblatt.com/unternehmen/mittelstand/familienunternehmer/stihl-chef-neue-fertigung-in-deutschland-da-fehlt-mir-derzeit-die-fantasie/100262271.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-25T08:25:00Z",
+      "region": "International",
+      "summary": "Stihl setzt beim Übergang zu Akku-Geräten auf die Nachfrage seiner Kunden und hält zugleich am Verbrennergeschäft fest. Der Vorstand sieht derzeit wenig Perspektive für neue Fertigung in Deutschland – ein Beispiel für die Standortfrage bei industrieller Transformation.",
+      "event": "Stihl-Elektrifizierung",
+      "paywall": false,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "research_checked_at": "2026-10-26T08:52:00Z",
+      "topic": "Industrie & Innovation",
+      "kind": "Nachricht und Analyse",
+      "facts": [
+        "Stihl verkauft sowohl Akku- als auch Verbrennergeräte.",
+        "Der Unternehmenschef sieht derzeit wenig Perspektive für zusätzliche Fertigung in Deutschland."
+      ],
+      "novelty": "",
+      "treat": false
+    },
+    {
+      "id": "c6b490e3a1170b2d",
+      "title": "Volkswagen kündigt Audi-Werk in Georgia trotz deutscher Stellenkürzungen an",
+      "url": "https://www.theguardian.com/business/2026/oct/25/volkswagen-to-build-4bn-audi-suv-factory-in-us-despite-job-cuts-at-home",
+      "source": "The Guardian",
+      "published_at": "2026-10-25T13:43:00Z",
+      "region": "International",
+      "topic": "Industrie & Innovation",
+      "event": "Audi-USA-Investition",
+      "kind": "Nachricht und Analyse",
+      "research_checked_at": "2026-10-26T08:52:00Z",
+      "research_access": "original_full",
+      "access": "full",
+      "paywall": false,
+      "summary": "Der Guardian berichtet, dass Volkswagen über Audi ein neues SUV-Werk in Georgia für vier Milliarden Dollar plant. Die US-Fertigung soll Zollbelastungen reduzieren, während der Konzern in Deutschland Stellen abbaut. Der Fall verdeutlicht, wie Zölle, Industriepolitik und chinesischer Wettbewerbsdruck Standortentscheidungen verändern.",
+      "facts": [
+        "Audi plant ein neues Werk im US-Bundesstaat Georgia mit einer Investition von vier Milliarden Dollar.",
+        "Der Guardian nennt rund 4.500 geplante Arbeitsplätze und eine Produktionskapazität von 200.000 SUVs pro Jahr."
+      ]
     },
     {
       "id": "52389f6a5af52a66",
@@ -338,7 +357,7 @@
       "paywall": false,
       "access": "full",
       "research_access": "original_full",
-      "research_checked_at": "2026-10-26T08:11:36.138Z",
+      "research_checked_at": "2026-10-26T08:52:00Z",
       "topic": "Österreich & Politik",
       "kind": "Hintergrundanalyse",
       "facts": [
@@ -360,7 +379,7 @@
       "paywall": false,
       "access": "full",
       "research_access": "original_full",
-      "research_checked_at": "2026-10-26T08:11:36.138Z",
+      "research_checked_at": "2026-10-26T08:52:00Z",
       "topic": "Wirtschaft & Fiskalpolitik",
       "kind": "Hintergrundanalyse",
       "facts": [
@@ -371,26 +390,24 @@
       "treat": false
     },
     {
-      "id": "f2a01541591fbd84",
-      "title": "ORF: Lula gewinnt brasilianische Präsidentschaftsstichwahl",
-      "url": "https://orf.at/stories/3446153/",
-      "source": "ORF",
-      "published_at": "2026-10-26T04:42:00Z",
+      "id": "e90f83205626f7c3",
+      "title": "Die Presse kommentiert Bolsonaros Weigerung, Lulas Wahlsieg anzuerkennen",
+      "url": "https://www.diepresse.com/41392114/wie-der-vater-so-der-sohn-ein-schlechter-verlierer-in-brasilien",
+      "source": "Die Presse",
+      "published_at": "2026-10-26T06:00:00Z",
       "region": "Österreich",
-      "summary": "Lula hat die brasilianische Präsidentschaftsstichwahl gewonnen und steht vor einer weiteren Amtszeit. Flávio Bolsonaro will das Ergebnis wegen der verlängerten Öffnungszeiten anfechten; für Brasilien bleiben Haushalts-, Sozial- und Umweltpolitik zentrale Konfliktfelder.",
-      "event": "Brasilien-Wahl",
-      "paywall": false,
-      "access": "full",
-      "research_access": "original_full",
-      "research_checked_at": "2026-10-26T08:11:36.138Z",
       "topic": "Welthandel & Geopolitik",
+      "event": "Brasilien-Wahl",
       "kind": "Hintergrundanalyse",
+      "research_checked_at": "2026-10-26T08:52:00Z",
+      "research_access": "original_teaser",
+      "access": "teaser",
+      "paywall": true,
+      "summary": "Ein Kommentar der Presse bewertet die Weigerung Flávio Bolsonaros, Lulas Sieg in der brasilianischen Präsidentschaftsstichwahl anzuerkennen. Er verlangt wegen verlängerter Öffnungszeiten eine Annullierung. Lula hat den Rückstand aus der ersten Runde aufgeholt, steht jedoch vor der Aufgabe, ein polarisiertes Land politisch zu einen.",
       "facts": [
-        "Lula hat die brasilianische Präsidentschaftsstichwahl gewonnen.",
-        "Flávio Bolsonaro stellt die Anerkennung des Ergebnisses infrage."
-      ],
-      "novelty": "",
-      "treat": false
+        "Lula gewann die brasilianische Stichwahl nach einem Rückstand in der ersten Runde.",
+        "Flávio Bolsonaro fordert wegen einer Verlängerung der Wahlzeiten die Annullierung der Abstimmung."
+      ]
     },
     {
       "id": "f3da9cea30194b43",
@@ -404,7 +421,7 @@
       "paywall": false,
       "access": "full",
       "research_access": "original_full",
-      "research_checked_at": "2026-10-26T08:11:36.138Z",
+      "research_checked_at": "2026-10-26T08:52:00Z",
       "topic": "Produktivität & Wettbewerbsfähigkeit",
       "kind": "Hintergrundanalyse",
       "facts": [
@@ -413,28 +430,7 @@
       ],
       "novelty": "",
       "treat": false
-    },
-    {
-      "id": "87fc2c39252b9cfc",
-      "title": "WirtschaftsWoche analysiert Sieg der Studentenbewegung in Serbien",
-      "url": "https://www.wiwo.de/politik/ausland/studentenbewegung-triumphiert-serbien-steht-nach-parlamentswahl-vor-einem-machtwechsel/100264847.html",
-      "source": "WirtschaftsWoche",
-      "published_at": "2026-10-26T06:17:00Z",
-      "region": "International",
-      "summary": "Die studentisch geprägte Opposition hat bei der Parlamentswahl in Serbien überraschend klar gewonnen; Aleksandar Vučić räumte seine Niederlage ein. Der Machtwechsel eröffnet Reformchancen, während die Regierungsbildung und die künftige EU-Orientierung offen bleiben.",
-      "event": "Serbien-Wahl",
-      "paywall": false,
-      "access": "full",
-      "research_access": "original_full",
-      "research_checked_at": "2026-10-26T08:11:36.138Z",
-      "topic": "Welthandel & Geopolitik",
-      "kind": "Hintergrundanalyse",
-      "facts": [
-        "Die Studentenliste hat die Parlamentswahl in Serbien gewonnen.",
-        "Aleksandar Vučić hat seine Wahlniederlage eingeräumt."
-      ],
-      "novelty": "",
-      "treat": false
     }
-  ]
+  ],
+  "test_only_branch_preview": true
 }
