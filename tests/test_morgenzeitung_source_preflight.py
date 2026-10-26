@@ -22,7 +22,7 @@ class PreflightTests(unittest.TestCase):
                 raise ValueError("Publisher access restricted (HTTP 401)")
             return {"checked": [{"original_article_http_verified": True}]}
         result = preflight(candidates(), "2026-10-26", checker=checker)
-        self.assertFalse(result["preflight_passed"] if result["ready_count"] < 15 else result["blocked_count"] == 0)
+        self.assertEqual(result["ready_count"], 15)
         self.assertEqual(result["blocked_count"], 5)
         self.assertTrue(all("401" in x["reason"] for x in result["blocked"]))
         self.assertNotIn("Reuters", [x["source"] for x in result["blocked"] if "401" not in x["reason"]])
