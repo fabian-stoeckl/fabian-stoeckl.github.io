@@ -23,6 +23,15 @@ def validate_candidates(raw):
     pool = json.loads(raw)
     if not isinstance(pool, list) or not pool:
         raise ValueError("A nonempty preselection candidate list is required")
+    # Editorial warning only: diversity is not a fixed publisher quota.
+    # Avoid blocking legitimate specialist news or retroactive provenance changes.
+    from scripts.morgenzeitung_source_diversity import audit_source_diversity
+    import warnings
+    diversity = audit_source_diversity(pool)
+    if not diversity["diversity_passed"]:
+        warnings.warn("Source concentration: " + str(diversity)
+                      + "; research additional independent publishers before selection",
+                      RuntimeWarning)
     ids = []
     for item in pool:
         if not isinstance(item, dict) or not all(

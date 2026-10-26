@@ -1,3 +1,7 @@
+## Verbindliche tägliche Medienabdeckung und lernender Quellenpool (26.10.2026)
+
+**Vor jeder Recherche `services/morgenzeitung/SOURCE-ROSTER.md` lesen und anwenden.** Sämtliche dort genannten Fixstarter jeden Tag tatsächlich einzeln abfragen und das Ergebnis privat protokollieren; außerdem täglich offen nach weiteren Medien suchen. Neue hochwertige Quellen mit dokumentierter Begründung in den dauerhaften Pool aufnehmen. Fixstarter sind keine Veröffentlichungsquote. Weder Reuters als Standard-Einzugsquelle noch eine geschlossene Quellenliste zulassen. Haupt- und Ersatzlauf haben dieselbe Pflicht. Quellenvielfalt vor privater Archivierung prüfen; ein Reuters-dominiertes Ergebnis löst zusätzliche Recherche aus, keinen erfundenen PASS.
+
 # Morgenzeitung – verbindlicher Agentenablauf (Stand 23.10.2026)
 
 ## Vorrangige Korrektur des Laufzeitanschlusses (25.10.2026)
