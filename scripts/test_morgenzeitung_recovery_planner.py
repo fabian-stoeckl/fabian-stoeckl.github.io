@@ -19,16 +19,10 @@ def fake_checker(items, date, publisher_dates=True):
 class RecoveryPlannerTests(unittest.TestCase):
     def test_replaces_invalid_original_with_verified_reserve(self):
         with patch("scripts.morgenzeitung_recovery_planner.preflight") as pre:
-            def fake_pre(pool, date, minimum=15, checker=None):
-                good = [x for x in pool if x["id"] != "bad"]
-                blocked = [{"id": "bad", "reason": "Publisher metadata mismatch"}] if len(good) != len(pool) else []
-                return {"ready_count": len(good), "blocked": blocked,
-                        "preflight_passed": len(good) >= minimum and not blocked,
-                        "diversity": {"diversity_passed": True},
-                        "next_action": "capture" if len(good) >= minimum else "research"}
-            pre.side_effect = fake_pre
+            pre.return_value = {"ready_count": 2, "blocked": [], "preflight_passed": True,
+                                "diversity": {"diversity_passed": True}, "next_action": "capture"}
             result = plan_recovery([candidate("1"), candidate("bad")], [candidate("2")],
-                                   "2026-10-26", minimum=2)
+                                   "2026-10-26", minimum=2, checker=fake_checker)
             self.assertTrue(result["recovered"])
             self.assertEqual([x["id"] for x in result["candidates"]], ["1", "2"])
             self.assertEqual(result["blocked"][0]["id"], "bad")
@@ -37,7 +31,8 @@ class RecoveryPlannerTests(unittest.TestCase):
         with patch("scripts.morgenzeitung_recovery_planner.preflight") as pre:
             pre.return_value = {"ready_count": 1, "blocked": [], "preflight_passed": False,
                                 "diversity": {"diversity_passed": False}, "next_action": "research"}
-            result = plan_recovery([candidate("1")], [], "2026-10-26", minimum=15)
+            result = plan_recovery([candidate("1")], [], "2026-10-26", minimum=15,
+                                   checker=fake_checker)
             self.assertFalse(result["recovered"])
             self.assertEqual(result["candidates"], [])
 
