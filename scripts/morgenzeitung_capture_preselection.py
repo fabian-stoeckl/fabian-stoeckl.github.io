@@ -23,6 +23,15 @@ def validate_candidates(raw):
     pool = json.loads(raw)
     if not isinstance(pool, list) or not pool:
         raise ValueError("A nonempty preselection candidate list is required")
+    # Editorial warning only: diversity is not a fixed publisher quota.
+    # Avoid blocking legitimate specialist news or retroactive provenance changes.
+    from scripts.morgenzeitung_source_diversity import audit_source_diversity
+    import warnings
+    diversity = audit_source_diversity(json.loads(candidates_bytes))
+    if not diversity["diversity_passed"]:
+        warnings.warn("Source concentration: " + str(diversity)
+                      + "; research additional independent publishers before selection",
+                      RuntimeWarning)
     ids = []
     for item in pool:
         if not isinstance(item, dict) or not all(
@@ -118,15 +127,6 @@ def capture(repo, date, candidates_bytes, *, limit=10, max_per_source=4):
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date):
         raise ValueError("Invalid date")
     validate_candidates(candidates_bytes)
-    # Editorial warning only: diversity is not a fixed publisher quota.
-    # Avoid blocking legitimate specialist news or retroactive provenance changes.
-    from scripts.morgenzeitung_source_diversity import audit_source_diversity
-    import warnings
-    diversity = audit_source_diversity(json.loads(candidates_bytes))
-    if not diversity["diversity_passed"]:
-        warnings.warn("Source concentration: " + str(diversity)
-                      + "; research additional independent publishers before selection",
-                      RuntimeWarning)
     if type(limit) is not int or type(max_per_source) is not int or not 1 <= limit <= 15 or max_per_source < 1:
         raise ValueError('Invalid editorial selection parameters')
     profile_entry = repo.read("profile.json")
