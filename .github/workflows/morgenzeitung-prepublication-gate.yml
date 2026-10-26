@@ -41,7 +41,7 @@ jobs:
           token = os.environ.get("MORGENZEITUNG_FEEDBACK_TOKEN")
           if not token:
               raise SystemExit("Missing private repository token")
-          url = "https://api.github.com/repos/fabian-stoeckl/morgenzeitung-feedback/contents/staging/2026-10-26-v2-candidates.json"
+          url = "https://api.github.com/repos/fabian-stoeckl/morgenzeitung-feedback/contents/staging/2026-10-26-v2-candidates.json?ref=15f9946ec43080fa1c33912c58ee8299e634cdd3"
           req = urllib.request.Request(url, headers={"Authorization": "Bearer " + token, "Accept": "application/vnd.github+json"})
           with urllib.request.urlopen(req, timeout=30) as response:
               obj = json.load(response)
@@ -49,6 +49,14 @@ jobs:
           print("Loaded staged private candidate pool for independent preflight")
           PY
           python3 -m scripts.morgenzeitung_source_preflight --candidates /tmp/morgenzeitung-v2-staging.json --date 2026-10-26 --minimum 15
+      - name: Immutable v2 S4 capture only after independently passing preflight
+        if: github.event_name == 'pull_request' && github.head_ref == 'audit/morgenzeitung-v2-preflight-20261026'
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 -m scripts.morgenzeitung_capture_preselection --date 2026-10-26 --snapshot-version v2 --candidates /tmp/morgenzeitung-v2-staging.json --limit 10 --max-per-source 4
+          python3 -m scripts.morgenzeitung_capture_preselection --date 2026-10-26 --snapshot-version v2 --verify-existing
       - name: Replay private original selection against edition
         env:
           MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
