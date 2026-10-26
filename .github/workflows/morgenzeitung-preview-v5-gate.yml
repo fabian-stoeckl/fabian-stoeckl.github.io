@@ -47,6 +47,14 @@ jobs:
                   print('DEEP DIAGNOSTIC',candidate['id'],candidate['source'],record.get('original_article_http_verified'),record.get('publisher_date_status'))
               except Exception as exc:
                   print('DEEP BLOCKED',candidate['id'],candidate['source'],type(exc).__name__,str(exc))
+                  from scripts.morgenzeitung_publisher_date_evidence import fetch_publisher_metadata
+                  print('DEEP META',candidate['id'],json.dumps(fetch_publisher_metadata(candidate['source_url'],candidate['published_at']),ensure_ascii=False))
+          for row in edition['headlines']:
+              try:
+                  rec=check_candidates([dict(row,source_url=row['url'],verified=True,topic='Heute wichtig')],'2026-10-26',publisher_dates=True)['checked'][0]
+                  print('HEADLINE DIAGNOSTIC',row['id'],row['source'],rec.get('original_article_http_verified'))
+              except Exception as exc:
+                  print('HEADLINE BLOCKED',row['id'],row['source'],type(exc).__name__,str(exc))
           report=verify_edition(repo,'2026-10-26',dict(edition,preview=False),check_live=True)
           evidence=report.get('live_source_evidence') or {}
           print('PRIVATE S4 REPLAY:',json.dumps({'verified':report['prepublication_gate_verified'],'source_status':evidence.get('source_verification_status'),'inconclusive':evidence.get('inconclusive_count')},ensure_ascii=False))
