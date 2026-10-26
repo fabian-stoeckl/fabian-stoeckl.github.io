@@ -67,3 +67,34 @@ jobs:
               if not h['preflight_passed']: raise SystemExit('FAIL: 15 headline originals')
               print('PASS: all 25 edition originals independently checked')
           PY
+
+      - name: Confirm live HTTPS edition and preserved index
+        if: github.event_name == 'push'
+        run: |
+          python3 - <<'PY'
+          import json,pathlib,time,urllib.request
+          base='https://www.fabian-stoeckl.com/Privat/Pressespiegel/'
+          local=json.loads(pathlib.Path('Privat/Pressespiegel/data/2026-10-26.json').read_text())
+          def get(path):
+              request=urllib.request.Request(base+path,headers={'Cache-Control':'no-cache','User-Agent':'Morgenzeitung-v7-HTTPS-Audit/1.0'})
+              with urllib.request.urlopen(request,timeout=20) as response:
+                  if response.status!=200: raise RuntimeError('HTTP '+str(response.status))
+                  return response.read().decode('utf-8')
+          for attempt in range(40):
+              try:
+                  live=json.loads(get('data/2026-10-26.json'))
+                  index=json.loads(get('data/index.json'))
+                  previous=json.loads(get('previews/2026-10-26-v6.json'))
+                  assert live['date']=='2026-10-26' and live['snapshot_version']=='v7'
+                  assert live.get('preview') is False
+                  assert index['dates'][0]=='2026-10-26'
+                  assert previous['snapshot_version']=='v6'
+                  for section in ('articles','headlines'):
+                      assert [a['id'] for a in live[section]]==[a['id'] for a in local[section]]
+                  print('HTTPS PASS: live v7 10+15, original v6 and index preserved')
+                  break
+              except Exception as exc:
+                  print('Waiting for Pages',attempt+1,'of 40',str(exc))
+                  if attempt==39: raise
+                  time.sleep(15)
+          PY
