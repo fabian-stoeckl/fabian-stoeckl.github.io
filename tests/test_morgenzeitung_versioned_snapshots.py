@@ -65,7 +65,7 @@ class VersionedSnapshotTests(unittest.TestCase):
             snapshot_paths("../2026-10-26", "v2")
 
     def test_connector_pinned_v2_readback_and_tamper(self):
-        profile = '{"computed_learning_signals": []}\\n'
+        profile = '{"computed_learning_signals": []}\n'
         export = {"repository": REPOSITORY, "commit_sha": "a" * 40,
                   "profile": {"content": profile, "blob_sha": blob_sha(profile)},
                   "issues_pagination_complete": True,
@@ -86,8 +86,7 @@ class VersionedSnapshotTests(unittest.TestCase):
         capture(repo, self.date, self.pool, version="v2")
         edition = {"date": self.date, "snapshot_version": "v2",
                    "articles": [{"id": "article1", "url": "https://www.handelsblatt.com/story/example"}]}
-        with patch("scripts.morgenzeitung_prepublication_gate.compare") as compare, \\
-             patch("scripts.morgenzeitung_prepublication_gate.audit_sources") as audit:
+        with patch("scripts.morgenzeitung_prepublication_gate.compare") as compare, patch("scripts.morgenzeitung_prepublication_gate.audit_sources") as audit:
             compare.return_value = {"selected_ids": ["article1"], "counterfactual_effect_verified": False}
             audit.return_value = {"source_url_structure_verified": True}
             result = verify_edition(repo, self.date, edition)
