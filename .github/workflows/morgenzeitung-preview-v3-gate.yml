@@ -54,3 +54,38 @@ jobs:
               raise SystemExit('FAIL: not all 20 headline originals independently verified')
           print('PASS: preview is independent, replayable, source-verified and non-production')
           PY
+      - name: Verify deployed HTTPS preview and untouched original after main push
+        if: github.event_name == 'push'
+        run: |
+          python3 - <<'PY'
+          import json,pathlib,time,urllib.request
+          base='https://www.fabian-stoeckl.com/Privat/Pressespiegel/'
+          local=json.loads(pathlib.Path('Privat/Pressespiegel/previews/2026-10-26-v3.json').read_text())
+          def fetch(path):
+              req=urllib.request.Request(base+path,headers={'Cache-Control':'no-cache','User-Agent':'Morgenzeitung-Preview-Audit/1.0'})
+              with urllib.request.urlopen(req,timeout=20) as r:
+                  if r.status!=200: raise RuntimeError('HTTP '+str(r.status))
+                  return r.read().decode('utf-8')
+          for attempt in range(24):
+              try:
+                  live=json.loads(fetch('previews/2026-10-26-v3.json'))
+                  html=fetch('previews/2026-10-26-v3.html')
+                  index=json.loads(fetch('data/index.json'))
+                  original=json.loads(fetch('data/2026-10-26.json'))
+                  for section in ('headlines','articles'):
+                      if [x['id'] for x in live[section]]!=[x['id'] for x in local[section]]:
+                          raise ValueError('Preview ordered '+section+' IDs differ from merged JSON')
+                  if live.get('preview') is not True or live.get('snapshot_version')!='v3':
+                      raise ValueError('Wrong live preview marker/version')
+                  if index['dates'][0]!='2026-10-26' or original.get('snapshot_version')!='v2':
+                      raise ValueError('Original published edition/index unexpectedly changed')
+                  if 'Morgenzeitung – Testausgabe' not in html or '2026-10-26-v3.json' not in html:
+                      raise ValueError('Preview HTML not deployed correctly')
+                  print('HTTPS PASS: v3 preview, 20+10 ordered IDs, unchanged original v2 and index')
+                  break
+              except Exception as exc:
+                  print('Waiting for Pages preview deployment '+str(attempt+1)+'/24: '+str(exc))
+                  if attempt==23: raise
+                  time.sleep(15)
+          PY
+
