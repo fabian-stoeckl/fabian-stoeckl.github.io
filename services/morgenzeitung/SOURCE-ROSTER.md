@@ -9,7 +9,12 @@ Der Recherchepool besteht aus (A) **Fixstartern**, die **an jedem Erscheinungsta
 - International: Financial Times, The New York Times, The Washington Post, The Guardian (UK), Neue Zürcher Zeitung (NZZ), Reuters, Associated Press (AP), Bloomberg, Euronews.
 
 ## B – dauerhaft erweiterbarer Bestand
-Weitere verlässlich recherchierte Publikationen werden in dieser Datei mit Name, Ressort-/Regionalstärken, Qualitätsnotiz und Aufnahmedatum ergänzt. Bereits genannte weitere geeignete Kandidaten für systematische Sichtung: The Economist, BBC, Politico Europe, EUobserver, Nikkei Asia, Rest of World, Nature, Science, Carbon Brief, IEA, Eurostat, Europäische Kommission, OECD, IWF. Primärquellen ergänzen Journalismus; sie ersetzen keine unabhängige Einordnung.
+Weitere verlässlich recherchierte Publikationen werden in dieser Datei mit Name, Ressort-/Regionalstärken, Qualitätsnotiz und Aufnahmedatum ergänzt.
+
+- **BBC News** (dauerhaft aufgenommen am **26.10.2026**): eigenständige Wirtschafts-, Energie-, Technologie- und internationale Berichte; offizielle World-/Business-RSS-Feeds lieferten am 26.10. mehrere überprüfbare Original-URLs mit exakten Publikationszeiten, darunter Rechenzentrums-Infrastruktur, britische Budgetpolitik und Energiewende. Redaktionelle Vielfalt ergänzend zu deutschsprachigen Medien; RSS-Metadaten allein sind keine Volltext-Verifikation.
+- **POLITICO Europe** (dauerhaft aufgenommen am **26.10.2026**): EU-Politik, Handel, Sanktionen und europäische Innenpolitik; offizieller Feed belegte am 26.10. Beiträge zu EU-Kanada, französischer Politik und Russlands Schattenflotte. Podcasts als solche kennzeichnen; Originalartikel und Datumsbelege vor Auswahl gesondert prüfen.
+
+Weitere geeignete Kandidaten für systematische Sichtung: The Economist, EUobserver, Nikkei Asia, Rest of World, Nature, Science, Carbon Brief, IEA, Eurostat, Europäische Kommission, OECD, IWF. Primärquellen ergänzen Journalismus; sie ersetzen keine unabhängige Einordnung.
 
 ## C – tägliche offene Entdeckung
 1. **Zuerst** alle Fixstarter und alle dauerhaft aufgenommenen Medien einzeln durchsuchen: aktuelle Hauptseiten, Ressorts, offizielle RSS/Feeds, Suchfunktionen bzw. indexierte Originalartikel. Jede Quelle mit Abfragezeit, Suchweg, gefundenen Kandidaten oder begründetem Nulltreffer sowie Zugriffsproblemen privat protokollieren. Ein HTTP 401/403 ist kein Nulltreffer.
