@@ -6,7 +6,7 @@ researched independent articles, then repeat until the pool is ready.
 """
 import argparse
 import json
-from scripts.morgenzeitung_live_source_check import check_candidates
+from scripts.morgenzeitung_live_source_check import check_candidates, check_date
 from scripts.morgenzeitung_source_diversity import audit_source_diversity
 
 
@@ -19,6 +19,7 @@ def preflight(candidates, date, *, minimum=15, checker=None):
         if not isinstance(candidate, dict):
             raise ValueError("Invalid candidate")
         try:
+            check_date(candidate.get("published_at"), date)
             result = checker([candidate], date, publisher_dates=True)
             record = result["checked"][0]
             if (record.get("original_article_http_verified") is True
