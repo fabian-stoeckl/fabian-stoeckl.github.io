@@ -190,7 +190,7 @@
       "url": "https://orf.at/stories/3446147/",
       "source": "ORF",
       "published_at": "2026-10-25T20:00:00Z",
-      "region": "International",
+      "region": "Österreich",
       "summary": "In Frankreich, Albanien, Spanien und Italien kam es am Wochenende zu Zusammenstößen und zahlreichen Festnahmen.",
       "event": "Europa-Proteste"
     },
@@ -200,7 +200,7 @@
       "url": "https://orf.at/stories/3446156/",
       "source": "ORF",
       "published_at": "2026-10-25T18:55:00Z",
-      "region": "International",
+      "region": "Österreich",
       "summary": "María Corina Machado hat nach eigenen Angaben wieder venezolanischen Boden betreten. Die politische Zukunft des Landes bleibt ungewiss.",
       "event": "Venezuela-Machado"
     },
@@ -232,8 +232,8 @@
       "topic": "Industrie & Innovation",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Leiterplatten sind für zahlreiche moderne Elektronikprodukte erforderlich.",
-        "Ein großer Teil der Leiterplattenproduktion wurde nach Asien verlagert."
+        "KI-Rechenzentren erhöhen die Nachfrage nach Leiterplatten.",
+        "Ein großer Teil der Leiterplattenfertigung findet inzwischen in Asien statt."
       ],
       "novelty": "",
       "treat": false
@@ -254,8 +254,8 @@
       "topic": "Industrie & Innovation",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Stihl begann bereits 2009 mit Akku-Heckenscheren.",
-        "Der Unternehmenschef sieht derzeit kaum Perspektiven für neue Fertigung in Deutschland."
+        "Stihl verkauft sowohl Akku- als auch Verbrennergeräte.",
+        "Der Unternehmenschef sieht derzeit wenig Perspektive für zusätzliche Fertigung in Deutschland."
       ],
       "novelty": "",
       "treat": false
@@ -276,8 +276,8 @@
       "topic": "Industrie & Innovation",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Thyssenkrupps Werkstoffhandels-Sparte wird unter dem Namen TK Accelis eigenständig.",
-        "Die Geschäftsführung sieht Wachstum und Übernahmen als Themen der neuen Gesellschaft."
+        "Thyssenkrupp plant die Verselbstständigung der Werkstoffhandels-Sparte TK Accelis.",
+        "TK Accelis will seine Geschäftstätigkeit international ausbauen."
       ],
       "novelty": "",
       "treat": false
@@ -298,8 +298,8 @@
       "topic": "Industrie & Innovation",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Das Gemeinschaftsunternehmen gehört zu 51 Prozent Stellantis und zu 49 Prozent Leapmotor.",
-        "Die Partner planen, Fahrzeuge des chinesischen Herstellers in Spanien zu bauen."
+        "Leapmotor International ist ein Gemeinschaftsunternehmen von Stellantis und Leapmotor.",
+        "Die Partner setzen auf Fahrzeugproduktion in Spanien."
       ],
       "novelty": "",
       "treat": false
@@ -320,8 +320,8 @@
       "topic": "Industrie & Innovation",
       "kind": "Nachricht und Analyse",
       "facts": [
-        "Die überarbeitete Mercedes-C-Klasse mit Verbrennungsmotor soll ab 42.982 Euro angeboten werden.",
-        "Mercedes entwickelt parallel eine vollelektrische C-Klasse."
+        "Mercedes überarbeitet die C-Klasse mit Verbrennungsmotor.",
+        "Parallel wird eine elektrische Variante angeboten."
       ],
       "novelty": "",
       "treat": false
@@ -342,8 +342,8 @@
       "topic": "Österreich & Politik",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Am Nationalfeiertag öffnen mehrere österreichische Institutionen ihre Türen.",
-        "Das Bundesheer sieht eine Angelobung von 1.200 Rekruten vor."
+        "Am 26. Oktober begeht Österreich den Nationalfeiertag.",
+        "Das Bundesheer präsentiert sich auf dem Wiener Heldenplatz und gelobt Rekruten an."
       ],
       "novelty": "",
       "treat": false
@@ -364,8 +364,8 @@
       "topic": "Wirtschaft & Fiskalpolitik",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Die EU-Kommission schlägt einen Finanzrahmen von 1.985 Milliarden Euro für 2028 bis 2034 vor.",
-        "Bundeskanzler Stocker hat eine österreichische Zustimmung zum aktuellen Entwurf nicht zugesichert."
+        "Der Kommissionsvorschlag für den EU-Finanzrahmen 2028 bis 2034 umfasst 1.985 Milliarden Euro.",
+        "Österreichs Bundeskanzler Stocker hält ein Veto gegen den Vorschlag für möglich."
       ],
       "novelty": "",
       "treat": false
@@ -387,7 +387,7 @@
       "kind": "Hintergrundanalyse",
       "facts": [
         "Lula hat die brasilianische Präsidentschaftsstichwahl gewonnen.",
-        "Sein Gegenkandidat Flávio Bolsonaro kündigte eine Anfechtung des Wahlergebnisses an."
+        "Flávio Bolsonaro stellt die Anerkennung des Ergebnisses infrage."
       ],
       "novelty": "",
       "treat": false
@@ -408,8 +408,8 @@
       "topic": "Produktivität & Wettbewerbsfähigkeit",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Die Bundesregierung plant den sogenannten Gebäudetyp E für einfacheres Bauen.",
-        "Der Bericht nennt eine mögliche Senkung der Baukosten um zehn bis fünfzehn Prozent."
+        "Der Gebäudetyp E soll freiwillige Abweichungen von Komfortstandards erleichtern.",
+        "Die deutschen Ministerien erwarten ein Einsparpotenzial bei Baukosten von zehn bis fünfzehn Prozent."
       ],
       "novelty": "",
       "treat": false
@@ -430,8 +430,8 @@
       "topic": "Welthandel & Geopolitik",
       "kind": "Hintergrundanalyse",
       "facts": [
-        "Die Studentenliste erreichte nach vorläufigen Angaben 139 von 250 Parlamentssitzen.",
-        "Aleksandar Vučić räumte seine Niederlage bei der Parlamentswahl ein."
+        "Die Studentenliste hat die Parlamentswahl in Serbien gewonnen.",
+        "Aleksandar Vučić hat seine Wahlniederlage eingeräumt."
       ],
       "novelty": "",
       "treat": false
