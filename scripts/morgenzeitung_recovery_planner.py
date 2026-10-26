@@ -36,18 +36,21 @@ def plan_recovery(primary, reserve, date, *, minimum=15, checker=None):
     primary_ready, primary_blocked = inspect(primary)
     reserve_ready, reserve_blocked = inspect(reserve)
     selected, seen_ids, seen_urls = [], set(), set()
+    duplicates = []
     for candidate in primary_ready + reserve_ready:
         identity = candidate.get("id")
         url = candidate.get("source_url") or candidate.get("url")
         if not identity or not url:
+            duplicates.append({"id": identity, "reason": "Missing canonical ID or original URL"})
             continue
         if identity in seen_ids or url in seen_urls:
+            duplicates.append({"id": identity, "reason": "Duplicate ID or original URL"})
             continue
         seen_ids.add(identity)
         seen_urls.add(url)
         selected.append(candidate)
     if not selected:
-        return {"recovered": False, "candidates": [], "blocked": primary_blocked + reserve_blocked,
+        return {"recovered": False, "candidates": [], "blocked": primary_blocked + reserve_blocked + duplicates,
                 "reason": "No independently verified originals"}
     final = preflight(selected, date, minimum=minimum, checker=checker)
     return {"recovered": final["preflight_passed"], "candidates": selected if final["preflight_passed"] else [],
