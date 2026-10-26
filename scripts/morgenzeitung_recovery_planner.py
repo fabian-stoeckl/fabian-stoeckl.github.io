@@ -7,6 +7,7 @@ preflight used for production. Never use this to mutate archived snapshots.
 import argparse
 import json
 from scripts.morgenzeitung_source_preflight import preflight
+from scripts.morgenzeitung_live_source_check import check_candidates, check_date
 
 
 def plan_recovery(primary, reserve, date, *, minimum=15, checker=None):
@@ -14,17 +15,22 @@ def plan_recovery(primary, reserve, date, *, minimum=15, checker=None):
         raise ValueError("Primary and reserve must be lists")
     if minimum < 1:
         raise ValueError("minimum must be positive")
-    # Validate every candidate independently. Invalid originals never survive.
+    # Verify article identity per candidate; diversity is checked on the final pool.
+    verify = checker or check_candidates
     def inspect(pool):
         ready, rejected = [], []
         for candidate in pool:
             if not isinstance(candidate, dict):
                 raise ValueError("Candidate must be an object")
-            report = preflight([candidate], date, minimum=1, checker=checker)
-            if report["ready_count"] == 1:
-                ready.append(candidate)
-            else:
-                rejected.extend(report["blocked"])
+            try:
+                check_date(candidate.get("published_at"), date)
+                record = verify([candidate], date, publisher_dates=True)["checked"][0]
+                if record.get("original_article_http_verified") is True or record.get("publisher_feed_verified") is True:
+                    ready.append(candidate)
+                else:
+                    rejected.append({"id": candidate.get("id"), "reason": "No independent article confirmation"})
+            except (ValueError, OSError, IndexError, KeyError) as exc:
+                rejected.append({"id": candidate.get("id"), "reason": str(exc)})
         return ready, rejected
 
     primary_ready, primary_blocked = inspect(primary)
