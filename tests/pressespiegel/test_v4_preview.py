@@ -43,7 +43,7 @@ class V4PreviewContract(unittest.TestCase):
         self.assertEqual(json.loads((BASE / "previews" / "2026-10-26-v3.json").read_text())["snapshot_version"], "v3")
         html = (BASE / "previews" / "2026-10-26-v4.html").read_text(encoding="utf-8")
         self.assertIn("2026-10-26-v4.json", html)
-        self.assertIn("keine reguläre Tagesausgabe", html.lower())
+        self.assertIn("keine reguläre tagesausgabe", html.lower())
         payload = json.dumps(self.edition, ensure_ascii=False).lower()
         self.assertNotIn("processed_feedback", payload)
         self.assertNotIn("feedback_observations", payload)
