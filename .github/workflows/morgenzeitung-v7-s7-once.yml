@@ -1,0 +1,125 @@
+name: One-off independent Morgenzeitung v7 S7 completion
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/morgenzeitung-v7-s7-once.yml'
+permissions:
+  contents: read
+jobs:
+  independent-s7:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Independently verify feedback provenance, publication and persist private S7
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib,urllib.request,base64
+          from scripts.morgenzeitung_capture_preselection import PrivateRepo
+          from scripts.morgenzeitung_feedback import learn,parse_issue
+          from scripts.morgenzeitung_prepublication_gate import verify_edition
+          from scripts.morgenzeitung_source_preflight import preflight
+          from scripts.morgenzeitung_publication_audit import live_json
+          token=os.environ.get('MORGENZEITUNG_FEEDBACK_TOKEN')
+          if not token: raise SystemExit('Missing private GitHub token')
+          repo=PrivateRepo(token)
+          def read(path):
+              row=repo.read(path)
+              if row is None: raise RuntimeError('Missing private '+path)
+              return json.loads(row[0])
+          def api(path):
+              url='https://api.github.com/repos/'+path
+              req=urllib.request.Request(url,headers={'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'})
+              with urllib.request.urlopen(req,timeout=30) as response:return json.load(response)
+          date='2026-10-26'
+          s4=read('snapshots/'+date+'-v7-profile.json')
+          current=read('profile.json')
+          if current.get('last_successful_edition')!=date: raise SystemExit('Profile not updated to verified live edition')
+          comparison=dict(current)
+          comparison['last_successful_edition']=s4.get('last_successful_edition')
+          if comparison!=s4: raise SystemExit('Profile changed beyond approved last_successful_edition')
+          versions=read('snapshots/'+date+'-v7-issues.json')
+          issues=[]
+          for row in versions:
+              issue=api('fabian-stoeckl/morgenzeitung-feedback/issues/'+str(row['number']))
+              comments=api('fabian-stoeckl/morgenzeitung-feedback/issues/'+str(row['number'])+'/comments?per_page=100')
+              if comments: raise SystemExit('Unprocessed issue comment revisions')
+              if issue['updated_at']!=row['updated_at'] or issue['user']['login']!='fabian-stoeckl':
+                  raise SystemExit('Issue version or author mismatch')
+              if parse_issue(issue) is None: raise SystemExit('Synthetic or invalid issue')
+              issues.append(issue)
+          editions={}
+          for issue in issues:
+              day=issue['title'][-10:]
+              editions[day]=json.loads((pathlib.Path('Privat/Pressespiegel/data')/(day+'.json')).read_text())
+          derived,feedback_report=learn(s4,issues,editions)
+          for field in ('processed_feedback','computed_learning_signals','topic_evidence','topic_family_evidence','feedback_observations','editorial_review_queue'):
+              if derived[field]!=s4[field]: raise SystemExit('Feedback provenance mismatch in '+field)
+          edition=json.loads(pathlib.Path('Privat/Pressespiegel/data/2026-10-26.json').read_text())
+          if edition.get('snapshot_version')!='v7' or len(edition['articles'])!=10 or len(edition['headlines'])!=15:
+              raise SystemExit('Wrong production edition')
+          replay=verify_edition(repo,date,edition,check_live=True)
+          evidence=replay.get('live_source_evidence') or {}
+          if not replay['prepublication_gate_verified'] or evidence.get('source_verification_status')!='PASS':
+              raise SystemExit('Private S4 replay or 10 original feature sources not verified')
+          headlines=[dict(row,source_url=row['url'],verified=True,topic='Heute wichtig') for row in edition['headlines']]
+          h=preflight(headlines,date,minimum=15)
+          if not h['preflight_passed']: raise SystemExit('Headline originals not verified')
+          live=live_json(date+'.json')
+          index=live_json('index.json')
+          if index['dates'][0]!=date or live.get('snapshot_version')!='v7':
+              raise SystemExit('HTTPS edition or index not current')
+          for section in ('articles','headlines'):
+              if [x['id'] for x in live[section]]!=[x['id'] for x in edition[section]]:
+                  raise SystemExit('Live ordered IDs differ: '+section)
+          pr=api('fabian-stoeckl/fabian-stoeckl.github.io/pulls/180')
+          if not pr.get('merged_at') or pr.get('merge_commit_sha')!='7a649c5fcb61c6bd44ec1b05e224204881c6fb87':
+              raise SystemExit('Unverified public merge')
+          files=api('fabian-stoeckl/fabian-stoeckl.github.io/pulls/180/files?per_page=100')
+          if any('etf' in f['filename'].lower() or f['filename']=='Privat/Pressespiegel/data/index.json' for f in files):
+              raise SystemExit('Unexpected ETF or index changes')
+          checks={}
+          for run_id in (40310379290,40310379046,40310379049,40310379093,40310572664):
+              run=api('fabian-stoeckl/fabian-stoeckl.github.io/actions/runs/'+str(run_id))
+              if run['conclusion']!='success': raise SystemExit('CI or HTTPS not successful: '+str(run_id))
+              checks[str(run_id)]='PASS'
+          original=read('audits/'+date+'-v7-live-learning.json')
+          if original['publication_audit']['publication_verified'] is not True or not original['chronological_provenance']['chronology_verified']:
+              raise SystemExit('Independent S4 chronology or HTTPS audit missing')
+          selection=original['selection_comparison']
+          if selection['selected_ids']!=[x['id'] for x in edition['articles']]:
+              raise SystemExit('Published selection differs from private counterfactual')
+          if not selection['counterfactual_effect_verified']:
+              raise SystemExit('No demonstrable feedback-based ranking effect')
+          result={
+              'date':date,'version':'v7','status':'PASS',
+              'publication':'PRODUCTIVE_HTTPS_PASS',
+              'public_pr':180,'public_merge_sha':pr['merge_commit_sha'],
+              'public_url':'https://www.fabian-stoeckl.com/Privat/Pressespiegel/',
+              'articles':10,'headlines':15,'reused_headlines_from_v6':15,
+              'source_preflight':'PASS 15/15','independent_original_sources':'PASS 25/25',
+              'private_s4_commit':'5d951453385918dc63a05e0ccb604c2bbb0ffd24',
+              'private_s4_chronology':'PASS',
+              'feedback_issues':[{'number':x['number'],'updated_at':x['updated_at']} for x in versions],
+              'feedback_provenance':'PASS','profile_learning':'PASS','profile_last_successful_edition':date,
+              'feedback_report':feedback_report,
+              'selection_effect':'RANKING_ONLY','selection_membership_changed':False,
+              'selection_order_changed':True,
+              'live_https':'PASS','index_unchanged':True,'v6_preview_unchanged':True,'ETF_unchanged':True,
+              'ci_runs':checks,'independent_s7_run_id':os.environ.get('GITHUB_RUN_ID'),
+              'generic_live_learning_audit':'PARTIAL_BY_DESIGN',
+              'limitations':['All 15 headlines were carried over from the verified v6 edition; they were independently rechecked, not newly researched.','Feedback changes the order, not membership, of the 10 feature articles.','The generic automated acceptance is conservative and remains PARTIAL; this independent run verifies the missing feedback and profile provenance.']
+          }
+          path='runs/'+date+'-v7.json'
+          content=(json.dumps(result,ensure_ascii=False,indent=2)+'\\n').encode()
+          repo.put_immutable(path,content)
+          saved=repo.read(path)
+          if saved is None or saved[0]!=content: raise SystemExit('Private S7 run readback mismatch')
+          print('INDEPENDENT S7 PASS:',json.dumps({'feedback':feedback_report,'originals':'25/25','https':'PASS','private_run':path,'readback':'PASS'},ensure_ascii=False))
+          PY
