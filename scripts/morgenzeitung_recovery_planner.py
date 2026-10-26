@@ -54,7 +54,7 @@ def plan_recovery(primary, reserve, date, *, minimum=15, checker=None):
                 "reason": "No independently verified originals"}
     final = preflight(selected, date, minimum=minimum, checker=checker)
     return {"recovered": final["preflight_passed"], "candidates": selected if final["preflight_passed"] else [],
-            "blocked": primary_blocked + reserve_blocked, "ready_count": final["ready_count"],
+            "blocked": primary_blocked + reserve_blocked + duplicates, "ready_count": final["ready_count"],
             "diversity": final["diversity"], "reason": final["next_action"],
             "note": "Only verified candidates; never modify archived snapshots"}
 
