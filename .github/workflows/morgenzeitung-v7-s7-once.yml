@@ -117,8 +117,15 @@ jobs:
               'limitations':['All 15 headlines were carried over from the verified v6 edition; they were independently rechecked, not newly researched.','Feedback changes the order, not membership, of the 10 feature articles.','The generic automated acceptance is conservative and remains PARTIAL; this independent run verifies the missing feedback and profile provenance.']
           }
           path='runs/'+date+'-v7.json'
-          content=(json.dumps(result,ensure_ascii=False,indent=2)+'\n').encode()
-          repo.put_immutable(path,content)
+          existing=repo.read(path)
+          if existing is not None:
+              previous=json.loads(existing[0])
+              result['independent_s7_run_id']=previous.get('independent_s7_run_id')
+              if previous!=result: raise SystemExit('Existing S7 evidence conflicts with this run')
+              content=existing[0]
+          else:
+              content=(json.dumps(result,ensure_ascii=False,indent=2)+'\n').encode()
+              repo.put_immutable(path,content)
           saved=repo.read(path)
           if saved is None or saved[0]!=content: raise SystemExit('Private S7 run readback mismatch')
           print('INDEPENDENT S7 PASS:',json.dumps({'feedback':feedback_report,'originals':'25/25','https':'PASS','private_run':path,'readback':'PASS'},ensure_ascii=False))
