@@ -79,6 +79,21 @@ jobs:
           if len(report['selected_ids'])!=10:
               raise SystemExit('FAIL: fewer than 10 valid independent v3 selections')
           PY
+      - name: Independently check all 20 branch-preview headlines
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib
+          from scripts.morgenzeitung_source_preflight import preflight
+          edition=json.loads(pathlib.Path('Privat/Pressespiegel/data/2026-10-26.json').read_text())
+          candidates=[dict(item,source_url=item['url'],verified=True,topic='Heute wichtig') for item in edition['headlines']]
+          report=preflight(candidates,'2026-10-26',minimum=20)
+          pathlib.Path(os.environ['RUNNER_TEMP'],'morgenzeitung-v3-headline-preflight.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+          print('HEADLINES: '+json.dumps({'ready':report['ready_count'],'blocked':report['blocked_count'],'sources':report['diversity']},ensure_ascii=False))
+          for blocked in report['blocked']:
+              print('HEADLINE BLOCKED: '+str(blocked))
+          if not report['preflight_passed']:
+              raise SystemExit('FAIL: 20 headlines not independently source-verified')
+          PY
       - name: Preserve independent diagnostics only
         if: always()
         uses: actions/upload-artifact@v4
@@ -87,5 +102,6 @@ jobs:
           path: |
             ${{ runner.temp }}/morgenzeitung-source-preflight-report.json
             ${{ runner.temp }}/morgenzeitung-v3-selection-report.json
+            ${{ runner.temp }}/morgenzeitung-v3-headline-preflight.json
           if-no-files-found: ignore
           retention-days: 7
