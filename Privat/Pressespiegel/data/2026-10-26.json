@@ -9,7 +9,7 @@
   "limitations": [
     "Produktiver Abend-Rerun: 22 Fixstarter gezielt durchsucht; einige Verlage bleiben für unabhängige Originalverifikation gesperrt.",
     "19 Vertiefungskandidaten wurden vor S4 vollständig in unabhängigem GitHub-CI-Preflight bestätigt; 10 werden nach unveränderlich archiviertem Feedbackprofil ausgewählt.",
-    "Von 17 Schlagzeilen stammen 15 aus der erneut zu verifizierenden produktiven v7-Ausgabe; zwei Originalmeldungen wurden ergänzt.",
+    "Von 16 Schlagzeilen stammen 15 aus der erneut zu verifizierenden produktiven v7-Ausgabe; eine Originalmeldung wurde ergänzt.",
     "Meinungsbeiträge sind ausdrücklich als Kommentare gekennzeichnet; Paywall-Teaser werden nicht als Volltexte ausgegeben.",
     "Die bestehende Tages-ID 2026-10-26 wird versioniert korrigiert, nicht dupliziert."
   ],
@@ -190,16 +190,6 @@
       "region": "International",
       "summary": "TK Accelis soll nach der Abspaltung eigenständig wachsen und setzt dabei auf nordamerikanische Industrieinvestitionen und Rechenzentren.",
       "event": "thyssenkrupp-tk-accelis-boersengang"
-    },
-    {
-      "id": "470fb1a1175ef757",
-      "title": "Audi kündigt erstes US-Werk in Georgia an",
-      "url": "https://www.handelsblatt.com/unternehmen/industrie/autobauer-trump-bestaetigt-handelsblatt-bericht-audi-baut-werk-in-den-usa/100264447.html",
-      "source": "Handelsblatt",
-      "published_at": "2026-10-25T13:51:00Z",
-      "region": "International",
-      "summary": "Nach einem Wahlkampfauftritt Trumps bestätigt Audi Pläne für ein US-Werk in Georgia; laut Ankündigung sind 4,2 Milliarden Dollar Investitionen vorgesehen.",
-      "event": "audi-werk-georgia-2026"
     }
   ],
   "articles": [
