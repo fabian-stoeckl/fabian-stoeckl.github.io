@@ -36,6 +36,18 @@ class RecoveryPlannerTests(unittest.TestCase):
             self.assertFalse(result["recovered"])
             self.assertEqual(result["candidates"], [])
 
+    def test_duplicate_original_url_is_not_selected_twice(self):
+        with patch("scripts.morgenzeitung_recovery_planner.preflight") as pre:
+            pre.return_value = {"ready_count": 1, "blocked": [], "preflight_passed": True,
+                                "diversity": {"diversity_passed": True}, "next_action": "capture"}
+            repeated = candidate("2")
+            repeated["source_url"] = candidate("1")["source_url"]
+            result = plan_recovery([candidate("1")], [repeated], "2026-10-26",
+                                   minimum=1, checker=fake_checker)
+            self.assertTrue(result["recovered"])
+            self.assertEqual(len(result["candidates"]), 1)
+            self.assertTrue(any("Duplicate" in x["reason"] for x in result["blocked"]))
+
     def test_invalid_inputs_rejected(self):
         with self.assertRaises(ValueError):
             plan_recovery({}, [], "2026-10-26")
