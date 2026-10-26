@@ -1,5 +1,21 @@
 # Morgenzeitung – verbindliche Fehlerbehandlung im Produktivbetrieb (25.10.2026)
 
+## Verbindlicher Preflight vor privater Archivierung (26.10.2026)
+
+**Ursache wiederkehrender Reuters-Ausfälle:** Die bisherige Quellenprüfung findet erst nach der unveränderlichen Archivierung und Auswahl statt. Ein Publisher-401/403 blockiert dann den gesamten PR, obwohl die Redaktion rechtzeitig einen eigenständigen Alternativartikel hätte recherchieren können. Derselbe Mechanismus betrifft Consent-Walls, Rate-Limits und abgelaufene Feeds. Ein erneuter Lauf gegen denselben unveränderlichen Pool repariert nichts.
+
+**Dauerhafter Ablauf:** Noch **vor** S4-Capture den vollständigen frisch recherchierten Kandidatenpool prüfen:
+
+```sh
+python3 -m scripts.morgenzeitung_source_preflight --candidates /private/candidates.json --date YYYY-MM-DD --minimum 15
+```
+
+Bei Exit 2 nicht archivieren und nicht veröffentlichen. Für jede blockierte Original-URL die Diagnose lesen, dieselbe Nachricht über eine andere **echte**, unabhängig geprüfte Quelle recherchieren und als eigenen Kandidaten mit eigener URL, Titel, Datum und ID ergänzen. Nicht den Reuters-Artikel als verifiziert ausgeben. Erneut prüfen, bis mindestens 15 unabhängig bestätigte Kandidaten aus mindestens drei Medien und ohne dominierende Einzelquelle vorhanden sind. Auch alle Fixstarter aus SOURCE-ROSTER.md unabhängig vom späteren Auswahlanteil recherchieren. Ein zusätzlicher Reservepool soll redaktionell passende Alternativen vorhalten; seine Inhalte dürfen erst nach Prüfung und vor Archivierung aufgenommen werden.
+
+Dieser Preflight prüft absichtlich **alle** Kandidaten einzeln, sodass ein defekter Publisher nicht die Diagnosen der anderen verdeckt. Er ist ein **Vorlauf**, keine Umgehung des späteren unabhängigen Live-Gates. Der anschließende S4-Snapshot, Replay, Merge, HTTPS und S7-Readback bleiben unverändert verpflichtend. Für den bereits archivierten 26.10.-Pool nur versionierte neue Snapshots verwenden; die alten nie überschreiben. Auch bei neuen Publisher-Fehlern nur nachweisbar eigenständige Quellen nutzen. Falls nicht genug belegte Artikel verfügbar sind: FAIL/PARTIAL melden, nicht erfinden oder ein Gate umgehen.
+
+
+
 ## Ziel und Grundsatz
 
 Eine Tagesausgabe darf nicht endlos an normalen, wechselnden Publisher-Antworten
