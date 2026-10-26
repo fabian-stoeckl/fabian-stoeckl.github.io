@@ -1,3 +1,7 @@
+## Pflicht: Quellen-Preflight vor jedem neuen S4-Snapshot (26.10.2026)
+
+Vor jedem privaten Capture den echten noch nicht archivierten Kandidatenpool mit `python3 -m scripts.morgenzeitung_source_preflight --candidates /private/candidates.json --date YYYY-MM-DD --minimum 15` prüfen. Bei HTTP 401/403, Consent-Wall, 429, Netzwerkausfall oder fehlendem Artikelbeleg **vor** der unveränderlichen Archivierung unabhängige Originalartikel zu denselben Themen nachrecherchieren, als eigenständige Kandidaten aufnehmen und erneut prüfen. Nicht blind denselben Pool erneut starten. Kein Publisher-Zugriffsfehler ist ein positiver Artikelbeleg. Ein bestehender archivierter Tagespool bleibt unverändert; zur Reparatur zuerst versionierte Snapshots per separatem geprüften Codepfad unterstützen. Einzelheiten in PUBLICATION-INCIDENTS.md.
+
 ## Verbindliche tägliche Medienabdeckung und lernender Quellenpool (26.10.2026)
 
 **Vor jeder Recherche `services/morgenzeitung/SOURCE-ROSTER.md` lesen und anwenden.** Sämtliche dort genannten Fixstarter jeden Tag tatsächlich einzeln abfragen und das Ergebnis privat protokollieren; außerdem täglich offen nach weiteren Medien suchen. Neue hochwertige Quellen mit dokumentierter Begründung in den dauerhaften Pool aufnehmen. Fixstarter sind keine Veröffentlichungsquote. Weder Reuters als Standard-Einzugsquelle noch eine geschlossene Quellenliste zulassen. Haupt- und Ersatzlauf haben dieselbe Pflicht. Quellenvielfalt vor privater Archivierung prüfen; ein Reuters-dominiertes Ergebnis löst zusätzliche Recherche aus, keinen erfundenen PASS.
