@@ -49,11 +49,43 @@ jobs:
               raise SystemExit("FAIL: mixed verified/unverified candidate pool must never be archived")
           print("PASS: all "+str(report["ready_count"])+" original candidates independently verified")
           PY
+      - name: Capture immutable v3 S4 originals in PRIVATE repository
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+        run: |
+          python3 -m scripts.morgenzeitung_capture_preselection --date 2026-10-26 --snapshot-version v3 --candidates "$RUNNER_TEMP/morgenzeitung-private-candidates.json" --limit 10 --max-per-source 4
+      - name: Independently read back all four immutable v3 originals
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+        run: |
+          python3 -m scripts.morgenzeitung_capture_preselection --date 2026-10-26 --snapshot-version v3 --verify-existing
+      - name: Replay selection and counterfactual from pinned private originals
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib
+          from scripts.morgenzeitung_capture_preselection import PrivateRepo,snapshot_paths
+          from scripts.morgenzeitung_selection_audit import compare
+          repo=PrivateRepo(os.environ['MORGENZEITUNG_FEEDBACK_TOKEN'])
+          paths=snapshot_paths('2026-10-26','v3')
+          pool=json.loads(repo.read(paths['candidates'])[0])
+          profile=json.loads(repo.read(paths['profile'])[0])
+          params=json.loads(repo.read(paths['parameters'])[0])
+          report=compare(pool,profile,**params)
+          output=pathlib.Path(os.environ['RUNNER_TEMP'],'morgenzeitung-v3-selection-report.json')
+          output.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+          print('S5 REPLAY: candidate_count='+str(report['candidate_count'])+' selected='+str(len(report['selected_ids']))+' changed='+str(report['changed_top_n_count']))
+          if len(report['selected_ids'])!=10:
+              raise SystemExit('FAIL: fewer than 10 valid independent v3 selections')
+          PY
       - name: Preserve independent diagnostics only
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: restart-v3-source-preflight-diagnostics
-          path: ${{ runner.temp }}/morgenzeitung-source-preflight-report.json
+          path: |
+            ${{ runner.temp }}/morgenzeitung-source-preflight-report.json
+            ${{ runner.temp }}/morgenzeitung-v3-selection-report.json
           if-no-files-found: ignore
           retention-days: 7
