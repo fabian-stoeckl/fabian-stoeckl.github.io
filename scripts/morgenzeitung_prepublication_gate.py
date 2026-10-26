@@ -6,7 +6,7 @@ by the publishing agent as proof without recomputing it from the private snapsho
 import argparse
 import json
 from pathlib import Path
-from scripts.morgenzeitung_capture_preselection import PrivateRepo, verify_existing
+from scripts.morgenzeitung_capture_preselection import PrivateRepo, verify_existing, snapshot_paths
 from scripts.morgenzeitung_selection_audit import compare
 from scripts.morgenzeitung_source_evidence import audit_sources
 from scripts.morgenzeitung_live_source_check import check_candidates, _same_article_publisher_redirect
@@ -26,9 +26,11 @@ def verify_index(index, date):
 def verify_edition(repo, date, edition, index=None, check_live=False):
     if index is not None:
         verify_index(index, date)
-    evidence = verify_existing(repo, date)
-    candidates = json.loads(repo.read("candidates/" + date + ".json")[0])
-    profile = json.loads(repo.read("snapshots/" + date + "-profile.json")[0])
+    version = edition.get("snapshot_version")
+    names = snapshot_paths(date, version)
+    evidence = verify_existing(repo, date, version=version)
+    candidates = json.loads(repo.read(names["candidates"])[0])
+    profile = json.loads(repo.read(names["profile"])[0])
     params = evidence["parameters"]
     source_evidence = audit_sources(candidates)
     if not source_evidence["source_url_structure_verified"]:
@@ -112,6 +114,7 @@ def verify_edition(repo, date, edition, index=None, check_live=False):
                         "warnings": warnings}
     return {
         "date": date,
+        "snapshot_version": version,
         "prepublication_gate_verified": True,
         "candidate_sha256": evidence["candidate_sha256"],
         "profile_sha256": evidence["profile_sha256"],
