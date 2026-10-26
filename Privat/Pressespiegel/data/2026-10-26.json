@@ -20,7 +20,7 @@
       "url": "https://orf.at/stories/3446134/",
       "source": "ORF",
       "published_at": "2026-10-25T12:19:00Z",
-      "region": "Österreich/Europa",
+      "region": "Österreich",
       "summary": "Die österreichische Regierung verzichtet 2027 auf die automatische Valorisierung zahlreicher Bundesgebühren.",
       "event": "Bundesgebühren"
     },
@@ -130,7 +130,7 @@
       "url": "https://www.politico.eu/podcast/brussels-playbook-podcast/its-complicated-the-status-of-eu-canada-relations/",
       "source": "Politico Europe",
       "published_at": "2026-10-26T05:05:00Z",
-      "region": "Europa",
+      "region": "International",
       "summary": "Beide Seiten wollen ihre Beziehungen vertiefen, haben aber unterschiedliche Vorstellungen vom konkreten Umfang. Politico diskutiert die offenen Fragen vor den nächsten Gesprächen.",
       "event": "https://www.politico.eu/podcast/brussels-playbook-podcast/its-complicated-the-status-of-eu-canada-relations/"
     },
@@ -140,7 +140,7 @@
       "url": "https://www.politico.eu/podcast/berlin-playbook-podcast/putins-schattenflotte-warum-greift-deutschland-nicht-durch/",
       "source": "Politico Europe",
       "published_at": "2026-10-26T04:15:00Z",
-      "region": "Europa",
+      "region": "International",
       "summary": "Der Berlin-Playbook-Podcast befasst sich mit der Frage, warum Deutschland gegen russische Schattenflotten-Schiffe nicht entschiedener vorgeht. Im Zentrum stehen Sanktionen und deren Durchsetzung.",
       "event": "https://www.politico.eu/podcast/berlin-playbook-podcast/putins-schattenflotte-warum-greift-deutschland-nicht-durch/"
     },
@@ -150,7 +150,7 @@
       "url": "https://www.politico.eu/article/french-presidential-candidate-edouard-philippe-slipping-in-new-poll/",
       "source": "Politico Europe",
       "published_at": "2026-10-26T03:00:00Z",
-      "region": "Europa",
+      "region": "International",
       "summary": "Eine neue Erhebung sieht den früheren Premierminister drei Punkte schwächer als im Vormonat. Das verdeutlicht die Unsicherheit im französischen Präsidentschaftsrennen.",
       "event": "https://www.politico.eu/article/french-presidential-candidate-edouard-philippe-slipping-in-new-poll/"
     },
@@ -160,7 +160,7 @@
       "url": "https://www.euronews.com/2026/10/26/europe-weighs-10bn-plan-to-launch-its-own-astronauts-ahead-of-rome-space-summit",
       "source": "Euronews",
       "published_at": "2026-10-26T07:37:41Z",
-      "region": "Europa",
+      "region": "International",
       "summary": "Vor einem ESA-Gipfel in Rom diskutiert Europa höhere Investitionen in Astronauten- und Transportkapazitäten. Ziel ist auch eine geringere technologische Abhängigkeit von anderen Staaten.",
       "event": "https://www.euronews.com/2026/10/26/europe-weighs-10bn-plan-to-launch-its-own-astronauts-ahead-of-rome-space-summit"
     },
@@ -170,7 +170,7 @@
       "url": "https://www.euronews.com/2026/10/26/its-improved-my-life-solar-kits-provide-essential-power-in-refugee-camps-and-war-zones",
       "source": "Euronews",
       "published_at": "2026-10-26T07:02:37Z",
-      "region": "Europa",
+      "region": "International",
       "summary": "Tragbare Solaranlagen versorgen Menschen in Flüchtlingslagern und Kriegsgebieten mit Energie für Kommunikation, Kühlung und Bildung. Das zeigt einen konkreten Nutzen dezentraler Energietechnik.",
       "event": "https://www.euronews.com/2026/10/26/its-improved-my-life-solar-kits-provide-essential-power-in-refugee-camps-and-war-zones"
     },
@@ -180,7 +180,7 @@
       "url": "https://www.euronews.com/2026/10/26/young-peoples-household-income-in-europe-how-does-france-compare",
       "source": "Euronews",
       "published_at": "2026-10-26T07:00:06Z",
-      "region": "Europa",
+      "region": "International",
       "summary": "Ein europäischer Vergleich betrachtet die verfügbaren Einkommen von Haushalten mit 18- bis 24-Jährigen. Fachleute warnen, dass solche Kennzahlen die Lebenslage nur teilweise abbilden.",
       "event": "https://www.euronews.com/2026/10/26/young-peoples-household-income-in-europe-how-does-france-compare"
     },
@@ -190,7 +190,7 @@
       "url": "https://orf.at/stories/3446147/",
       "source": "ORF",
       "published_at": "2026-10-25T20:00:00Z",
-      "region": "Europa",
+      "region": "International",
       "summary": "In Frankreich, Albanien, Spanien und Italien kam es am Wochenende zu Zusammenstößen und zahlreichen Festnahmen.",
       "event": "Europa-Proteste"
     },
@@ -328,7 +328,7 @@
       "url": "https://orf.at/stories/3445873/",
       "source": "ORF",
       "published_at": "2026-10-26T05:31:00Z",
-      "region": "Österreich/Europa",
+      "region": "Österreich",
       "summary": "Am österreichischen Nationalfeiertag öffnen Parlament, Hofburg und weitere Institutionen ihre Türen. Das Bundesheer präsentiert sich auf dem Heldenplatz und gelobt neue Rekruten an – zugleich eine Gelegenheit zur öffentlichen Debatte über Landesverteidigung.",
       "event": "Nationalfeiertag",
       "paywall": false,
@@ -349,7 +349,7 @@
       "url": "https://orf.at/stories/3446181/",
       "source": "ORF",
       "published_at": "2026-10-26T06:11:00Z",
-      "region": "Österreich/Europa",
+      "region": "Österreich",
       "summary": "Bundeskanzler Stocker hält den Vorschlag für den mehrjährigen EU-Haushalt 2028–2034 für nicht akzeptabel und schließt ein Veto Österreichs nicht aus. Im Mittelpunkt stehen der Umfang des Finanzrahmens und die Forderung nach sparsamerer EU-Verwaltung.",
       "event": "EU-Haushalt",
       "paywall": false,
@@ -370,7 +370,7 @@
       "url": "https://orf.at/stories/3446153/",
       "source": "ORF",
       "published_at": "2026-10-26T04:42:00Z",
-      "region": "Österreich/Europa",
+      "region": "Österreich",
       "summary": "Lula hat die brasilianische Präsidentschaftsstichwahl gewonnen und steht vor einer weiteren Amtszeit. Flávio Bolsonaro will das Ergebnis wegen der verlängerten Öffnungszeiten anfechten; für Brasilien bleiben Haushalts-, Sozial- und Umweltpolitik zentrale Konfliktfelder.",
       "event": "Brasilien-Wahl",
       "paywall": false,
