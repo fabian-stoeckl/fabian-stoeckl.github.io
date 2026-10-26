@@ -1,0 +1,75 @@
+name: One-off Morgenzeitung v6 HTTPS and private S7 readback
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/morgenzeitung-v6-live-audit-on-pr.yml'
+permissions:
+  contents: read
+jobs:
+  one-off-v6-s7:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Independently read published HTTPS preview and unchanged original
+        run: |
+          python3 - <<'PY'
+          import json,pathlib,time,urllib.request
+          base='https://www.fabian-stoeckl.com/Privat/Pressespiegel/'
+          local=json.loads(pathlib.Path('Privat/Pressespiegel/previews/2026-10-26-v6.json').read_text())
+          def get(path):
+              req=urllib.request.Request(base+path,headers={'User-Agent':'Morgenzeitung-S7-Independent/1.0','Cache-Control':'no-cache'})
+              with urllib.request.urlopen(req,timeout=20) as r:
+                  if r.status!=200: raise RuntimeError('HTTP '+str(r.status)+' '+path)
+                  return r.read().decode('utf-8')
+          for attempt in range(24):
+              try:
+                  live=json.loads(get('previews/2026-10-26-v6.json'))
+                  html=get('previews/2026-10-26-v6.html')
+                  index=json.loads(get('data/index.json'))
+                  original=json.loads(get('data/2026-10-26.json'))
+                  if not live.get('preview') or live.get('snapshot_version')!='v6':
+                      raise ValueError('not v6 preview')
+                  if index['dates'][0]!='2026-10-26' or original.get('snapshot_version')!='v2':
+                      raise ValueError('original or index changed')
+                  if '2026-10-26-v6.json' not in html or 'Morgenzeitung – Testausgabe' not in html:
+                      raise ValueError('HTML not deployed')
+                  for section,expected in [('articles',10),('headlines',15)]:
+                      if len(live[section])!=expected or [x['id'] for x in live[section]]!=[x['id'] for x in local[section]]:
+                          raise ValueError('live '+section+' not matching local')
+                  print('HTTPS PASS: v6 10+15, exact ordered IDs, original v2 and index unchanged')
+                  break
+              except Exception as exc:
+                  print('HTTPS pending',attempt+1,str(exc),flush=True)
+                  if attempt==23: raise
+                  time.sleep(15)
+          PY
+      - name: Independent private S4/S7 snapshot readback and selection replay
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib
+          from scripts.morgenzeitung_capture_preselection import PrivateRepo,verify_existing
+          from scripts.morgenzeitung_selection_audit import compare
+          if not os.environ.get('MORGENZEITUNG_FEEDBACK_TOKEN'):
+              raise SystemExit('No private token; cannot claim S7')
+          repo=PrivateRepo(os.environ['MORGENZEITUNG_FEEDBACK_TOKEN'])
+          evidence=verify_existing(repo,'2026-10-26',version='v6')
+          names={'candidates':'candidates/2026-10-26-v6.json','profile':'snapshots/2026-10-26-v6-profile.json'}
+          candidates=json.loads(repo.read(names['candidates'])[0])
+          profile=json.loads(repo.read(names['profile'])[0])
+          edition=json.loads(pathlib.Path('Privat/Pressespiegel/previews/2026-10-26-v6.json').read_text())
+          comparison=compare(candidates,profile,limit=10,max_per_source=4)
+          actual=[x['id'] for x in edition['articles']]
+          if actual!=comparison['selected_ids']:
+              raise ValueError('private S7 selection replay differs')
+          if not evidence['candidate_sha256'] or not evidence['profile_sha256']:
+              raise ValueError('missing immutable hashes')
+          print('PRIVATE S7 PASS: v6 immutable snapshots, profile version',profile.get('version'),'selected',len(actual),'source pool',len(candidates))
+          print('S7 LIMITATION: preview only; not a second daily edition. Counterfactual membership effect not demonstrated by exactly ten candidates.')
+          PY
