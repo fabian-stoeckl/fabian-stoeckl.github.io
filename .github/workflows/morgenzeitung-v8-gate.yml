@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/morgenzeitung-v8-gate.yml'
+      - 'tests/pressespiegel/test_v8_release.py'
       - 'Privat/Pressespiegel/data/2026-10-26.json'
   push:
     branches: [main]
