@@ -21,14 +21,21 @@ def select_articles(candidates, profile, limit=10, max_per_source=4):
         score = 2 if direction == "positive" else -2 if direction == "negative" else 0
         ranked.append((score, index, article, direction))
     ranked.sort(key=lambda row: (-row[0], row[1]))
-    chosen, source_counts, audit = [], Counter(), []
+    chosen, source_counts, audit, selected_events = [], Counter(), [], set()
     for score, index, article, direction in ranked:
         if len(chosen) >= limit:
             break
         source = article["source"]
+        # Deduplicate only an explicitly researched shared event identity.
+        # Legacy records use unique article URLs, so historical replay is unchanged.
+        event = article.get("event")
+        if isinstance(event, str) and event.strip() and event in selected_events:
+            continue
         if source_counts[source] >= max_per_source:
             continue
         source_counts[source] += 1
+        if isinstance(event, str) and event.strip():
+            selected_events.add(event)
         chosen.append(article)
         audit.append({"article_id": article["id"], "topic": article["topic"],
                       "learning_direction": direction or "neutral", "learning_score": score,
