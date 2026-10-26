@@ -5,7 +5,7 @@ Der Recherchepool besteht aus (A) **Fixstartern**, die **an jedem Erscheinungsta
 
 ## A – Fixstarter (jeden Tag einzeln durchsuchen)
 - Österreich: ORF, Der Standard, Die Presse, Kronen Zeitung.
-- Deutschland: Handelsblatt, Frankfurter Allgemeine Zeitung (FAZ), Süddeutsche Zeitung (SZ), DIE ZEIT, DER SPIEGEL, WirtschaftsWoche.
+- Deutschland: Handelsblatt, Frankfurter Allgemeine Zeitung (FAZ), Süddeutsche Zeitung (SZ), DIE ZEIT, DER SPIEGEL, BILD, WirtschaftsWoche.
 - International: Financial Times, The New York Times, The Washington Post, The Guardian (UK), Neue Zürcher Zeitung (NZZ), Reuters, Associated Press (AP), Bloomberg, Euronews.
 
 ## B – dauerhaft erweiterbarer Bestand
