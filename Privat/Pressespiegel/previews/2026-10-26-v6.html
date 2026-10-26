@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Morgenzeitung – isolierte Testausgabe v6 | 26.10.2026</title>
+<style>
+:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#1e293b;background:#f5f7fa}
+*{box-sizing:border-box}body{margin:0}.wrap{max-width:1040px;margin:0 auto;padding:32px 22px 64px}
+h1{font-size:clamp(1.6rem,4vw,2.6rem);margin:.4em 0}h2{font-size:1.35rem;margin:2em 0 1em}
+.banner{background:#fff4df;border-left:5px solid #b46b00;border-radius:6px;padding:16px 18px;line-height:1.5}
+.meta{color:#475569;font-size:.94rem}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:15px}
+.card{background:white;border:1px solid #e2e8f0;border-radius:12px;padding:20px;box-shadow:0 2px 9px #0f172a0b}
+.card h3{margin:0 0 10px;font-size:1.05rem;line-height:1.35}
+.card p{margin:10px 0;line-height:1.55}.card a{color:#124a91;text-decoration:none}.card a:hover{text-decoration:underline}
+.tag{font-size:.8rem;font-weight:600;letter-spacing:.03em;color:#526379;text-transform:uppercase}
+footer{margin-top:36px;color:#64748b;font-size:.9rem}
+</style>
+</head>
+<body><main class="wrap">
+<p class="meta">ISOLIERTER END-TO-END-TEST · 26. Oktober 2026 · Version v6</p>
+<h1>Morgenzeitung – Testausgabe</h1>
+<div class="banner"><strong>Dies ist keine reguläre Tagesausgabe.</strong> Die ursprüngliche Ausgabe vom 26.10.2026 wurde nicht überschrieben. Diese getrennte Vorschau prüft Recherche, Auswahl, Qualitätssicherung und Veröffentlichung. Sieben Headlines wurden aus der vorhandenen Ausgabe oder v3-Vorschau erneut verwendet; die zehn Vertiefungen wurden für v6 neu recherchiert. Die unabhängige technische Quellenprüfung steht noch aus. <a href="../">Zur regulären Morgenzeitung</a>.</div>
+<p id="status" class="meta">Lade Testausgabe …</p>
+<section><h2>Heute wichtig <span id="headline-count"></span></h2><div class="cards" id="headlines"></div></section>
+<section><h2>Vertiefungen <span id="article-count"></span></h2><div class="cards" id="articles"></div></section>
+<footer>Öffentliche Testvorschau; private Bewertungen, Profile und S4-Originale werden nicht ausgeliefert. Nicht im regulären Datumsindex enthalten.</footer>
+</main>
+<script>
+'use strict';
+function el(tag,cls,text){const x=document.createElement(tag);if(cls)x.className=cls;if(text!==undefined)x.textContent=text;return x}
+function card(row){const box=el('article','card'),tag=el('p','tag',(row.source||'Quelle')+' · '+(row.region||'International'));box.append(tag);
+const h=el('h3'),a=el('a',null,row.title||'Artikel');a.href=row.url;a.target='_blank';a.rel='noopener noreferrer';h.append(a);box.append(h);
+box.append(el('p',null,row.summary||''));if(row.paywall)box.append(el('p','meta','Verlag kann ein Abonnement erfordern.'));return box}
+fetch('./2026-10-26-v6.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(data=>{
+if(data.date!=='2026-10-26'||data.snapshot_version!=='v6'||data.preview!==true)throw Error('Ungültige Testausgabe');
+for(const [key,id] of [['headlines','headline-count'],['articles','article-count']]){const list=data[key];if(!Array.isArray(list))throw Error('Fehlende Rubrik');document.getElementById(id).textContent='('+list.length+')';const container=document.getElementById(key);for(const row of list)container.append(card(row))}
+document.getElementById('status').textContent='Getrennte Vorschau geladen: '+data.headlines.length+' Meldungen und '+data.articles.length+' Vertiefungen.';
+}).catch(err=>{document.getElementById('status').textContent='Testvorschau konnte nicht geladen werden: '+err.message});
+</script>
+</body></html>
