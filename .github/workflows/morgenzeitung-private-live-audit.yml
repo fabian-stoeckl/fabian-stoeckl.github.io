@@ -76,12 +76,21 @@ jobs:
               date=live_json('index.json')['dates'][0]
           if not re.fullmatch(r'\d{4}-\d{2}-\d{2}',date):
               raise SystemExit('Invalid edition date')
-          # Only preselection snapshots saved by the publishing agent are acceptable.
-          # Never reconstruct candidates from public output.
-          candidate_path='candidates/'+date+'.json'
-          profile_snapshot_path='snapshots/'+date+'-profile.json'
-          issue_snapshot_path='snapshots/'+date+'-issues.json'
-          parameter_path='snapshots/'+date+'-selection-parameters.json'
+          # Read the exact immutable S4 version declared by the published edition.
+          # Legacy editions remain pinned to original unsuffixed paths.
+          # Never reconstruct candidates from public output or overwrite earlier audits.
+          from scripts.morgenzeitung_capture_preselection import snapshot_paths
+          edition_path=pathlib.Path('Privat/Pressespiegel/data')/(date+'.json')
+          edition=json.loads(edition_path.read_text())
+          if edition.get('date')!=date:
+              raise SystemExit('Edition date mismatch')
+          version=edition.get('snapshot_version')
+          names=snapshot_paths(date,version)
+          suffix='-'+version if version else ''
+          candidate_path=names['candidates']
+          profile_snapshot_path=names['profile']
+          issue_snapshot_path=names['issues']
+          parameter_path=names['parameters']
           required=(candidate_path,profile_snapshot_path,issue_snapshot_path,parameter_path)
           original={}
           missing=[]
@@ -95,7 +104,7 @@ jobs:
               from scripts.morgenzeitung_acceptance_report import missing_evidence_report
               diagnostic=missing_evidence_report(date,missing)
               print('PARTIAL:',json.dumps(diagnostic))
-              dest='audits/'+date+'-missing-evidence.json'
+              dest='audits/'+date+suffix+'-missing-evidence.json'
               try:
                   existing,_=read_private(dest)
               except urllib.error.HTTPError as error:
@@ -167,6 +176,7 @@ jobs:
                   'reason':str(exc)}
               print('PARTIAL: chronological provenance not established:',exc)
           result['private_profile_blob_sha']=profile_blob_sha
+          result['snapshot_version']=version
           result['candidate_snapshot_path']=candidate_path
           result['profile_snapshot_path']=profile_snapshot_path
           result['audit_code_commit']=os.environ['GITHUB_SHA']
@@ -174,7 +184,7 @@ jobs:
           result['selection_parameters_snapshot_path']=parameter_path
           result['provenance_limitations']='Publication commit and S7 run persistence must be independently verified; no productive PASS inferred.'
           # A separate file avoids overwriting a genuine existing runs/YYYY-MM-DD.json.
-          dest='audits/'+date+'-live-learning.json'
+          dest='audits/'+date+suffix+'-live-learning.json'
           encoded=base64.b64encode((json.dumps(result,ensure_ascii=False,indent=2)+chr(10)).encode()).decode()
           try:
               existing=request('/contents/'+dest)
@@ -208,7 +218,7 @@ jobs:
           print('Evidence statuses:',result['statuses'])
           from scripts.morgenzeitung_acceptance_report import acceptance
           report=acceptance(result)
-          report_dest='audits/'+date+'-acceptance.json'
+          report_dest='audits/'+date+suffix+'-acceptance.json'
           report_encoded=base64.b64encode((json.dumps(report,ensure_ascii=False,indent=2) + chr(10)).encode()).decode()
           try:
               report_existing=request('/contents/'+report_dest)

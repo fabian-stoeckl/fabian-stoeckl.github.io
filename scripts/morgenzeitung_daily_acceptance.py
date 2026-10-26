@@ -80,6 +80,23 @@ class PrivateAPI:
             raise ValueError("Private immutable evidence readback mismatch: " + path)
 
 
+def versioned_private_path(legacy_path, date, version=None):
+    """Map legacy acceptance keys to edition-pinned private immutable originals."""
+    if version is None:
+        return legacy_path
+    from scripts.morgenzeitung_capture_preselection import snapshot_paths
+    names = snapshot_paths(date, version)
+    legacy = snapshot_paths(date)
+    for key, path in legacy.items():
+        if legacy_path == path:
+            return names[key]
+    if legacy_path.startswith("runs/" + date):
+        return "runs/" + date + "-" + version + legacy_path[len("runs/" + date):]
+    if legacy_path.startswith("audits/" + date):
+        return "audits/" + date + "-" + version + legacy_path[len("audits/" + date):]
+    raise ValueError("Unexpected private evidence path")
+
+
 def inspect_publisher_pages(articles, *, count=5, fetch=fetch_publisher_metadata):
     """Genuine publisher GETs; access-restricted is inconclusive, never match."""
     checks, hosts = [], set()
@@ -175,6 +192,8 @@ def evaluate(date, index, edition, private_files, publisher_checks, *, committed
             and isinstance(commit, str) and re.fullmatch("[0-9a-f]{40}", commit))
     if isinstance(acceptance, dict):
         checks["private_acceptance_pass"] = acceptance.get("date") == date and acceptance.get("verdict") == "PASS"
+    version = edition.get("snapshot_version") if isinstance(edition, dict) else None
+    suffix = "-" + version if version else ""
     if not checks["private_acceptance_pass"] and isinstance(final_acceptance, dict):
         # A historical immutable PARTIAL report is never rewritten to PASS.
         # A separate final evidence file is accepted only with a genuine owner
@@ -197,10 +216,10 @@ def evaluate(date, index, edition, private_files, publisher_checks, *, committed
             and all((final_checks.get(k) or {}).get("status") == "PASS"
                     for k in required_check_names)
             and final_evidence.get("real_feedback_verification_path")
-                  == "audits/" + date + "-real-feedback-and-profile-verification.json"
+                  == "audits/" + date + suffix + "-real-feedback-and-profile-verification.json"
             and final_evidence.get("live_learning_audit_path")
-                  == "audits/" + date + "-live-learning.json"
-            and final_evidence.get("private_s7_run_path") == "runs/" + date + ".json"
+                  == "audits/" + date + suffix + "-live-learning.json"
+            and final_evidence.get("private_s7_run_path") == "runs/" + date + suffix + ".json"
             and final_evidence.get("public_merge_commit") == (run or {}).get("public_merge_commit")
             and (run or {}).get("private_readback_verified") is True
             and (run or {}).get("status") == "PASS"
@@ -228,7 +247,7 @@ def evaluate(date, index, edition, private_files, publisher_checks, *, committed
             "note": "PASS requires genuine preselection, live selection match, independently verified feedback/profile/run acceptance and publisher evidence. Synthetic tests never count."}
 
 
-def immutable_acceptance_path(date, run_id, attempt):
+def immutable_acceptance_path(date, run_id, attempt, version=None):
     """Unique append-only report per GitHub run *attempt*, including reruns."""
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(date)):
         raise ValueError("Invalid edition date")
@@ -236,14 +255,16 @@ def immutable_acceptance_path(date, run_id, attempt):
         raise ValueError("Invalid workflow run ID (numeric or manual)")
     if not re.fullmatch(r"[1-9][0-9]{0,9}", str(attempt)):
         raise ValueError("Invalid GitHub workflow run attempt")
-    return "audits/" + date + "-daily-acceptance-" + str(run_id) + "-attempt-" + str(attempt) + ".json"
+    if version is not None:
+        from scripts.morgenzeitung_capture_preselection import snapshot_paths
+        snapshot_paths(date, version)
+    suffix = "-" + version if version else ""
+    return "audits/" + date + suffix + "-daily-acceptance-" + str(run_id) + "-attempt-" + str(attempt) + ".json"
 
 
 def run_daily(date, run_id, private):
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date):
         raise ValueError("Invalid publication date")
-    private_files = {path.format(d=date): private.read(path.format(d=date))
-                     for path in REQUIRED + OPTIONAL}
     index = edition = None
     try:
         index = live_json("index.json")
@@ -251,6 +272,13 @@ def run_daily(date, run_id, private):
     except (ValueError, urllib.error.HTTPError, urllib.error.URLError,
             TimeoutError, json.JSONDecodeError) as exc:
         print("HTTPS edition readback unavailable:", type(exc).__name__)
+    version = edition.get("snapshot_version") if isinstance(edition, dict) else None
+    if version is not None:
+        from scripts.morgenzeitung_capture_preselection import snapshot_paths
+        snapshot_paths(date, version)
+    private_files = {path.format(d=date): private.read(
+        versioned_private_path(path.format(d=date), date, version))
+        for path in REQUIRED + OPTIONAL}
     publisher = inspect_publisher_pages(edition.get("articles", [])) if isinstance(edition, dict) else []
     try:
         committed_edition = json.loads(
@@ -259,6 +287,9 @@ def run_daily(date, run_id, private):
         committed_edition = None
     report = evaluate(date, index, edition, private_files, publisher,
                       committed_edition=committed_edition)
+    report["snapshot_version"] = version
+    report["private_evidence_paths"] = [versioned_private_path(p.format(d=date), date, version)
+                                         for p in REQUIRED + OPTIONAL]
     report["checked_at_utc"] = dt.datetime.now(dt.timezone.utc).isoformat()
     report["workflow_run_id"] = str(run_id)
     attempt = os.getenv("GITHUB_RUN_ATTEMPT", "1")
@@ -266,7 +297,7 @@ def run_daily(date, run_id, private):
     report["verification_commit"] = os.getenv("GITHUB_SHA")
     # On a GitHub Actions rerun GITHUB_RUN_ID remains unchanged while ATTEMPT
     # increases. Preserve older immutable results instead of overwriting them.
-    dest = immutable_acceptance_path(date, run_id, attempt)
+    dest = immutable_acceptance_path(date, run_id, attempt, version=version)
     private.append(dest, report)
     print(json.dumps({"date": date, "verdict": report["verdict"],
                       "checks": report["checks"], "saved_private_path": dest},
