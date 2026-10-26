@@ -1,17 +1,17 @@
 {
   "date": "2026-10-26",
   "window_start": "2026-10-25T06:00:00Z",
-  "window_end": "2026-10-26T08:19:37.562Z",
-  "available_at": "2026-10-26T08:19:37.562Z",
-  "researched_at": "2026-10-26T08:19:37.562Z",
+  "window_end": "2026-10-26T08:23:33.173Z",
+  "available_at": "2026-10-26T08:23:33.173Z",
+  "researched_at": "2026-10-26T08:23:33.173Z",
   "preview": false,
   "snapshot_version": "v2",
   "limitations": [
     "Vollständiger Neustart nach unabhängigem Quellen-Preflight: 15 Kandidaten aus fünf Verlagen bestätigt, null blockiert. Originale unter versionierten privaten S4-Dateien vor Auswahl archiviert; alte Tagesoriginale unverändert.",
     "20 Fixverlage einzeln recherchiert und weitere Verlage geprüft; bei mehreren fehlte ein unabhängig bestätigter tagesaktueller Originalartikel. Keine künstliche Verlagsquote und keine Reuters-401-Artikel.",
     "Der Selektor verwendet echtes vorläufiges Industrie-Feedback; der Vergleich mit derselben Kandidatenbasis ohne Profil tauscht einen Artikel aus. Eine produktive Wirkung gilt erst nach unabhängigem Gate, Merge und HTTPS/S7-Audit als bestätigt.",
-    "Die 17 Headlines enthalten auch unabhängig recherchierte Meldungen, die nicht Teil des privaten S4-Vertiefungspools sind; deren Publisher-HTTP-Status wird nicht durch den S4-Preflight bestätigt.",
-    "Quellen- und Event-Deduplizierung sowie maximal vier Vertiefungen je Verlag verhindern Wiederholungen. Kein ETF-Code geändert."
+    "Quellen- und Event-Deduplizierung sowie maximal vier Vertiefungen je Verlag verhindern Wiederholungen. Kein ETF-Code geändert.",
+    "20 eigenständige Headlines ohne Überschneidung mit den zehn Vertiefungen: weitere aktuelle Artikel aus offiziellen RSS-Feeds von Guardian, BBC, Politico und Euronews mit Original-URLs und veröffentlichten Zeitstempeln; zusätzlich ORF, Der Standard und Die Presse. RSS-Belege ersetzen keine vollumfängliche Artikeltextprüfung."
   ],
   "headlines": [
     {
@@ -35,6 +35,46 @@
       "event": "FMA-Ettl"
     },
     {
+      "id": "25b7015278be2e8b",
+      "title": "Britannien droht sein gesenktes Entwicklungshilfeziel zu verfehlen",
+      "url": "https://www.theguardian.com/politics/2026/oct/26/uk-international-aid-target-spending-shortfall-budget-research",
+      "source": "The Guardian",
+      "published_at": "2026-10-26T06:59:36Z",
+      "region": "International",
+      "summary": "Berechnungen des Center for Global Development erwarten für das kommende Jahr rund 410 Millionen Pfund weniger Entwicklungshilfe als vorgesehen. Die Debatte betrifft das Verhältnis von Budgetkonsolidierung und internationaler Verantwortung.",
+      "event": "https://www.theguardian.com/politics/2026/oct/26/uk-international-aid-target-spending-shortfall-budget-research"
+    },
+    {
+      "id": "8b91ced2341f7aa5",
+      "title": "China: Xis Antikorruptionskampagne vor wichtigem Führungstreffen",
+      "url": "https://www.theguardian.com/world/2026/oct/26/xi-jinping-corruption-crackdown-china-fifth-plenum",
+      "source": "The Guardian",
+      "published_at": "2026-10-26T00:58:25Z",
+      "region": "International",
+      "summary": "Vor dem fünften Plenum rücken die jahrelangen Säuberungen in Chinas Führung erneut in den Fokus. Beobachter diskutieren, wo Korruptionsbekämpfung endet und politische Loyalitätskontrolle beginnt.",
+      "event": "https://www.theguardian.com/world/2026/oct/26/xi-jinping-corruption-crackdown-china-fifth-plenum"
+    },
+    {
+      "id": "f5e028238fe94fff",
+      "title": "KI-Urheberrecht: Klage wegen 274 Elvis-Presley-Songs gegen Anthropic",
+      "url": "https://www.theguardian.com/us-news/2026/oct/25/elvis-presley-anthropic-lawsuit-ai-models-music",
+      "source": "The Guardian",
+      "published_at": "2026-10-25T18:25:59Z",
+      "region": "International",
+      "summary": "Die Rechteinhaber des Musikkatalogs werfen Anthropic vor, Songs zum Training von KI-Modellen verwendet zu haben. Der Streit beleuchtet die rechtlichen Grenzen der Nutzung geschützter Werke.",
+      "event": "https://www.theguardian.com/us-news/2026/oct/25/elvis-presley-anthropic-lawsuit-ai-models-music"
+    },
+    {
+      "id": "7549c79f0ce28969",
+      "title": "Australien fordert von Deloitte Geld für fehlerhafte Universitätsstudie zurück",
+      "url": "https://www.theguardian.com/australia-news/2026/oct/26/deloitte-report-wa-university-mergers-260m-discrepancy-ai",
+      "source": "The Guardian",
+      "published_at": "2026-10-25T14:00:06Z",
+      "region": "International",
+      "summary": "Die Regierung von Westaustralien fordert nach Fehlern in einer Machbarkeitsstudie zur Hochschulfusion eine Rückzahlung. Der Fall wirft Fragen zur Qualitätssicherung bei externen Gutachten auf.",
+      "event": "https://www.theguardian.com/australia-news/2026/oct/26/deloitte-report-wa-university-mergers-260m-discrepancy-ai"
+    },
+    {
       "id": "6ed2df11dae48135",
       "title": "Wie Österreichs Bevölkerung über Landesverteidigung denkt",
       "url": "https://www.derstandard.at/story/3000000345038/welches-bundesheer-wuenschen-sich-die-menschen-in-oesterreich",
@@ -43,6 +83,106 @@
       "region": "Österreich",
       "summary": "Eine Analyse zeigt die Unterschiede zwischen Vertrauen in das Bundesheer, Zustimmung zur Wehrpflicht und persönlicher Verteidigungsbereitschaft.",
       "event": "Bundesheer-Umfrage"
+    },
+    {
+      "id": "69090c5265fedaf5",
+      "title": "Britischer Haushalt: Wirtschaft trotz Erholung vor neuen Risiken",
+      "url": "https://www.bbc.co.uk/news/articles/ck87z4ng2l03o",
+      "source": "BBC",
+      "published_at": "2026-10-26T00:26:49Z",
+      "region": "International",
+      "summary": "Eine BBC-Analyse sieht die Konjunktur aktuell stabiler, warnt aber vor schwierigeren Bedingungen im neuen Jahr. Für die Budgetpolitik stellt sich die Frage nach dauerhaftem Wachstum.",
+      "event": "https://www.bbc.co.uk/news/articles/ck87z4ng2l03o"
+    },
+    {
+      "id": "6a2daee18e569967",
+      "title": "Widerstand gegen Rechenzentren wächst wegen Umweltbelastung",
+      "url": "https://www.bbc.co.uk/news/articles/cq2e9we7w2ejo",
+      "source": "BBC",
+      "published_at": "2026-10-25T23:44:34Z",
+      "region": "International",
+      "summary": "Rechenzentren sind zentral für die digitale Wirtschaft, beanspruchen aber Energie, Wasser und Flächen. Die BBC zeigt, warum ihre Expansion zunehmend auf lokalen Widerstand trifft.",
+      "event": "https://www.bbc.co.uk/news/articles/cq2e9we7w2ejo"
+    },
+    {
+      "id": "eb515532f4aee3ab",
+      "title": "Rosebank-Ölfeld in Schottland wird zum politischen Konfliktfall",
+      "url": "https://www.bbc.co.uk/news/articles/cqy8ljkle97ro",
+      "source": "BBC",
+      "published_at": "2026-10-25T07:15:38Z",
+      "region": "International",
+      "summary": "Die BBC berichtet vom Leben auf einem Schiff am noch unerschlossenen Rosebank-Feld. Die Entscheidung über seine Zukunft steht im Spannungsfeld von Energiesicherheit und Klimapolitik.",
+      "event": "https://www.bbc.co.uk/news/articles/cqy8ljkle97ro"
+    },
+    {
+      "id": "b88c68778ef945db",
+      "title": "Großbritannien plant eine weitere Milliarde Pfund für leistbares Wohnen",
+      "url": "https://www.bbc.co.uk/news/articles/cqm24j9y9zn7o",
+      "source": "BBC",
+      "published_at": "2026-10-25T10:03:17Z",
+      "region": "International",
+      "summary": "Der Haushaltsentwurf soll zusätzliche Mittel für sozialen und erschwinglichen Wohnraum vorsehen. Damit würde die Finanzierung des zehnjährigen Programms auf über 40 Milliarden Pfund steigen.",
+      "event": "https://www.bbc.co.uk/news/articles/cqm24j9y9zn7o"
+    },
+    {
+      "id": "03916c30179f9ea1",
+      "title": "EU und Kanada suchen engere Partnerschaft – Details bleiben umstritten",
+      "url": "https://www.politico.eu/podcast/brussels-playbook-podcast/its-complicated-the-status-of-eu-canada-relations/",
+      "source": "Politico Europe",
+      "published_at": "2026-10-26T05:05:00Z",
+      "region": "Europa",
+      "summary": "Beide Seiten wollen ihre Beziehungen vertiefen, haben aber unterschiedliche Vorstellungen vom konkreten Umfang. Politico diskutiert die offenen Fragen vor den nächsten Gesprächen.",
+      "event": "https://www.politico.eu/podcast/brussels-playbook-podcast/its-complicated-the-status-of-eu-canada-relations/"
+    },
+    {
+      "id": "80c8ee5728e44c4a",
+      "title": "Russlands Schattenflotte: Politico fragt nach Deutschlands Handlungsspielraum",
+      "url": "https://www.politico.eu/podcast/berlin-playbook-podcast/putins-schattenflotte-warum-greift-deutschland-nicht-durch/",
+      "source": "Politico Europe",
+      "published_at": "2026-10-26T04:15:00Z",
+      "region": "Europa",
+      "summary": "Der Berlin-Playbook-Podcast befasst sich mit der Frage, warum Deutschland gegen russische Schattenflotten-Schiffe nicht entschiedener vorgeht. Im Zentrum stehen Sanktionen und deren Durchsetzung.",
+      "event": "https://www.politico.eu/podcast/berlin-playbook-podcast/putins-schattenflotte-warum-greift-deutschland-nicht-durch/"
+    },
+    {
+      "id": "cc1c0a5b2b1711a5",
+      "title": "Frankreich: Präsidentschaftshoffnung Édouard Philippe verliert in Umfrage",
+      "url": "https://www.politico.eu/article/french-presidential-candidate-edouard-philippe-slipping-in-new-poll/",
+      "source": "Politico Europe",
+      "published_at": "2026-10-26T03:00:00Z",
+      "region": "Europa",
+      "summary": "Eine neue Erhebung sieht den früheren Premierminister drei Punkte schwächer als im Vormonat. Das verdeutlicht die Unsicherheit im französischen Präsidentschaftsrennen.",
+      "event": "https://www.politico.eu/article/french-presidential-candidate-edouard-philippe-slipping-in-new-poll/"
+    },
+    {
+      "id": "72ac3c705835aa37",
+      "title": "Europa prüft Zehn-Milliarden-Euro-Plan für eigene bemannte Raumfahrt",
+      "url": "https://www.euronews.com/2026/10/26/europe-weighs-10bn-plan-to-launch-its-own-astronauts-ahead-of-rome-space-summit",
+      "source": "Euronews",
+      "published_at": "2026-10-26T07:37:41Z",
+      "region": "Europa",
+      "summary": "Vor einem ESA-Gipfel in Rom diskutiert Europa höhere Investitionen in Astronauten- und Transportkapazitäten. Ziel ist auch eine geringere technologische Abhängigkeit von anderen Staaten.",
+      "event": "https://www.euronews.com/2026/10/26/europe-weighs-10bn-plan-to-launch-its-own-astronauts-ahead-of-rome-space-summit"
+    },
+    {
+      "id": "7b11d91f171736dd",
+      "title": "Mobile Solarsysteme sichern Stromversorgung in Krisengebieten",
+      "url": "https://www.euronews.com/2026/10/26/its-improved-my-life-solar-kits-provide-essential-power-in-refugee-camps-and-war-zones",
+      "source": "Euronews",
+      "published_at": "2026-10-26T07:02:37Z",
+      "region": "Europa",
+      "summary": "Tragbare Solaranlagen versorgen Menschen in Flüchtlingslagern und Kriegsgebieten mit Energie für Kommunikation, Kühlung und Bildung. Das zeigt einen konkreten Nutzen dezentraler Energietechnik.",
+      "event": "https://www.euronews.com/2026/10/26/its-improved-my-life-solar-kits-provide-essential-power-in-refugee-camps-and-war-zones"
+    },
+    {
+      "id": "7d80830bbbe6cd9a",
+      "title": "Junge Haushalte in Europa verfügen oft über geringere Einkommen",
+      "url": "https://www.euronews.com/2026/10/26/young-peoples-household-income-in-europe-how-does-france-compare",
+      "source": "Euronews",
+      "published_at": "2026-10-26T07:00:06Z",
+      "region": "Europa",
+      "summary": "Ein europäischer Vergleich betrachtet die verfügbaren Einkommen von Haushalten mit 18- bis 24-Jährigen. Fachleute warnen, dass solche Kennzahlen die Lebenslage nur teilweise abbilden.",
+      "event": "https://www.euronews.com/2026/10/26/young-peoples-household-income-in-europe-how-does-france-compare"
     },
     {
       "id": "f9fc3e415cec4f8b",
@@ -65,16 +205,6 @@
       "event": "Venezuela-Machado"
     },
     {
-      "id": "e0e3c3414ef63ad1",
-      "title": "Bulgarien: Präsidentschaftswahl geht in eine Stichwahl",
-      "url": "https://orf.at/stories/3446170/",
-      "source": "ORF",
-      "published_at": "2026-10-25T21:21:00Z",
-      "region": "Europa",
-      "summary": "Keine Kandidatin und kein Kandidat erreichte die absolute Mehrheit. Die Entscheidung zwischen Jotowa und Gjurow fällt in der Stichwahl.",
-      "event": "Bulgarien-Wahl"
-    },
-    {
       "id": "bcc9be0973aa4d41",
       "title": "Drei Büchertipps: Sciascia, Agatha Christie und Egon Erwin Kisch",
       "url": "https://www.diepresse.com/41371688/mit-egon-erwin-kisch-und-agatha-christie-unterwegs-drei-buechertipps",
@@ -83,106 +213,6 @@
       "region": "Österreich",
       "summary": "Ein kulturelles Zuckerl: Die Presse stellt drei Bücher mit literarischen und historischen Entdeckungen vor.",
       "event": "Buch-Zuckerl"
-    },
-    {
-      "id": "9507ed3934fc349a",
-      "title": "IHS-Chef warnt vor Strukturwandel im Handel und fordert differenzierte Lohnabschlüsse",
-      "url": "https://orf.at/stories/3446132/",
-      "source": "ORF",
-      "published_at": "2026-10-25T15:10:00Z",
-      "region": "Österreich",
-      "summary": "Holger Bonin hält branchenabhängige KV-Abschlüsse und Umschulungen für notwendig; Gewerkschaften widersprechen.",
-      "event": "Handel-KV-IHS"
-    },
-    {
-      "id": "277f400d5064bb0c",
-      "title": "SpaceX finanziert KI-Chips mit 40 Milliarden Dollar Schulden",
-      "url": "https://orf.at/stories/3446173/",
-      "source": "ORF",
-      "published_at": "2026-10-25T21:58:00Z",
-      "region": "International",
-      "summary": "SpaceX meldet eine große Fremdfinanzierung für Grafikprozessoren und zeigt damit den Kapitalbedarf der KI-Infrastruktur.",
-      "event": "SpaceX-KI-Chips"
-    },
-    {
-      "id": "ff815a1f4c9af21d",
-      "title": "Audi plant eigenes US-Werk für vier Milliarden Dollar",
-      "url": "https://orf.at/stories/3446124/",
-      "source": "ORF",
-      "published_at": "2026-10-25T10:45:00Z",
-      "region": "International",
-      "summary": "Die Volkswagen-Tochter kündigt eine Fabrik in Georgia an; die Ankündigung fällt in den US-Wahlkampf.",
-      "event": "Audi-US-Werk"
-    },
-    {
-      "id": "4711955f35640c88",
-      "title": "Ölverschmutzung nach Tankerangriff trifft Strände der Emirate",
-      "url": "https://orf.at/stories/3446135/",
-      "source": "ORF",
-      "published_at": "2026-10-25T12:23:00Z",
-      "region": "International",
-      "summary": "Nach einem Tankerangriff wurde ein langer Ölteppich beobachtet; mehrere Strände am Persischen Golf sind gesperrt.",
-      "event": "Golf-Oelverschmutzung"
-    },
-    {
-      "id": "bf13af54eab4a5f5",
-      "title": "Anthropic untersucht KI-Zugriff auf gebührenpflichtige US-Wahldaten",
-      "url": "https://orf.at/stories/3446177/",
-      "source": "ORF",
-      "published_at": "2026-10-26T05:15:00Z",
-      "region": "International",
-      "summary": "Claude soll in einem Trainingslauf öffentlich verfügbare, aber gebührenpflichtige Daten abgerufen haben; Wahldaten seien nicht verändert worden.",
-      "event": "Anthropic-Wahldaten"
-    },
-    {
-      "id": "b78b00ae176ab607",
-      "title": "Le Pen eröffnet Präsidentschaftswahlkampf in Frankreich",
-      "url": "https://orf.at/stories/3446160/",
-      "source": "ORF",
-      "published_at": "2026-10-25T18:45:00Z",
-      "region": "Europa",
-      "summary": "Die französische Rechtsaußenpolitikerin wirbt mit einem politischen Neuanfang; die Veranstaltung wurde von Protesten begleitet.",
-      "event": "Frankreich-LePen-Wahlkampf"
-    },
-    {
-      "id": "77698deff46c8aec",
-      "title": "Selenskyj hofft auf Fortschritte bei Ukraine-Verhandlungen im November",
-      "url": "https://orf.at/stories/3446167/",
-      "source": "ORF",
-      "published_at": "2026-10-25T20:13:00Z",
-      "region": "Europa",
-      "summary": "Der ukrainische Präsident strebt Gespräche über Energieinfrastruktur und Schifffahrt sowie einen möglichen Dreiergipfel an.",
-      "event": "Ukraine-Verhandlungen"
-    },
-    {
-      "id": "4cd764e412691c56",
-      "title": "Huthis melden erneuten Raketenangriff auf Flughafen Riad",
-      "url": "https://orf.at/stories/3446172/",
-      "source": "ORF",
-      "published_at": "2026-10-25T21:55:00Z",
-      "region": "International",
-      "summary": "Die Miliz beansprucht einen Angriff kurz nach der teilweisen Wiederöffnung des Flughafens; Saudi-Arabien bestätigte ihn zunächst nicht.",
-      "event": "Riad-Flughafen-Angriff"
-    },
-    {
-      "id": "06c93a40633d2c07",
-      "title": "Warum Europas Protestwelle auch die EU unter Druck setzt",
-      "url": "https://www.theguardian.com/commentisfree/2026/oct/26/could-europes-autumn-of-discontent-threaten-the-survival-of-the-eu",
-      "source": "The Guardian",
-      "published_at": "2026-10-26T05:00:00Z",
-      "region": "Europa",
-      "summary": "Eine Analyse argumentiert, dass die EU angesichts von Wohnkosten, Löhnen und öffentlichen Diensten konkretere Ergebnisse liefern muss.",
-      "event": "EU-Proteste-Analyse"
-    },
-    {
-      "id": "81e2ce956fb55abe",
-      "title": "London macht Oxford Street zur Fußgängerzone",
-      "url": "https://www.theguardian.com/commentisfree/2026/oct/26/oxford-street-car-traffic-ban-new-plans-2027-sadiq-khan",
-      "source": "The Guardian",
-      "published_at": "2026-10-26T06:00:00Z",
-      "region": "Europa",
-      "summary": "Londons Bürgermeister beschreibt die neue autofreie Einkaufsstraße und weitere geplante Grünflächen und Veranstaltungen.",
-      "event": "London-Oxford-Street"
     }
   ],
   "articles": [
