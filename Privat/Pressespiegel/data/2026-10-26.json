@@ -15,86 +15,6 @@
   ],
   "headlines": [
     {
-      "id": "1def824171a7c10d",
-      "title": "Stocker droht im EU-Haushaltsstreit mit österreichischem Veto",
-      "url": "https://orf.at/stories/3446181/",
-      "source": "ORF",
-      "published_at": "2026-10-26T06:11:00Z",
-      "region": "Österreich/Europa",
-      "summary": "Österreichs Kanzler hält den Vorschlag für den EU-Finanzrahmen 2028–2034 für nicht akzeptabel und fordert Sparsamkeit.",
-      "event": "EU-Haushalt"
-    },
-    {
-      "id": "f5bb8e672e735445",
-      "title": "Leiterplattenengpass durch KI-Rechenzentren trifft Europas Industrie",
-      "url": "https://www.handelsblatt.com/technik/it-internet/lieferkrise-dieses-elektronische-bauteil-gefaehrdet-europas-industrie/100261099.html",
-      "source": "Handelsblatt",
-      "published_at": "2026-10-26T02:59:00Z",
-      "region": "International",
-      "summary": "KI-Infrastruktur verschärft die Knappheit von Leiterplatten; die ausgelagerte europäische Fertigung macht Industrieunternehmen anfällig.",
-      "event": "Industrie-Elektronik"
-    },
-    {
-      "id": "3c588ecf644bdfe3",
-      "title": "Leapmotor und Stellantis bauen chinesische Elektroautos in Spanien",
-      "url": "https://www.handelsblatt.com/unternehmen/industrie/leapmotor-wir-setzen-nicht-einfach-teile-zusammen-die-aus-china-kommen/100263433.html",
-      "source": "Handelsblatt",
-      "published_at": "2026-10-26T03:02:00Z",
-      "region": "International",
-      "summary": "Leapmotor International verbindet chinesische Fahrzeugtechnologie mit europäischen Werken und Vertriebskanälen von Stellantis.",
-      "event": "Leapmotor-Europa"
-    },
-    {
-      "id": "29a4cb363c5425a6",
-      "title": "Stihl-Chef sieht für neue Fertigung in Deutschland kaum Perspektiven",
-      "url": "https://www.handelsblatt.com/unternehmen/mittelstand/familienunternehmer/stihl-chef-neue-fertigung-in-deutschland-da-fehlt-mir-derzeit-die-fantasie-01/100262271.html",
-      "source": "Handelsblatt",
-      "published_at": "2026-10-26T06:06:00Z",
-      "region": "International",
-      "summary": "Stihl hält am Nebeneinander von Akku- und Verbrennergeräten fest; die Elektrifizierung wird am tatsächlichen Kundentempo ausgerichtet.",
-      "event": "Stihl-Elektrifizierung"
-    },
-    {
-      "id": "deee137761d5f5c5",
-      "title": "Thyssenkrupp verselbstständigt Werkstoffhandel TK Accelis",
-      "url": "https://www.handelsblatt.com/unternehmen/industrie/thyssenkrupp-so-soll-die-sparte-werkstoffhandel-nach-dem-boersengang-wachsen/100261863.html",
-      "source": "Handelsblatt",
-      "published_at": "2026-10-26T03:05:00Z",
-      "region": "International",
-      "summary": "Die neue Börsengesellschaft TK Accelis strebt eine EBITDA-Marge von vier bis fünf Prozent an und will in Nordamerika wachsen.",
-      "event": "TK-Accelis"
-    },
-    {
-      "id": "dd1023561e223e0a",
-      "title": "Mercedes aktualisiert C-Klasse mit Verbrennungsmotor parallel zum Elektroauto",
-      "url": "https://www.wiwo.de/unternehmen/auto/mercedes-benz-stellt-vor-ueberarbeitete-c-klasse-verbrenner-starten-ab-42982-euro/100264835.html",
-      "source": "WirtschaftsWoche",
-      "published_at": "2026-10-25T23:01:00Z",
-      "region": "International",
-      "summary": "Mercedes verfolgt bei der C-Klasse parallel Elektro- und Verbrennerangebote; das überarbeitete Modell wird günstiger positioniert.",
-      "event": "Mercedes-C-Klasse"
-    },
-    {
-      "id": "87fc2c39252b9cfc",
-      "title": "WirtschaftsWoche analysiert Sieg der Studentenbewegung in Serbien",
-      "url": "https://www.wiwo.de/politik/ausland/studentenbewegung-triumphiert-serbien-steht-nach-parlamentswahl-vor-einem-machtwechsel/100264847.html",
-      "source": "WirtschaftsWoche",
-      "published_at": "2026-10-26T06:17:00Z",
-      "region": "International",
-      "summary": "Nach der Wahlniederlage von Vucic steht Serbien vor einem Regierungswechsel und schwierigen Reformen.",
-      "event": "Serbien-Wahl"
-    },
-    {
-      "id": "f2a01541591fbd84",
-      "title": "ORF: Lula gewinnt brasilianische Präsidentschaftsstichwahl",
-      "url": "https://orf.at/stories/3446153/",
-      "source": "ORF",
-      "published_at": "2026-10-26T04:42:00Z",
-      "region": "Österreich/Europa",
-      "summary": "Lula bleibt Präsident; Bolsonaro erkennt das Ergebnis nicht an. Der Wahlkampf war durch soziale und wirtschaftliche Gegensätze geprägt.",
-      "event": "Brasilien-Wahl"
-    },
-    {
       "id": "be4b1f413b6144d9",
       "title": "Bundesgebühren 2027 eingefroren, Klimaticket steigt moderat",
       "url": "https://orf.at/stories/3446134/",
@@ -103,26 +23,6 @@
       "region": "Österreich/Europa",
       "summary": "Die österreichische Regierung verzichtet 2027 auf die automatische Valorisierung zahlreicher Bundesgebühren.",
       "event": "Bundesgebühren"
-    },
-    {
-      "id": "52389f6a5af52a66",
-      "title": "Nationalfeiertag: Institutionen öffnen und Bundesheer präsentiert sich",
-      "url": "https://orf.at/stories/3445873/",
-      "source": "ORF",
-      "published_at": "2026-10-26T05:31:00Z",
-      "region": "Österreich/Europa",
-      "summary": "Hofburg, Parlament und Ministerien öffnen am Nationalfeiertag; das Bundesheer zeigt Ausrüstung und veranstaltet eine Angelobung.",
-      "event": "Nationalfeiertag"
-    },
-    {
-      "id": "ff352265a90ff81b",
-      "title": "Deutschland plant einfacheren Baustandard Gebäudetyp E",
-      "url": "https://www.handelsblatt.com/politik/deutschland/gebaeudetyp-e-regierung-bringt-einfachen-baustandard-auf-den-weg/100264888.html",
-      "source": "Handelsblatt",
-      "published_at": "2026-10-26T06:56:00Z",
-      "region": "International",
-      "summary": "Der Entwurf erlaubt freiwillige Abweichungen von Komfortstandards bei weiter geltenden Sicherheitsvorgaben; Pilotprojekte zeigen Einsparpotenzial.",
-      "event": "Gebäudetyp-E"
     },
     {
       "id": "2fa4cd66d509220e",
@@ -183,6 +83,106 @@
       "region": "Österreich",
       "summary": "Ein kulturelles Zuckerl: Die Presse stellt drei Bücher mit literarischen und historischen Entdeckungen vor.",
       "event": "Buch-Zuckerl"
+    },
+    {
+      "id": "9507ed3934fc349a",
+      "title": "IHS-Chef warnt vor Strukturwandel im Handel und fordert differenzierte Lohnabschlüsse",
+      "url": "https://orf.at/stories/3446132/",
+      "source": "ORF",
+      "published_at": "2026-10-25T15:10:00Z",
+      "region": "Österreich",
+      "summary": "Holger Bonin hält branchenabhängige KV-Abschlüsse und Umschulungen für notwendig; Gewerkschaften widersprechen.",
+      "event": "Handel-KV-IHS"
+    },
+    {
+      "id": "277f400d5064bb0c",
+      "title": "SpaceX finanziert KI-Chips mit 40 Milliarden Dollar Schulden",
+      "url": "https://orf.at/stories/3446173/",
+      "source": "ORF",
+      "published_at": "2026-10-25T21:58:00Z",
+      "region": "International",
+      "summary": "SpaceX meldet eine große Fremdfinanzierung für Grafikprozessoren und zeigt damit den Kapitalbedarf der KI-Infrastruktur.",
+      "event": "SpaceX-KI-Chips"
+    },
+    {
+      "id": "ff815a1f4c9af21d",
+      "title": "Audi plant eigenes US-Werk für vier Milliarden Dollar",
+      "url": "https://orf.at/stories/3446124/",
+      "source": "ORF",
+      "published_at": "2026-10-25T10:45:00Z",
+      "region": "International",
+      "summary": "Die Volkswagen-Tochter kündigt eine Fabrik in Georgia an; die Ankündigung fällt in den US-Wahlkampf.",
+      "event": "Audi-US-Werk"
+    },
+    {
+      "id": "4711955f35640c88",
+      "title": "Ölverschmutzung nach Tankerangriff trifft Strände der Emirate",
+      "url": "https://orf.at/stories/3446135/",
+      "source": "ORF",
+      "published_at": "2026-10-25T12:23:00Z",
+      "region": "International",
+      "summary": "Nach einem Tankerangriff wurde ein langer Ölteppich beobachtet; mehrere Strände am Persischen Golf sind gesperrt.",
+      "event": "Golf-Oelverschmutzung"
+    },
+    {
+      "id": "bf13af54eab4a5f5",
+      "title": "Anthropic untersucht KI-Zugriff auf gebührenpflichtige US-Wahldaten",
+      "url": "https://orf.at/stories/3446177/",
+      "source": "ORF",
+      "published_at": "2026-10-26T05:15:00Z",
+      "region": "International",
+      "summary": "Claude soll in einem Trainingslauf öffentlich verfügbare, aber gebührenpflichtige Daten abgerufen haben; Wahldaten seien nicht verändert worden.",
+      "event": "Anthropic-Wahldaten"
+    },
+    {
+      "id": "b78b00ae176ab607",
+      "title": "Le Pen eröffnet Präsidentschaftswahlkampf in Frankreich",
+      "url": "https://orf.at/stories/3446160/",
+      "source": "ORF",
+      "published_at": "2026-10-25T18:45:00Z",
+      "region": "Europa",
+      "summary": "Die französische Rechtsaußenpolitikerin wirbt mit einem politischen Neuanfang; die Veranstaltung wurde von Protesten begleitet.",
+      "event": "Frankreich-LePen-Wahlkampf"
+    },
+    {
+      "id": "77698deff46c8aec",
+      "title": "Selenskyj hofft auf Fortschritte bei Ukraine-Verhandlungen im November",
+      "url": "https://orf.at/stories/3446167/",
+      "source": "ORF",
+      "published_at": "2026-10-25T20:13:00Z",
+      "region": "Europa",
+      "summary": "Der ukrainische Präsident strebt Gespräche über Energieinfrastruktur und Schifffahrt sowie einen möglichen Dreiergipfel an.",
+      "event": "Ukraine-Verhandlungen"
+    },
+    {
+      "id": "4cd764e412691c56",
+      "title": "Huthis melden erneuten Raketenangriff auf Flughafen Riad",
+      "url": "https://orf.at/stories/3446172/",
+      "source": "ORF",
+      "published_at": "2026-10-25T21:55:00Z",
+      "region": "International",
+      "summary": "Die Miliz beansprucht einen Angriff kurz nach der teilweisen Wiederöffnung des Flughafens; Saudi-Arabien bestätigte ihn zunächst nicht.",
+      "event": "Riad-Flughafen-Angriff"
+    },
+    {
+      "id": "06c93a40633d2c07",
+      "title": "Warum Europas Protestwelle auch die EU unter Druck setzt",
+      "url": "https://www.theguardian.com/commentisfree/2026/oct/26/could-europes-autumn-of-discontent-threaten-the-survival-of-the-eu",
+      "source": "The Guardian",
+      "published_at": "2026-10-26T05:00:00Z",
+      "region": "Europa",
+      "summary": "Eine Analyse argumentiert, dass die EU angesichts von Wohnkosten, Löhnen und öffentlichen Diensten konkretere Ergebnisse liefern muss.",
+      "event": "EU-Proteste-Analyse"
+    },
+    {
+      "id": "81e2ce956fb55abe",
+      "title": "London macht Oxford Street zur Fußgängerzone",
+      "url": "https://www.theguardian.com/commentisfree/2026/oct/26/oxford-street-car-traffic-ban-new-plans-2027-sadiq-khan",
+      "source": "The Guardian",
+      "published_at": "2026-10-26T06:00:00Z",
+      "region": "Europa",
+      "summary": "Londons Bürgermeister beschreibt die neue autofreie Einkaufsstraße und weitere geplante Grünflächen und Veranstaltungen.",
+      "event": "London-Oxford-Street"
     }
   ],
   "articles": [
