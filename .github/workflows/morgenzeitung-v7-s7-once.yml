@@ -117,7 +117,7 @@ jobs:
               'limitations':['All 15 headlines were carried over from the verified v6 edition; they were independently rechecked, not newly researched.','Feedback changes the order, not membership, of the 10 feature articles.','The generic automated acceptance is conservative and remains PARTIAL; this independent run verifies the missing feedback and profile provenance.']
           }
           path='runs/'+date+'-v7.json'
-          content=(json.dumps(result,ensure_ascii=False,indent=2)+'\\n').encode()
+          content=(json.dumps(result,ensure_ascii=False,indent=2)+'\n').encode()
           repo.put_immutable(path,content)
           saved=repo.read(path)
           if saved is None or saved[0]!=content: raise SystemExit('Private S7 run readback mismatch')
