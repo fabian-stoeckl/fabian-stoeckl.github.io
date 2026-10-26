@@ -1,0 +1,91 @@
+name: Verify isolated Morgenzeitung preview
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Privat/Pressespiegel/previews/**'
+      - '.github/workflows/morgenzeitung-preview-v3-gate.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'Privat/Pressespiegel/previews/**'
+permissions:
+  contents: read
+jobs:
+  preview-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Independent private v3 replay, 10 deep sources and 20 headline sources
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib
+          from scripts.check_morgenzeitung import validate
+          from scripts.morgenzeitung_capture_preselection import PrivateRepo
+          from scripts.morgenzeitung_prepublication_gate import verify_edition
+          from scripts.morgenzeitung_source_preflight import preflight
+          path=pathlib.Path('Privat/Pressespiegel/previews/2026-10-26-v3.json')
+          edition=json.loads(path.read_text())
+          if edition.get('preview') is not True or edition.get('snapshot_version')!='v3':
+              raise SystemExit('FAIL: preview marker or version missing')
+          if len(edition.get('headlines',[]))!=20 or len(edition.get('articles',[]))!=10:
+              raise SystemExit('FAIL: preview must contain 20 headlines and 10 features')
+          validate(edition)
+          if not os.getenv('MORGENZEITUNG_FEEDBACK_TOKEN'):
+              raise SystemExit('FAIL: missing private replay token')
+          repo=PrivateRepo(os.environ['MORGENZEITUNG_FEEDBACK_TOKEN'])
+          shadow=dict(edition,preview=False)
+          report=verify_edition(repo,'2026-10-26',shadow,index=None,check_live=True)
+          evidence=report.get('live_source_evidence') or {}
+          if not report.get('prepublication_gate_verified') or not evidence.get('live_source_checks_passed'):
+              raise SystemExit('FAIL: independent S4 replay or selected original-source check incomplete')
+          headlines=[dict(item,source_url=item['url'],verified=True,topic='Heute wichtig') for item in edition['headlines']]
+          headline_report=preflight(headlines,'2026-10-26',minimum=20)
+          print('PREVIEW REPLAY: '+json.dumps({'version':report['snapshot_version'],'deep_count':len(report['selected_ids']),'deep_sources':evidence.get('source_verification_status'),'headline_verified':headline_report['ready_count'],'headline_blocked':headline_report['blocked_count']},ensure_ascii=False))
+          if not headline_report['preflight_passed']:
+              for row in headline_report['blocked']:
+                  print('HEADLINE SOURCE BLOCKED: '+json.dumps(row,ensure_ascii=False))
+              raise SystemExit('FAIL: not all 20 headline originals independently verified')
+          print('PASS: preview is independent, replayable, source-verified and non-production')
+          PY
+      - name: Verify deployed HTTPS preview and untouched original after main push
+        if: github.event_name == 'push'
+        run: |
+          python3 - <<'PY'
+          import json,pathlib,time,urllib.request
+          base='https://www.fabian-stoeckl.com/Privat/Pressespiegel/'
+          local=json.loads(pathlib.Path('Privat/Pressespiegel/previews/2026-10-26-v3.json').read_text())
+          def fetch(path):
+              req=urllib.request.Request(base+path,headers={'Cache-Control':'no-cache','User-Agent':'Morgenzeitung-Preview-Audit/1.0'})
+              with urllib.request.urlopen(req,timeout=20) as r:
+                  if r.status!=200: raise RuntimeError('HTTP '+str(r.status))
+                  return r.read().decode('utf-8')
+          for attempt in range(24):
+              try:
+                  live=json.loads(fetch('previews/2026-10-26-v3.json'))
+                  html=fetch('previews/2026-10-26-v3.html')
+                  index=json.loads(fetch('data/index.json'))
+                  original=json.loads(fetch('data/2026-10-26.json'))
+                  for section in ('headlines','articles'):
+                      if [x['id'] for x in live[section]]!=[x['id'] for x in local[section]]:
+                          raise ValueError('Preview ordered '+section+' IDs differ from merged JSON')
+                  if live.get('preview') is not True or live.get('snapshot_version')!='v3':
+                      raise ValueError('Wrong live preview marker/version')
+                  if index['dates'][0]!='2026-10-26' or original.get('snapshot_version')!='v2':
+                      raise ValueError('Original published edition/index unexpectedly changed')
+                  if 'Morgenzeitung – Testausgabe' not in html or '2026-10-26-v3.json' not in html:
+                      raise ValueError('Preview HTML not deployed correctly')
+                  print('HTTPS PASS: v3 preview, 20+10 ordered IDs, unchanged original v2 and index')
+                  break
+              except Exception as exc:
+                  print('Waiting for Pages preview deployment '+str(attempt+1)+'/24: '+str(exc))
+                  if attempt==23: raise
+                  time.sleep(15)
+          PY
+
