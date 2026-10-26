@@ -27,7 +27,7 @@ def validate_candidates(raw):
     # Avoid blocking legitimate specialist news or retroactive provenance changes.
     from scripts.morgenzeitung_source_diversity import audit_source_diversity
     import warnings
-    diversity = audit_source_diversity(json.loads(candidates_bytes))
+    diversity = audit_source_diversity(pool)
     if not diversity["diversity_passed"]:
         warnings.warn("Source concentration: " + str(diversity)
                       + "; research additional independent publishers before selection",
