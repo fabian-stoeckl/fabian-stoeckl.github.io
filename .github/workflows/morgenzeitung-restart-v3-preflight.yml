@@ -1,0 +1,50 @@
+name: Morgenzeitung isolated restart v3 source preflight
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/morgenzeitung-restart-v3-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Retrieve private unarchived research staging pool
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import base64,json,os,pathlib,urllib.request
+          token=os.getenv('MORGENZEITUNG_FEEDBACK_TOKEN')
+          if not token:
+              raise SystemExit('FAIL: missing private repo credential')
+          url='https://api.github.com/repos/fabian-stoeckl/morgenzeitung-feedback/contents/tests/2026-10-26-v3-preflight-candidates-r1.json'
+          req=urllib.request.Request(url,headers={'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'})
+          with urllib.request.urlopen(req,timeout=30) as response:
+              entry=json.load(response)
+          content=base64.b64decode(entry['content'])
+          data=json.loads(content)
+          if not isinstance(data,list) or len(data)<15:
+              raise SystemExit('FAIL: fewer than 15 independently researched candidates')
+          pathlib.Path(os.environ['RUNNER_TEMP'],'morgenzeitung-private-candidates.json').write_bytes(content)
+          print('Private staging pool loaded: '+str(len(data))+' candidates, blob '+entry['sha'])
+          PY
+      - name: Independent publisher HTTP/date preflight before immutable S4
+        run: |
+          set -o pipefail
+          python3 -m scripts.morgenzeitung_source_preflight --candidates "$RUNNER_TEMP/morgenzeitung-private-candidates.json" --date 2026-10-26 --minimum 15 | tee "$RUNNER_TEMP/morgenzeitung-source-preflight-report.json"
+      - name: Preserve independent diagnostics only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: restart-v3-source-preflight-diagnostics
+          path: ${{ runner.temp }}/morgenzeitung-source-preflight-report.json
+          if-no-files-found: ignore
+          retention-days: 7
