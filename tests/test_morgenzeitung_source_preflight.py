@@ -36,6 +36,15 @@ class PreflightTests(unittest.TestCase):
         result = preflight(pool, "2026-10-26", checker=checker)
         self.assertFalse(result["preflight_passed"])
 
+    def test_future_dated_article_is_blocked(self):
+        pool = candidates()
+        pool[0]["published_at"] = "2026-11-30T06:00:00+00:00"
+        def checker(items, date, publisher_dates):
+            return {"checked": [{"original_article_http_verified": True}]}
+        result = preflight(pool, "2026-10-26", checker=checker)
+        self.assertEqual(result["blocked_count"], 1)
+        self.assertIn("date", result["blocked"][0]["reason"].lower())
+
     def test_consent_wall_is_not_pass(self):
         def checker(items, date, publisher_dates):
             return {"checked": [{"original_article_http_verified": False}]}
