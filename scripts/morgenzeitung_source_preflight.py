@@ -32,7 +32,10 @@ def preflight(candidates, date, *, minimum=15, checker=None):
             blocked.append({"id": candidate.get("id"), "source": candidate.get("source"),
                             "reason": str(exc)})
     diversity = audit_source_diversity(ready) if ready else None
-    passed = len(ready) >= minimum and diversity is not None and diversity["diversity_passed"]
+    # Never archive the *full* pool while even one entry is blocked.
+    # A threshold of 15 verified items does not verify the remaining items.
+    passed = (len(ready) >= minimum and not blocked and diversity is not None
+              and diversity["diversity_passed"])
     return {"preflight_passed": bool(passed), "ready_count": len(ready),
             "minimum": minimum, "blocked_count": len(blocked), "blocked": blocked,
             "diversity": diversity,

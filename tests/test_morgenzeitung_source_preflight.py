@@ -24,6 +24,7 @@ class PreflightTests(unittest.TestCase):
         result = preflight(candidates(), "2026-10-26", checker=checker)
         self.assertEqual(result["ready_count"], 15)
         self.assertEqual(result["blocked_count"], 5)
+        self.assertFalse(result["preflight_passed"], "A pool with 15 verified and 5 blocked must never be archived")
         self.assertTrue(all("401" in x["reason"] for x in result["blocked"]))
         self.assertNotIn("Reuters", [x["source"] for x in result["blocked"] if "401" not in x["reason"]])
 
@@ -43,6 +44,7 @@ class PreflightTests(unittest.TestCase):
             return {"checked": [{"original_article_http_verified": True}]}
         result = preflight(pool, "2026-10-26", checker=checker)
         self.assertEqual(result["blocked_count"], 1)
+        self.assertFalse(result["preflight_passed"], "Even one future-dated candidate blocks full-pool capture")
         self.assertIn("date", result["blocked"][0]["reason"].lower())
 
     def test_consent_wall_is_not_pass(self):
