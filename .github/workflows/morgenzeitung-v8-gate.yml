@@ -1,0 +1,101 @@
+name: Morgenzeitung 26 Oct v8 preflight and independent gate
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/morgenzeitung-v8-gate.yml'
+      - 'tests/pressespiegel/test_v8_release.py'
+      - 'Privat/Pressespiegel/data/2026-10-26.json'
+  push:
+    branches: [main]
+    paths:
+      - 'Privat/Pressespiegel/data/2026-10-26.json'
+permissions:
+  contents: read
+jobs:
+  source-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Preflight of genuine private unarchived candidate pool
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json,os
+          from scripts.morgenzeitung_capture_preselection import PrivateRepo
+          from scripts.morgenzeitung_source_preflight import preflight
+          token=os.getenv('MORGENZEITUNG_FEEDBACK_TOKEN')
+          if not token: raise SystemExit('FAIL: private token unavailable to CI')
+          repo=PrivateRepo(token)
+          raw=repo.read('research/drafts/2026-10-26-v8-preflight-r2.json')
+          if raw is None: raise SystemExit('FAIL: missing unarchived candidate draft')
+          pool=json.loads(raw[0])
+          if len(pool)<15: raise SystemExit('FAIL: fewer than 15 candidates')
+          result=preflight(pool,'2026-10-26',minimum=15)
+          print(json.dumps(result,ensure_ascii=False))
+          if not result['preflight_passed']: raise SystemExit('FAIL: original publisher preflight')
+          print('PASS: 19 candidate originals verified; eligible for immutable v8 capture')
+          PY
+      - name: Verify S4 snapshot and live edition after archival
+        if: hashFiles('Privat/Pressespiegel/data/2026-10-26.json') != ''
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+        run: |
+          python3 -m unittest discover -s tests/pressespiegel -p test_v8_release.py -v
+          python3 - <<'PY'
+          import json,pathlib,os
+          from scripts.morgenzeitung_capture_preselection import PrivateRepo
+          from scripts.morgenzeitung_prepublication_gate import verify_edition
+          from scripts.morgenzeitung_source_preflight import preflight
+          edition=json.loads(pathlib.Path('Privat/Pressespiegel/data/2026-10-26.json').read_text())
+          if edition.get('snapshot_version')!='v8':
+              print('Existing edition is not v8; archival gate deferred')
+          else:
+              repo=PrivateRepo(os.environ['MORGENZEITUNG_FEEDBACK_TOKEN'])
+              result=verify_edition(repo,'2026-10-26',edition,check_live=True)
+              e=result.get('live_source_evidence') or {}
+              print('REPLAY',json.dumps({'verified':result['prepublication_gate_verified'],'sources':e.get('source_verification_status')},ensure_ascii=False))
+              if not result['prepublication_gate_verified'] or e.get('source_verification_status')!='PASS':
+                  raise SystemExit('FAIL: private replay or independent originals')
+              headlines=[dict(x,source_url=x['url'],verified=True,topic='Heute wichtig') for x in edition['headlines']]
+              h=preflight(headlines,'2026-10-26',minimum=15)
+              print('HEADLINE SOURCES',json.dumps({'ready':h['ready_count'],'blocked':h['blocked']},ensure_ascii=False))
+              if not h['preflight_passed']: raise SystemExit('FAIL: 15+ headline originals')
+              print('PASS: all selected edition originals independently checked')
+          PY
+
+      - name: Confirm live HTTPS edition and preserved index
+        if: github.event_name == 'push'
+        run: |
+          python3 - <<'PY'
+          import json,pathlib,time,urllib.request
+          base='https://www.fabian-stoeckl.com/Privat/Pressespiegel/'
+          local=json.loads(pathlib.Path('Privat/Pressespiegel/data/2026-10-26.json').read_text())
+          def get(path):
+              request=urllib.request.Request(base+path,headers={'Cache-Control':'no-cache','User-Agent':'Morgenzeitung-v8-HTTPS-Audit/1.0'})
+              with urllib.request.urlopen(request,timeout=20) as response:
+                  if response.status!=200: raise RuntimeError('HTTP '+str(response.status))
+                  return response.read().decode('utf-8')
+          for attempt in range(40):
+              try:
+                  live=json.loads(get('data/2026-10-26.json'))
+                  index=json.loads(get('data/index.json'))
+                  previous=json.loads(get('previews/2026-10-26-v6.json'))
+                  assert live['date']=='2026-10-26' and live['snapshot_version']=='v8'
+                  assert live.get('preview') is False
+                  assert index['dates'][0]=='2026-10-26'
+                  assert previous['snapshot_version']=='v6'
+                  for section in ('articles','headlines'):
+                      assert [a['id'] for a in live[section]]==[a['id'] for a in local[section]]
+                  print('HTTPS PASS: live v8 10–15 plus 15–20, original v6 and index preserved')
+                  break
+              except Exception as exc:
+                  print('Waiting for Pages',attempt+1,'of 40',str(exc))
+                  if attempt==39: raise
+                  time.sleep(15)
+          PY

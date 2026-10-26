@@ -4,11 +4,9 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/morgenzeitung-v7-gate.yml'
-      - 'Privat/Pressespiegel/data/2026-10-26.json'
   push:
     branches: [main]
     paths:
-      - 'Privat/Pressespiegel/data/2026-10-26.json'
 permissions:
   contents: read
 jobs:
@@ -75,6 +73,9 @@ jobs:
           import json,pathlib,time,urllib.request
           base='https://www.fabian-stoeckl.com/Privat/Pressespiegel/'
           local=json.loads(pathlib.Path('Privat/Pressespiegel/data/2026-10-26.json').read_text())
+          if local.get('snapshot_version')!='v7':
+              print('Historical v7 HTTPS gate superseded; v8 workflow owns new edition')
+              raise SystemExit(0)
           def get(path):
               request=urllib.request.Request(base+path,headers={'Cache-Control':'no-cache','User-Agent':'Morgenzeitung-v7-HTTPS-Audit/1.0'})
               with urllib.request.urlopen(request,timeout=20) as response:

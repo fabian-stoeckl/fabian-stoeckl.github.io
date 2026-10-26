@@ -4,11 +4,15 @@ on:
     paths: ['Privat/Pressespiegel/**', 'services/morgenzeitung/**', 'tests/pressespiegel/**', 'tests/pressespiegel-github*', 'tests/pressespiegel-direct*', 'scripts/check_morgenzeitung.py', '.github/workflows/morgenzeitung-feedback.yml', '.github/workflows/verify-pressespiegel.yml']
   push:
     paths: ['Privat/Pressespiegel/**', 'services/morgenzeitung/**', 'tests/pressespiegel/**', 'tests/pressespiegel-github*', '.github/workflows/verify-pressespiegel.yml']
+concurrency:
+  group: verify-morgenzeitung-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
   private-api-and-ui:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -23,7 +27,8 @@ jobs:
       - run: node tests/pressespiegel-direct.test.cjs
       - run: python3 -m unittest discover -s tests/pressespiegel -v
       - run: python3 scripts/check_morgenzeitung.py
-      - run: npx playwright install --with-deps chromium
+      - name: Install Chromium without slow system-package mutation
+        run: timeout 240s npx playwright install chromium
       - name: Static GitHub preview (no API calls or feedback submissions)
         run: |
           python3 -m http.server 8765 &

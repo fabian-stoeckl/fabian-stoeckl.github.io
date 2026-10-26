@@ -9,6 +9,9 @@ ROOT=Path(__file__).resolve().parents[2]
 DATA=ROOT/"Privat"/"Pressespiegel"/"data"
 
 class V7Release(unittest.TestCase):
+    def setUp(self):
+        if self.edition.get('snapshot_version') != 'v7':
+            self.skipTest('Historical v7 regression applies only to v7 editions')
     @classmethod
     def setUpClass(cls):
         cls.edition=json.loads((DATA/"2026-10-26.json").read_text())

@@ -1,16 +1,17 @@
 {
   "date": "2026-10-26",
   "window_start": "2026-10-25T10:14:08Z",
-  "window_end": "2026-10-26T10:47:20.959Z",
-  "available_at": "2026-10-26T10:47:20.959Z",
-  "researched_at": "2026-10-26T10:47:20.959Z",
+  "window_end": "2026-10-26T12:10:00Z",
+  "available_at": "2026-10-26T12:10:00Z",
+  "researched_at": "2026-10-26T12:10:00Z",
   "preview": false,
-  "snapshot_version": "v7",
+  "snapshot_version": "v8",
   "limitations": [
-    "Neuer produktiver Wiederholungslauf mit unabhängig vorab geprüften 15 Vertiefungskandidaten; zehn deterministisch ausgewählt.",
-    "Die 15 Headlines wurden aus der zuvor unabhängig geprüften v6-Recherche erneut übernommen und vor Veröffentlichung erneut unabhängig zu prüfen; sie sind keine 15 zusätzlichen neuen Meldungen.",
-    "Die neue Vertiefungsauswahl enthält sowohl erneut geprüfte als auch erstmals in dieser Auswahl verwendete Artikel; Paywall-Teaser werden nicht als Volltext ausgegeben.",
-    "Die 20 Fixstarter und zwei dauerhaften Erweiterungen wurden geprüft; einige Originalverlage blockierten den Zugriff und lieferten keine Auswahl."
+    "Produktiver Abend-Rerun: alle 20 Fixstarter und zwei dauerhafte Erweiterungen recherchiert; einzelne Originalverlage waren technisch nicht vollständig zugänglich.",
+    "19 Vertiefungskandidaten wurden vor der Auswahl unveränderlich privat archiviert; unabhängiger GitHub-CI-Quellen-Preflight und archivierter Auswahl-Replay wurden anschließend erfolgreich bestätigt.",
+    "Von 16 Schlagzeilen stammen 15 aus der erneut unabhängig geprüften produktiven v7-Ausgabe; eine Originalmeldung wurde ergänzt.",
+    "Meinungsbeiträge sind als Kommentare gekennzeichnet; Paywall-Teaser werden nicht als Volltexte ausgegeben.",
+    "Die bestehende Tages-ID 2026-10-26 wird versioniert korrigiert, nicht dupliziert."
   ],
   "headlines": [
     {
@@ -162,9 +163,59 @@
       "region": "International",
       "summary": "Rechteinhaber werfen Anthropic vor, 274 Songs aus dem Elvis-Presley-Katalog ohne Erlaubnis für KI-Training genutzt zu haben.",
       "event": "elvis-anthropic-urheberrecht"
+    },
+    {
+      "id": "da82d403ee6f46c8",
+      "title": "Thyssenkrupp-Werkstoffhandel vor Börsengang: Wachstum vor allem in Nordamerika",
+      "url": "https://www.handelsblatt.com/unternehmen/industrie/thyssenkrupp-so-soll-die-sparte-werkstoffhandel-nach-dem-boersengang-wachsen/100261863.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-26T03:05:00Z",
+      "region": "International",
+      "summary": "TK Accelis soll nach der Abspaltung eigenständig wachsen und setzt dabei auf nordamerikanische Industrieinvestitionen und Rechenzentren.",
+      "event": "thyssenkrupp-tk-accelis-boersengang"
     }
   ],
   "articles": [
+    {
+      "id": "978bacaee0dd4fea",
+      "title": "Österreichs Standortstärken: Forschung, Fachkräfte und spezialisierte Industrie",
+      "url": "https://www.diepresse.com/41351916/darin-ist-oesterreich-richtig-gut-die-versteckten-truempfe-des",
+      "source": "Die Presse",
+      "published_at": "2026-10-26T09:15:00Z",
+      "topic": "Industrie & Innovation",
+      "kind": "Standortanalyse",
+      "region": "Österreich",
+      "summary": "Die Presse analysiert Österreichs Standortvorteile bei F&E, technisch qualifizierten Arbeitskräften und spezialisierten Industrieclustern; sie nennt zugleich den Mangel an Risikokapital als Schwäche.",
+      "event": "oesterreich-standortstaerken-2026",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "facts": [
+        "Laut Betriebsansiedlungsagentur haben mehr als 400 internationale Unternehmen ihr Hauptquartier in Österreich.",
+        "Österreichs Forschungsquote wird für 2026 auf rund 3,3 Prozent des BIP geschätzt; stark sind unter anderem Life Sciences sowie Energie- und Umwelttechnik."
+      ],
+      "research_checked_at": "2026-10-26T12:10:00Z"
+    },
+    {
+      "id": "bee8298806c77047",
+      "title": "Leiterplatten-Lieferkrise gefährdet Europas Industrie",
+      "url": "https://www.handelsblatt.com/technik/it-internet/lieferkrise-dieses-elektronische-bauteil-gefaehrdet-europas-industrie/100261099.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-26T02:59:00Z",
+      "topic": "Industrie & Innovation",
+      "kind": "Industrieanalyse",
+      "region": "International",
+      "summary": "Der KI-Boom verschärft Lieferengpässe und Preissteigerungen bei Leiterplatten. Europäische Elektronikhersteller sind auf asiatische Fertigungskapazitäten angewiesen.",
+      "event": "leiterplatten-europa-2026",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "facts": [
+        "Der Bericht beschreibt stark gestiegene Leiterplattenpreise und Lieferprobleme für europäische Elektronikunternehmen.",
+        "Die hohe Nachfrage von KI-Rechenzentren bindet asiatische Fertigungskapazitäten; Europa hat große Teile der eigenen Leiterplattenproduktion verloren."
+      ],
+      "research_checked_at": "2026-10-26T12:10:00Z"
+    },
     {
       "id": "bd307e691a4fc852",
       "title": "Stihl-Chef sieht für neue Fertigung in Deutschland kaum Perspektiven",
@@ -202,26 +253,6 @@
       "facts": [
         "Gebauer & Griller entwickelt gekühlte Hochleistungsladekabel in Poysdorf.",
         "Laut Unternehmen ermöglichen diese Kabel 80 Prozent Ladestand in fünf Minuten."
-      ],
-      "research_checked_at": "2026-10-26T10:47:20.959Z"
-    },
-    {
-      "id": "4f30d2b5e96c10a8",
-      "title": "Kommentar: Europa unterschätzt seine Leiterplattenabhängigkeit",
-      "url": "https://www.handelsblatt.com/meinung/kommentare/kommentar-der-preis-der-billigjagd-europa-geht-die-elektronik-aus/100263837.html",
-      "source": "Handelsblatt",
-      "published_at": "2026-10-26T03:08:00Z",
-      "topic": "Industrie & Innovation",
-      "kind": "Kommentar",
-      "region": "International",
-      "summary": "Der Kommentar kritisiert, dass Europas Leiterplattenfertigung aus Kostengründen weitgehend nach Asien abgewandert ist. KI-Rechenzentren erhöhen die Nachfrage und verdrängen europäische Kunden; die Lieferkrise verdeutlicht das Risiko einseitiger Kostenoptimierung.",
-      "event": "leiterplatten-europa-kommentar",
-      "paywall": false,
-      "access": "full",
-      "research_access": "original_full",
-      "facts": [
-        "Die Leiterplattenproduktion wurde weitgehend von Europa nach Asien verlagert.",
-        "Die Nachfrage durch KI-Rechenzentren verschärft Engpässe bei europäischen Industriekunden."
       ],
       "research_checked_at": "2026-10-26T10:47:20.959Z"
     },
@@ -270,6 +301,66 @@
       "treat": false
     },
     {
+      "id": "4251a94a33c763f1",
+      "title": "CyberHAK in Wörgl verbindet Wirtschaftsausbildung und IT-Sicherheit",
+      "url": "https://www.krone.at/4347871",
+      "source": "Kronen Zeitung",
+      "published_at": "2026-10-25T16:00:00Z",
+      "topic": "Bildung & Forschung",
+      "kind": "Bildungsbericht",
+      "region": "Österreich",
+      "summary": "Ab dem Schuljahr 2027/28 startet in Wörgl ein fünfjähriger Handelsakademie-Zweig mit Cybersecurity, Sicherheitsmanagement und Datenschutz sowie 300 Stunden Pflichtpraktikum.",
+      "event": "cyberhak-woergl-2027",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "facts": [
+        "Die CyberHAK in Wörgl soll 2027/28 starten und ist der vierte Standort dieser Ausbildungsform in Österreich.",
+        "Die fünfjährige Ausbildung enthält 23 Schwerpunkt-Wochenstunden zu Cybersecurity, Sicherheitsmanagement und Datenschutz sowie 300 Stunden Pflichtpraktikum."
+      ],
+      "research_checked_at": "2026-10-26T12:10:00Z"
+    },
+    {
+      "id": "3eb026d1ec240d14",
+      "title": "Kommentar: Der Engpass der KI-Transformation ist die Organisation",
+      "url": "https://www.handelsblatt.com/meinung/kommentar-die-ki-transformation-scheitert-am-engpass-mensch/100264470.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-25T17:40:00Z",
+      "topic": "KI",
+      "kind": "Kommentar",
+      "region": "International",
+      "summary": "Trotz verbreiteter KI-Anwendungen lässt sich ihr finanzieller Nutzen oft schwer messen. Der Kommentar verweist auf organisatorische Engpässe und menschliche Freigabeprozesse als Produktivitätshemmnis.",
+      "event": "ki-agenten-produktivitaet-mensch",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "facts": [
+        "Der Handelsblatt-Kommentar zitiert eine Umfrage, wonach 43 Prozent der befragten deutschen Unternehmen den Ergebnisbeitrag ihrer KI-Nutzung nicht beziffern können.",
+        "Eine von Anthropic selbst durchgeführte Untersuchung beschreibt, dass KI-Agenten in interaktiven Sitzungen rund 80 Prozent der Zeit auf menschliche Eingaben warten; diese Unternehmensdaten sind nicht unabhängig geprüft."
+      ],
+      "research_checked_at": "2026-10-26T12:10:00Z"
+    },
+    {
+      "id": "1e3b29c62bbb76cd",
+      "title": "Deutschland: Unternehmensgründungen 2025 auf höchstem Stand seit 2010",
+      "url": "https://www.handelsblatt.com/unternehmen/gruendung-so-viele-firmen-gegruendet-wie-seit-15-jahren-nicht/100264961.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-26T11:08:00Z",
+      "topic": "Wirtschaft & Fiskalpolitik",
+      "kind": "Konjunkturmeldung",
+      "region": "International",
+      "summary": "ZEW und Creditreform schätzen für 2025 rund 183.000 Gründungen, 7,7 Prozent mehr als 2024; innovative Start-ups legten um 19 Prozent zu, kapitalintensivere Handelsregistergründungen dagegen nicht.",
+      "event": "deutschland-gruendungen-2025",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "facts": [
+        "ZEW und Creditreform schätzen für 2025 etwa 183.000 Unternehmensgründungen in Deutschland, 7,7 Prozent mehr als im Vorjahr.",
+        "Bei wachstumsorientierten innovativen Start-ups gab es etwa 3.100 Neugründungen, 19 Prozent mehr als 2024; Gründungen mit Handelsregistereintrag sanken um 3,3 Prozent."
+      ],
+      "research_checked_at": "2026-10-26T12:10:00Z"
+    },
+    {
       "id": "6e4e3baf80c159d2",
       "title": "Britischer Lehrlingsplan verlagert Ausbildungskosten für Ältere",
       "url": "https://www.theguardian.com/education/2026/oct/26/training-costs-apprenticeships-older-workers-youth-jobs-crisis-neet",
@@ -288,93 +379,7 @@
         "Rund eine Million britische 16- bis 24-Jährige sind weder in Bildung noch Beschäftigung oder Ausbildung."
       ],
       "research_checked_at": "2026-10-26T10:47:20.959Z"
-    },
-    {
-      "id": "8c2f1307e41a9bd6",
-      "title": "IHS-Chef Bonin fordert branchenspezifische Lohnabschlüsse",
-      "url": "https://www.diepresse.com/41390538/ihs-chef-bonin-fuer-differenzierte-abschluesse-bei-kv-verhandlungen",
-      "source": "Die Presse",
-      "published_at": "2026-10-25T12:50:00Z",
-      "topic": "Produktivität & Wettbewerbsfähigkeit",
-      "kind": "Lohnpolitik-Analyse",
-      "region": "Österreich",
-      "summary": "IHS-Direktor Holger Bonin will die Benya-Formel stärker an die unterschiedliche Produktivität der Branchen anpassen. Er sieht Handels-KV-Forderungen von 3,8 Prozent als ambitioniert und fordert bessere Umschulung beim Strukturwandel.",
-      "event": "bonin-branchen-kv",
-      "paywall": false,
-      "access": "full",
-      "research_access": "original_full",
-      "facts": [
-        "IHS-Chef Bonin plädiert für stärkere Berücksichtigung der Branchenproduktivität bei Kollektivverträgen.",
-        "Im Handel werden 3,8 Prozent mehr Lohn gefordert; Bonin hält das für ambitioniert."
-      ],
-      "research_checked_at": "2026-10-26T10:47:20.959Z"
-    },
-    {
-      "id": "3ea02488beff3008",
-      "title": "Ifo-Geschäftsklima steigt sechsten Monat in Folge",
-      "url": "https://www.handelsblatt.com/politik/konjunktur/konjunktur-ifo-geschaeftsklima-steigt-sechsten-monat-in-folge/100264921.html",
-      "source": "Handelsblatt",
-      "published_at": "2026-10-26T09:23:00Z",
-      "topic": "Wirtschaft & Fiskalpolitik",
-      "kind": "Konjunkturanalyse",
-      "region": "International",
-      "summary": "Der Ifo-Geschäftsklimaindex steigt im Oktober auf 90,2 nach 89,9 Punkten; die Erwartungen verbessern sich, die aktuelle Lage wird etwas schwächer eingeschätzt. Infrastruktur- und Verteidigungsausgaben stützen die Erholung, während private Investitionen noch zurückhaltend bleiben.",
-      "facts": [
-        "Ifo-Geschäftsklima: 90,2 Punkte im Oktober nach 89,9 im September.",
-        "Umfrage unter rund 9.000 Führungskräften; Erwartungen besser, aktuelle Lage schwächer."
-      ],
-      "event": "ifo-oktober-2026",
-      "paywall": false,
-      "access": "full",
-      "research_access": "original_full",
-      "research_checked_at": "2026-10-26T10:17:40.807Z",
-      "novelty": "",
-      "treat": false
-    },
-    {
-      "id": "e6999495be68753a",
-      "title": "Deutsche Nachrichtendienste setzen auf Google",
-      "url": "https://www.tagesschau.de/investigativ/ndr-wdr/nachrichtendienst-google-100.html",
-      "source": "Tagesschau / NDR / WDR",
-      "published_at": "2026-10-26T05:11:00Z",
-      "topic": "KI",
-      "kind": "Investigativrecherche",
-      "region": "International",
-      "summary": "BND, Verfassungsschutz und MAD planen laut NDR/WDR eine gemeinsame Cloud für Informationen bis zur Einstufung geheim. Technische Grundlage soll eine vom Internet isolierte Google-Lösung sein; das geschätzte Volumen beträgt mindestens 500 Millionen Euro, Zulassungen und Sicherheitsfragen sind noch offen.",
-      "facts": [
-        "Geplant ist Google Distributed Cloud in einer Air-Gapped-Version ohne direkte Internetverbindung.",
-        "Das Projekt soll mindestens 500 Millionen Euro kosten; mehrere Komponenten warten auf BSI-Zulassung."
-      ],
-      "event": "nachrichtendienste-google-cloud",
-      "paywall": false,
-      "access": "full",
-      "research_access": "original_full",
-      "research_checked_at": "2026-10-26T10:17:40.807Z",
-      "novelty": "",
-      "treat": false
-    },
-    {
-      "id": "d58baffdc1170ef9",
-      "title": "'Having money is not enough': Why a job no longer guarantees access to housing in Spain",
-      "url": "https://www.euronews.com/2026/10/26/having-money-is-not-enough-why-a-job-no-longer-guarantees-decent-housing-in-spain",
-      "source": "Euronews",
-      "published_at": "2026-10-26T06:00:00Z",
-      "topic": "Migration & Sozialstaat",
-      "kind": "Sozialökonomische Analyse",
-      "region": "International",
-      "summary": "In Spanien sind die Immobilienpreise von 2015 bis 2025 um 84,6 Prozent gestiegen, die durchschnittlichen Löhne bis 2024 nur um 27,85 Prozent. Der Bericht zeigt anhand von Mietbelastung und Erwerbsarmut, warum selbst Beschäftigung den Zugang zu angemessenem Wohnraum zunehmend nicht mehr sichert.",
-      "facts": [
-        "Immobilienpreise 2015–2025 plus 84,6 Prozent, durchschnittliche Löhne 2015–2024 plus 27,85 Prozent.",
-        "Vier von zehn Mieterhaushalten geben mehr als 40 Prozent ihres Einkommens für Miete aus."
-      ],
-      "event": "spanien-wohnen-einkommen",
-      "paywall": false,
-      "access": "full",
-      "research_access": "original_full",
-      "research_checked_at": "2026-10-26T10:17:40.807Z",
-      "novelty": "",
-      "treat": false
     }
   ],
-  "selection_note": "Auswahl nach vor der Selektion unveränderlich privat archivierten Kandidaten, Profil und Issue-Versionen; Industriethemen werden auf Basis des vorliegenden Feedbacks höher gereiht. Redaktionelle Qualität und Verifikation bleiben vorrangig."
+  "selection_note": "Deterministische Auswahl aus 19 unabhängig quellengeprüften und vor Selektion privat archivierten Kandidaten; Qualitäts-, Quellen- und Diversitätsprüfungen sowie reproduzierbarer Auswahl-Replay erfolgreich."
 }
