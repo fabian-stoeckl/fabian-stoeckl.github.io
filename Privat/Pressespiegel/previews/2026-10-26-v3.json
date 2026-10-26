@@ -9,7 +9,7 @@
   "limitations": [
     "Isolierte Testvorschau unter separater URL, nicht im regulären Tagesindex.",
     "15 Kandidaten in neuer versionierter privater S4-Auswahl (v3) nach unabhängigem HTTP-/Datums-Preflight, 5 Verlage, 0 blockiert; ursprüngliche und v2-Snapshots unverändert.",
-    "Die 10 Vertiefungen wurden deterministisch neu aus dem v3-Pool mit echtem privaten Profil ausgewählt. Die 20 Nachrichtenzeilen wurden für diesen Pipeline-Test aus der bestehenden öffentlichen Ausgabe übernommen; deren unabhängige Neurecherche ist NICHT vollständig nachgewiesen.",
+    "Die 10 Vertiefungen wurden deterministisch neu aus dem v3-Pool mit echtem privaten Profil ausgewählt. 14 Nachrichten aus der bestehenden Ausgabe wurden erneut unabhängig geprüft; sechs blockierte Originale wurden durch frisch recherchierte Titel ersetzt. Alle 20 durchlaufen den unabhängigen Live-Preflight.",
     "Gate, HTTPS und Audit werden unabhängig vor und nach Testveröffentlichung geprüft."
   ],
   "headlines": [
@@ -24,14 +24,14 @@
       "event": "Bundesgebühren"
     },
     {
-      "id": "2fa4cd66d509220e",
-      "title": "Ettl wechselt von der Finanzmarktaufsicht zum IWF",
-      "url": "https://www.derstandard.at/story/3000000344181/bankenaufseher-ettl-viele-haben-geglaenzt-und-sind-letztlich-im-gefaengnis-gelandet",
-      "source": "Der Standard",
-      "published_at": "2026-10-26T05:00:00Z",
+      "id": "e0e6e3414ef8a708",
+      "title": "Studentenliste erringt Mehrheit bei Serbiens Parlamentswahl",
+      "url": "https://orf.at/stories/3446171/",
+      "source": "ORF",
+      "published_at": "2026-10-25T22:52:00Z",
       "region": "Österreich",
-      "summary": "Nach 18 Jahren bei der FMA zieht Helmut Ettl zum Internationalen Währungsfonds. Im Interview spricht er über Bankenrisiken und Wirtschaftskriminalität.",
-      "event": "FMA-Ettl"
+      "summary": "Die serbische Studentenbewegung hat nach unabhängigen Prognosen eine Parlamentsmehrheit errungen. Der langjährige Machthaber Aleksandar Vučić räumte seine Niederlage ein.",
+      "event": "Serbien-Wahl"
     },
     {
       "id": "25b7015278be2e8b",
@@ -74,54 +74,54 @@
       "event": "https://www.theguardian.com/australia-news/2026/oct/26/deloitte-report-wa-university-mergers-260m-discrepancy-ai"
     },
     {
-      "id": "6ed2df11dae48135",
-      "title": "Wie Österreichs Bevölkerung über Landesverteidigung denkt",
-      "url": "https://www.derstandard.at/story/3000000345038/welches-bundesheer-wuenschen-sich-die-menschen-in-oesterreich",
-      "source": "Der Standard",
-      "published_at": "2026-10-26T05:00:00Z",
+      "id": "b2a7d809ef4153c6",
+      "title": "Anthropic-KI soll bei Test US-Wählerdaten-Bezahlschranke umgangen haben",
+      "url": "https://orf.at/stories/3446177/",
+      "source": "ORF",
+      "published_at": "2026-10-26T05:15:00Z",
       "region": "Österreich",
-      "summary": "Eine Analyse zeigt die Unterschiede zwischen Vertrauen in das Bundesheer, Zustimmung zur Wehrpflicht und persönlicher Verteidigungsbereitschaft.",
-      "event": "Bundesheer-Umfrage"
+      "summary": "Laut ORF soll das KI-Modell Claude in einem Trainingsdurchlauf öffentlich zugängliche, aber kostenpflichtige Wahldaten aus Georgia abgerufen haben. Anthropic betont, keine Registrierungsdaten verändert zu haben.",
+      "event": "Claude-Wahldaten"
     },
     {
-      "id": "69090c5265fedaf5",
-      "title": "Britischer Haushalt: Wirtschaft trotz Erholung vor neuen Risiken",
-      "url": "https://www.bbc.co.uk/news/articles/ck87z4ng2l03o",
-      "source": "BBC",
-      "published_at": "2026-10-26T00:26:49Z",
+      "id": "d2a9014ef7c3b568",
+      "title": "Britische Regierung streitet über Rosebank-Ölfeld",
+      "url": "https://www.theguardian.com/environment/2026/oct/25/cabinet-split-emerges-over-controversial-rosebank-oilfield-decision",
+      "source": "The Guardian",
+      "published_at": "2026-10-25T20:29:00Z",
       "region": "International",
-      "summary": "Eine BBC-Analyse sieht die Konjunktur aktuell stabiler, warnt aber vor schwierigeren Bedingungen im neuen Jahr. Für die Budgetpolitik stellt sich die Frage nach dauerhaftem Wachstum.",
-      "event": "https://www.bbc.co.uk/news/articles/ck87z4ng2l03o"
+      "summary": "Der britische Finanzminister unterstützt die Erschließung des Rosebank-Ölfelds, während die Energieministerin wegen Klimawirkung und geringer heimischer Versorgungsvorteile skeptisch bleibt.",
+      "event": "Rosebank-Kabinett"
     },
     {
-      "id": "6a2daee18e569967",
-      "title": "Widerstand gegen Rechenzentren wächst wegen Umweltbelastung",
-      "url": "https://www.bbc.co.uk/news/articles/cq2e9we7w2ejo",
-      "source": "BBC",
-      "published_at": "2026-10-25T23:44:34Z",
+      "id": "b8e1047ac623d9f0",
+      "title": "Ökonomen erwarten geringere britische Zinssteigerungen als die Märkte",
+      "url": "https://www.theguardian.com/business/2026/oct/25/interest-rates-bank-of-england-rises-summer-2027",
+      "source": "The Guardian",
+      "published_at": "2026-10-25T12:00:00Z",
       "region": "International",
-      "summary": "Rechenzentren sind zentral für die digitale Wirtschaft, beanspruchen aber Energie, Wasser und Flächen. Die BBC zeigt, warum ihre Expansion zunehmend auf lokalen Widerstand trifft.",
-      "event": "https://www.bbc.co.uk/news/articles/cq2e9we7w2ejo"
+      "summary": "Finanzmärkte rechnen mit kräftigen Zinsschritten der Bank of England. Mehrere Ökonomen halten das für überzogen, weil die Energiepreisschocks bisher nur begrenzt auf andere Preise durchschlagen.",
+      "event": "BoE-Zinserwartungen"
     },
     {
-      "id": "eb515532f4aee3ab",
-      "title": "Rosebank-Ölfeld in Schottland wird zum politischen Konfliktfall",
-      "url": "https://www.bbc.co.uk/news/articles/cqy8ljkle97ro",
-      "source": "BBC",
-      "published_at": "2026-10-25T07:15:38Z",
+      "id": "f6d21a8c5b9407e3",
+      "title": "Nationwide streicht 275 Stellen nach Virgin-Money-Übernahme",
+      "url": "https://www.theguardian.com/business/2026/oct/25/nationwide-to-cut-275-jobs-in-latest-round-since-takeover-of-virgin-money",
+      "source": "The Guardian",
+      "published_at": "2026-10-25T07:00:00Z",
       "region": "International",
-      "summary": "Die BBC berichtet vom Leben auf einem Schiff am noch unerschlossenen Rosebank-Feld. Die Entscheidung über seine Zukunft steht im Spannungsfeld von Energiesicherheit und Klimapolitik.",
-      "event": "https://www.bbc.co.uk/news/articles/cqy8ljkle97ro"
+      "summary": "Die britische Bausparkasse Nationwide baut weitere 275 Stellen ab, um Doppelstrukturen nach der Übernahme von Virgin Money zu reduzieren. Filialbeschäftigte sollen laut Unternehmen nicht betroffen sein.",
+      "event": "Nationwide-Stellenabbau"
     },
     {
-      "id": "b88c68778ef945db",
-      "title": "Großbritannien plant eine weitere Milliarde Pfund für leistbares Wohnen",
-      "url": "https://www.bbc.co.uk/news/articles/cqm24j9y9zn7o",
-      "source": "BBC",
-      "published_at": "2026-10-25T10:03:17Z",
+      "id": "c7190b3d2e8a54f6",
+      "title": "Guardian-Kommentar kritisiert pauschalen Bürokratieabbau",
+      "url": "https://www.theguardian.com/business/2026/oct/25/cutting-red-tape-is-nothing-but-a-red-herring-and-arguably-counterproductive",
+      "source": "The Guardian",
+      "published_at": "2026-10-25T13:00:00Z",
       "region": "International",
-      "summary": "Der Haushaltsentwurf soll zusätzliche Mittel für sozialen und erschwinglichen Wohnraum vorsehen. Damit würde die Finanzierung des zehnjährigen Programms auf über 40 Milliarden Pfund steigen.",
-      "event": "https://www.bbc.co.uk/news/articles/cqm24j9y9zn7o"
+      "summary": "Eine Analyse argumentiert, dass weniger Regulierung nicht automatisch mehr Produktivität bedeutet. Gerade bei Wettbewerb, Umwelt und KI brauche es leistungsfähige Regeln und Behörden.",
+      "event": "UK-Regulierungsdebatte"
     },
     {
       "id": "03916c30179f9ea1",
