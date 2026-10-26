@@ -7,28 +7,11 @@
   "preview": false,
   "snapshot_version": "v8",
   "limitations": [
-    "Produktiver Abend-Rerun: 22 Fixstarter gezielt durchsucht; einige Verlage bleiben für unabhängige Originalverifikation gesperrt.",
-    "19 Vertiefungskandidaten wurden vor S4 vollständig in unabhängigem GitHub-CI-Preflight bestätigt; 10 werden nach unveränderlich archiviertem Feedbackprofil ausgewählt.",
-    "Von 16 Schlagzeilen stammen 15 aus der erneut zu verifizierenden produktiven v7-Ausgabe; eine Originalmeldung wurde ergänzt.",
-    "Meinungsbeiträge sind ausdrücklich als Kommentare gekennzeichnet; Paywall-Teaser werden nicht als Volltexte ausgegeben.",
+    "Produktiver Abend-Rerun: alle 20 Fixstarter und zwei dauerhafte Erweiterungen recherchiert; einzelne Originalverlage waren technisch nicht vollständig zugänglich.",
+    "19 Vertiefungskandidaten wurden vor der Auswahl unveränderlich privat archiviert; unabhängiger GitHub-CI-Quellen-Preflight und archivierter Auswahl-Replay wurden anschließend erfolgreich bestätigt.",
+    "Von 16 Schlagzeilen stammen 15 aus der erneut unabhängig geprüften produktiven v7-Ausgabe; eine Originalmeldung wurde ergänzt.",
+    "Meinungsbeiträge sind als Kommentare gekennzeichnet; Paywall-Teaser werden nicht als Volltexte ausgegeben.",
     "Die bestehende Tages-ID 2026-10-26 wird versioniert korrigiert, nicht dupliziert."
-  ],
-  "overview": [
-    {
-      "title": "Österreichs Standortvorteile: F&E und industrielle Spezialisierung",
-      "summary": "Eine neue Analyse hebt die hohe Forschungsquote und technische Ausbildung hervor; gleichzeitig bleibt Risikokapital ein Engpass.",
-      "url": "https://www.diepresse.com/41351916/darin-ist-oesterreich-richtig-gut-die-versteckten-truempfe-des"
-    },
-    {
-      "title": "KI-Boom verschärft Europas Leiterplattenengpass",
-      "summary": "Steigende Nachfrage nach Rechenzentren beansprucht asiatische Kapazitäten; europäische Industrieunternehmen leiden unter Preis- und Lieferrisiken.",
-      "url": "https://www.handelsblatt.com/technik/it-internet/lieferkrise-dieses-elektronische-bauteil-gefaehrdet-europas-industrie/100261099.html"
-    },
-    {
-      "title": "KI-Einsatz trifft auf organisatorische Produktivitätsgrenzen",
-      "summary": "Ein Kommentar zeigt, warum Unternehmen trotz breiter KI-Nutzung ihre Erträge oft nicht beziffern können und menschliche Freigaben zum Engpass werden.",
-      "url": "https://www.handelsblatt.com/meinung/kommentar-die-ki-transformation-scheitert-am-engpass-mensch/100264470.html"
-    }
   ],
   "headlines": [
     {

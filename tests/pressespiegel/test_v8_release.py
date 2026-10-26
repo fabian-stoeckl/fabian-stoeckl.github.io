@@ -19,6 +19,7 @@ class V8Release(unittest.TestCase):
         self.assertTrue(validate(self.edition))
         self.assertEqual(self.edition["snapshot_version"],"v8")
         self.assertFalse(self.edition["preview"])
+        self.assertNotIn("overview", self.edition, "Keine dritte Rubrik/Highlights")
         self.assertTrue(10 <= len(self.edition["articles"]) <= 15)
         self.assertTrue(15 <= len(self.edition["headlines"]) <= 20)
     def test_chronology_and_no_duplicates(self):
