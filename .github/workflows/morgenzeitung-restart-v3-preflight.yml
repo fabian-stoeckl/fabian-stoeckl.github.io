@@ -25,7 +25,7 @@ jobs:
           token=os.getenv('MORGENZEITUNG_FEEDBACK_TOKEN')
           if not token:
               raise SystemExit('FAIL: missing private repo credential')
-          url='https://api.github.com/repos/fabian-stoeckl/morgenzeitung-feedback/contents/tests/2026-10-26-v3-preflight-candidates-r1.json'
+          url='https://api.github.com/repos/fabian-stoeckl/morgenzeitung-feedback/contents/tests/2026-10-26-v3-preflight-candidates-r2.json'
           req=urllib.request.Request(url,headers={'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'})
           with urllib.request.urlopen(req,timeout=30) as response:
               entry=json.load(response)
@@ -40,6 +40,15 @@ jobs:
         run: |
           set -o pipefail
           python3 -m scripts.morgenzeitung_source_preflight --candidates "$RUNNER_TEMP/morgenzeitung-private-candidates.json" --date 2026-10-26 --minimum 15 | tee "$RUNNER_TEMP/morgenzeitung-source-preflight-report.json"
+      - name: Require zero blocked candidates before immutable capture
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib
+          report=json.loads(pathlib.Path(os.environ["RUNNER_TEMP"],"morgenzeitung-source-preflight-report.json").read_text())
+          if report["blocked_count"] != 0 or not report["preflight_passed"]:
+              raise SystemExit("FAIL: mixed verified/unverified candidate pool must never be archived")
+          print("PASS: all "+str(report["ready_count"])+" original candidates independently verified")
+          PY
       - name: Preserve independent diagnostics only
         if: always()
         uses: actions/upload-artifact@v4
