@@ -57,6 +57,47 @@ jobs:
           set -euo pipefail
           python3 -m scripts.morgenzeitung_capture_preselection --date 2026-10-26 --snapshot-version v2 --candidates /tmp/morgenzeitung-v2-staging.json --limit 10 --max-per-source 4
           python3 -m scripts.morgenzeitung_capture_preselection --date 2026-10-26 --snapshot-version v2 --verify-existing
+      - name: One-off public publisher RSS research for nonoverlapping headlines
+        if: github.event_name == 'pull_request' && github.head_ref == 'audit/morgenzeitung-v2-preflight-20261026'
+        run: |
+          python3 - <<'PY'
+          import datetime as dt, email.utils, html, json, re, urllib.request, xml.etree.ElementTree as ET
+          feeds = {
+              "Guardian World": "https://www.theguardian.com/world/rss",
+              "Guardian Business": "https://www.theguardian.com/business/rss",
+              "Guardian Technology": "https://www.theguardian.com/technology/rss",
+              "BBC World": "https://feeds.bbci.co.uk/news/world/rss.xml",
+              "BBC Business": "https://feeds.bbci.co.uk/news/business/rss.xml",
+              "ORF": "https://rss.orf.at/news.xml",
+              "Politico Europe": "https://www.politico.eu/feed/",
+              "Euronews": "https://www.euronews.com/rss",
+              "AP": "https://apnews.com/hub/ap-top-news/rss",
+          }
+          start = dt.datetime(2026,10,25,6,tzinfo=dt.timezone.utc)
+          end = dt.datetime.now(dt.timezone.utc) + dt.timedelta(minutes=5)
+          for name, url in feeds.items():
+              try:
+                  req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (compatible; MorgenzeitungResearch/1.0)"})
+                  with urllib.request.urlopen(req,timeout=14) as response:
+                      raw=response.read(1200000)
+                  root=ET.fromstring(raw)
+                  found=[]
+                  for item in root.findall(".//item"):
+                      title=(item.findtext("title") or "").strip()
+                      link=(item.findtext("link") or "").strip()
+                      date=(item.findtext("pubDate") or "").strip()
+                      try:
+                          stamp=email.utils.parsedate_to_datetime(date)
+                          if stamp.tzinfo is None: continue
+                          stamp=stamp.astimezone(dt.timezone.utc)
+                      except Exception: continue
+                      if not (start <= stamp <= end): continue
+                      desc=html.unescape(re.sub("<[^>]+>"," ",item.findtext("description") or ""))
+                      found.append({"title":title[:125],"url":link[:300],"published_at":stamp.isoformat(),"description":re.sub(r"\\s+"," ",desc).strip()[:180]})
+                  print(json.dumps({"feed":name,"status":"ok","matches":len(found),"articles":found[:14]},ensure_ascii=False))
+              except Exception as exc:
+                  print(json.dumps({"feed":name,"status":"error","error":str(exc)[:160]},ensure_ascii=False))
+          PY
       - name: Replay private original selection against edition
         env:
           MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
