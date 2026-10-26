@@ -123,9 +123,24 @@ class PrivateRepo:
             raise ValueError("Private snapshot readback failed: " + path)
 
 
-def capture(repo, date, candidates_bytes, *, limit=10, max_per_source=4):
+def snapshot_paths(date, version=None):
+    """Immutable legacy paths or explicit, separately versioned S4 paths."""
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date):
         raise ValueError("Invalid date")
+    if version is not None and (not isinstance(version, str)
+            or not re.fullmatch(r"v[2-9][0-9]*", version)):
+        raise ValueError("Invalid snapshot version")
+    stem = date + ("-" + version if version else "")
+    return {
+        "candidates": "candidates/" + stem + ".json",
+        "profile": "snapshots/" + stem + "-profile.json",
+        "issues": "snapshots/" + stem + "-issues.json",
+        "parameters": "snapshots/" + stem + "-selection-parameters.json",
+    }
+
+
+def capture(repo, date, candidates_bytes, *, limit=10, max_per_source=4, version=None):
+    names = snapshot_paths(date, version)
     validate_candidates(candidates_bytes)
     if type(limit) is not int or type(max_per_source) is not int or not 1 <= limit <= 15 or max_per_source < 1:
         raise ValueError('Invalid editorial selection parameters')
@@ -148,10 +163,10 @@ def capture(repo, date, candidates_bytes, *, limit=10, max_per_source=4):
     versions.sort(key=lambda item: item["number"])
     versions_bytes = (json.dumps(versions, ensure_ascii=False, indent=2) + "\n").encode()
     paths = {
-        "candidates/" + date + ".json": candidates_bytes,
-        "snapshots/" + date + "-profile.json": profile_bytes,
-        "snapshots/" + date + "-issues.json": versions_bytes,
-        "snapshots/" + date + "-selection-parameters.json": (json.dumps({"limit": limit, "max_per_source": max_per_source}, sort_keys=True) + "\n").encode(),
+        names["candidates"]: candidates_bytes,
+        names["profile"]: profile_bytes,
+        names["issues"]: versions_bytes,
+        names["parameters"]: (json.dumps({"limit": limit, "max_per_source": max_per_source}, sort_keys=True) + "\n").encode(),
     }
     # Preflight all paths before any write, preventing known conflicts.
     for path, data in paths.items():
@@ -169,16 +184,9 @@ def capture(repo, date, candidates_bytes, *, limit=10, max_per_source=4):
 
 
 
-def verify_existing(repo, date):
+def verify_existing(repo, date, version=None):
     """Fail closed unless all four original preselection files exist and agree."""
-    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date):
-        raise ValueError("Invalid date")
-    names = {
-        "candidates": "candidates/" + date + ".json",
-        "profile": "snapshots/" + date + "-profile.json",
-        "issues": "snapshots/" + date + "-issues.json",
-        "parameters": "snapshots/" + date + "-selection-parameters.json",
-    }
+    names = snapshot_paths(date, version)
     entries = {}
     for key, path in names.items():
         item = repo.read(path)
@@ -208,6 +216,7 @@ def main():
     parser.add_argument("--date", required=True)
     parser.add_argument("--candidates", type=pathlib.Path)
     parser.add_argument("--verify-existing", action="store_true", help="Require all four immutable private snapshots before publication")
+    parser.add_argument("--snapshot-version", help="Immutable replacement version, e.g. v2; never overwrite original date snapshots")
     parser.add_argument("--limit", type=int, default=10)
     parser.add_argument("--max-per-source", type=int, default=4)
     parser.add_argument("--connector-input", type=pathlib.Path, help="Pinned private profile and complete issues exported by authenticated GitHub connector")
@@ -222,13 +231,14 @@ def main():
             if not args.connector_readback or args.connector_input or args.candidates:
                 parser.error('Connector verification requires readback and original manifest only')
             result = verify_readback(json.loads(args.connector_manifest.read_text()),
-                                     json.loads(args.connector_readback.read_text()), args.date)
+                                     json.loads(args.connector_readback.read_text()), args.date,
+                                     version=args.snapshot_version)
         else:
             if not args.connector_input or not args.candidates or args.connector_readback:
                 parser.error('Connector preparation requires input, candidates and manifest')
             result = prepare(json.loads(args.connector_input.read_text()), args.date,
                              args.candidates.read_bytes(), limit=args.limit,
-                             max_per_source=args.max_per_source)
+                             max_per_source=args.max_per_source, version=args.snapshot_version)
             # Never replace an original preparation with changed data.
             raw = json.dumps(result, ensure_ascii=False, indent=2) + '\n'
             if args.connector_manifest.exists() and args.connector_manifest.read_text() != raw:
@@ -240,13 +250,13 @@ def main():
         return
     repo = PrivateRepo(os.environ.get("MORGENZEITUNG_FEEDBACK_TOKEN"))
     if args.verify_existing:
-        result = verify_existing(repo, args.date)
+        result = verify_existing(repo, args.date, version=args.snapshot_version)
     else:
         if args.candidates is None:
             parser.error("--candidates required when capturing")
         result = capture(repo, args.date, args.candidates.read_bytes(), limit=args.limit,
-                         max_per_source=args.max_per_source)
-        result["verification"] = verify_existing(repo, args.date)
+                         max_per_source=args.max_per_source, version=args.snapshot_version)
+        result["verification"] = verify_existing(repo, args.date, version=args.snapshot_version)
     print(json.dumps(result, ensure_ascii=False))
 
 
