@@ -3,6 +3,8 @@
  */
 'use strict';
 const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
 const root='https://www.fabian-stoeckl.com/Privat/Pressespiegel/';
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function get(url) {
@@ -54,6 +56,19 @@ async function eventual(url,test,label) {
    const data=JSON.parse(contents);
    assert(Array.isArray(data.dates) && data.dates.length>0);
  },'Live edition index');
+ // Confirm the public daily JSON is EXACTLY the committed edition, not merely
+ // the same article IDs or a stale previous deployment.
+ const expectedIndex=JSON.parse(fs.readFileSync(path.join(__dirname,'../Privat/Pressespiegel/data/index.json'),'utf8'));
+ const latest=expectedIndex.dates[0];
+ const expectedEdition=JSON.parse(fs.readFileSync(path.join(__dirname,'../Privat/Pressespiegel/data',latest+'.json'),'utf8'));
+ await eventual(root+'data/'+latest+'.json',contents=>{
+   const actual=JSON.parse(contents);
+   assert.deepEqual(actual,expectedEdition,'Live HTTPS edition differs from committed '+latest);
+   assert.equal(actual.date,latest);
+   assert.equal(actual.preview,false);
+   assert.equal(actual.articles.length,expectedEdition.articles.length);
+   assert.equal(actual.headlines.length,expectedEdition.headlines.length);
+ },'Live latest edition exact JSON parity');
  // This test deliberately DOES NOT validate authenticated GitHub POST from user's browser.
  console.log('PUBLIC WEBSITE SMOKE TEST PASSED – authenticated personal browser submission remains untested.');
 })().catch(e=>{console.error('PUBLIC WEBSITE SMOKE TEST FAILED:',e.message);process.exitCode=1});
