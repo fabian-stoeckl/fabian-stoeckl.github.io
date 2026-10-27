@@ -42,12 +42,13 @@ jobs:
           if not report['preflight_passed']:
               raise SystemExit('PARTIAL: raw pool has blocked candidates; curate and rerun before S4')
           print('PASS: all '+str(report['ready_count'])+' independently confirmed original candidates; S4 capture permitted')
-          verified_entry=repo.read('research/drafts/2026-10-27-v2-eligible-r1.json')
+          verified_entry=repo.read('research/drafts/2026-10-27-v2-eligible-r2.json')
           if verified_entry is None: raise SystemExit('BLOCKED: eligible pool missing')
           verified=json.loads(verified_entry[0])
           keys=('id','source','source_url','title','published_at','topic')
           if len(verified)!=len(pool) or any(
-              any(x.get(k)!=y.get(k) for k in keys) for x,y in zip(pool,verified)):
+              any(x.get(k)!=y.get(k) for k in keys)
+              for x,y in zip(sorted(pool,key=lambda x:x['id']),sorted(verified,key=lambda x:x['id']))):
               raise SystemExit('BLOCKED: verified draft identity differs from independently checked raw pool')
           triaged=triage(verified,'2026-10-27',minimum=15)
           print('TRIAGE',json.dumps({k:v for k,v in triaged.items() if k!='eligible'},ensure_ascii=False),flush=True)
@@ -57,6 +58,13 @@ jobs:
           print('FINAL PREFLIGHT',json.dumps(final,ensure_ascii=False),flush=True)
           if not final['preflight_passed']: raise SystemExit('PARTIAL: eligible S4 pool not independently confirmed')
           print('PASS: triage and separate final source preflight; immutable S4 capture may begin')
+          headlines_entry=repo.read('research/drafts/2026-10-27-v2-headlines-r1.json')
+          if headlines_entry is None: raise SystemExit('BLOCKED: headline draft missing')
+          headlines=json.loads(headlines_entry[0])
+          news=preflight(headlines,'2026-10-27',minimum=15)
+          print('HEADLINE PREFLIGHT',json.dumps(news,ensure_ascii=False),flush=True)
+          if not news['preflight_passed']: raise SystemExit('PARTIAL: headlines not independently source-verified')
+          print('PASS: all '+str(len(headlines))+' headline original URLs independently checked')
           PY
       - uses: actions/upload-artifact@v4
         if: always()
