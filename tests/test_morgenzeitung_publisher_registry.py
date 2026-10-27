@@ -14,7 +14,8 @@ class PublisherRegistryTests(unittest.TestCase):
         self.assertIn("Der Standard", FEEDS)
         self.assertGreaterEqual(len(FEEDS["Bloomberg"][0]), 3)
         self.assertGreaterEqual(len(FEEDS["Der Standard"][0]), 3)
-        self.assertNotIn("POLITICO Europe", FEEDS)
+        self.assertIn("POLITICO Europe", FEEDS)
+        self.assertTrue(all(url.startswith("https://www.politico.eu/") for url in FEEDS["POLITICO Europe"][0]))
 
     def test_no_false_politico_us_evidence(self):
         with self.assertRaises(ValueError):
