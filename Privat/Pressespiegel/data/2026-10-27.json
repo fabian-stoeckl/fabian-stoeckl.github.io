@@ -1,17 +1,19 @@
 {
   "date": "2026-10-27",
   "window_start": "2026-10-26T12:10:00Z",
-  "window_end": "2026-10-27T12:20:16Z",
+  "window_end": "2026-10-27T13:37:24Z",
   "available_at": "2026-10-27T12:20:16Z",
-  "researched_at": "2026-10-27T12:20:16Z",
+  "researched_at": "2026-10-27T13:37:24Z",
   "preview": false,
-  "snapshot_version": "v2",
+  "snapshot_version": "v3",
   "limitations": [
     "Vollständiger erneuter Recherchelauf mit 22 Pflichtmedien; Quellenzugriffsprobleme führen nicht zum Ausschluss einzelner Verlage.",
-    "23 unterschiedliche Kandidaten aus fünf Medien wurden durch unabhängigen GitHub-Runner geprüft, danach unveränderlich privat vor der Auswahl archiviert; 15 Vertiefungen ausgewählt.",
     "Alle zuvor bewerteten zehn Vertiefungen und sechzehn Nachrichten behalten ihre ursprünglichen Artikel-IDs. Fünf neue Vertiefungen und drei zusätzliche Nachrichten ergänzen dieselbe Tagesausgabe.",
     "Zusammenfassungen hinter Paywalls beschränken sich auf tatsächlich zugängliche Originalinformationen und nachprüfbare ergänzende Belege. Volltextzugang beeinflusst das Ranking nicht.",
-    "Le Monde ist eine neue Testquelle, keine automatisch dauerhaft aufgenommene Pflichtzeitung. Die Aufnahme soll von wiederholter Relevanz und tatsächlichem Leserfeedback abhängen."
+    "Le Monde ist eine neue Testquelle, keine automatisch dauerhaft aufgenommene Pflichtzeitung. Die Aufnahme soll von wiederholter Relevanz und tatsächlichem Leserfeedback abhängen.",
+    "Erneute Recherche aller 22 Pflichtmedien mit einzelnem privaten Original-/Fallback-Protokoll; 18 Medien lieferten verifizierte Originalbelege, ein Medium nur einen nicht geeigneten Leserbrief und bei drei Medien blieb die Einzelartikelidentität unbestätigt. Keine Zeitung wurde aus dem Pool gestrichen.",
+    "Sechs weitere frische Rohhinweise wurden privat protokolliert, aber mangels unabhängigem GitHub-Preflight nicht als neue S4-Kandidaten zugelassen. Die 23 zuvor unabhängig verifizierten Kandidaten wurden für Version v3 byte-identisch übernommen und mit dem aktuellen echten Lernprofil neu ausgewertet.",
+    "Die unabhängige Drei-Tage-Quellenzugangsbeurteilung bleibt AUDIT_GAP, weil vollständige redaktionelle Tagesprotokolle für 25. und 26. Oktober fehlen. Das ist kein bestätigter Verlagsausfall."
   ],
   "headlines": [
     {
@@ -507,12 +509,27 @@
       "research_checked_at": "2026-10-27T12:20:16Z"
     }
   ],
-  "selection_note": "Neuauswahl aus 23 unabhängig bestätigten und vor Auswahl unveränderlich privat archivierten Artikeln (S4 432ffa2d6f54e1262bf0c629bd07b31eab718367; Version v2). 15 Vertiefungen, fünf neue; Original-IDs der bereits bewerteten Artikel bleiben erhalten. Das aktuelle echte Lernprofil aus den Feedback-Issues 3–8 verändert die Auswahl nachweislich; max. zehn Beiträge je Verlag.",
+  "selection_note": "Produktiver v3-Rerun: neue Einzelrecherche der 22 Pflichtmedien und offene Zusatzsuche; 23 bereits unabhängig quellengeprüfte Kandidaten (identischer S4-Blob 0fd39a509cdb666c90fca6e707a707650005ef16) in neuem unveränderlichem privaten v3-Snapshot mit aktuellem echtem Feedbackprofil aus Issues 3–8; 15 Vertiefungen neu gerankt. Die Auswahl entspricht v2, weil frische Zusatzhinweise noch keine unabhängige Original-Minutenprüfung im GitHub-Runner bestanden haben. Bestehende Artikel-IDs und 19 Nachrichten bleiben unverändert; technische Volltextverfügbarkeit erhält keinen Rankingbonus.",
   "new_sources": [
     {
       "name": "Le Monde",
       "why": "Zwei aktuelle Originalberichte zu KI-Arbeit, europäischem Datenschutz und Ausbildung. Zunächst Testquelle; dauerhafte Aufnahme erst nach wiederholtem Nutzwert und deinem Feedback.",
       "example_url": "https://www.lemonde.fr/economie/article/2026/10/27/des-petites-mains-de-l-ia-portent-plainte-pour-infraction-aux-regles-de-protection-des-donnees_6801142_3234.html"
     }
-  ]
+  ],
+  "editorial_audit": {
+    "date": "2026-10-27",
+    "mandatory_publishers_researched": 22,
+    "original_identity_evidence_publishers": 18,
+    "verified_but_not_suitable_publishers": 1,
+    "unverified_original_publishers": [
+      "Der Standard",
+      "Bloomberg",
+      "POLITICO Europe"
+    ],
+    "full_22_publisher_ledger_private_readback": true,
+    "three_day_access_assessment": "AUDIT_GAP",
+    "new_raw_leads_pending_preflight": 6,
+    "explanation": "Die redaktionelle Quellenabdeckung ist dokumentiert; fehlende Artikelbelege und historische Mehrtages-Audits werden nicht als PASS ausgegeben."
+  }
 }
