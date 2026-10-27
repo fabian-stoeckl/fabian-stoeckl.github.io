@@ -22,3 +22,6 @@
 ## Offen / künftig zu prüfen
 - Echtes privates Feedback aus der **neuen** Kachel und dessen Einfluss auf die **darauffolgende** Ausgabe lassen sich erst nach mindestens einer echten neuen Nutzerbewertung und dem nächsten produktiven Lauf nachweisen.
 - Tägliche pünktliche Veröffentlichung hängt weiterhin von der Ausführung und GitHub Pages ab; Zielzeit 07:45 ist kein garantierter Fertigstellungstermin.
+
+## Vereinheitlichung der Oberfläche am 28.10.2026
+Die neue Kachel `/Privat/Morgenzeitung-neu/` verwendet künftig dieselbe sichtbare Oberfläche und Präferenzseite wie die alte Morgenzeitung. Die Texte und CSS/JS werden gemeinsam wiederverwendet, sodass spätere UI-Korrekturen beiden zugutekommen. Der **Backend-Unterschied** bleibt bestehen: eigenes Tagesarchiv, das bisher eingerichtete neue Feedback-Issueformat, eigenes Profil und eigene Tagesautomation. Keine zweite neue Kachel oder Parallel-URL.

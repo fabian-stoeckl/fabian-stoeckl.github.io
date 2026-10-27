@@ -1,28 +1,20 @@
 name: Verify Morgenzeitung neu
 on:
   pull_request:
-    paths:
-      - 'Privat/Morgenzeitung-neu/**'
-      - 'Privat/index.html'
-      - 'tests/morgenzeitung-neu.test.cjs'
-      - 'services/morgenzeitung-neu/**'
-      - '.github/workflows/verify-morgenzeitung-neu.yml'
+    paths: ['Privat/Morgenzeitung-neu/**', 'Privat/index.html', 'tests/morgenzeitung-neu.test.cjs', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu_learning.py', 'tests/morgenzeitung-neu/**', '.github/workflows/verify-morgenzeitung-neu.yml']
   push:
-    paths:
-      - 'Privat/Morgenzeitung-neu/**'
-      - 'Privat/index.html'
-      - 'tests/morgenzeitung-neu.test.cjs'
-      - 'services/morgenzeitung-neu/**'
-      - '.github/workflows/verify-morgenzeitung-neu.yml'
-permissions:
-  contents: read
+    paths: ['Privat/Morgenzeitung-neu/**', 'Privat/index.html', 'tests/morgenzeitung-neu.test.cjs', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu_learning.py', 'tests/morgenzeitung-neu/**', '.github/workflows/verify-morgenzeitung-neu.yml']
+permissions: {contents: read}
 jobs:
-  structural-and-learning-contract:
+  verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
       - run: node tests/morgenzeitung-neu.test.cjs
+      - run: node tests/morgenzeitung-neu-feedback.test.cjs
+      - run: python3 -m unittest discover -s tests/morgenzeitung-neu -v

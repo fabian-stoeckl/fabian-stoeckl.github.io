@@ -1,41 +1,38 @@
 <!doctype html>
-<html lang="de">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
-<title>Morgenzeitung neu · Privat</title>
-<link rel="stylesheet" href="./style.css?v=1">
-<script src="./app.js?v=1" defer></script>
-</head>
-<body>
-<main class="page">
-<header class="mast">
-  <div class="overline"><a href="../">← Privat</a><span>DEINE NEUE MORGENZEITUNG</span><a href="../Pressespiegel/">Bisherige Ausgabe</a></div>
-  <h1>Morgenzeitung <em>neu.</em></h1>
-  <p class="dek">Mehr interessante Artikel. Weniger Technik. Eine Auswahl, die mit deinen Bewertungen besser wird.</p>
-  <div class="meta"><span>Täglich · Ziel 07:45 Uhr · Wien</span><label>Ausgabe <select id="date" aria-label="Ausgabe auswählen"></select></label></div>
-</header>
-<p id="status" class="status" role="status">Ausgabe wird geladen …</p>
-<section class="learning" aria-label="Auswahl und Lernstand"><span class="eyebrow">DEIN INTERESSENFILTER</span><p id="learning">Echte Bewertungen fließen in die nächste Auswahl ein – ohne Themen vorschnell auszuschließen.</p></section>
-<nav class="tabs" aria-label="Inhalt"><button type="button" id="show-deep" aria-pressed="true">Vertiefungen <span id="deep-count"></span></button><button type="button" id="show-news" aria-pressed="false">Heute wichtig <span id="news-count"></span></button></nav>
-<section id="entries" aria-live="polite" aria-label="Artikel der ausgewählten Ausgabe"></section>
-<section class="response" aria-labelledby="response-head">
- <span class="eyebrow">BESSER WERDEN</span><h2 id="response-head">Was war für dich interessant?</h2>
- <p>Bewerte mit einem Klick auf einen der drei Punkte pro Artikel. Du kannst auch einfach einen Wunsch für morgen formulieren. Erst „Feedback speichern“ überträgt deine Auswahl privat.</p>
- <label for="comment">Was soll künftig mehr, weniger oder anders vorkommen?</label>
- <textarea id="comment" maxlength="2000" rows="3" placeholder="Optional: Mehr europäische Wirtschaftspolitik, weniger kleine Randmeldungen …"></textarea>
- <button id="save" class="primary" type="button">Feedback speichern</button>
- <p id="save-status" role="status"></p>
- <p id="saved-link" hidden></p>
- <details id="connection"><summary>GitHub-Feedbackzugang einmalig einrichten</summary>
-   <p>Wie bei der bisherigen Morgenzeitung speichert ein eingeschränkter GitHub-Schlüssel deine Bewertungen direkt in deinem privaten Feedback-Repository. Ohne Schlüssel kannst du die Zeitung lesen, aber Bewertungen nicht an den nächsten Lauf übergeben.</p>
-   <label for="token">Fine-grained GitHub-Token (nur <code>fabian-stoeckl/morgenzeitung-feedback</code>, Issues: Lesen und Schreiben)</label>
-   <input id="token" type="password" autocomplete="off" spellcheck="false">
-   <label class="consent"><input type="checkbox" id="consent"> Schlüssel auf diesem Gerät speichern (lokaler Browserspeicher; nicht auf fremden Geräten verwenden)</label>
-   <button id="connect" type="button">Zugang speichern</button><button id="disconnect" type="button" class="quiet">Zugang hier entfernen</button>
-   <p id="connection-status" role="status"></p>
- </details>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><title>Morgenzeitung neu · Pressespiegel</title><link rel="stylesheet" href="../Pressespiegel/style.css?v=20261027u1"><script src="../Pressespiegel/github.js" defer></script><script src="./direct-feedback.js" defer></script><script src="../Pressespiegel/app.js"?v=20261027u2" defer></script><script>function openOldPreferencesBookmark(){if(location.hash==="#praeferenzen")location.replace("./praeferenzen.html");}window.addEventListener("hashchange",openOldPreferencesBookmark);openOldPreferencesBookmark();</script></head>
+<body><main>
+<header><div class="topline"><a href="../">← Privat</a><span>PRESSESPIEGEL NEU</span><a id="profile-toggle" href="./praeferenzen.html" aria-label="Meine Präferenzen auf eigener Seite öffnen">Meine Präferenzen</a></div><h1>Morgenzeitung<span>.</span></h1><div class="editionline"><p id="edition-meta">Täglich um 07:45 Uhr · Wien</p><label>Ausgabe <select id="date" aria-label="Ausgabe auswählen"><option>Noch keine Ausgabe</option></select></label></div></header>
+<p id="notice" role="status" class="notice">Verbindung wird geprüft …</p>
+<p id="publication-status" class="publication-status" role="status" aria-live="polite" hidden></p>
+<section id="login" hidden><h2>Deine Zeitung öffnen</h2><p>Dein Zugang schützt Ausgaben, Bewertungen und Interessenprofil.</p><form id="login-form"><label>Zugangsschlüssel <input id="token" type="password" autocomplete="current-password" required></label><button type="submit">Öffnen</button></form><p class="small">Der Schlüssel bleibt nur in diesem geöffneten Tab und wird beim Schließen verworfen.</p></section>
+
+<div id="newspaper-view">
+<nav class="tabs" aria-label="Zeitungsbereiche"><button id="tab-headlines" aria-pressed="true">Heute wichtig <span id="headline-count">0</span></button><button id="tab-articles" aria-pressed="false">Vertiefungen <span id="article-count">0</span></button></nav>
+<section id="headlines" aria-label="Heute wichtig"><p class="empty">Die wichtigsten Nachrichten aus Österreich und weltweit erscheinen hier.</p></section><section id="articles" aria-label="Vertiefende Artikel" hidden><p class="empty">Deine ausführlichen Artikel zu Wirtschaft, Technologie und Produktivität erscheinen hier.</p></section>
+<section id="new-sources" aria-label="Neue Quellen entdeckt" hidden></section>
+
+<section id="feedback-section" hidden><div class="feedback-heading"><span class="eyebrow">DIE NÄCHSTE AUSGABE</span><h2>Was darf morgen anders sein?</h2></div><p class="small">Bewerte Nachrichten und Vertiefungen; alle Bewertungen werden gemeinsam übermittelt, unabhängig vom Speichern-Button. Nach einmaliger Einrichtung speichert „Feedback speichern“ deine Bewertungen direkt im privaten GitHub-Repository. Du benötigst dafür keine weiteren GitHub-Klicks.</p><form id="feedback-form"><label for="feedback">Welche Themen fehlen dir? Was war redundant? Was möchtest du künftig stärker oder weniger sehen?</label><textarea id="feedback" rows="4" maxlength="4000" required placeholder="Zum Beispiel: Mehr über Produktivität im öffentlichen Sektor …"></textarea><button type="submit">Feedback speichern</button><span id="feedback-status" role="status"></span><p id="feedback-confirmation" hidden><a id="feedback-issue-link" href="#" target="_blank" rel="noopener noreferrer">Gespeicherte Rückmeldung auf GitHub ansehen ↗</a></p></form></section>
+<section id="feedback-settings"><section id="github-setup" hidden aria-label="GitHub-Feedback verbinden">
+  <h2>Einmalig GitHub-Zugang einrichten</h2>
+  <p>Erstelle auf GitHub einen <a target="_blank" rel="noopener noreferrer" href="https://github.com/settings/personal-access-tokens/new">Fine-grained Personal Access Token ↗</a>.
+    Wähle ausschließlich das private Repository <code>fabian-stoeckl/morgenzeitung-feedback</code> und die Berechtigung <strong>Issues: Read and write</strong>. Andere Rechte brauchst du nicht.</p>
+  <form id="github-setup-form">
+    <label for="github-token">GitHub-Token (nur hier auf deinem Gerät eingeben, nicht im Chat)
+      <input id="github-token" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" required>
+    </label>
+    <label class="token-consent"><input id="remember-token" type="checkbox" required>
+      <span>Ich möchte den eingeschränkten Token in diesem Browser dauerhaft speichern.
+      Andere Skripte dieser Website oder Schadsoftware auf diesem Gerät könnten ihn auslesen.
+      Auf fremden oder gemeinsam genutzten Geräten nicht verwenden.</span>
+    </label>
+    <button type="submit">GitHub-Zugang verbinden</button>
+    <span id="github-setup-status" role="status"></span>
+  </form>
 </section>
-<footer>Artikel werden nach Themenpassung, Erkenntnisgewinn und echtem Feedback ausgewählt. Paywalls und fehlende Volltexte sind kein Ausschlussgrund. Zusammenfassungen enthalten nur Aussagen, die durch die verfügbare Quelle gedeckt sind. <a href="../">Zur Privatübersicht</a></footer>
-</main>
-</body></html>
+<div id="github-connected" hidden class="connected">
+  <span>GitHub-Feedback ist auf diesem Gerät verbunden.</span>
+
+</div>
+</section><footer><p id="operating-state" class="small">Automatischer Betrieb noch nicht verbunden.</p><button id="logout" hidden>Abmelden</button></footer>
+</div>
+</main></body></html>
