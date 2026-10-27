@@ -5,7 +5,7 @@ from scripts.morgenzeitung_source_preflight import preflight
 def candidates():
     return [{"id": str(i), "source": ["ORF", "Reuters", "Handelsblatt", "AP"][i % 4],
              "source_url": "https://example.com/" + str(i),
-             "published_at": "2026-10-26T06:00:00+00:00"} for i in range(20)]
+             "published_at": "2026-10-26T06:00:00+00:00", "verified": True} for i in range(20)]
 
 
 class PreflightTests(unittest.TestCase):
