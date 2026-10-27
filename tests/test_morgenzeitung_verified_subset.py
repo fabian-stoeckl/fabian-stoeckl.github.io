@@ -2,6 +2,7 @@
 import unittest
 from unittest.mock import patch
 from scripts.morgenzeitung_source_preflight import preflight
+from scripts.morgenzeitung_candidate_triage import triage
 
 
 class VerifiedSubsetTests(unittest.TestCase):
@@ -66,6 +67,20 @@ class VerifiedSubsetTests(unittest.TestCase):
                                checker=lambda *a, **kw: self.fail("HTTP checker called"),
                                allow_partial=True, editorial_mode=True)
         self.assertFalse(result["preflight_passed"])
+
+    def test_triage_editorial_mode_without_network(self):
+        for item in self.pool:
+            item["title"] = "An actual editorial headline"
+            item["discovery_evidence"] = {
+                "method": "publisher_page",
+                "reference": "https://example.org/news",
+            }
+        with patch("scripts.morgenzeitung_source_preflight.check_date", return_value="ok"):
+            result = triage(self.pool, self.date, minimum=5,
+                            editorial_mode=True,
+                            checker=lambda *a, **kw: self.fail("Network checker called"))
+        self.assertTrue(result["ready_for_final_preflight"])
+        self.assertEqual(result["eligible_count"], 6)
 
     def test_unsubstantiated_feed_flag_is_not_accepted(self):
         def forged(candidates, date, publisher_dates=True):
