@@ -37,6 +37,12 @@ def plan_actions(report, open_issues):
         # actionable publisher outage. Fail instead of silently omitting alerts.
         if not isinstance(report.get("confirmed_blackout_details"), list):
             raise ValueError("Verified blackout details missing from private assessment")
+        details = report["confirmed_blackout_details"]
+        names = report.get("confirmed_blackouts")
+        if (not isinstance(names, list) or not details
+                or set(names) != {x.get("publisher") for x in details if isinstance(x, dict)}
+                or len(names) != len(details)):
+            raise ValueError("Mismatch between verified blackout names and dated evidence")
         for row in report.get("confirmed_blackout_details", []):
             publisher = row["publisher"]
             if publisher not in REQUIRED_SOURCES:
