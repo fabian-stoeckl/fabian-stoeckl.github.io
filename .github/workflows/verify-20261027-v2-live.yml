@@ -17,7 +17,7 @@ jobs:
       - name: Confirm actual public HTTPS v2, index, UI, 15+19 and preserved feedback identities
         run: |
           node - <<'JS'
-          const assert=require('node:assert/strict');
+          import assert from 'node:assert/strict';
           const base='https://www.fabian-stoeckl.com/Privat/Pressespiegel/';
           const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
           async function get(path){
