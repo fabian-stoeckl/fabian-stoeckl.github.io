@@ -10,6 +10,7 @@ import hashlib
 import json
 import os
 import re
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -27,7 +28,8 @@ REQUIRED = ("candidates/{d}.json", "snapshots/{d}-profile.json",
 # Append-only final proof may supplement a historical immutable PARTIAL
 # acceptance, but may NEVER overwrite it or erase failed prior attempts.
 OPTIONAL = ("audits/{d}-acceptance-final.json",
-            "audits/{d}-real-feedback-and-profile-verification.json")
+            "audits/{d}-real-feedback-and-profile-verification.json",
+            "audits/{d}-final-acceptance.json")
 REAL_ARTICLES = (
     ("ORF", "https://science.orf.at/stories/3237885/", "2026-10-23T14:28:00+02:00"),
     ("Der Standard", "https://www.derstandard.de/story/3000000345164/von-autos-bis-maschinen-chinas-aggressive-exporte-lassen-europas-motor-stottern", "2026-10-23T18:00:00+02:00"),
@@ -76,8 +78,17 @@ class PrivateAPI:
         except urllib.error.HTTPError as exc:
             if exc.code not in (409, 422):
                 raise
-        if self.read(path) != raw:
-            raise ValueError("Private immutable evidence readback mismatch: " + path)
+        # GitHub contents reads may briefly lag a successful PUT. Retry only
+        # the read, never the write: immutable evidence stays append-only.
+        for delay in (0, 1, 2, 4):
+            if delay:
+                time.sleep(delay)
+            observed = self.read(path)
+            if observed == raw:
+                return
+            if observed is not None:
+                raise ValueError("Existing immutable evidence differs: " + path)
+        raise ValueError("Private immutable evidence readback mismatch: " + path)
 
 
 def versioned_private_path(legacy_path, date, version=None):
@@ -168,6 +179,7 @@ def evaluate(date, index, edition, private_files, publisher_checks, *, committed
     audit = parsed("audits/{d}-live-learning.json")
     acceptance = parsed("audits/{d}-acceptance.json")
     final_acceptance = parsed("audits/{d}-acceptance-final.json")
+    versioned_final = parsed("audits/{d}-final-acceptance.json")
     independent_feedback = parsed("audits/{d}-real-feedback-and-profile-verification.json")
     run = parsed("runs/{d}.json")
     if not missing and isinstance(audit, dict):
