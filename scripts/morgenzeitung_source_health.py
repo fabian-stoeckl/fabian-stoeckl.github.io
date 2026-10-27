@@ -120,6 +120,8 @@ def validate_editorial_report(report):
             raise ValueError("Invalid independently verified count")
         if outcome == "VERIFIED_ARTICLES" and n < 1:
             raise ValueError("Must supply confirmed original count")
+        if outcome == "NO_SUITABLE_ARTICLES" and n < 1:
+            raise ValueError("No-suitable-articles requires independently verified originals; otherwise report NO_VERIFIABLE_ARTICLES")
         if outcome == "NO_VERIFIABLE_ARTICLES" and n:
             raise ValueError("Negative outcomes contradict verified originals")
         methods = row.get("attempted_methods")
