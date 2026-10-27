@@ -9,7 +9,7 @@ import argparse
 import json
 import urllib.request
 from urllib.parse import urlsplit,parse_qsl
-from scripts.morgenzeitung_official_feeds import FEEDS, NoRedirect, _bounded_feed, _items, _stamp, verify_official_feed
+from scripts.morgenzeitung_official_feeds import FEEDS, NoRedirect, _bounded_feed, _items, _stamp, verify_official_feed, canonical_feed_article_link
 
 def run():
     opener = urllib.request.build_opener(NoRedirect)
@@ -47,7 +47,8 @@ def run():
                     try:
                         stamp=_stamp(published_at).isoformat()
                         evidence=verify_official_feed({
-                            "source":source,"source_url":article_url,
+                            "source":source,
+                            "source_url":canonical_feed_article_link(article_url,source),
                             "title":title,"published_at":stamp},opener=opener)
                         if evidence["publisher_feed_verified"]:
                             identity_status="LIVE_IDENTITY_MATCH"
