@@ -2,8 +2,9 @@ name: Morgenzeitung Freshness
 on:
   schedule:
     # 10:15 Vienna (CEST/CET) AFTER the 08:30/09:30 ChatGPT recovery checks.
-    # Two UTC slots cover DST; the pre-cutoff slot exits successfully.
-    - cron: '15 8,9 * * *'
+    # Exactly one active UTC slot per season; the other exits successfully.
+    - cron: '15 8 * * *' # CEST (UTC+2)
+    - cron: '15 9 * * *' # CET (UTC+1)
   workflow_dispatch:
     inputs:
       require_today:
@@ -36,10 +37,20 @@ jobs:
           python-version: '3.12'
       - name: Check Vienna cutoff (07:45 primary and 08:30/09:30 fallbacks plus recovery grace)
         id: cutoff
+        env:
+          SCHEDULE_SLOT: ${{ github.event.schedule }}
         shell: bash
         run: |
           if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
             hhmm="$(TZ=Europe/Vienna date +%H%M)"
+            vienna_offset="$(TZ=Europe/Vienna date +%z)"
+            # GitHub uses UTC. Run once per Vienna date, not twice in summer.
+            if [[ "$vienna_offset" == "+0200" && "$SCHEDULE_SLOT" != "15 8 * * *" ]] || \
+               [[ "$vienna_offset" == "+0100" && "$SCHEDULE_SLOT" != "15 9 * * *" ]]; then
+              echo "check=false" >> "$GITHUB_OUTPUT"
+              echo "Skipping inactive UTC slot ($SCHEDULE_SLOT) for Vienna offset $vienna_offset."
+              exit 0
+            fi
             if [[ "$hhmm" < "1015" ]]; then
               echo "check=false" >> "$GITHUB_OUTPUT"
               echo "Not yet 10:15 Vienna ($hhmm); allow the 08:30/09:30 recovery checks to finish."
