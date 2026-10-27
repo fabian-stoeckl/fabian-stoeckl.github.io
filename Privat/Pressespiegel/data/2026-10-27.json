@@ -10,7 +10,8 @@
     "Produktiver Wiederholungslauf mit 20 Fixstartern aus dem Morgen-Rechercheprotokoll und ergänzender Recherche; technische Zugriffsblockaden führen nicht zum Ausschluss einzelner Verlage.",
     "15 nach unabhängigem GitHub-Runner-Preflight geprüfte Vertiefungskandidaten wurden vor der Auswahl in vier unveränderlichen privaten S4-Originaldateien archiviert.",
     "Einzelne Paywall-Artikel sind auf Basis des tatsächlich zugänglichen Original-Vorspanns zusammengefasst; keine Behauptung eines vollständigen Textzugangs.",
-    "Die Tagesausgabe enthält neue Artikel aus dem Recherchefenster; keine ETF-Dateien oder historischen Ausgaben verändert."
+    "Die Tagesausgabe enthält neue Artikel aus dem Recherchefenster; keine ETF-Dateien oder historischen Ausgaben verändert.",
+    "Reuters-Originalartikel wurden trotz Recherche nicht in die finale Schlagzeilenliste übernommen, weil der unabhängige GitHub-Runner deren Artikel-Existenz wegen HTTP 401 nicht bestätigen konnte. Reuters bleibt im Recherchepool."
   ],
   "headlines": [
     {
@@ -52,16 +53,6 @@
       "region": "International",
       "summary": "Rumäniens Geheimdienst meldet ein mutmaßlich von Russland koordiniertes Spionagenetz gegen militärische und industrielle Ziele. Die Behörden untersuchen auch einen Brand auf einer Industrieplattform.",
       "event": "20261027-headline-27b0000000000004"
-    },
-    {
-      "id": "27b0000000000005",
-      "title": "Trump sieht Orban als neuen UNO-Generalsekretär",
-      "url": "https://orf.at/stories/3446240/",
-      "source": "ORF",
-      "published_at": "2026-10-26T19:46:00Z",
-      "region": "International",
-      "summary": "US-Präsident Trump erwägt laut Medienberichten Viktor Orban als Kandidaten für die UNO-Spitze. Ein russischer Regierungsvertreter bestritt jedoch eine entsprechende Nominierung.",
-      "event": "20261027-headline-27b0000000000005"
     },
     {
       "id": "27b0000000000006",
@@ -174,24 +165,14 @@
       "event": "20261027-headline-27b0000000000010"
     },
     {
-      "id": "27b0000000000011",
-      "title": "ASML könnte 2026 bis zu 1,6 Prozent der niederländischen Wirtschaft ausmachen",
-      "url": "https://www.reuters.com/business/asml-may-account-up-16-dutch-economy-2026-ing-says-2026-10-26/",
-      "source": "Reuters",
-      "published_at": "2026-10-26T14:35:00Z",
+      "id": "27b0000000000013",
+      "title": "Diese neuen Zahlen verrät der Börsenprospekt von Anthropic",
+      "url": "https://www.handelsblatt.com/technik/ki/ki-diese-neuen-zahlen-verraet-der-boersenprospekt-von-anthropic/100264987.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-26T13:14:00Z",
       "region": "International",
-      "summary": "Laut ING könnte der Chipanlagenhersteller ASML direkt bis zu 1,6 Prozent zur niederländischen Wirtschaftsleistung beitragen. Ökonomen warnen zugleich vor hoher Abhängigkeit.",
-      "event": "20261027-headline-27b0000000000011"
-    },
-    {
-      "id": "27b0000000000012",
-      "title": "Südkoreas BIP wächst dank KI-Chips im dritten Quartal stärker als erwartet",
-      "url": "https://www.reuters.com/world/asia-pacific/south-koreas-economy-grows-faster-than-expected-third-quarter-2026-10-26/",
-      "source": "Reuters",
-      "published_at": "2026-10-26T23:17:00Z",
-      "region": "International",
-      "summary": "Südkoreas Wirtschaft wuchs im dritten Quartal um ein Prozent und damit stärker als erwartet. Vor allem KI-Chips stützten Exporte und Investitionen, während der Konsum schwach blieb.",
-      "event": "20261027-headline-27b0000000000012"
+      "summary": "Der Börsenprospekt von Anthropic gibt neue Einblicke in Wachstum, Verluste und Risiken des KI-Unternehmens. Der geplante Börsengang gilt als wichtiger Test für die Finanzierung des KI-Booms.",
+      "event": "20261027-headline-27b0000000000013"
     }
   ],
   "articles": [
