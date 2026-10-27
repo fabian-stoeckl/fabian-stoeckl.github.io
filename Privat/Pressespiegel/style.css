@@ -202,3 +202,52 @@ body.preferences-view .topline #profile-toggle{display:none!important}
   .preferences-document #profile{padding-top:18px}
   .preferences-document h1{margin:24px 0 15px}
 }
+
+/* Unified editorial layout: "Heute wichtig" mirrors the reading rhythm of
+   "Vertiefungen" while preserving the Österreich/International categories. */
+.headline-groups{display:block;padding:0}
+.headline-groups .headline-region{margin:0}
+.headline-groups .headline-region + .headline-region{
+  border-top:2px solid var(--ink);
+  margin-top:26px;
+  padding-top:26px;
+}
+.headline-groups .region-title{
+  font:29px/1.25 Georgia,serif;
+  margin:24px 0 2px;
+}
+.headline-list{list-style:none;margin:0;padding:0}
+.headline-list .news-item{
+  display:block;
+  min-width:0;
+  padding:28px 0;
+  border-bottom:1px solid var(--line);
+  line-height:1.65;
+}
+.headline-list .headline-title{
+  font:29px/1.25 Georgia,serif;
+  margin:12px 0;
+}
+.headline-list .headline-title a{text-decoration:none}
+.headline-list .news-summary{
+  color:var(--ink);
+  font-size:14px;
+  line-height:1.7;
+  margin:14px 0;
+}
+.headline-list .news-item .rating-dots{
+  margin:20px 0 0;
+  padding:12px 0;
+  gap:12px 24px;
+}
+.headline-list .news-item .rating-dots legend{font-size:12px}
+.headline-list .news-item .rating-dots input[type=radio]{width:18px;height:18px}
+.headline-list .empty-region{
+  padding:20px 0 28px;
+  border-bottom:1px solid var(--line);
+}
+@media(max-width:760px){
+  .headline-groups .region-title{font-size:26px}
+  .headline-list .headline-title{font-size:27px}
+  .headline-list .news-item .rating-dots{gap:7px 13px}
+}
