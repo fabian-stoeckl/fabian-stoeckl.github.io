@@ -40,6 +40,9 @@ jobs:
           print(json.dumps(result,ensure_ascii=False))
           if not result['preflight_passed']: raise SystemExit('FAIL: original publisher preflight')
           print('PASS: 15 candidate originals verified; eligible for immutable 27 Oct capture')
+          from scripts.morgenzeitung_publisher_date_evidence import fetch_publisher_metadata
+          for name,url,declared in [('HB-Anthropic','https://www.handelsblatt.com/technik/ki/ki-diese-neuen-zahlen-verraet-der-boersenprospekt-von-anthropic/100264987.html','2026-10-26T19:07:00Z'),('Guardian-HSBC','https://www.theguardian.com/business/live/2026/oct/27/hsbc-shareholders-profits-surge-32-percent-bank-tax-budget-stock-markets-cost-cutting-latest-news-updates','2026-10-27T07:09:00Z')]:
+              print('PUBLISHER_TIMESTAMP_DIAGNOSTIC',name,json.dumps(fetch_publisher_metadata(url,declared),ensure_ascii=False))
           rawh=repo.read('research/drafts/2026-10-27-headlines-preflight.json')
           if rawh is None: raise SystemExit('FAIL: missing original headline draft')
           headlines=json.loads(rawh[0])
