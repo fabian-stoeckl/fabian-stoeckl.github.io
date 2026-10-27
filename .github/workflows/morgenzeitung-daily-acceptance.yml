@@ -23,8 +23,7 @@ on:
     - cron: '15 12 * * *'
 permissions:
   contents: read
-  issues: write # minimal rights for confirmed-publisher-gap notification
-  issues: write
+  issues: write # only for actionable deduplicated publisher-access notifications
 concurrency:
   group: morgenzeitung-daily-acceptance
   cancel-in-progress: false
