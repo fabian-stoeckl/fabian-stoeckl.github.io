@@ -1,0 +1,170 @@
+"""Negative and positive regressions for independent FIRST-PARTY RSS evidence."""
+import datetime as dt
+import unittest
+import urllib.error
+from unittest.mock import patch
+
+from scripts.morgenzeitung_official_feeds import FEEDS, verify_official_feed
+from scripts.morgenzeitung_live_source_check import check_candidates
+from scripts.morgenzeitung_source_preflight import preflight
+
+WHEN = "2026-10-27T08:20:00Z"
+CASES = [
+    ("FAZ", "https://www.faz.net/aktuell/wirtschaft/standort-article-123.html"),
+    ("NZZ", "https://www.nzz.ch/wirtschaft/industrie-und-klima-ld.12345"),
+    ("BBC News", "https://www.bbc.co.uk/news/articles/c1234567890o"),
+    ("DIE ZEIT", "https://www.zeit.de/wirtschaft/2026-10/industrie-veraendert-sich"),
+    ("DER SPIEGEL", "https://www.spiegel.de/wirtschaft/unternehmen/industrie-abc-123.html"),
+    ("Handelsblatt", "https://www.handelsblatt.com/unternehmen/energie/industrie/100123456.html"),
+]
+
+
+def candidate(source, url):
+    return {"id":source, "source":source, "source_url":url,
+            "title":"Energiewende und die Zukunft der Industrie",
+            "topic":"Industrie", "published_at":WHEN, "verified":True}
+
+
+def rss(url, *, title="Energiewende und die Zukunft der Industrie",
+        date="Tue, 27 Oct 2026 08:20:00 GMT", links=None):
+    links = links or [url]
+    return ('<?xml version="1.0"?><rss version="2.0"><channel>'
+            + "".join("<item><title>"+title+"</title><link>"+s+"</link><pubDate>"
+                      + date+"</pubDate></item>" for s in links)
+            +"</channel></rss>").encode()
+
+
+class Response:
+    def __init__(self, data, status=200, content_type="application/rss+xml"):
+        self.status = status
+        self.data = data
+        self.headers = {"Content-Type": content_type}
+    def __enter__(self):
+        return self
+    def __exit__(self, *args):
+        return False
+    def read(self, n):
+        return self.data[:n]
+
+
+class FakeOpener:
+    def __init__(self, source, url, *, xml=None, status=403, wrong=False):
+        self.source, self.url = source, url
+        self.xml = xml if xml is not None else rss(url)
+        self.status=status
+        self.urls=[]
+    def open(self, request, timeout=10):
+        url=request.full_url
+        self.urls.append(url)
+        if url in FEEDS[self.source][0]:
+            return Response(self.xml)
+        if url==self.url:
+            raise urllib.error.HTTPError(url,self.status,"blocked",{},None)
+        raise AssertionError("Unknown request (no unapproved services): "+url)
+
+
+class OfficialFeedTests(unittest.TestCase):
+    def test_six_publishers_bypass_block_by_matching_official_xml_only(self):
+        for label,url in CASES:
+            with self.subTest(source=label):
+                op=FakeOpener(label,url)
+                report=check_candidates([candidate(label,url)],"2026-10-27",
+                                        opener=op,publisher_dates=True)
+                self.assertTrue(report["live_source_checks_passed"])
+                rec=report["checked"][0]
+                self.assertFalse(rec["original_article_http_verified"])
+                self.assertTrue(rec["publisher_feed_verified"])
+                self.assertEqual(rec["publisher_date_evidence"]["status"],"match")
+                self.assertEqual(rec["content_access"],"metadata_only")
+                self.assertEqual(rec["http_status"],None)
+                self.assertTrue(all(x==url or x in FEEDS[label][0] for x in op.urls))
+                self.assertEqual(len([x for x in op.urls if x==url]),2) # HEAD then GET
+
+    def test_exact_original_link_required_not_another_story(self):
+        label,url=CASES[1]
+        alt=url.replace("ld.12345","ld.12346")
+        with self.assertRaisesRegex(ValueError,"not independently confirmed"):
+            verify_official_feed(candidate(label,url),
+                opener=FakeOpener(label,url,xml=rss(alt)))
+
+    def test_wrong_title_is_hard_error(self):
+        label,url=CASES[2]
+        with self.assertRaisesRegex(ValueError,"title contradicts"):
+            verify_official_feed(candidate(label,url),
+                opener=FakeOpener(label,url,xml=rss(url,title="A different article!")))
+
+    def test_wrong_datetime_is_hard_error_even_with_correct_url_title(self):
+        label,url=CASES[4]
+        with self.assertRaisesRegex(ValueError,"timestamp contradicts"):
+            check_candidates([candidate(label,url)],"2026-10-27",
+                opener=FakeOpener(label,url,xml=rss(url,date="Tue, 27 Oct 2026 09:20:00 GMT")),
+                publisher_dates=True)
+
+    def test_no_external_proxy_or_wrong_publisher_domain(self):
+        label,url=CASES[0]
+        bads=["https://faz.net.evil.example/aktuell/abc",
+              "https://www.nzz.ch/wirtschaft/fake",
+              "http://www.faz.net/aktuell/wirtschaft/abc"]
+        for target in bads:
+            with self.subTest(target=target):
+                with self.assertRaises(ValueError):
+                    verify_official_feed(candidate(label,target),
+                        opener=FakeOpener(label,url))
+
+    def test_spoofed_feed_link_another_domain_not_accepted(self):
+        label,url=CASES[3]
+        fake=url.replace("zeit.de","zeit.de.evil.example")
+        with self.assertRaisesRegex(ValueError,"not independently confirmed"):
+            verify_official_feed(candidate(label,url),
+                opener=FakeOpener(label,url,xml=rss(url,links=[fake])))
+
+    def test_404_original_never_accepted_from_rss(self):
+        label,url=CASES[5]
+        op=FakeOpener(label,url,status=404)
+        with self.assertRaisesRegex(ValueError,"404"):
+            check_candidates([candidate(label,url)],"2026-10-27",
+                             opener=op,publisher_dates=True)
+        self.assertFalse(any(x in FEEDS[label][0] for x in op.urls))
+
+    def test_unknown_publisher_and_untrusted_custom_feed_never_allowed(self):
+        label,url=CASES[2]
+        data={**candidate(label,url),"source":"Random Publisher",
+              "publisher_feed_url":"https://evil.example/rss.xml"}
+        with self.assertRaisesRegex(ValueError,"No approved"):
+            verify_official_feed(data,opener=FakeOpener(label,url))
+        data["source"]=label
+        x=verify_official_feed(data,opener=FakeOpener(label,url))
+        self.assertNotEqual(x["feed_url"],data["publisher_feed_url"])
+
+    def test_oversized_or_dtd_xml_is_rejected(self):
+        label,url=CASES[1]
+        for xml in (b'<!DOCTYPE rss [<!ENTITY x "hacked">]><rss/>',
+                    b'x'*(2*1024*1024+1),b'not XML'):
+            with self.subTest(n=len(xml)),self.assertRaises(ValueError):
+                verify_official_feed(candidate(label,url),
+                    opener=FakeOpener(label,url,xml=xml))
+
+    def test_rss_without_valid_timezone_or_timestamp_not_confirmed(self):
+        label,url=CASES[3]
+        with self.assertRaises(ValueError):
+            verify_official_feed(candidate(label,url),
+                opener=FakeOpener(label,url,xml=rss(url,date="not a date")))
+
+    def test_source_preflight_accepts_independent_feed_identity_as_ready(self):
+        # Production preflight uses check_candidates(...publisher_dates=True).
+        # An OFFICIAL original feed can now prove a blocked article without text.
+        pool=[]
+        for i in range(15):
+            label,url=CASES[i%len(CASES)]
+            pool.append({**candidate(label,url),"id":str(i)})
+        def checker(items,date,publisher_dates):
+            return {"checked":[{"original_article_http_verified":False,
+                                 "publisher_feed_verified":True,
+                                 "publisher_feed_evidence":{"publisher":"BBC News"}}]}
+        report=preflight(pool,"2026-10-27",checker=checker,minimum=15)
+        self.assertTrue(report["preflight_passed"])
+        self.assertEqual(report["blocked_count"],0)
+
+
+if __name__=="__main__":
+    unittest.main()
