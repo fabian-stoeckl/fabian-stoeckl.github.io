@@ -44,6 +44,29 @@ class VerifiedSubsetTests(unittest.TestCase):
                                checker=self.checker, allow_partial=True)
         self.assertFalse(result["preflight_passed"])
 
+    def test_editorial_mode_uses_discovery_not_http(self):
+        for item in self.pool:
+            item["discovery_evidence"] = {
+                "method": "search_result",
+                "reference": "indexed article title and original publisher URL",
+            }
+            item["title"] = "A real editorial headline"
+        with patch("scripts.morgenzeitung_source_preflight.check_date", return_value="ok"):
+            result = preflight(self.pool, self.date, minimum=5,
+                               checker=lambda *a, **kw: self.fail("HTTP checker called"),
+                               allow_partial=True, editorial_mode=True)
+        self.assertTrue(result["preflight_passed"])
+        self.assertEqual(result["ready_count"], 6)
+
+    def test_editorial_mode_rejects_missing_discovery(self):
+        for item in self.pool:
+            item["title"] = "A real editorial headline"
+        with patch("scripts.morgenzeitung_source_preflight.check_date", return_value="ok"):
+            result = preflight(self.pool, self.date, minimum=1,
+                               checker=lambda *a, **kw: self.fail("HTTP checker called"),
+                               allow_partial=True, editorial_mode=True)
+        self.assertFalse(result["preflight_passed"])
+
     def test_unsubstantiated_feed_flag_is_not_accepted(self):
         def forged(candidates, date, publisher_dates=True):
             return {"checked": [{
