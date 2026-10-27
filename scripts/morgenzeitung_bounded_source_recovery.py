@@ -81,6 +81,8 @@ def main():
     args = parser.parse_args()
     if args.raw in (args.eligible, args.diagnostics) or args.eligible == args.diagnostics:
         parser.error("Raw, eligible and diagnostics paths must differ")
+    if args.eligible.exists() or args.diagnostics.exists():
+        parser.error("Output paths must be new; never reuse or overwrite a prior recovery attempt")
     result = recover(json.loads(args.raw.read_text(encoding="utf-8")),
                      args.date, minimum=args.minimum, max_retries=args.max_retries)
     report = {key: value for key, value in result.items() if key != "eligible"}
