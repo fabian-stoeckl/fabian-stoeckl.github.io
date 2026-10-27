@@ -8,6 +8,34 @@ import json
 from pathlib import Path
 from scripts.morgenzeitung_editorial import select_articles
 
+# Access level is descriptive metadata, never a relevance signal. Run two
+# counterfactual selections on the SAME verified pool: all candidates presented
+# as fully accessible vs all presented as preview/metadata-only. Title, topic,
+# source, chronology, actual source confirmation, profile and original ordering
+# stay identical. This does not itself prove that discovery was access-neutral.
+def check_access_neutrality(candidate_pool, profile, *, limit=10, max_per_source=4):
+    scenarios = []
+    for mode in ("full", "teaser", "metadata"):
+        pool = []
+        for article in candidate_pool:
+            variant = dict(article)
+            variant.update({
+                "access": mode, "content_access": mode,
+                "fulltext_available": mode == "full",
+                "paywall": mode != "full",
+                "text_availability": mode,
+            })
+            pool.append(variant)
+        selected, _ = select_articles(
+            pool, profile, limit=limit, max_per_source=max_per_source)
+        scenarios.append([item["id"] for item in selected])
+    if any(ids != scenarios[0] for ids in scenarios[1:]):
+        raise ValueError(
+            "Access-based selection bias: same verified candidates rank "
+            "differently when only content availability changes")
+    return True
+
+
 def compare(candidate_pool, profile, *, limit=10, max_per_source=4):
     """Compare exactly the same candidates with and without learned signals."""
     if not isinstance(candidate_pool, list):
@@ -17,6 +45,10 @@ def compare(candidate_pool, profile, *, limit=10, max_per_source=4):
         raise ValueError("Candidate IDs must be present and unique")
     if not all(item.get("verified") is True for item in candidate_pool):
         raise ValueError("Every candidate must be explicitly source-verified")
+    # Fail closed if readability, paywall or content-length proxies leak into
+    # deterministic selection. Run against both learned and baseline profiles.
+    check_access_neutrality(candidate_pool, {}, limit=limit, max_per_source=max_per_source)
+    check_access_neutrality(candidate_pool, profile, limit=limit, max_per_source=max_per_source)
     baseline, baseline_audit = select_articles(candidate_pool, {}, limit=limit, max_per_source=max_per_source)
     selected, selected_audit = select_articles(candidate_pool, profile, limit=limit, max_per_source=max_per_source)
     baseline_ids = [item["id"] for item in baseline]
@@ -37,6 +69,7 @@ def compare(candidate_pool, profile, *, limit=10, max_per_source=4):
     removed = [item_id for item_id in baseline_ids if item_id not in selected_rank]
     return {
         "candidate_count": len(candidate_pool),
+        "access_neutrality_verified": True,
         "baseline_ids": baseline_ids,
         "selected_ids": selected_ids,
         "effective_signals": effective_signals,
