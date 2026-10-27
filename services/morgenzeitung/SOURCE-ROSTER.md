@@ -1,3 +1,9 @@
+## Zugriffsneutralität (27.10.2026)
+
+Verbindlicher zusätzlicher Schutz: **Volltext verfügbar = 0 Relevanzbonus; Volltext blockiert = 0 Relevanzmalus.** Kandidaten aller Fixstarter zunächst nur anhand derselben unabhängig bestätigbaren Felder (Titel, Original-URL, Datum/Zeit, Verlag/Ressort, öffentlich publizierter Vorspann, Thema, Neuigkeit, dokumentiertes Nutzerfeedback) priorisieren; danach für die **Darstellung** und Faktendichte zwischen `full`, `teaser` und `metadata` unterscheiden. Ein fehlender Zugang zum Volltext darf nicht in eine niedrigere redaktionelle Priorität übersetzt werden. Die Redaktion muss zugleich vermeiden, unbelegte Sachbehauptungen über den ungelesenen Volltext zu machen. Der harte Identitätsnachweis bleibt Pflicht; wenn offizielle Feeds oder Originalmetadaten noch nicht vom GitHub-Gate akzeptiert werden, diese strukturelle Prüflücke separat erfassen, nie stillschweigend den Verlag ersetzen.
+
+**Handelsblatt als Fixstarter**: Hauptseite und Originalartikel können direkt zugänglich sein, einzelne Beiträge jedoch nur mit Einleitung. Offizielle Verlags-RSS-Übersicht: `https://www.handelsblatt.com/rss-feeds/`; Wirtschafts-Feed `https://www.handelsblatt.com/contentexport/feed/wirtschaft` (XML; im normalen HTML-Webleser nicht direkt darstellbar). Offizielle RSS-Entdeckung als zusätzlichen Weg prüfen, ohne daraus pauschal Volltextzugang oder automatisches GitHub-Preflight-PASS abzuleiten.
+
 # Morgenzeitung – verbindlicher Quellenpool und offene Entdeckung (26.10.2026)
 
 ## Grundsatz
