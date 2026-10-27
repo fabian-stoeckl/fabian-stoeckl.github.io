@@ -1,14 +1,8 @@
 name: Morgenzeitung v6 independent research preview gate
+# Historical snapshot regression only. Production gates are separate.
+# Manually re-run for historical investigation; avoid redundant PR/push runs.
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'Privat/Pressespiegel/previews/2026-10-26-v6.*'
-      - '.github/workflows/morgenzeitung-preview-v6-gate.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'Privat/Pressespiegel/previews/2026-10-26-v6.*'
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
