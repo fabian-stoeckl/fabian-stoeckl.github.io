@@ -10,11 +10,11 @@ from scripts.morgenzeitung_official_feeds import FEEDS, load_publisher_registry,
 class PublisherRegistryTests(unittest.TestCase):
     def test_registry_contains_requested_publishers(self):
         self.assertIn("Bloomberg", FEEDS)
-        self.assertIn("POLITICO Europe", FEEDS)
+        self.assertIn("POLITICO Europe", load_publisher_registry())
         self.assertIn("Der Standard", FEEDS)
         self.assertGreaterEqual(len(FEEDS["Bloomberg"][0]), 3)
         self.assertGreaterEqual(len(FEEDS["Der Standard"][0]), 3)
-        self.assertEqual(FEEDS["POLITICO Europe"][0], ())
+        self.assertNotIn("POLITICO Europe", FEEDS)
 
     def test_no_false_politico_us_evidence(self):
         with self.assertRaises(ValueError):
