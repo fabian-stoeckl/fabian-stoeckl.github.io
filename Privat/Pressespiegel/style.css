@@ -202,3 +202,25 @@ body.preferences-view .topline #profile-toggle{display:none!important}
   .preferences-document #profile{padding-top:18px}
   .preferences-document h1{margin:24px 0 15px}
 }
+
+/* Headlines use the same single-column article rhythm as Vertiefungen.
+   Keep the established Österreich / International grouping and feedback. */
+#headlines .headline-columns{display:block;padding:0;gap:0}
+#headlines .headline-region{padding:20px 0 8px;margin:0}
+#headlines .headline-region+.headline-region{border-top:2px solid var(--ink);padding-top:26px}
+#headlines .headline-region .region-title{font:27px/1.28 Georgia,serif;margin:0}
+#headlines .headline-region .article-list{display:block}
+#headlines .news-item{display:block;padding:28px 0;border-bottom:1px solid var(--line)}
+#headlines .news-item .body h2{font:29px/1.25 Georgia,serif;margin:12px 0}
+#headlines .news-item .news-summary{font-size:14px;line-height:1.7;color:var(--ink);margin:14px 0}
+#headlines .news-item .rating-dots{margin:20px 0 0;padding:12px 0;gap:6px 13px}
+#headlines .news-item .rating-dots legend{font-size:12px}
+#headlines .news-item .rating-dots label{font-size:12px}
+#headlines .news-item .rating-dots input[type=radio]{width:18px;height:18px}
+#headlines .news-item .rating-dots .reason{margin:8px 0}
+#headlines .news-item .rating-dots textarea{min-height:0}
+@media(max-width:760px){
+  #headlines .headline-region .region-title{font-size:26px}
+  #headlines .news-item .body h2{font-size:27px}
+  #headlines .news-item .rating-dots label{font-size:11px}
+}
