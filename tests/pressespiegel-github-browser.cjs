@@ -75,10 +75,38 @@ const visible=GitHubPaper.partition(fixture);
  assert.equal(await page.locator('.tabs button').count(),2);
  assert.equal(await page.locator('#tab-headlines').getAttribute('aria-pressed'),'true');
  assert.equal(await page.locator('#headlines h2').allTextContents().then(a=>a.join(', ')),'Österreich, International');
+ // Both rubrics use the same editorial type scale, metadata and body text.
+ assert.equal(await page.locator('#headlines .headline-title a').count(),visible.headlines.length);
+ assert.equal(await page.locator('#headlines .headline-intro .eyebrow').count(),visible.headlines.length);
+ assert.equal(await page.locator('#headlines .headline-intro .meta').count(),visible.headlines.length);
+ const newsTitleStyle=await page.locator('#headlines .headline-title').first().evaluate(el=>({
+   fontFamily:getComputedStyle(el).fontFamily,fontSize:getComputedStyle(el).fontSize
+ }));
+ const featureTitleStyle=await page.locator('#articles article h2').first().evaluate(el=>({
+   fontFamily:getComputedStyle(el).fontFamily,fontSize:getComputedStyle(el).fontSize
+ }));
+ assert.deepEqual(newsTitleStyle,featureTitleStyle,'Both categories must use identical headline typography');
+ const newsSummaryStyle=await page.locator('#headlines .news-summary').first().evaluate(el=>({
+   fontSize:getComputedStyle(el).fontSize,lineHeight:getComputedStyle(el).lineHeight,color:getComputedStyle(el).color
+ }));
+ const featureSummaryStyle=await page.locator('#articles article .body > p').first().evaluate(el=>({
+   fontSize:getComputedStyle(el).fontSize,lineHeight:getComputedStyle(el).lineHeight,color:getComputedStyle(el).color
+ }));
+ assert.deepEqual(newsSummaryStyle,featureSummaryStyle,'News summaries must match article body text');
  await page.locator('#headlines .news-item').first().getByLabel('Nicht relevant',{exact:true}).check();
  assert(await page.locator('#headlines .news-item').first().locator('textarea').isHidden());
  await page.locator('#headlines .news-item').first().locator('.rating-reason summary').click();
  await page.locator('#headlines .news-item').first().locator('textarea').fill('Doppelte Nachricht');
+ // Sticky tabs are clicked while scrolled deep into an issue; every switch
+ // must show the masthead again, in both directions.
+ await page.evaluate(()=>window.scrollTo(0,900));
+ await page.waitForFunction(()=>window.scrollY>=850);
+ await page.locator('#tab-articles').click();
+ assert.equal(await page.evaluate(()=>window.scrollY),0,'Switching to Vertiefungen starts at document top');
+ await page.evaluate(()=>window.scrollTo(0,900));
+ await page.waitForFunction(()=>window.scrollY>=850);
+ await page.locator('#tab-headlines').click();
+ assert.equal(await page.evaluate(()=>window.scrollY),0,'Switching to Heute wichtig starts at document top');
  await page.locator('#tab-articles').click();
  assert.equal(await page.locator('article').count(),visible.articles.length);
  assert.equal(await page.locator('#headlines .news-item').count(),visible.headlines.length);
@@ -156,9 +184,13 @@ const visible=GitHubPaper.partition(fixture);
    await page.setViewportSize({width,height:1000});
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    await page.screenshot({path:'artifacts/screenshots/morgenzeitung-news-'+width+'.png',fullPage:true});
+   await page.evaluate(()=>window.scrollTo(0,900));
+   await page.waitForFunction(()=>window.scrollY>=850);
    await page.locator('#tab-articles').click();
+   assert.equal(await page.evaluate(()=>window.scrollY),0,'Tab scroll reset works at '+width+'px');
    await page.screenshot({path:'artifacts/screenshots/morgenzeitung-analysen-'+width+'.png',fullPage:true});
    await page.locator('#tab-headlines').click();
+   assert.equal(await page.evaluate(()=>window.scrollY),0);
  }
 
  assert.equal(await page.locator('#github-disconnect').count(),0);
