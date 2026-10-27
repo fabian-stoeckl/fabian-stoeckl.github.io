@@ -57,23 +57,32 @@ function render(){
   $('article-count').textContent=visibleArticles.length;
   $('headline-count').textContent=visibleHeadlines.length;
   $('headlines').replaceChildren();
-  const cols=el('div',undefined,'headline-columns');
+  // Mirror the typography, card spacing and metadata of the Vertiefungen list.
+  // Keep the regional headings and list semantics for accessible navigation.
+  const groups=el('div',undefined,'headline-groups');
   for(const region of ['Österreich','International']){
-    const sec=el('section');sec.append(el('h2',region));
-    const list=el('ul');
+    const sec=el('section',undefined,'headline-region');
+    sec.append(el('h2',region,'region-title'));
+    const list=el('ul',undefined,'headline-list');
     const regional=visibleHeadlines.filter(a=>a.region===region);
     if(!regional.length){const note=el('li',e.preview?'Keine zusätzlichen eigenständigen Nachrichten in dieser reduzierten Vorschau.':'Keine weiteren aktuellen Meldungen in dieser Ausgabe.','small empty-region');list.append(note);}
     for(const a of regional){
       const row=el('li',undefined,'news-item');
-      row.append(link(a.title,a.url));
-      if(typeof a.summary==='string'&&a.summary.trim())row.append(el('p',a.summary.trim(),'news-summary'));
-      row.append(el('small',a.source));
-      if(config.mode==='github')row.append(githubRating(a,'Heute wichtig'));
+      const intro=el('div',undefined,'headline-intro');
+      intro.append(el('span',a.source,'eyebrow'));
+      intro.append(el('p',fmt(a.published_at)+(a.paywall?' · Paywall':''),'meta'));
+      const body=el('div',undefined,'body');
+      const title=el('h3',undefined,'headline-title');
+      title.append(link(a.title,a.url));
+      body.append(title);
+      if(typeof a.summary==='string'&&a.summary.trim())body.append(el('p',a.summary.trim(),'news-summary'));
+      if(config.mode==='github')body.append(githubRating(a,'Heute wichtig'));
+      row.append(intro,body);
       list.append(row);
     }
-    sec.append(list);cols.append(sec);
+    sec.append(list);groups.append(sec);
   }
-  $('headlines').append(cols);
+  $('headlines').append(groups);
   addSaveAction($('headlines'),'news-feedback-status');
   addSaveAction($('articles'),'features-feedback-status');
   // The date and the research timestamp are shown exactly once in the masthead.
@@ -116,7 +125,15 @@ async function restoreSavedRatings(){
 
 async function load(){try{const [list,r]=await Promise.all([api('/api/editions'),api('/api/ratings')]);ratings=r;latestDate=list.dates[0];$('date').replaceChildren();for(const d of list.dates){const o=el('option',d);o.value=d;$('date').append(o);}if(!list.dates.length){status('Noch keine erfolgreiche Ausgabe verfügbar.');return; }edition=await api('/api/edition');render();$('login').hidden=true;$('logout').hidden=config.preview;$('operating-state').textContent=list.scheduler_enabled?'Automatik konfiguriert · tatsächlicher Stand siehe Ausgabe.':'Täglicher Betrieb noch nicht aktiviert.';}catch(e){status(e.message);$('login').hidden=false;}}
 $('date').onchange=async()=>{try{edition=config.mode==='github'?await GitHubPaper.edition($('date').value):await api('/api/edition?date='+encodeURIComponent($('date').value));render();await restoreSavedRatings();}catch(e){status(e.message);}};
-for(const tab of ['headlines','articles'])$('tab-'+tab).onclick=()=>{for(const name of ['headlines','articles']){$(name).hidden=name!==tab;$('tab-'+name).setAttribute('aria-pressed',String(name===tab));}};
+for(const tab of ['headlines','articles'])$('tab-'+tab).onclick=()=>{
+  for(const name of ['headlines','articles']){
+    $(name).hidden=name!==tab;
+    $('tab-'+name).setAttribute('aria-pressed',String(name===tab));
+  }
+  // Switching a long section must start again at the top of the newspaper,
+  // including the masthead, not at the old section's scroll position.
+  window.scrollTo(0,0);
+};
 $('login-form').onsubmit=async e=>{e.preventDefault();secret=$('token').value;$('token').value='';await load();};
 $('logout').onclick=()=>{secret='';location.reload();};
 
