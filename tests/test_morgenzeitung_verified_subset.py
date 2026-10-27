@@ -3,6 +3,7 @@ import unittest
 from unittest.mock import patch
 from scripts.morgenzeitung_source_preflight import preflight
 from scripts.morgenzeitung_candidate_triage import triage
+from scripts.morgenzeitung_bounded_source_recovery import recover
 
 
 class VerifiedSubsetTests(unittest.TestCase):
@@ -78,6 +79,18 @@ class VerifiedSubsetTests(unittest.TestCase):
                             checker=lambda *a, **kw: self.fail("Network checker called"))
         self.assertTrue(result["ready_for_final_preflight"])
         self.assertEqual(result["eligible_count"], 6)
+
+    def test_recovery_no_link_tests_has_zero_retries(self):
+        for item in self.pool:
+            item["title"] = "Interesting article"
+        with patch("scripts.morgenzeitung_source_preflight.check_date",
+                   side_effect=AssertionError("Unexpected date gate")):
+            result = recover(self.pool, self.date, minimum=15,
+                             max_retries=2, no_link_tests=True,
+                             checker=lambda *a, **kw: self.fail("HTTP checker called"))
+        self.assertTrue(result["ready_for_private_capture"])
+        self.assertEqual(result["eligible_count"], 6)
+        self.assertTrue(all(v == 0 for v in result["retry_counts"].values()))
 
     def test_triage_editorial_mode_without_network(self):
         for item in self.pool:
