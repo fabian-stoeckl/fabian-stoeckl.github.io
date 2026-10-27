@@ -95,7 +95,7 @@ def load_publisher_registry(path=REGISTRY_PATH):
         approved[name] = (tuple(feeds), set(hosts))
     return approved
 
-FEEDS.update(load_publisher_registry())
+FEEDS.update({name: config for name, config in load_publisher_registry().items() if config[0]})
 # Empty feed lists mean discovery-only: never claim official-feed verification.
 
 
