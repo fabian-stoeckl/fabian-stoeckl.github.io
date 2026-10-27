@@ -62,7 +62,9 @@ class SourceHealthNotifications(unittest.TestCase):
             plan_actions(bad, [])
         bad = result("ACCESS_GAPS", publishers=("NZZ",))
         bad["confirmed_blackout_details"] = []
-        # Do not pretend an empty list is enough for a positive blackout.
+        # Do not pretend an empty/mismatched list is enough for a positive blackout.
+        with self.assertRaisesRegex(ValueError, "Mismatch"):
+            plan_actions(bad, [])
         with self.assertRaises(ValueError):
             plan_actions({**bad, "confirmed_blackout_details": None}, [])
         with self.assertRaisesRegex(ValueError, "Unrecognized"):
