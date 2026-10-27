@@ -212,8 +212,11 @@ def check_candidates(candidates, edition_date, opener=None, *, publisher_dates=F
             from scripts.morgenzeitung_official_feeds import verify_official_feed
             try:
                 evidence = verify_standard_feed(candidate, opener=opener)
-            except ValueError:
-                evidence = verify_official_feed(candidate, opener=opener)
+            except ValueError as legacy_error:
+                try:
+                    evidence = verify_official_feed(candidate, opener=opener)
+                except ValueError:
+                    raise legacy_error
             record["publisher_feed_evidence"] = evidence
             record["publisher_feed_verified"] = True
             record["content_access"] = "metadata_only"
