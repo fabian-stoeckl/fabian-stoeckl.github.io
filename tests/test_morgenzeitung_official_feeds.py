@@ -4,7 +4,7 @@ import unittest
 import urllib.error
 from unittest.mock import patch
 
-from scripts.morgenzeitung_official_feeds import FEEDS, verify_official_feed
+from scripts.morgenzeitung_official_feeds import FEEDS, verify_official_feed, canonical_feed_article_link, _stamp
 from scripts.morgenzeitung_live_source_check import check_candidates
 from scripts.morgenzeitung_source_preflight import preflight
 
@@ -135,6 +135,36 @@ class OfficialFeedTests(unittest.TestCase):
         data["source"]=label
         x=verify_official_feed(data,opener=FakeOpener(label,url))
         self.assertNotEqual(x["feed_url"],data["publisher_feed_url"])
+
+    def test_bbc_only_approved_rss_tracking_params_can_be_removed(self):
+        label,url=CASES[2]
+        tracking=url+"?at_medium=RSS&at_campaign=rss"
+        self.assertEqual(canonical_feed_article_link(tracking,label),url)
+        evidence=verify_official_feed(candidate(label,url),
+            opener=FakeOpener(label,url,xml=rss(tracking)))
+        self.assertTrue(evidence["publisher_feed_verified"])
+        for other in (url+"?article=another",url+"?auth=token",
+                      "https://www.bbc.co.uk.evil.test"+url.split(".co.uk")[1]):
+            with self.subTest(other=other),self.assertRaises(ValueError):
+                canonical_feed_article_link(other,label)
+
+    def test_spiegel_official_fragment_removed_but_not_other_anchor(self):
+        label,url=CASES[4]
+        decorated=url+"#ref=rss"
+        self.assertEqual(canonical_feed_article_link(decorated,label),url)
+        self.assertTrue(verify_official_feed(candidate(label,url),
+            opener=FakeOpener(label,url,xml=rss(decorated)))["publisher_feed_verified"])
+        with self.assertRaises(ValueError):
+            canonical_feed_article_link(url+"#any-other-item",label)
+
+    def test_zeit_rfc5322_minus_zero_is_utc_not_unknown_naive(self):
+        label,url=CASES[3]
+        date="Tue, 27 Oct 2026 08:20:00 -0000"
+        self.assertEqual(_stamp(date).isoformat(),"2026-10-27T08:20:00+00:00")
+        self.assertTrue(verify_official_feed(candidate(label,url),
+            opener=FakeOpener(label,url,xml=rss(url,date=date)))["publisher_feed_verified"])
+        with self.assertRaises(ValueError):
+            _stamp("Tue, 27 Oct 2026 08:20:00")
 
     def test_oversized_or_dtd_xml_is_rejected(self):
         label,url=CASES[1]
