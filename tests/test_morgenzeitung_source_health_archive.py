@@ -5,7 +5,7 @@ import urllib.error
 
 from scripts.morgenzeitung_official_feeds import FEEDS
 from scripts.morgenzeitung_source_health import REQUIRED_SOURCES
-from scripts.morgenzeitung_source_health_archive import archive_feed_smoke, archive_review
+from scripts.morgenzeitung_source_health_archive import archive_feed_smoke, archive_review, archive_editorial
 
 
 class PrivateMock:
@@ -98,6 +98,36 @@ class ArchiveTests(unittest.TestCase):
         self.assertEqual(r["verdict"],"ACCESS_GAPS")
         self.assertEqual(r["confirmed_blackouts"],["NZZ"])
         self.assertTrue(r["readback"])
+
+    def test_completed_real_editorial_ledger_archived_privately_with_readback(self):
+        repo=PrivateMock()
+        record=editorial("2026-10-27",all_blocked=True)
+        saved=archive_editorial(record,"2026-10-27","40500000011",repo=repo)
+        self.assertTrue(saved["research_complete"])
+        self.assertTrue(saved["readback"])
+        self.assertEqual(saved["publishers"],len(REQUIRED_SOURCES))
+        self.assertEqual(json.loads(repo.files[saved["path"]]),record)
+        self.assertEqual(archive_editorial(record,"2026-10-27","40500000011",repo=repo)["path"],saved["path"])
+        changed=editorial("2026-10-27",all_blocked=False)
+        with self.assertRaisesRegex(ValueError,"Conflicting immutable"):
+            archive_editorial(changed,"2026-10-27","40500000011",repo=repo)
+        newer=archive_editorial(changed,"2026-10-27","40500000012",repo=repo)
+        self.assertNotEqual(newer["path"],saved["path"])
+
+    def test_incomplete_or_unverified_ledger_cannot_be_saved(self):
+        repo=PrivateMock()
+        incomplete=editorial("2026-10-27")
+        incomplete["publishers"]=incomplete["publishers"][:-1]
+        with self.assertRaisesRegex(ValueError,"Missing mandatory"):
+            archive_editorial(incomplete,"2026-10-27","40500000013",repo=repo)
+        fake=editorial("2026-10-27",all_blocked=True)
+        fake["publishers"][0]["outcome"]="NOT_CHECKED"
+        with self.assertRaisesRegex(ValueError,"unexamined"):
+            archive_editorial(fake,"2026-10-27","40500000013",repo=repo)
+        valid=editorial("2026-10-27")
+        with self.assertRaisesRegex(ValueError,"date"):
+            archive_editorial(valid,"2026-10-26","40500000013",repo=repo)
+        self.assertEqual(repo.files,{})
 
     def test_run_ids_validated_against_path_traversal(self):
         repo=PrivateMock()
