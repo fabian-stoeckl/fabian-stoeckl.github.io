@@ -14,11 +14,17 @@ from scripts.morgenzeitung_source_evidence import validate_source_url
 def preflight(candidates, date, *, minimum=15, checker=None, allow_partial=False, editorial_mode=False):
     if not isinstance(candidates, list) or not candidates:
         raise ValueError("Nonempty original candidate pool required")
+    if type(minimum) is not int or minimum < 1:
+        raise ValueError("Positive minimum required")
     checker = checker or check_candidates
-    ready, blocked = [], []
+    ready, blocked, seen = [], [], set()
     for candidate in candidates:
         if not isinstance(candidate, dict):
             raise ValueError("Invalid candidate")
+        identifier = candidate.get("id")
+        if not isinstance(identifier, str) or not identifier or identifier in seen:
+            raise ValueError("Each candidate needs a unique nonempty id")
+        seen.add(identifier)
         try:
             check_date(candidate.get("published_at"), date)
             # Editorial mode avoids fragile network availability as an article gate.
@@ -36,7 +42,8 @@ def preflight(candidates, date, *, minimum=15, checker=None, allow_partial=False
                             "publisher_page", "publisher_feed", "search_result",
                             "news_index", "publisher_metadata")
                         and isinstance(discovery.get("reference"), str)
-                        and discovery["reference"].strip()):
+                        and discovery["reference"].strip()
+                        and discovery["reference"].startswith("https://")):
                     ready.append(candidate)
                 else:
                     blocked.append({"id": candidate.get("id"), "source": candidate.get("source"),
