@@ -121,7 +121,8 @@ def archive_review(day, run_id, repo=None):
     return {**saved, "date": day, "verdict": result["verdict"],
             "confirmed_blackouts": [r["publisher"] for r in result["confirmed_blackouts"]],
             "confirmed_blackout_details": result["confirmed_blackouts"],
-            "missing_editorial_dates": result.get("missing_dates", [])}
+            "missing_editorial_dates": result.get("missing_dates", []),
+            "missing_dates": result.get("missing_dates", [])}
 
 
 def main():
