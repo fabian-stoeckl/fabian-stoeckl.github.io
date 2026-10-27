@@ -213,3 +213,14 @@ Die Capture-CLI unterstützt neben dem geschützten Token nun den vorhandenen Gi
 Der tägliche Agent soll **zuerst die relevanten Themen recherchieren und erst anschließend die besten belegten Beiträge auswählen**. Handelsblatt wegen häufiger thematischer Relevanz sorgfältig mit durchsuchen, ohne anderen Verlagen einen inhaltlich gleichwertigen oder besseren Artikel vorzuenthalten. „Heute wichtig“ bleibt breit und nach allgemeiner Nachrichtenrelevanz, „Vertiefungen“ sind profil- und substanzorientiert, nicht verlagsorientiert. Deutschsprachige Zusammenfassungen auch bei englischen Originalartikeln; Original-URL, genaue Quelle, Paywall- und Zugriffstransparenz weiterhin wie bisher.
 
 Die begrenzte Vier-Verlags-Stichprobe der technischen Metadaten-Regression hat **keine redaktionelle Steuerungswirkung**. Die produktive Quellenvalidierung kann Artikel von jedem seriösen zulässigen HTTPS-Publisher prüfen; ein fehlgeschlagener Verlagsabruf belegt weder die Nicht-Existenz des Artikels noch einen Ausschluss der Quelle. Maßgeblich bleiben eigenständiger journalistischer Mehrwert, Nachprüfbarkeit, Aktualität, Vielfalt und die echten Nutzerbewertungen. Näheres: `services/morgenzeitung/AGENT-ABLAUF.md`.
+
+
+## Betriebsrhythmus – Bereinigung vom 27.10.2026
+
+- ChatGPT-Hauptlauf unverändert täglich **06:45 Europe/Vienna**; zwei produktive Wiederaufnahmeläufe **08:30 und 09:30 Europe/Vienna** (erst nach mehreren echten stabilen Tagen neu bewerten).
+- Unabhängige ChatGPT-Feedback-/Lernabnahme **12:30 Europe/Vienna**, nach der Veröffentlichungskontrolle und beiden Wiederaufnahmen, statt 09:00; befristet **bis einschließlich 14.11.2026**, mit bisherigem Abschlussbericht und Erinnerungs-/E-Mail-Ziel. Sie publiziert keine separate Ausgabe.
+- GitHub `morgenzeitung-feedback.yml` unverändert 04:15 UTC (05:15 CET/06:15 CEST), vor dem Hauptlauf.
+- GitHub-Freshness-/Ausfallmonitor unverändert 10:15 Europe/Vienna durch DST-Doppelslot 08:15/09:15 UTC.
+- Privater Live-Lernaudit 09:45 UTC (10:45 CET/11:45 CEST) nach dem Freshness-Kontrollzeitpunkt; die unabhängige Tagesabnahme bleibt 12:15 UTC (13:15 CET/14:15 CEST) danach. Push-Audit bei wirklichen Tagesausgaben bleibt aktiv; Readbacks und negative Beweisfälle bleiben erforderlich.
+- Die rein historischen Snapshot-Gates v3, v6, v7 und v8 sind nur noch manuell über GitHub Actions `workflow_dispatch` startbar; ihre Prüflogik und originalen Testdatensätze bleiben unverändert. Das verhindert wiederholte Altbestands-Tests bei jedem neuen Merge. Allgemeine Produktiv-PR-Gates, Recovery-Tests, Website-, Feedback- und Publikationsprüfungen bleiben automatisch aktiv.
+- Kein zusätzlicher Task, Dienst oder Token. Keine Veränderungen im ETF-Bereich oder dessen Update-Schedule. Der tatsächliche unbeaufsichtigte Folgetag bleibt ein gesondert nachzuweisender Produktivtest.

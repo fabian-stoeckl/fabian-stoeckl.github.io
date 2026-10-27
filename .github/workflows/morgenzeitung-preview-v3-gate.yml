@@ -1,14 +1,8 @@
 name: Verify isolated Morgenzeitung preview
+# Historical snapshot regression only. Production gates are separate.
+# Manually re-run for historical investigation; avoid redundant PR/push runs.
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'Privat/Pressespiegel/previews/**'
-      - '.github/workflows/morgenzeitung-preview-v3-gate.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'Privat/Pressespiegel/previews/**'
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
