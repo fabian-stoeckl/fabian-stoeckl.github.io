@@ -8,7 +8,7 @@ candidate, and HTTP redirects are disabled.
 import datetime as dt
 from email.utils import parsedate_to_datetime
 import unicodedata
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, urlunsplit, parse_qsl
 import urllib.request
 import urllib.error
 import xml.etree.ElementTree as ET
@@ -58,6 +58,11 @@ def _norm(s):
 def _stamp(value):
     if not value:
         raise ValueError("Official RSS item missing publication date")
+    # RFC 5322 '-0000' denotes UTC with no assertion about local zone.
+    # Python returns a naive datetime for this specific representation.
+    # Convert ONLY the exact RSS suffix to +0000; arbitrary naive times fail.
+    if value.strip().endswith(" -0000"):
+        value=value.strip()[:-6] + " +0000"
     try:
         result = dt.datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
     except ValueError:
@@ -115,6 +120,31 @@ def _items(root):
                    or item.findtext("atom:updated", "", NS))
 
 
+def canonical_feed_article_link(value, publisher):
+    """Drop only publisher-provided, explicitly benign RSS tracking decorations.
+
+    A different story path, host, query parameter or fragment is never proof of
+    the claimed original. Return a clean HTTPS publisher original URL.
+    """
+    label = ALIASES.get(publisher, publisher)
+    if label not in FEEDS:
+        raise ValueError("No approved first-party publisher")
+    _, hosts = FEEDS[label]
+    parts = urlsplit(value)
+    if parts.scheme != "https" or parts.hostname not in hosts:
+        raise ValueError("Not the expected first-party original")
+    allowed_query = {"at_medium", "at_campaign"} if label == "BBC News" else set()
+    if any(k.casefold() not in allowed_query for k, _ in
+           parse_qsl(parts.query, keep_blank_values=True)):
+        raise ValueError("Unrecognized article URL query parameters")
+    if parts.fragment and not (label == "DER SPIEGEL"
+                               and parts.fragment.casefold() == "ref=rss"):
+        raise ValueError("Unrecognized article fragment")
+    canonical = urlunsplit((parts.scheme, parts.netloc, parts.path, "", ""))
+    validate_source_url(canonical)
+    return canonical
+
+
 def verify_official_feed(candidate, *, opener=None):
     """Fetch official RSS and verify EXACT article identity without reading it.
 
@@ -151,13 +181,10 @@ def verify_official_feed(candidate, *, opener=None):
             if not feed_link:
                 continue
             try:
-                validate_source_url(feed_link)
-                linked = urlsplit(feed_link)
+                canonical = canonical_feed_article_link(feed_link, label)
             except ValueError:
                 continue
-            # A feed is not trusted to assert a link on another publisher.
-            if (linked.hostname not in hosts or linked.path != target.path
-                    or linked.query != target.query):
+            if canonical != article_url:
                 continue
             if _norm(feed_title) != title:
                 raise ValueError("Official publisher feed title contradicts candidate")
