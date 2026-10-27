@@ -23,9 +23,9 @@ class GateWorkflowCoverageTests(unittest.TestCase):
         self.assertIsNotNone(re.fullmatch(pattern, "Privat/Pressespiegel/data/2026-10-25.json"))
         self.assertIsNone(re.fullmatch(pattern, "Privat/Pressespiegel/data/index.json"))
 
-    def test_real_edition_requires_live_source_check(self):
+    def test_real_edition_does_not_require_live_source_check(self):
         workflow = Path(".github/workflows/morgenzeitung-prepublication-gate.yml").read_text()
-        self.assertIn("'--check-live-sources'", workflow)
+        self.assertNotIn("'--check-live-sources'", workflow)
         self.assertIn("if not editions:", workflow)
         self.assertIn("No edition JSON changed; no publication to gate", workflow)
 

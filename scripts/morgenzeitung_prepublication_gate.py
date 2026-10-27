@@ -139,7 +139,8 @@ def main():
     p.add_argument("--date", required=True)
     p.add_argument("--edition", type=Path, required=True)
     p.add_argument("--index", type=Path)
-    p.add_argument("--check-live-sources", action="store_true")
+    p.add_argument("--check-live-sources", action="store_true",
+                   help="Legacy diagnostic only; never required for publication")
     args = p.parse_args()
     import os
     repo = PrivateRepo(os.environ.get("MORGENZEITUNG_FEEDBACK_TOKEN"))

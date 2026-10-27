@@ -26,7 +26,7 @@ def _retryable(reason):
         "feed inaccessible", "connection error"))
 
 
-def recover(raw, date, *, minimum=15, max_retries=2, checker=None):
+def recover(raw, date, *, minimum=15, max_retries=2, checker=None, no_link_tests=False):
     """Recheck only unresolved candidates, then apply the unchanged S4 gate.
 
     The initial triage counts as attempt 1. Each unresolved item may receive
@@ -35,6 +35,19 @@ def recover(raw, date, *, minimum=15, max_retries=2, checker=None):
     """
     if type(max_retries) is not int or not 0 <= max_retries <= 2:
         raise ValueError("max_retries must be an integer between 0 and 2")
+    if no_link_tests:
+        # One offline editorial pass; never retry links or require HTTP/RSS identity.
+        initial = triage(raw, date, minimum=minimum, checker=checker,
+                         no_link_tests=True)
+        return {"schema": 1, "date": date, "raw_count": len(raw),
+                "eligible_count": initial["eligible_count"],
+                "needs_research": initial["rejected"],
+                "retry_counts": {item["id"]: 0 for item in raw},
+                "final_preflight": {"preflight_passed": initial["ready_for_final_preflight"],
+                                    "mode": "NO_LINK_TESTS"},
+                "ready_for_private_capture": initial["ready_for_final_preflight"],
+                "eligible": initial["eligible"] if initial["ready_for_final_preflight"] else [],
+                "rule": "No network retry; preserve editorial discoveries. Immutable capture and publication replay remain mandatory."}
     initial = triage(raw, date, minimum=minimum, checker=checker)
     eligible = {item["id"]: item for item in initial["eligible"]}
     by_id = {item["id"]: item for item in raw}
@@ -78,13 +91,16 @@ def main():
     parser.add_argument("--diagnostics", type=Path, required=True)
     parser.add_argument("--minimum", type=int, default=15)
     parser.add_argument("--max-retries", type=int, default=2)
+    parser.add_argument("--no-link-tests", action="store_true",
+                        help="Single offline pass; no URL availability retries")
     args = parser.parse_args()
     if args.raw in (args.eligible, args.diagnostics) or args.eligible == args.diagnostics:
         parser.error("Raw, eligible and diagnostics paths must differ")
     if args.eligible.exists() or args.diagnostics.exists():
         parser.error("Output paths must be new; never reuse or overwrite a prior recovery attempt")
     result = recover(json.loads(args.raw.read_text(encoding="utf-8")),
-                     args.date, minimum=args.minimum, max_retries=args.max_retries)
+                     args.date, minimum=args.minimum, max_retries=args.max_retries,
+                     no_link_tests=args.no_link_tests)
     report = {key: value for key, value in result.items() if key != "eligible"}
     args.diagnostics.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n",
                                 encoding="utf-8")

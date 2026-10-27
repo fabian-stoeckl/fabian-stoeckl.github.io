@@ -10,13 +10,27 @@ from pathlib import Path
 
 from scripts.morgenzeitung_live_source_check import check_candidates, check_date
 from scripts.morgenzeitung_source_diversity import audit_source_diversity
+from scripts.morgenzeitung_source_preflight import preflight
 
 
-def triage(candidates, date, *, minimum=15, checker=None):
+def triage(candidates, date, *, minimum=15, checker=None, editorial_mode=False, no_link_tests=False):
     if not isinstance(candidates, list) or not candidates:
         raise ValueError("Original unselected research candidates required")
     if type(minimum) is not int or minimum < 1:
         raise ValueError("Positive minimum required")
+    if editorial_mode or no_link_tests:
+        result = preflight(candidates, date, minimum=minimum, checker=checker,
+                           allow_partial=True, editorial_mode=editorial_mode,
+                           no_link_tests=no_link_tests)
+        return {"schema": 1, "date": date, "raw_count": len(candidates),
+                "eligible_count": result["ready_count"],
+                "rejected_count": result["blocked_count"],
+                "ready_for_final_preflight": result["preflight_passed"],
+                "minimum": minimum, "eligible": result["verified_candidates"],
+                "rejected": [{"state": "NEEDS_RESEARCH", **row}
+                             for row in result["blocked"]],
+                "diversity": result["diversity"],
+                "important": ("No external link tests or publisher verification performed; preserve candidate metadata without asserting article existence." if no_link_tests else "Editorial provenance assessed once; capture only eligible candidates. Separate publication and learning checks remain required.")}
     checker = checker or check_candidates
     eligible, rejected, seen = [], [], set()
     for item in candidates:
@@ -71,14 +85,23 @@ def main():
     p.add_argument("--eligible", type=Path, required=True)
     p.add_argument("--diagnostics", type=Path, required=True)
     p.add_argument("--minimum", type=int, default=15)
+    p.add_argument("--no-link-tests", action="store_true",
+                   help="Preserve discovered articles without HTTP, feed, or date gate")
+    p.add_argument("--editorial-mode", action="store_true",
+                   help="Use documented discovery provenance instead of live HTTP checks")
     args = p.parse_args()
-    if args.eligible == args.diagnostics:
-        p.error("Eligible and diagnostic files must not be the same")
+    if len({args.candidates.resolve(), args.eligible.resolve(), args.diagnostics.resolve()}) != 3:
+        p.error("Original candidates, eligible output and diagnostics must be distinct")
+    if args.eligible.exists() or args.diagnostics.exists():
+        p.error("Output files already exist; preserve original research and earlier runs")
     result = triage(json.loads(args.candidates.read_text()),
-                    args.date, minimum=args.minimum)
-    args.eligible.write_text(json.dumps(result["eligible"],ensure_ascii=False,indent=2)+"\n")
+                    args.date, minimum=args.minimum, editorial_mode=args.editorial_mode,
+                    no_link_tests=args.no_link_tests)
+    with args.eligible.open("x", encoding="utf-8") as output:
+        output.write(json.dumps(result["eligible"],ensure_ascii=False,indent=2)+"\n")
     report = {key:value for key,value in result.items() if key != "eligible"}
-    args.diagnostics.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
+    with args.diagnostics.open("x", encoding="utf-8") as output:
+        output.write(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
     print(json.dumps({"eligible":result["eligible_count"],
                       "needs_research":result["rejected_count"],
                       "ready_for_final_preflight":result["ready_for_final_preflight"]}))
