@@ -243,6 +243,64 @@ def evaluate(date, index, edition, private_files, publisher_checks, *, committed
             and isinstance(audit, dict)
             and (audit.get("publication_audit") or {}).get("editorial_effect_verified") is True
         )
+    # Independently accepted versioned editions may have a distinct immutable
+    # final S7 schema. Reconcile evidence; never trust a PASS label by itself.
+    if isinstance(versioned_final, dict) and isinstance(run, dict) and isinstance(audit, dict):
+        final_checks = versioned_final.get("checks") or {}
+        final_sources = versioned_final.get("independent_sources") or {}
+        final_published = versioned_final.get("published") or {}
+        run_feedback = run.get("feedback") or {}
+        run_selection = run.get("selection") or {}
+        run_s4 = run.get("private_s4") or {}
+        run_https = run.get("live_https") or {}
+        live_articles = [a.get("id") for a in edition.get("articles", [])] if isinstance(edition, dict) else []
+        live_headlines = [h.get("id") for h in edition.get("headlines", [])] if isinstance(edition, dict) else []
+        required_final_checks = (
+            "edition_correct", "index_unique", "private_snapshots",
+            "issue_versions", "profile_s7", "replay", "counterfactual",
+            "chronology", "live_https", "all_premerge_ci",
+            "all_postmerge_ci", "privacy", "auto_audit_readback"
+        )
+        merge_sha = run.get("public_merge_sha")
+        s4_commit = run_s4.get("commit")
+        s7_commit = run_feedback.get("profile_s7_commit")
+        versioned_provenance_pass = bool(
+            version and versioned_final.get("version") == version
+            and versioned_final.get("date") == date
+            and versioned_final.get("verdict") == "PASS"
+            and all(final_checks.get(k) == "PASS" for k in required_final_checks)
+            and isinstance(merge_sha, str) and re.fullmatch(r"[0-9a-f]{40}", merge_sha)
+            and merge_sha == final_sources.get("public_merge_sha")
+            and run.get("date") == date and run.get("version") == version
+            and run.get("status") == "PASS"
+            and isinstance(s4_commit, str) and re.fullmatch(r"[0-9a-f]{40}", s4_commit)
+            and s4_commit == final_sources.get("private_s4_commit")
+            and run_feedback.get("status") == "PASS"
+            and run_feedback.get("ratings", 0) > 0
+            and run_feedback.get("issue_versions") == audit.get("issue_versions")
+            and isinstance(s7_commit, str) and re.fullmatch(r"[0-9a-f]{40}", s7_commit)
+            and s7_commit == final_sources.get("private_s7_profile_commit")
+            and run_selection.get("status") == "PASS"
+            and run_selection.get("changed_membership_count", 0) > 0
+            and run_selection.get("learned_ids") == live_articles
+            and run_https.get("status") == "PASS"
+            and run_https.get("live_publication_verified") is True
+            and run_https.get("ordered_article_ids_match") is True
+            and run_https.get("ordered_headline_ids_match") is True
+            and final_published.get("date") == date
+            and final_published.get("selection_ids") == live_articles
+            and final_published.get("headline_ids") == live_headlines
+            and (audit.get("publication_audit") or {}).get("publication_verified") is True
+            and (audit.get("publication_audit") or {}).get("editorial_effect_verified") is True
+            and checks["public_edition_current"]
+            and checks["public_headlines_match_committed"]
+            and checks["private_origins_complete"]
+            and checks["private_snapshots_match_audit"]
+            and checks["public_matches_audited_selection"]
+        )
+        if versioned_provenance_pass:
+            checks["private_run_committed"] = True
+            checks["private_acceptance_pass"] = True
     statuses = [r.get("evidence", {}).get("status") for r in publisher_checks]
     checks["publisher_metadata_checked"] = ("match" in statuses and
                                              not any(s in ("mismatch", "conflict") for s in statuses))
