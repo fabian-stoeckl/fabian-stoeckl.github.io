@@ -1,5 +1,6 @@
 """Negative and positive regressions for independent FIRST-PARTY RSS evidence."""
 import datetime as dt
+from html import escape
 import unittest
 import urllib.error
 from unittest.mock import patch
@@ -29,8 +30,8 @@ def rss(url, *, title="Energiewende und die Zukunft der Industrie",
         date="Tue, 27 Oct 2026 08:20:00 GMT", links=None):
     links = links or [url]
     return ('<?xml version="1.0"?><rss version="2.0"><channel>'
-            + "".join("<item><title>"+title+"</title><link>"+s+"</link><pubDate>"
-                      + date+"</pubDate></item>" for s in links)
+            + "".join("<item><title>"+escape(title)+"</title><link>"+escape(s)+"</link><pubDate>"
+                      + escape(date)+"</pubDate></item>" for s in links)
             +"</channel></rss>").encode()
 
 
