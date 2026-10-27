@@ -84,6 +84,7 @@ class ArchiveTests(unittest.TestCase):
         r=archive_review("2026-10-27","40500000001",repo=repo)
         self.assertEqual(r["verdict"],"AUDIT_GAP")
         self.assertEqual(len(r["missing_editorial_dates"]),3)
+        self.assertEqual(r["missing_dates"], r["missing_editorial_dates"])
         self.assertFalse(r["confirmed_blackouts"])
         self.assertTrue(r["readback"])
 
