@@ -22,13 +22,20 @@ def preflight(candidates, date, *, minimum=15, checker=None, allow_partial=False
             check_date(candidate.get("published_at"), date)
             result = checker([candidate], date, publisher_dates=True)
             record = result["checked"][0]
-            if (record.get("original_article_http_verified") is True
-                    or record.get("publisher_feed_verified") is True):
+            feed_evidence = record.get("publisher_feed_evidence")
+            feed_verified = (record.get("publisher_feed_verified") is True
+                             and isinstance(feed_evidence, dict)
+                             and feed_evidence.get("publisher_feed_verified") is True
+                             and bool(feed_evidence.get("publication_time"))
+                             and (feed_evidence.get("original_url") == candidate.get("source_url")
+                                  or feed_evidence.get("article_url") == candidate.get("source_url")))
+            if candidate.get("verified") is True and (
+                    record.get("original_article_http_verified") is True or feed_verified):
                 ready.append(candidate)
             else:
                 blocked.append({"id": candidate.get("id"), "source": candidate.get("source"),
                                 "reason": "INCONCLUSIVE: no independent article confirmation"})
-        except (ValueError, OSError) as exc:
+        except (ValueError, OSError, IndexError, KeyError, TypeError) as exc:
             blocked.append({"id": candidate.get("id"), "source": candidate.get("source"),
                             "reason": str(exc)})
     diversity = audit_source_diversity(ready) if ready else None
@@ -61,7 +68,7 @@ def main():
         pool = json.load(stream)
     result = preflight(pool, args.date, minimum=args.minimum,
                        allow_partial=args.allow_partial)
-    if args.eligible_output:
+    if args.eligible_output and result["preflight_passed"]:
         from pathlib import Path
         Path(args.eligible_output).write_text(
             json.dumps(result["verified_candidates"], ensure_ascii=False, indent=2) + "\n",
