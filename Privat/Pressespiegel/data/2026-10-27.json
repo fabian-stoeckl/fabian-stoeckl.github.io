@@ -1,17 +1,17 @@
 {
   "date": "2026-10-27",
   "window_start": "2026-10-26T12:10:00Z",
-  "window_end": "2026-10-27T08:00:31.659Z",
-  "available_at": "2026-10-27T08:00:31.659Z",
-  "researched_at": "2026-10-27T08:00:31.659Z",
+  "window_end": "2026-10-27T12:20:16Z",
+  "available_at": "2026-10-27T12:20:16Z",
+  "researched_at": "2026-10-27T12:20:16Z",
   "preview": false,
-  "snapshot_version": null,
+  "snapshot_version": "v2",
   "limitations": [
-    "Produktiver Wiederholungslauf mit 20 Fixstartern aus dem Morgen-Rechercheprotokoll und ergänzender Recherche; technische Zugriffsblockaden führen nicht zum Ausschluss einzelner Verlage.",
-    "15 nach unabhängigem GitHub-Runner-Preflight geprüfte Vertiefungskandidaten wurden vor der Auswahl in vier unveränderlichen privaten S4-Originaldateien archiviert.",
-    "Einzelne Paywall-Artikel sind auf Basis des tatsächlich zugänglichen Original-Vorspanns zusammengefasst; keine Behauptung eines vollständigen Textzugangs.",
-    "Die Tagesausgabe enthält neue Artikel aus dem Recherchefenster; keine ETF-Dateien oder historischen Ausgaben verändert.",
-    "Reuters-Originalartikel wurden trotz Recherche nicht in die finale Schlagzeilenliste übernommen, weil der unabhängige GitHub-Runner deren Artikel-Existenz wegen HTTP 401 nicht bestätigen konnte. Reuters bleibt im Recherchepool."
+    "Vollständiger erneuter Recherchelauf mit 22 Pflichtmedien; Quellenzugriffsprobleme führen nicht zum Ausschluss einzelner Verlage.",
+    "23 unterschiedliche Kandidaten aus fünf Medien wurden durch unabhängigen GitHub-Runner geprüft, danach unveränderlich privat vor der Auswahl archiviert; 15 Vertiefungen ausgewählt.",
+    "Alle zuvor bewerteten zehn Vertiefungen und sechzehn Nachrichten behalten ihre ursprünglichen Artikel-IDs. Fünf neue Vertiefungen und drei zusätzliche Nachrichten ergänzen dieselbe Tagesausgabe.",
+    "Zusammenfassungen hinter Paywalls beschränken sich auf tatsächlich zugängliche Originalinformationen und nachprüfbare ergänzende Belege. Volltextzugang beeinflusst das Ranking nicht.",
+    "Le Monde ist eine neue Testquelle, keine automatisch dauerhaft aufgenommene Pflichtzeitung. Die Aufnahme soll von wiederholter Relevanz und tatsächlichem Leserfeedback abhängen."
   ],
   "headlines": [
     {
@@ -173,6 +173,36 @@
       "region": "International",
       "summary": "Der Börsenprospekt von Anthropic gibt neue Einblicke in Wachstum, Verluste und Risiken des KI-Unternehmens. Der geplante Börsengang gilt als wichtiger Test für die Finanzierung des KI-Booms.",
       "event": "20261027-headline-27b0000000000013"
+    },
+    {
+      "id": "27b0000000000014",
+      "title": "UK officials discussing options including free movement with EU ahead of summit",
+      "url": "https://www.theguardian.com/politics/2026/oct/27/uk-eu-relationship-talks-summit-free-movement-jonathan-reynolds",
+      "source": "The Guardian",
+      "published_at": "2026-10-27T09:41:00Z",
+      "region": "International",
+      "summary": "Britische Regierungsvertreter diskutieren vor dem Novembergipfel längerfristige EU-Beziehungen. Zunächst geht es um Handelshemmnisse, Emissionshandel und Jugendmobilität; eine Rückkehr zur Freizügigkeit ist nur eine diskutierte Option.",
+      "event": "20261027-v2-headline-27b0000000000014"
+    },
+    {
+      "id": "27b0000000000015",
+      "title": "Number of UK businesses in financial distress ‘at two-decade high’",
+      "url": "https://www.theguardian.com/business/2026/oct/27/number-of-uk-businesses-in-financial-distress-at-two-decade-high-budget",
+      "source": "The Guardian",
+      "published_at": "2026-10-27T09:01:00Z",
+      "region": "International",
+      "summary": "BTG meldet 738.144 britische Unternehmen mit erheblichen finanziellen Schwierigkeiten im dritten Quartal. Höhere Energie-, Beschäftigungs- und Finanzierungskosten erhöhen den Druck vor dem Budget.",
+      "event": "20261027-v2-headline-27b0000000000015"
+    },
+    {
+      "id": "27b0000000000016",
+      "title": "UK shop price inflation ‘highest since 2024’ as retailers struggle to limit price rises",
+      "url": "https://www.theguardian.com/business/2026/oct/27/uk-shop-price-inflation-highest-since-2024-as-retailers-struggle-to-limit-price-rises",
+      "source": "The Guardian",
+      "published_at": "2026-10-27T00:01:00Z",
+      "region": "International",
+      "summary": "Die britische Ladenpreisinflation steigt von 1,4 auf 2,1 Prozent. Der Einzelhandel gibt Energie- und Lebensmittelkosten zunehmend an Kunden weiter; Lebensmittel verteuerten sich um 2,9 Prozent.",
+      "event": "20261027-v2-headline-27b0000000000016"
     }
   ],
   "articles": [
@@ -213,26 +243,6 @@
       "facts": [
         "Geplant ist eine Hochvolumenfertigung für GaN-Halbleiter auf 300-Millimeter-Wafern.",
         "Die EU-Kommission genehmigte 319 Millionen Euro staatliche Unterstützung; der Produktionsstart ist für Ende 2027 vorgesehen."
-      ],
-      "research_checked_at": "2026-10-27T08:00:31.659Z"
-    },
-    {
-      "id": "27a0000000000001",
-      "title": "Gaspreis-Schock – Industriestrompreis wird zum Milliardenrisiko",
-      "url": "https://www.handelsblatt.com/unternehmen/energie/energie-gaspreis-schock-industriestrompreis-wird-zum-milliardenrisiko/100263344.html",
-      "source": "Handelsblatt",
-      "published_at": "2026-10-26T12:18:00Z",
-      "topic": "Energie & Industrie",
-      "kind": "Energie- und Fiskalanalyse",
-      "region": "International",
-      "summary": "Der Anstieg der Gas- und Strompreise könnte die deutsche Subvention für energieintensive Industrie deutlich verteuern. Eine Handelsblatt-Berechnung auf Basis von Aurora-Energy-Research-Daten zeigt, dass die staatlichen Kosten für den Industriestrompreis 2027 um rund eine Milliarde Euro höher ausfallen könnten als im laufenden Jahr.",
-      "event": "20261027-feature-27a0000000000001",
-      "paywall": true,
-      "access": "teaser",
-      "research_access": "original_teaser",
-      "facts": [
-        "Die Bundesregierung hat sich zu einer dreijährigen Strompreisunterstützung für die Industrie verpflichtet.",
-        "Das Handelsblatt beziffert mögliche zusätzliche Staatsausgaben im kommenden Jahr auf rund eine Milliarde Euro."
       ],
       "research_checked_at": "2026-10-27T08:00:31.659Z"
     },
@@ -337,6 +347,86 @@
       "research_checked_at": "2026-10-27T08:00:31.659Z"
     },
     {
+      "id": "27c0000000000007",
+      "title": "Des « petites mains » de l’IA portent plainte pour infraction aux règles de protection des données",
+      "url": "https://www.lemonde.fr/economie/article/2026/10/27/des-petites-mains-de-l-ia-portent-plainte-pour-infraction-aux-regles-de-protection-des-donnees_6801142_3234.html",
+      "source": "Le Monde",
+      "published_at": "2026-10-27T06:00:00Z",
+      "topic": "KI & Arbeit",
+      "kind": "Analyse zu KI-Arbeit und Datenschutz",
+      "region": "International",
+      "summary": "Die Datenschutzorganisation Noyb und fünf freiberufliche KI-Trainingskräfte werfen der Plattform Outlier von Scale AI Verstöße gegen europäische Datenschutzregeln vor. Kritisiert werden Datensammlung und Überwachung bei der Arbeit; das Unternehmen bestreitet Rechtsverstöße und verweist auf Einwilligung und Sicherheitsmaßnahmen.",
+      "facts": [
+        "Noyb und fünf Freelancer haben Beschwerden über den Umgang mit persönlichen Daten eingereicht.",
+        "Scale AI weist die Vorwürfe zurück und erklärt, Datenschutzvorschriften einzuhalten."
+      ],
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "event": "20261027-v2-feature-27c0000000000007",
+      "research_checked_at": "2026-10-27T12:20:16Z"
+    },
+    {
+      "id": "27c0000000000001",
+      "title": "Steinmeier in China: Kooperation und neues Selbstbewusstsein",
+      "url": "https://www.handelsblatt.com/politik/international/handel-steinmeier-in-china-unser-licht-nicht-unter-den-scheffel-stellen/100262414.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-27T09:47:00Z",
+      "topic": "Industrie & Welthandel",
+      "kind": "Industrie- und Handelspolitikanalyse",
+      "region": "International",
+      "summary": "Bundespräsident Steinmeier wirbt bei seinem China-Besuch für eine selbstbewusste deutsche Wirtschaft und die Fortsetzung technologischer Zusammenarbeit. Gleichzeitig verweist er auf das Handelsungleichgewicht zwischen China und Europa. Am VW-Entwicklungsstandort Hefei steht die schnellere Entwicklung vernetzter Elektroautos für den chinesischen Markt im Mittelpunkt.",
+      "facts": [
+        "Steinmeier besuchte das VW-Entwicklungszentrum in Hefei und sprach über Kooperation.",
+        "Er kritisierte den wachsenden chinesischen Handelsüberschuss gegenüber Europa."
+      ],
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "event": "20261027-v2-feature-27c0000000000001",
+      "research_checked_at": "2026-10-27T12:20:16Z"
+    },
+    {
+      "id": "27c0000000000006",
+      "title": "Mercedes bietet bis zu 330.000 Euro Abfindung in der Produktion",
+      "url": "https://www.handelsblatt.com/unternehmen/industrie/autobauer-mercedes-bietet-bis-zu-330000-euro-abfindung-in-der-produktion/100263206.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-27T03:00:00Z",
+      "topic": "Industrie & Arbeit",
+      "kind": "Industrie- und Arbeitsmarktanalyse",
+      "region": "International",
+      "summary": "Mercedes erweitert freiwillige Personalabbauprogramme auf Produktionsstandorte und bietet einzelnen Beschäftigten hohe Abfindungen. Laut dem zugänglichen Bericht sind auch Komponentenwerke in Untertürkheim und Berlin betroffen. Die Zahl von bis zu 330.000 Euro beschreibt eine mögliche individuelle Abfindung, nicht den Regelfall für alle Beschäftigten.",
+      "facts": [
+        "Die freiwilligen Abfindungsprogramme betreffen auch Komponentenwerke in Untertürkheim und Berlin.",
+        "Der Bericht nennt Abfindungsangebote von bis zu 330.000 Euro."
+      ],
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "event": "20261027-v2-feature-27c0000000000006",
+      "research_checked_at": "2026-10-27T12:20:16Z"
+    },
+    {
+      "id": "27a0000000000001",
+      "title": "Gaspreis-Schock – Industriestrompreis wird zum Milliardenrisiko",
+      "url": "https://www.handelsblatt.com/unternehmen/energie/energie-gaspreis-schock-industriestrompreis-wird-zum-milliardenrisiko/100263344.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-26T12:18:00Z",
+      "topic": "Energie & Industrie",
+      "kind": "Energie- und Fiskalanalyse",
+      "region": "International",
+      "summary": "Der Anstieg der Gas- und Strompreise könnte die deutsche Subvention für energieintensive Industrie deutlich verteuern. Eine Handelsblatt-Berechnung auf Basis von Aurora-Energy-Research-Daten zeigt, dass die staatlichen Kosten für den Industriestrompreis 2027 um rund eine Milliarde Euro höher ausfallen könnten als im laufenden Jahr.",
+      "event": "20261027-feature-27a0000000000001",
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "facts": [
+        "Die Bundesregierung hat sich zu einer dreijährigen Strompreisunterstützung für die Industrie verpflichtet.",
+        "Das Handelsblatt beziffert mögliche zusätzliche Staatsausgaben im kommenden Jahr auf rund eine Milliarde Euro."
+      ],
+      "research_checked_at": "2026-10-27T08:00:31.659Z"
+    },
+    {
       "id": "27a000000000000b",
       "title": "Kommt Deutschlands Wirtschaft wieder in die Gänge?",
       "url": "https://www.diepresse.com/41392670/kommt-deutschlands-wirtschaft-wieder-in-die-gaenge",
@@ -375,7 +465,54 @@
         "Weniger als ein Prozent ist streng geschützt, während die EU zehn Prozent anstrebt."
       ],
       "research_checked_at": "2026-10-27T08:00:31.659Z"
+    },
+    {
+      "id": "27c0000000000008",
+      "title": "« L’IA ne va pas aller sous les maisons pour installer des tuyaux » : aux Etats-Unis, le nouvel attrait pour les formations aux métiers manuels",
+      "url": "https://www.lemonde.fr/campus/article/2026/10/27/l-ia-ne-va-pas-aller-sous-les-maisons-pour-installer-des-tuyaux-aux-etats-unis-le-nouvel-attrait-pour-les-formations-aux-metiers-manuels_6801213_4401467.html",
+      "source": "Le Monde",
+      "published_at": "2026-10-27T08:00:00Z",
+      "topic": "Bildung & Arbeitsmarkt",
+      "kind": "Reportage zu Bildung und Arbeitsmarkt",
+      "region": "International",
+      "summary": "In den USA interessieren sich mehr junge Menschen für handwerkliche Ausbildungswege, auch aus Sorge um die Auswirkungen von KI auf Bürojobs. Le Monde beschreibt steigende Anmeldungen für technische Berufe und Zweifel an den hohen Kosten eines Universitätsstudiums. Der Bericht ordnet ein, dass Hochschulabschlüsse über das gesamte Berufsleben weiterhin wirtschaftliche Vorteile haben können.",
+      "facts": [
+        "Berufliche Ausbildungsprogramme in Bau- und Technikberufen verzeichnen steigende Nachfrage.",
+        "Die Reportage stellt Ausbildungskosten und langfristige Beschäftigungschancen von Handwerk und Studium gegenüber."
+      ],
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "event": "20261027-v2-feature-27c0000000000008",
+      "research_checked_at": "2026-10-27T12:20:16Z"
+    },
+    {
+      "id": "27c0000000000002",
+      "title": "Deutsche Börse startet Dax-Handel rund um die Uhr",
+      "url": "https://www.handelsblatt.com/finanzen/maerkte/aktien/aktien-deutsche-boerse-startet-handel-mit-dax-aktien-rund-um-die-uhr/100264972.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-27T09:36:00Z",
+      "topic": "Finanzmärkte",
+      "kind": "Kapitalmarkt- und Infrastrukturentwicklung",
+      "region": "International",
+      "summary": "Die Deutsche Börse erweitert über die Tochter 360X die Möglichkeiten, Dax-Aktien auch außerhalb der klassischen Xetra-Handelszeiten zu handeln. Der im Bericht beschriebene Handel läuft über ein Preisabfrageverfahren, während die reguläre Dax-Indexberechnung unverändert bleibt. Eine Ausweitung auf ETFs wird als mögliche spätere Option genannt.",
+      "facts": [
+        "360X ermöglicht Preisabfragen und Handel mit Dax-Titeln außerhalb der regulären Xetra-Zeiten.",
+        "Die Berechnung des Dax-Index bleibt an die regulären Handelszeiten gebunden."
+      ],
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "event": "20261027-v2-feature-27c0000000000002",
+      "research_checked_at": "2026-10-27T12:20:16Z"
     }
   ],
-  "selection_note": "Deterministische Auswahl aus 15 unabhängig geprüften und vor der Auswahl privat archivierten Kandidaten (S4-Commit 0965602f20d2d73e18666497b253548187562c4b), anhand des echten privaten Interessenprofils und vier Nutzerfeedback-Issues; max. vier Vertiefungen pro Verlag."
+  "selection_note": "Neuauswahl aus 23 unabhängig bestätigten und vor Auswahl unveränderlich privat archivierten Artikeln (S4 432ffa2d6f54e1262bf0c629bd07b31eab718367; Version v2). 15 Vertiefungen, fünf neue; Original-IDs der bereits bewerteten Artikel bleiben erhalten. Das aktuelle echte Lernprofil aus den Feedback-Issues 3–8 verändert die Auswahl nachweislich; max. zehn Beiträge je Verlag.",
+  "new_sources": [
+    {
+      "name": "Le Monde",
+      "why": "Zwei aktuelle Originalberichte zu KI-Arbeit, europäischem Datenschutz und Ausbildung. Zunächst Testquelle; dauerhafte Aufnahme erst nach wiederholtem Nutzwert und deinem Feedback.",
+      "example_url": "https://www.lemonde.fr/economie/article/2026/10/27/des-petites-mains-de-l-ia-portent-plainte-pour-infraction-aux-regles-de-protection-des-donnees_6801142_3234.html"
+    }
+  ]
 }

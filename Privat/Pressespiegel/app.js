@@ -85,6 +85,24 @@ function render(){
     sec.append(list);cols.append(sec);
   }
   $('headlines').append(cols);
+  const discovery=$('new-sources');
+  if(discovery){
+    discovery.replaceChildren();
+    const trials=Array.isArray(e.new_sources)?e.new_sources.filter(s=>s&&typeof s.name==='string'&&typeof s.why==='string'&&typeof s.example_url==='string'):[];
+    discovery.hidden=trials.length===0;
+    if(trials.length){
+      discovery.append(el('h2','Neue Quellen entdeckt'));
+      discovery.append(el('p','Testquellen mit konkreten Artikeln. Eine dauerhafte Aufnahme erfolgt erst nach wiederholt guter Relevanz und deinem Feedback.','small'));
+      const items=el('ul',undefined,'source-trials');
+      for(const source of trials){
+        const item=el('li');
+        try{item.append(link(source.name,source.example_url));}catch{continue;}
+        item.append(document.createTextNode(' – '+source.why));
+        items.append(item);
+      }
+      discovery.append(items);
+    }
+  }
   addSaveAction($('headlines'),'news-feedback-status');
   addSaveAction($('articles'),'features-feedback-status');
   // The date and the research timestamp are shown exactly once in the masthead.
