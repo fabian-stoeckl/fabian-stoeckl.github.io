@@ -218,6 +218,19 @@ class OfficialFeedTests(unittest.TestCase):
         self.assertIsNone(handler.redirect_request(
             request, None, 302, "Found", {}, "https://evil.example/rss"))
 
+    def test_financial_times_first_party_tracking_tag_is_narrowly_supported(self):
+        label,url=CASES[9]
+        original=url+"?syn-25a6b1a6=1"
+        self.assertEqual(canonical_feed_article_link(original,label),url)
+        self.assertTrue(verify_official_feed(candidate(label,url),
+            opener=FakeOpener(label,url,xml=rss(original)))["publisher_feed_verified"])
+        for other in (url+"?syn-25a6b1a6=2",url+"?syn-25a6b1a6=1&auth=1",
+                      url+"?syn-25a6b1a6=",url+"?syn-gggggggg=1",
+                      url+"?syn-25a6b1a6=1&syn-25a6b1a6=1",
+                      url+"?article=other",url+"#rss"):
+            with self.subTest(other=other),self.assertRaises(ValueError):
+                canonical_feed_article_link(other,label)
+
     def test_source_preflight_accepts_independent_feed_identity_as_ready(self):
         # Production preflight uses check_candidates(...publisher_dates=True).
         # An OFFICIAL original feed can now prove a blocked article without text.
