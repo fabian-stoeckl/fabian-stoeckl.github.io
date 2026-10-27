@@ -73,7 +73,7 @@ def feed_health(smoke, day, *, run_id=None):
         rows.append({
             "publisher": name, "feed_status": status, "feed_items": items,
             "working_official_feed": feed,
-            "individual_article_verified": status == "ORIGINAL_IDENTITY_MATCH",
+            "official_feed_sample_article_identity_confirmed": status == "ORIGINAL_IDENTITY_MATCH",
             # A feed does not prove direct access or the completeness of research.
             "fulltext_available": None,
             "editorial_research_confirmed": False,
@@ -120,11 +120,13 @@ def validate_editorial_report(report):
             raise ValueError("Invalid independently verified count")
         if outcome == "VERIFIED_ARTICLES" and n < 1:
             raise ValueError("Must supply confirmed original count")
-        if outcome in ("NO_VERIFIABLE_ARTICLES", "NO_SUITABLE_ARTICLES") and n:
+        if outcome == "NO_VERIFIABLE_ARTICLES" and n:
             raise ValueError("Negative outcomes contradict verified originals")
         methods = row.get("attempted_methods")
         if not isinstance(methods, list) or any(x not in VERIFICATION_METHODS for x in methods):
             raise ValueError("Invalid research methods")
+        if outcome == "NOT_CHECKED":
+            raise ValueError("Complete editorial report may not leave publishers unexamined")
         if outcome == "NO_VERIFIABLE_ARTICLES":
             # Explicitly require searching originals AND an independent route,
             # plus contemporaneous immutable references. It may still be
