@@ -10,7 +10,7 @@ from scripts.morgenzeitung_live_source_check import check_candidates, check_date
 from scripts.morgenzeitung_source_diversity import audit_source_diversity
 
 
-def preflight(candidates, date, *, minimum=15, checker=None):
+def preflight(candidates, date, *, minimum=15, checker=None, allow_partial=False):
     if not isinstance(candidates, list) or not candidates:
         raise ValueError("Nonempty original candidate pool required")
     checker = checker or check_candidates
@@ -32,11 +32,13 @@ def preflight(candidates, date, *, minimum=15, checker=None):
             blocked.append({"id": candidate.get("id"), "source": candidate.get("source"),
                             "reason": str(exc)})
     diversity = audit_source_diversity(ready) if ready else None
-    # Never archive the *full* pool while even one entry is blocked.
-    # A threshold of 15 verified items does not verify the remaining items.
-    passed = (len(ready) >= minimum and not blocked and diversity is not None
-              and diversity["diversity_passed"])
-    return {"preflight_passed": bool(passed), "ready_count": len(ready),
+    # Partial mode is safe only when the caller captures the verified subset,
+    # NEVER the original mixed pool. Legacy strict behavior remains default.
+    passed = (len(ready) >= minimum and (allow_partial or not blocked)
+              and diversity is not None and diversity["diversity_passed"])
+    return {"preflight_passed": bool(passed), "verified_candidates": ready,
+            "capture_scope": "VERIFIED_SUBSET_ONLY" if allow_partial else "FULL_INPUT_ONLY",
+            "ready_count": len(ready),
             "minimum": minimum, "blocked_count": len(blocked), "blocked": blocked,
             "diversity": diversity,
             "next_action": ("Capture the full verified candidate pool BEFORE selection"
@@ -50,11 +52,22 @@ def main():
     parser.add_argument("--candidates", required=True)
     parser.add_argument("--date", required=True)
     parser.add_argument("--minimum", type=int, default=15)
+    parser.add_argument("--eligible-output", help="Write ONLY independently verified candidates; required for partial mode")
+    parser.add_argument("--allow-partial", action="store_true", help="Pass with rejected raw candidates only when eligible-output is provided")
     args = parser.parse_args()
+    if args.allow_partial and not args.eligible_output:
+        parser.error("--allow-partial requires --eligible-output to prevent mixed-pool capture")
     with open(args.candidates, encoding="utf-8") as stream:
         pool = json.load(stream)
-    result = preflight(pool, args.date, minimum=args.minimum)
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+    result = preflight(pool, args.date, minimum=args.minimum,
+                       allow_partial=args.allow_partial)
+    if args.eligible_output:
+        from pathlib import Path
+        Path(args.eligible_output).write_text(
+            json.dumps(result["verified_candidates"], ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8")
+    print(json.dumps({k: v for k, v in result.items() if k != "verified_candidates"},
+                     ensure_ascii=False, indent=2))
     if not result["preflight_passed"]:
         raise SystemExit(2)
 
