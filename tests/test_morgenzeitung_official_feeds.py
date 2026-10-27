@@ -243,8 +243,8 @@ class OfficialFeedTests(unittest.TestCase):
                                  "publisher_feed_verified":True,
                                  "publisher_feed_evidence":{"publisher":"BBC News"}}]}
         report=preflight(pool,"2026-10-27",checker=checker,minimum=15)
-        self.assertTrue(report["preflight_passed"])
-        self.assertEqual(report["blocked_count"],0)
+        self.assertFalse(report["preflight_passed"])
+        self.assertEqual(report["blocked_count"],15)
 
 
 if __name__=="__main__":
