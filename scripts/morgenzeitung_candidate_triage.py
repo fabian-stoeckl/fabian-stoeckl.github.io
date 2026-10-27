@@ -10,13 +10,26 @@ from pathlib import Path
 
 from scripts.morgenzeitung_live_source_check import check_candidates, check_date
 from scripts.morgenzeitung_source_diversity import audit_source_diversity
+from scripts.morgenzeitung_source_preflight import preflight
 
 
-def triage(candidates, date, *, minimum=15, checker=None):
+def triage(candidates, date, *, minimum=15, checker=None, editorial_mode=False):
     if not isinstance(candidates, list) or not candidates:
         raise ValueError("Original unselected research candidates required")
     if type(minimum) is not int or minimum < 1:
         raise ValueError("Positive minimum required")
+    if editorial_mode:
+        result = preflight(candidates, date, minimum=minimum, checker=checker,
+                           allow_partial=True, editorial_mode=True)
+        return {"schema": 1, "date": date, "raw_count": len(candidates),
+                "eligible_count": result["ready_count"],
+                "rejected_count": result["blocked_count"],
+                "ready_for_final_preflight": result["preflight_passed"],
+                "minimum": minimum, "eligible": result["verified_candidates"],
+                "rejected": [{"state": "NEEDS_RESEARCH", **row}
+                             for row in result["blocked"]],
+                "diversity": result["diversity"],
+                "important": "Editorial provenance assessed once; capture only eligible candidates. Separate publication and learning checks remain required."}
     checker = checker or check_candidates
     eligible, rejected, seen = [], [], set()
     for item in candidates:
@@ -71,11 +84,13 @@ def main():
     p.add_argument("--eligible", type=Path, required=True)
     p.add_argument("--diagnostics", type=Path, required=True)
     p.add_argument("--minimum", type=int, default=15)
+    p.add_argument("--editorial-mode", action="store_true",
+                   help="Use documented discovery provenance instead of live HTTP checks")
     args = p.parse_args()
     if args.eligible == args.diagnostics:
         p.error("Eligible and diagnostic files must not be the same")
     result = triage(json.loads(args.candidates.read_text()),
-                    args.date, minimum=args.minimum)
+                    args.date, minimum=args.minimum, editorial_mode=args.editorial_mode)
     args.eligible.write_text(json.dumps(result["eligible"],ensure_ascii=False,indent=2)+"\n")
     report = {key:value for key,value in result.items() if key != "eligible"}
     args.diagnostics.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
