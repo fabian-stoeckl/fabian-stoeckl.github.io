@@ -88,10 +88,10 @@ def preflight(candidates, date, *, minimum=15, checker=None, allow_partial=False
             "ready_count": len(ready),
             "minimum": minimum, "blocked_count": len(blocked), "blocked": blocked,
             "diversity": diversity,
-            "next_action": ("Capture the full verified candidate pool BEFORE selection"
+            "next_action": ("Capture the eligible editorial candidate pool BEFORE selection" if no_link_tests else "Capture the full verified candidate pool BEFORE selection"
                             if passed else
                             "Research new independent articles and rerun preflight BEFORE immutable capture"),
-            "limitation": "This preflight does not replace independent prepublication verification"}
+            "limitation": ("No live URL, RSS or publication-date checks performed; candidate URLs and headlines are not proof of article existence or summary accuracy" if no_link_tests else "This preflight does not replace independent prepublication verification")}
 
 
 def main():
