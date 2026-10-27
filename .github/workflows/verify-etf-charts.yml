@@ -64,8 +64,7 @@ jobs:
         run: npm run check:etf
       - name: Build Jekyll site
         run: bundle exec jekyll build --trace
-      - name: Install Chromium with bounded timeout (no slow apt mutation)
-        run: timeout 240s npx playwright install chromium
+      - run: npx playwright install --with-deps chromium
       - name: Check charts at mobile and desktop widths
         run: |
           node tests/charts.test.cjs
