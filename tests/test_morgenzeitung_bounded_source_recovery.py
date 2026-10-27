@@ -1,5 +1,9 @@
 import copy
+import json
+from pathlib import Path
+import tempfile
 import unittest
+from unittest.mock import patch
 
 from scripts.morgenzeitung_bounded_source_recovery import recover
 
@@ -88,6 +92,24 @@ class BoundedRecoveryTests(unittest.TestCase):
         result = recover(raw_pool(), DATE, checker=checker)
         self.assertNotIn("2", [x["id"] for x in result["eligible"]])
         self.assertEqual(result["retry_counts"]["2"], 2)
+
+    def test_cli_refuses_to_overwrite_previous_diagnostic(self):
+        from scripts.morgenzeitung_bounded_source_recovery import main
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            raw = root / "raw.json"
+            eligible = root / "eligible.json"
+            diagnostics = root / "diagnostics.json"
+            raw.write_text(json.dumps(raw_pool()), encoding="utf-8")
+            diagnostics.write_text("historical immutable evidence", encoding="utf-8")
+            args = ["recovery", "--raw", str(raw), "--date", DATE,
+                    "--eligible", str(eligible), "--diagnostics", str(diagnostics)]
+            with patch("sys.argv", args):
+                with self.assertRaises(SystemExit):
+                    main()
+            self.assertEqual(diagnostics.read_text(encoding="utf-8"),
+                             "historical immutable evidence")
+            self.assertFalse(eligible.exists())
 
     def test_bad_input_rejected(self):
         with self.assertRaisesRegex(ValueError, "max_retries"):
