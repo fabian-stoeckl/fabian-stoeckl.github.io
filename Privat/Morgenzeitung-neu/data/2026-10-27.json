@@ -25,7 +25,8 @@
       "published_at": "2026-10-26T12:18:00Z",
       "summary": "Der Anstieg der Gas- und Strompreise könnte die deutsche Subvention für energieintensive Industrie deutlich verteuern. Eine Handelsblatt-Berechnung auf Basis von Aurora-Energy-Research-Daten zeigt, dass die staatlichen Kosten für den Industriestrompreis 2027 um rund eine Milliarde Euro höher ausfallen könnten als im laufenden Jahr.",
       "topic": "Energie & Industrie",
-      "region": "International"
+      "region": "International",
+      "paywall": true
     },
     {
       "id": "27a0000000000002",
@@ -75,7 +76,8 @@
       "published_at": "2026-10-27T09:47:00Z",
       "summary": "Bundespräsident Steinmeier wirbt bei seinem China-Besuch für eine selbstbewusste deutsche Wirtschaft und die Fortsetzung technologischer Zusammenarbeit. Gleichzeitig verweist er auf das Handelsungleichgewicht zwischen China und Europa. Am VW-Entwicklungsstandort Hefei steht die schnellere Entwicklung vernetzter Elektroautos für den chinesischen Markt im Mittelpunkt.",
       "topic": "Industrie & Welthandel",
-      "region": "International"
+      "region": "International",
+      "paywall": true
     },
     {
       "id": "27a0000000000008",
@@ -95,7 +97,8 @@
       "published_at": "2026-10-27T03:00:00Z",
       "summary": "Mercedes erweitert freiwillige Personalabbauprogramme auf Produktionsstandorte und bietet einzelnen Beschäftigten hohe Abfindungen. Laut dem zugänglichen Bericht sind auch Komponentenwerke in Untertürkheim und Berlin betroffen. Die Zahl von bis zu 330.000 Euro beschreibt eine mögliche individuelle Abfindung, nicht den Regelfall für alle Beschäftigten.",
       "topic": "Industrie & Arbeit",
-      "region": "International"
+      "region": "International",
+      "paywall": true
     },
     {
       "id": "27a0000000000005",
@@ -125,7 +128,8 @@
       "published_at": "2026-10-27T06:00:00Z",
       "summary": "Die Datenschutzorganisation Noyb und fünf freiberufliche KI-Trainingskräfte werfen der Plattform Outlier von Scale AI Verstöße gegen europäische Datenschutzregeln vor. Kritisiert werden Datensammlung und Überwachung bei der Arbeit; das Unternehmen bestreitet Rechtsverstöße und verweist auf Einwilligung und Sicherheitsmaßnahmen.",
       "topic": "KI & Arbeit",
-      "region": "International"
+      "region": "International",
+      "paywall": true
     },
     {
       "id": "27c0000000000008",
@@ -135,7 +139,8 @@
       "published_at": "2026-10-27T08:00:00Z",
       "summary": "In den USA interessieren sich mehr junge Menschen für handwerkliche Ausbildungswege, auch aus Sorge um die Auswirkungen von KI auf Bürojobs. Le Monde beschreibt steigende Anmeldungen für technische Berufe und Zweifel an den hohen Kosten eines Universitätsstudiums. Der Bericht ordnet ein, dass Hochschulabschlüsse über das gesamte Berufsleben weiterhin wirtschaftliche Vorteile haben können.",
       "topic": "Bildung & Arbeitsmarkt",
-      "region": "International"
+      "region": "International",
+      "paywall": true
     }
   ],
   "headlines": [
