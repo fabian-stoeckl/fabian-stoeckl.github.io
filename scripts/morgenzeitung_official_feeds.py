@@ -33,6 +33,23 @@ FEEDS = {
     "Handelsblatt": (("https://feeds.cms.handelsblatt.com/unternehmen",
                       "https://feeds.cms.handelsblatt.com/schlagzeilen"),
                      {"www.handelsblatt.com", "handelsblatt.com"}),
+    # Only first-party publisher endpoints. Each is subject to live
+    # GitHub-runner smoke tests; URLs are not proof of ongoing accessibility.
+    "The Guardian": (("https://www.theguardian.com/uk/business/rss",
+                      "https://www.theguardian.com/world/rss"),
+                     {"www.theguardian.com", "theguardian.com"}),
+    "The New York Times": (("https://rss.nytimes.com/services/xml/rss/nyt/Business.xml",
+                            "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"),
+                           {"www.nytimes.com", "nytimes.com"}),
+    "The Washington Post": (("https://www.washingtonpost.com/arcio/rss/category/business/",
+                              "https://www.washingtonpost.com/arcio/rss/category/technology/"),
+                             {"www.washingtonpost.com", "washingtonpost.com"}),
+    "Financial Times": (("https://www.ft.com/rss/home/international",
+                         "https://www.ft.com/rss/home"),
+                        {"www.ft.com", "ft.com"}),
+    "Süddeutsche Zeitung": (("https://rss.sueddeutsche.de/rss/Wirtschaft",
+                              "https://rss.sueddeutsche.de/alles"),
+                             {"www.sueddeutsche.de", "sueddeutsche.de"}),
 }
 ALIASES = {
     "Frankfurter Allgemeine Zeitung": "FAZ",
@@ -41,6 +58,13 @@ ALIASES = {
     "ZEIT": "DIE ZEIT",
     "Der Spiegel": "DER SPIEGEL",
     "SPIEGEL": "DER SPIEGEL",
+    "Guardian": "The Guardian",
+    "NYT": "The New York Times",
+    "New York Times": "The New York Times",
+    "Washington Post": "The Washington Post",
+    "FT": "Financial Times",
+    "SZ": "Süddeutsche Zeitung",
+    "Süddeutsche": "Süddeutsche Zeitung",
 }
 # Maximum two official RSS feeds per publisher; no third-party scrapers/proxies.
 
