@@ -162,7 +162,36 @@ def check_candidates(candidates, edition_date, opener=None, *, publisher_dates=F
         try:
             response = check_http(candidate.get("source_url"), opener=opener)
         except ValueError as exc:
-            raise ValueError("Source check failed for " + candidate["source_url"] + ": " + str(exc)) from exc
+            # Only publisher ACCESS/NETWORK restrictions can trigger the
+            # official-RSS alternative. 404, unsafe redirect, date conflict
+            # and wrong-article URLs are always hard failures.
+            message = str(exc)
+            recoverable = ("Publisher access restricted:" in message
+                           or "Source network check inconclusive after retries" in message)
+            if not recoverable:
+                raise ValueError("Source check failed for " + candidate["source_url"]
+                                 + ": " + message) from exc
+            from scripts.morgenzeitung_official_feeds import verify_official_feed
+            try:
+                feed = verify_official_feed(candidate, opener=opener)
+            except ValueError as feed_exc:
+                raise ValueError("Source check failed for " + candidate["source_url"]
+                                 + ": " + message + "; official feed: "
+                                 + str(feed_exc)) from exc
+            record = {"id": candidate.get("id"), "published_at": stamp,
+                      "http_status": None,
+                      "paywall_or_access_restricted": True,
+                      "publisher_consent_wall": False,
+                      "original_article_http_verified": False,
+                      "publisher_feed_verified": True,
+                      "publisher_feed_evidence": feed,
+                      "content_access": "metadata_only"}
+            if publisher_dates:
+                record["publisher_date_evidence"] = {
+                    "status": "match", "source": "independent_publisher_rss",
+                    "publisher_published_at": feed["publication_time"]}
+            results.append(record)
+            continue
         record = {"id": candidate.get("id"), "published_at": stamp,
                   "http_status": response["status"],
                   "paywall_or_access_restricted": response["paywall_or_access_restricted"]}
