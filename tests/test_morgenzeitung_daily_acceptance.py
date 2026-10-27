@@ -2,9 +2,10 @@
 import hashlib
 import json
 import unittest
+from unittest.mock import patch
 
 from scripts.morgenzeitung_daily_acceptance import (
-    REQUIRED, evaluate as _evaluate, inspect_publisher_pages, smoke, REAL_ARTICLES, immutable_acceptance_path
+    REQUIRED, PrivateAPI, evaluate as _evaluate, inspect_publisher_pages, smoke, REAL_ARTICLES, immutable_acceptance_path
 )
 
 DATE = "2026-10-25"
@@ -82,6 +83,113 @@ class DailyAcceptanceTests(unittest.TestCase):
         files["audits/"+DATE+"-acceptance-final.json"]=json.dumps(final).encode()
         files["audits/"+DATE+"-real-feedback-and-profile-verification.json"]=json.dumps(fb).encode()
         return index, edition, files, publisher
+
+    def versioned_final_fixture(self):
+        index, edition, files, publisher = fixture()
+        edition["snapshot_version"] = "v8"
+        ids = [a["id"] for a in edition["articles"]]
+        headlines = [h["id"] for h in edition["headlines"]]
+        auditpath = "audits/" + DATE + "-live-learning.json"
+        audit = json.loads(files[auditpath])
+        audit["publication_audit"]["editorial_effect_verified"] = True
+        files[auditpath] = json.dumps(audit).encode()
+        s4 = "b" * 40
+        s7 = "c" * 40
+        merge = "a" * 40
+        files["runs/" + DATE + ".json"] = json.dumps({
+            "date": DATE, "version": "v8", "status": "PASS",
+            "public_merge_sha": merge,
+            "private_s4": {"commit": s4},
+            "feedback": {"status": "PASS", "ratings": 55,
+                         "issue_versions": audit["issue_versions"],
+                         "profile_s7_commit": s7},
+            "selection": {"status": "PASS", "changed_membership_count": 2,
+                          "learned_ids": ids},
+            "live_https": {"status": "PASS", "live_publication_verified": True,
+                           "ordered_article_ids_match": True,
+                           "ordered_headline_ids_match": True}
+        }).encode()
+        checks = {k: "PASS" for k in (
+            "edition_correct", "index_unique", "private_snapshots",
+            "issue_versions", "profile_s7", "replay", "counterfactual",
+            "chronology", "live_https", "all_premerge_ci",
+            "all_postmerge_ci", "privacy", "auto_audit_readback")}
+        files["audits/" + DATE + "-acceptance.json"] = json.dumps({
+            "date": DATE, "verdict": "PARTIAL"}).encode()
+        files["audits/" + DATE + "-final-acceptance.json"] = json.dumps({
+            "date": DATE, "version": "v8", "verdict": "PASS",
+            "checks": checks,
+            "independent_sources": {"public_merge_sha": merge,
+                                    "private_s4_commit": s4,
+                                    "private_s7_profile_commit": s7},
+            "published": {"date": DATE, "selection_ids": ids,
+                          "headline_ids": headlines}
+        }).encode()
+        return index, edition, files, publisher
+
+    def test_versioned_final_s7_acceptance_reconciles_all_origins(self):
+        report = evaluate(DATE, *self.versioned_final_fixture())
+        self.assertEqual(report["verdict"], "PASS")
+        self.assertTrue(report["checks"]["private_run_committed"])
+        self.assertTrue(report["checks"]["private_acceptance_pass"])
+
+    def test_versioned_final_does_not_bypass_negative_evidence(self):
+        for key, mutate in (
+            ("final label", lambda e, f: f["audits/" + DATE + "-final-acceptance.json"].update(verdict="PARTIAL")),
+            ("S7 provenance", lambda e, f: f["audits/" + DATE + "-final-acceptance.json"]["independent_sources"].update(private_s7_profile_commit="d" * 40)),
+            ("wrong article", lambda e, f: f["audits/" + DATE + "-final-acceptance.json"]["published"].update(selection_ids=["fake"])),
+            ("unverified live", lambda e, f: f["runs/" + DATE + ".json"]["live_https"].update(live_publication_verified=False)),
+            ("unverified feedback", lambda e, f: f["runs/" + DATE + ".json"]["feedback"].update(status="PARTIAL")),
+            ("missing source", lambda e, f: f.pop("candidates/" + DATE + ".json")),
+            ("bad metadata", lambda e, f: None),
+        ):
+            with self.subTest(key=key):
+                index, edition, files, publisher = self.versioned_final_fixture()
+                objs = {}
+                for path in ("runs/" + DATE + ".json", "audits/" + DATE + "-final-acceptance.json"):
+                    objs[path] = json.loads(files[path])
+                mutate(edition, {**files, **objs})
+                for path, obj in objs.items():
+                    files[path] = json.dumps(obj).encode()
+                if key == "missing source":
+                    files.pop("candidates/" + DATE + ".json")
+                if key == "bad metadata":
+                    publisher.append({"evidence": {"status": "conflict"}})
+                self.assertNotEqual(evaluate(DATE, index, edition, files, publisher)["verdict"], "PASS")
+
+    def test_immutable_append_retries_only_read_after_successful_write(self):
+        class FakePrivate(PrivateAPI):
+            def __init__(self):
+                self.stored = None
+                self.reads = 0
+                self.writes = 0
+            def read(self, path):
+                self.reads += 1
+                if self.reads in (1, 2, 3):
+                    return None
+                return self.stored
+            def request(self, path, method="GET", body=None):
+                self.writes += 1
+                import base64
+                self.stored = base64.b64decode(body["content"])
+        api = FakePrivate()
+        with patch("scripts.morgenzeitung_daily_acceptance.time.sleep"):
+            api.append("audits/test-unique.json", {"verdict": "PARTIAL"})
+        self.assertEqual(api.writes, 1)
+        self.assertEqual(api.reads, 4)
+
+    def test_immutable_append_refuses_existing_different_proof(self):
+        class FakePrivate(PrivateAPI):
+            def __init__(self):
+                self.writes = 0
+            def read(self, path):
+                return b"historical proof"
+            def request(self, path, method="GET", body=None):
+                self.writes += 1
+        api = FakePrivate()
+        with self.assertRaisesRegex(ValueError, "Existing immutable evidence differs"):
+            api.append("audits/test-unique.json", {"verdict": "PASS"})
+        self.assertEqual(api.writes, 0)
 
     def test_immutable_partial_supplemented_by_genuine_final_evidence(self):
         report = evaluate(DATE, *self.final_evidence_fixture())
