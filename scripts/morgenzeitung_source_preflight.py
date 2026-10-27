@@ -8,9 +8,10 @@ import argparse
 import json
 from scripts.morgenzeitung_live_source_check import check_candidates, check_date
 from scripts.morgenzeitung_source_diversity import audit_source_diversity
+from scripts.morgenzeitung_source_evidence import validate_source_url
 
 
-def preflight(candidates, date, *, minimum=15, checker=None, allow_partial=False):
+def preflight(candidates, date, *, minimum=15, checker=None, allow_partial=False, editorial_mode=False):
     if not isinstance(candidates, list) or not candidates:
         raise ValueError("Nonempty original candidate pool required")
     checker = checker or check_candidates
@@ -20,6 +21,27 @@ def preflight(candidates, date, *, minimum=15, checker=None, allow_partial=False
             raise ValueError("Invalid candidate")
         try:
             check_date(candidate.get("published_at"), date)
+            # Editorial mode avoids fragile network availability as an article gate.
+            # Require a concrete, non-placeholder editorial discovery trail.
+            if editorial_mode:
+                validate_source_url(candidate.get("source_url"))
+                discovery = candidate.get("discovery_evidence")
+                if (candidate.get("verified") is True
+                        and isinstance(candidate.get("title"), str)
+                        and len(candidate["title"].strip()) >= 8
+                        and isinstance(candidate.get("source"), str)
+                        and candidate["source"].strip()
+                        and isinstance(discovery, dict)
+                        and discovery.get("method") in (
+                            "publisher_page", "publisher_feed", "search_result",
+                            "news_index", "publisher_metadata")
+                        and isinstance(discovery.get("reference"), str)
+                        and discovery["reference"].strip()):
+                    ready.append(candidate)
+                else:
+                    blocked.append({"id": candidate.get("id"), "source": candidate.get("source"),
+                                    "reason": "Missing concrete editorial discovery evidence"})
+                continue
             result = checker([candidate], date, publisher_dates=True)
             record = result["checked"][0]
             feed_evidence = record.get("publisher_feed_evidence")
@@ -60,14 +82,16 @@ def main():
     parser.add_argument("--date", required=True)
     parser.add_argument("--minimum", type=int, default=15)
     parser.add_argument("--eligible-output", help="Write ONLY independently verified candidates; required for partial mode")
+    parser.add_argument("--editorial-mode", action="store_true",
+                        help="Use URL/date/title and concrete discovery provenance; no live HTTP existence check")
     parser.add_argument("--allow-partial", action="store_true", help="Pass with rejected raw candidates only when eligible-output is provided")
     args = parser.parse_args()
-    if args.allow_partial and not args.eligible_output:
-        parser.error("--allow-partial requires --eligible-output to prevent mixed-pool capture")
+    if (args.allow_partial or args.editorial_mode) and not args.eligible_output:
+        parser.error("--allow-partial/--editorial-mode requires --eligible-output to prevent mixed-pool capture")
     with open(args.candidates, encoding="utf-8") as stream:
         pool = json.load(stream)
     result = preflight(pool, args.date, minimum=args.minimum,
-                       allow_partial=args.allow_partial)
+                       allow_partial=args.allow_partial, editorial_mode=args.editorial_mode)
     if args.eligible_output and result["preflight_passed"]:
         from pathlib import Path
         Path(args.eligible_output).write_text(
