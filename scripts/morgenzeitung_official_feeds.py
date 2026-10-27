@@ -6,6 +6,8 @@ hosts and publisher article hosts are pinned below, NOT controlled by a
 candidate, and HTTP redirects are disabled.
 """
 import datetime as dt
+import json
+from pathlib import Path
 from email.utils import parsedate_to_datetime
 import unicodedata
 import re
@@ -67,7 +69,35 @@ ALIASES = {
     "SZ": "Süddeutsche Zeitung",
     "Süddeutsche": "Süddeutsche Zeitung",
 }
-# Maximum two official RSS feeds per publisher; no third-party scrapers/proxies.
+# Registry entries are repository-controlled, never supplied by a candidate.
+# Fail closed on malformed entries; new publishers need only a reviewed registry edit.
+REGISTRY_PATH = Path(__file__).resolve().parents[1] / "services/morgenzeitung/publisher-evidence-registry.json"
+
+def load_publisher_registry(path=REGISTRY_PATH):
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    if data.get("schema_version") != 1 or not isinstance(data.get("publishers"), dict):
+        raise ValueError("Invalid publisher evidence registry version")
+    approved = {}
+    for name, entry in data["publishers"].items():
+        if not isinstance(name, str) or not name or not isinstance(entry, dict):
+            raise ValueError("Invalid publisher registry entry")
+        hosts, feeds = entry.get("article_hosts"), entry.get("feeds")
+        if not isinstance(hosts, list) or not hosts or not isinstance(feeds, list) or len(feeds) > 8:
+            raise ValueError("Invalid publisher host/feed list")
+        if any(not isinstance(h, str) or not h or h.lower() != h or "/" in h or ":" in h for h in hosts):
+            raise ValueError("Invalid publisher hostname")
+        for feed in feeds:
+            parsed = urlsplit(feed) if isinstance(feed, str) else None
+            if (not parsed or parsed.scheme != "https" or parsed.hostname not in hosts
+                    or parsed.username or parsed.password or parsed.port or parsed.fragment):
+                raise ValueError("Feed must use an approved first-party HTTPS host")
+            validate_source_url(feed)
+        approved[name] = (tuple(feeds), set(hosts))
+    return approved
+
+FEEDS.update({name: config for name, config in load_publisher_registry().items() if config[0]})
+# Empty feed lists mean discovery-only: never claim official-feed verification.
+
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):

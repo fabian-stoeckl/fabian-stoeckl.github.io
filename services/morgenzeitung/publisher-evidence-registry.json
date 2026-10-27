@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "publishers": {
+    "Bloomberg": {
+      "article_hosts": ["www.bloomberg.com", "bloomberg.com"],
+      "feeds": [
+        "https://www.bloomberg.com/feeds/economics/news.rss",
+        "https://www.bloomberg.com/feeds/industries/news.rss",
+        "https://www.bloomberg.com/feeds/markets/news.rss",
+        "https://www.bloomberg.com/feeds/news.rss"
+      ]
+    },
+    "POLITICO Europe": {
+      "article_hosts": ["www.politico.eu", "politico.eu"],
+      "feeds": [],
+      "discovery_note": "No independently verified official politico.eu RSS endpoint. Discover through official section pages/search; do not substitute politico.com US feeds."
+    },
+    "Der Standard": {
+      "article_hosts": ["www.derstandard.at", "derstandard.at", "www.derstandard.de", "derstandard.de"],
+      "feeds": [
+        "https://www.derstandard.at/rss/wirtschaft",
+        "https://www.derstandard.at/rss/inland",
+        "https://www.derstandard.at/rss/international",
+        "https://www.derstandard.at/rss"
+      ]
+    }
+  }
+}
