@@ -9,6 +9,8 @@ on:
       - 'scripts/morgenzeitung_official_feed_smoke.py'
       - 'scripts/morgenzeitung_live_source_check.py'
       - 'tests/test_morgenzeitung_official_feeds.py'
+      - 'scripts/morgenzeitung_bounded_source_recovery.py'
+      - 'tests/test_morgenzeitung_bounded_source_recovery.py'
       - 'scripts/morgenzeitung_source_health.py'
       - 'scripts/morgenzeitung_source_health_archive.py'
       - 'tests/test_morgenzeitung_source_health.py'
@@ -46,7 +48,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Offline first-party RSS identity and safety regressions
-        run: python3 -m unittest tests.test_morgenzeitung_official_feeds tests.test_morgenzeitung_source_health tests.test_morgenzeitung_source_health_archive tests.test_morgenzeitung_source_preflight tests.test_morgenzeitung_live_source_check tests.test_morgenzeitung_best_available_evidence_integration tests.test_morgenzeitung_publisher_registry -v
+        run: python3 -m unittest tests.test_morgenzeitung_official_feeds tests.test_morgenzeitung_source_health tests.test_morgenzeitung_source_health_archive tests.test_morgenzeitung_source_preflight tests.test_morgenzeitung_live_source_check tests.test_morgenzeitung_best_available_evidence_integration tests.test_morgenzeitung_publisher_registry tests.test_morgenzeitung_bounded_source_recovery -v
   publisher-feed-network-smoke:
     # Read-only independent GitHub runner; blocked feeds are INCONCLUSIVE,
     # never fake PASS and never a reason to remove a publisher.
