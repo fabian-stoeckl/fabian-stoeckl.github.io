@@ -1,9 +1,9 @@
 name: Morgenzeitung Freshness
 on:
   schedule:
-    # 08:15 Vienna in CEST / CET respectively. The other UTC occurrence is
-    # a harmless second check in summer or is skipped before the cutoff in winter.
-    - cron: '15 6,7 * * *'
+    # 10:15 Vienna (CEST/CET) AFTER the 08:30/09:30 ChatGPT recovery checks.
+    # Two UTC slots cover DST; the pre-cutoff slot exits successfully.
+    - cron: '15 8,9 * * *'
   workflow_dispatch:
     inputs:
       require_today:
@@ -34,15 +34,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Check Vienna cutoff (07:45 release plus 30-minute grace)
+      - name: Check Vienna cutoff (07:45 primary and 08:30/09:30 fallbacks plus recovery grace)
         id: cutoff
         shell: bash
         run: |
           if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
             hhmm="$(TZ=Europe/Vienna date +%H%M)"
-            if [[ "$hhmm" < "0815" ]]; then
+            if [[ "$hhmm" < "1015" ]]; then
               echo "check=false" >> "$GITHUB_OUTPUT"
-              echo "Not yet 08:15 Vienna ($hhmm); the second UTC slot covers winter time."
+              echo "Not yet 10:15 Vienna ($hhmm); allow the 08:30/09:30 recovery checks to finish."
               exit 0
             fi
           fi
@@ -74,7 +74,7 @@ jobs:
         shell: bash
         run: |
           title="[Morgenzeitung] Tagesausgabe fehlt"
-          body="Automatische Prüfung nach 08:15 Europe/Vienna fehlgeschlagen. Zuletzt publizierten Datumsindex und Tagesausgabe prüfen: https://www.fabian-stoeckl.com/Privat/Pressespiegel/ . Run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID . Der Check erstellt keine Artikel; den ChatGPT-Hauptlauf und Ersatzlauf kontrollieren."
+          body="Automatische Endprüfung nach 10:15 Europe/Vienna fehlgeschlagen; die bestehenden 08:30/09:30-Ersatzläufe müssen fehlende Ausgaben produktiv fortsetzen. Zuletzt publizierten Datumsindex und Tagesausgabe prüfen: https://www.fabian-stoeckl.com/Privat/Pressespiegel/ . Run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID . Der Check erstellt keine Artikel; den ChatGPT-Hauptlauf und Ersatzlauf kontrollieren."
           issue="$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "[Morgenzeitung] Tagesausgabe fehlt") | .number' | head -n1)"
           if [ -n "$issue" ]; then
             gh issue comment "$issue" --body "$body"
