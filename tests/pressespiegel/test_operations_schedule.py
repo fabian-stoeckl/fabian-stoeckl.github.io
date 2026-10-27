@@ -44,7 +44,8 @@ class MorgenzeitungOperatingSchedule(unittest.TestCase):
         self.assertIn("workflow_dispatch:", text)
 
     def test_production_recovery_stays_enabled_by_schedule(self):
-        self.assertIn("cron: '15 8,9 * * *'", workflow("morgenzeitung-freshness.yml"))
+        self.assertIn("cron: '15 8 * * *'", workflow("morgenzeitung-freshness.yml"))
+        self.assertIn("cron: '15 9 * * *'", workflow("morgenzeitung-freshness.yml"))
         self.assertIn('if [[ "$hhmm" < "1015" ]]; then', workflow("morgenzeitung-freshness.yml"))
         self.assertIn("schedule:", workflow("morgenzeitung-feedback.yml"))
         self.assertIn("cron: '15 4 * * *'", workflow("morgenzeitung-feedback.yml"))
