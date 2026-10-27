@@ -198,6 +198,15 @@ def canonical_feed_article_link(value, publisher):
     elif label == "BBC News":
         allowed = len(params) <= 2 and len({k for k, _ in params}) == len(params) and all(
             k in {"at_medium", "at_campaign"} for k, _ in params)
+    elif label == "POLITICO Europe":
+        allowed_keys = {"utm_source", "utm_medium", "utm_campaign"}
+        allowed = (len(params) <= 3 and len({k for k, _ in params}) == len(params)
+                   and all(k in allowed_keys and bool(v) and len(v) <= 160
+                           for k, v in params))
+    elif label == "Der Standard":
+        allowed = (not params or (len(params) == 1
+                   and params[0][0] == "ref"
+                   and params[0][1].casefold() == "rss"))
     else:
         allowed = not params
     if not allowed:
