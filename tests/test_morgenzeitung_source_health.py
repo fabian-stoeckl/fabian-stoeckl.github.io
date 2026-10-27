@@ -137,6 +137,13 @@ class SourceHealthTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Future"):
             multi_day_alerts("2026-10-27", [editorial("2026-10-28")])
 
+    def test_unsuitable_not_allowed_to_hide_unverified_publisher(self):
+        report = editorial("2026-10-27", blocked=("NZZ",))
+        row = next(r for r in report["publishers"] if r["publisher"] == "NZZ")
+        row["outcome"] = "NO_SUITABLE_ARTICLES"
+        with self.assertRaisesRegex(ValueError, "requires independently verified"):
+            validate_editorial_report(report)
+
     def test_some_verified_articles_can_be_all_rejected_for_relevance(self):
         doc = editorial("2026-10-27")
         row = doc["publishers"][0]
