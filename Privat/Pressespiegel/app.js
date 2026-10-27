@@ -34,7 +34,22 @@ function githubRating(a,section='Vertiefungen') {
   label.append(reason);details.append(label);box.append(details);
   return box;
 }
-function article(a,index){const node=el('article',undefined,a.treat?'treat':'');const intro=el('div');intro.append(el('span',a.treat?'DAS ZUCKERL':a.topic,'eyebrow'));const meta=el('p',a.source+' · '+a.kind+'\n'+fmt(a.published_at)+(a.paywall?' · Paywall':''),'meta');intro.append(meta);const body=el('div',undefined,'body');const title=el('h2');title.append(link(a.title,a.url));body.append(title,el('p',a.summary));if(a.access==='teaser')body.append(el('p','Zusammenfassung beruht ausschließlich auf dem zugänglichen Vorspann.','small'));if(a.novelty)body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty,'novelty'));if(config.mode==='github'){body.append(githubRating(a));node.append(intro,body);return node;}const controls=el('div',undefined,'ratings');controls.setAttribute('aria-label','Relevanz bewerten');const state=el('p','','rating-state');state.setAttribute('role','status');const reasonLabel=el('label','Optionaler Grund ','reason');const reason=el('select');reason.setAttribute('aria-label','Grund für die Bewertung');for(const t of ['','Mehr davon','Schon bekannt','Zu oberflächlich','Thema interessiert mich nicht']){const o=el('option',t||'–');o.value=t;reason.append(o);}reasonLabel.append(reason);let saved=ratings[a.id];reason.value=saved?.reason||'';const buttons=[];function refresh(){for(const [b,v] of buttons)b.setAttribute('aria-pressed',String(saved?.value===v));state.textContent=saved?'Gespeichert · jederzeit änderbar':'';reason.disabled=!saved;}
+function article(a,index,section='Vertiefungen'){
+  const isHeadline=section==='Heute wichtig';
+  const node=el('article',undefined,isHeadline?'news-item':(a.treat?'treat':''));
+  const intro=el('div');
+  intro.append(el('span',isHeadline?'NACHRICHT':(a.treat?'DAS ZUCKERL':a.topic),'eyebrow'));
+  const details=[a.source];
+  if(!isHeadline&&a.kind)details.push(a.kind);
+  details.push(fmt(a.published_at));
+  if(a.paywall)details.push('Paywall');
+  intro.append(el('p',details.join(' · '),'meta'));
+  const body=el('div',undefined,'body');
+  const title=el('h2');title.append(link(a.title,a.url));
+  body.append(title,el('p',a.summary,isHeadline?'news-summary':undefined));
+  if(a.access==='teaser')body.append(el('p','Zusammenfassung beruht ausschließlich auf dem zugänglichen Vorspann.','small'));
+  if(!isHeadline&&a.novelty)body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty,'novelty'));
+  if(config.mode==='github'){body.append(githubRating(a,section));node.append(intro,body);return node;}const controls=el('div',undefined,'ratings');controls.setAttribute('aria-label','Relevanz bewerten');const state=el('p','','rating-state');state.setAttribute('role','status');const reasonLabel=el('label','Optionaler Grund ','reason');const reason=el('select');reason.setAttribute('aria-label','Grund für die Bewertung');for(const t of ['','Mehr davon','Schon bekannt','Zu oberflächlich','Thema interessiert mich nicht']){const o=el('option',t||'–');o.value=t;reason.append(o);}reasonLabel.append(reason);let saved=ratings[a.id];reason.value=saved?.reason||'';const buttons=[];function refresh(){for(const [b,v] of buttons)b.setAttribute('aria-pressed',String(saved?.value===v));state.textContent=saved?'Gespeichert · jederzeit änderbar':'';reason.disabled=!saved;}
 async function save(value){buttons.forEach(([b])=>b.disabled=true);reason.disabled=true;state.textContent='Wird gespeichert …';try{await api('/api/rating',{id:a.id,value,reason:reason.value});saved={value,reason:reason.value};ratings[a.id]=saved;refresh();}catch(e){state.textContent=e.message+' – nicht gespeichert';reason.value=saved?.reason||'';}finally{buttons.forEach(([b])=>b.disabled=false);reason.disabled=!saved;}}
 for(const [text,value] of [['Sehr relevant',1],['Teilweise relevant',0],['Nicht relevant',-1]]){const b=el('button',text);b.type='button';b.onclick=()=>save(value);controls.append(b);buttons.push([b,value]);}reason.onchange=()=>save(saved.value);refresh();body.append(controls,state,reasonLabel);node.append(intro,body);return node;}
 function addSaveAction(section,statusId){
@@ -59,18 +74,14 @@ function render(){
   $('headlines').replaceChildren();
   const cols=el('div',undefined,'headline-columns');
   for(const region of ['Österreich','International']){
-    const sec=el('section');sec.append(el('h2',region));
-    const list=el('ul');
+    const sec=el('section',undefined,'headline-region');
+    sec.append(el('h2',region,'region-title'));
+    const list=el('div',undefined,'article-list');
     const regional=visibleHeadlines.filter(a=>a.region===region);
-    if(!regional.length){const note=el('li',e.preview?'Keine zusätzlichen eigenständigen Nachrichten in dieser reduzierten Vorschau.':'Keine weiteren aktuellen Meldungen in dieser Ausgabe.','small empty-region');list.append(note);}
-    for(const a of regional){
-      const row=el('li',undefined,'news-item');
-      row.append(link(a.title,a.url));
-      if(typeof a.summary==='string'&&a.summary.trim())row.append(el('p',a.summary.trim(),'news-summary'));
-      row.append(el('small',a.source));
-      if(config.mode==='github')row.append(githubRating(a,'Heute wichtig'));
-      list.append(row);
+    if(!regional.length){
+      list.append(el('p',e.preview?'Keine zusätzlichen eigenständigen Nachrichten in dieser reduzierten Vorschau.':'Keine weiteren aktuellen Meldungen in dieser Ausgabe.','small empty-region'));
     }
+    for(const a of regional)list.append(article(a,undefined,'Heute wichtig'));
     sec.append(list);cols.append(sec);
   }
   $('headlines').append(cols);
@@ -116,7 +127,16 @@ async function restoreSavedRatings(){
 
 async function load(){try{const [list,r]=await Promise.all([api('/api/editions'),api('/api/ratings')]);ratings=r;latestDate=list.dates[0];$('date').replaceChildren();for(const d of list.dates){const o=el('option',d);o.value=d;$('date').append(o);}if(!list.dates.length){status('Noch keine erfolgreiche Ausgabe verfügbar.');return; }edition=await api('/api/edition');render();$('login').hidden=true;$('logout').hidden=config.preview;$('operating-state').textContent=list.scheduler_enabled?'Automatik konfiguriert · tatsächlicher Stand siehe Ausgabe.':'Täglicher Betrieb noch nicht aktiviert.';}catch(e){status(e.message);$('login').hidden=false;}}
 $('date').onchange=async()=>{try{edition=config.mode==='github'?await GitHubPaper.edition($('date').value):await api('/api/edition?date='+encodeURIComponent($('date').value));render();await restoreSavedRatings();}catch(e){status(e.message);}};
-for(const tab of ['headlines','articles'])$('tab-'+tab).onclick=()=>{for(const name of ['headlines','articles']){$(name).hidden=name!==tab;$('tab-'+name).setAttribute('aria-pressed',String(name===tab));}};
+for(const tab of ['headlines','articles'])$('tab-'+tab).onclick=()=>{
+  // Preserve unsent feedback; switching only changes visibility.
+  if($('tab-'+tab).getAttribute('aria-pressed')==='true')return;
+  for(const name of ['headlines','articles']){
+    $(name).hidden=name!==tab;
+    $('tab-'+name).setAttribute('aria-pressed',String(name===tab));
+  }
+  // Sticky tabs may have been clicked far down the page: show the masthead again.
+  window.scrollTo(0,0);
+};
 $('login-form').onsubmit=async e=>{e.preventDefault();secret=$('token').value;$('token').value='';await load();};
 $('logout').onclick=()=>{secret='';location.reload();};
 
