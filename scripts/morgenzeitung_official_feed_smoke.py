@@ -8,6 +8,7 @@ treated as a failure of a verified original or a reason to drop a publisher.
 import argparse
 import json
 import urllib.request
+from urllib.parse import urlsplit,parse_qsl
 from scripts.morgenzeitung_official_feeds import FEEDS, NoRedirect, _bounded_feed, _items, _stamp, verify_official_feed
 
 def run():
@@ -19,6 +20,7 @@ def run():
         count=0
         worked=None
         identity_status="NOT_CHECKED"
+        sample_formats=[]
         for url in urls:
             try:
                 root=_bounded_feed(url, opener)
@@ -26,6 +28,17 @@ def run():
                 count=len(items)
                 status="FEED_READABLE" if count else "EMPTY_FEED"
                 worked=url
+                # Only sanitized protocol/field-shape diagnostics.
+                for _title,_link,_date in items[:2]:
+                    _parsed=urlsplit(_link)
+                    sample_formats.append({
+                        "scheme":_parsed.scheme,
+                        "host":_parsed.hostname,
+                        "query_keys":[x[0] for x in parse_qsl(_parsed.query)],
+                        "has_fragment":bool(_parsed.fragment),
+                        "time_repr":repr(_date)[:105],
+                        "link_is_html":_parsed.path.endswith(".html"),
+                    })
                 # Live match of actual publisher data against the production
                 # identity verifier. This checks the real RSS schema and exact
                 # article URLs/timestamps, never the article's full text.
@@ -51,6 +64,7 @@ def run():
                 attempts.append({"url":url, "status":"INCONCLUSIVE", "reason":str(exc)})
         results.append({"publisher":source,"status":status,"items":count,
                         "identity_status":identity_status,
+                        "sample_formats":sample_formats,
                         "working_feed":worked,"attempts":attempts})
     return {"report_type":"real_publisher_first_party_feed_smoke",
             "claim_scope":"GitHub-runner feed XML reachability, not verified article/fulltext",
