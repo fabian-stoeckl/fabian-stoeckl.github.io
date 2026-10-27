@@ -25,7 +25,7 @@ class MorgenzeitungOperatingSchedule(unittest.TestCase):
         self.assertIn("workflow_dispatch:", text)
         self.assertIn("push:", text)  # immediate audit after edition publication remains
         self.assertIn("Privat/Pressespiegel/data/*.json", text)
-        for day, expected in [(datetime(2026, 10, 27, tzinfo=timezone.utc), "11:45"),
+        for day, expected in [(datetime(2026, 10, 22, tzinfo=timezone.utc), "11:45"),
                               (datetime(2026, 12, 2, tzinfo=timezone.utc), "10:45")]:
             with self.subTest(day=day):
                 when_utc = day.replace(hour=9, minute=45)
