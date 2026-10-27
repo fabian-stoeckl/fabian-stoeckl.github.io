@@ -30,8 +30,8 @@ FEEDS = {
     "DER SPIEGEL": (("https://www.spiegel.de/wirtschaft/index.rss",
                      "https://www.spiegel.de/schlagzeilen/index.rss"),
                     {"www.spiegel.de", "spiegel.de"}),
-    "Handelsblatt": (("https://www.handelsblatt.com/contentexport/feed/wirtschaft",
-                      "https://www.handelsblatt.com/contentexport/feed/schlagzeilen"),
+    "Handelsblatt": (("https://feeds.cms.handelsblatt.com/unternehmen",
+                      "https://feeds.cms.handelsblatt.com/schlagzeilen"),
                      {"www.handelsblatt.com", "handelsblatt.com"}),
 }
 ALIASES = {
