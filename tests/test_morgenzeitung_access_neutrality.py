@@ -60,34 +60,16 @@ class AccessNeutralityTests(unittest.TestCase):
     def test_future_access_weight_leak_fails_closed(self):
         real_select = select_articles
 
-        def wrongly_prefers_fulltext(items, profile, *, limit, max_per_source):
-            ordered = sorted(items, key=lambda r: r.get("access") != "full")
-            return real_select(ordered, profile, limit=limit, max_per_source=max_per_source)
+        # A deliberately biased future implementation would be detected.
+        def biased(items, profile, *, limit, max_per_source):
+            if items[0].get("access") != "full":
+                items = list(reversed(items))
+            return real_select(items, profile, limit=limit, max_per_source=max_per_source)
 
-        # Deliberately mix status so the artificial access preference reorders
-        # candidates; the parity audit MUST detect this if introduced later.
         from scripts import morgenzeitung_selection_audit as module
-        with patch.object(module, "select_articles", side_effect=wrongly_prefers_fulltext):
-            original = pool()
-            for i, mode in enumerate(("full", "teaser", "metadata", "full", "teaser")):
-                original[i]["access"] = mode
-            # The injected rule should be detected if the all-full scenario and
-            # mixed scenario are ever compared. But all-mode controls have equal
-            # access, so we instead use a malicious mode-dependent selector.
-            def biased(items, profile, *, limit, max_per_source):
-                ordered = sorted(items, key=lambda r: r.get("access") != "full")
-                return real_select(ordered, profile, limit=limit, max_per_source=max_per_source)
-            module.select_articles.side_effect = biased
-            # A selector that penalizes all teaser items equally preserves the
-            # relative order in all-three scenarios. Prove stronger variants
-            # below with a candidate-specific access interaction.
-            def bad(items, profile, *, limit, max_per_source):
-                if items[0].get("access") != "full":
-                    items = list(reversed(items))
-                return real_select(items, profile, limit=limit, max_per_source=max_per_source)
-            module.select_articles.side_effect = bad
+        with patch.object(module, "select_articles", side_effect=biased):
             with self.assertRaisesRegex(ValueError, "Access-based selection bias"):
-                check_access_neutrality(original, PROFILE, limit=3, max_per_source=3)
+                check_access_neutrality(pool(), PROFILE, limit=3, max_per_source=3)
 
 
 if __name__ == "__main__":
