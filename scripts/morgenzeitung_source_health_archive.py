@@ -131,6 +131,7 @@ def main():
     g.add_argument("--editorial", type=Path, help="Actual completed 22-publisher research JSON; never synthesize")
     p.add_argument("--date", default=None)
     p.add_argument("--run-id", required=True)
+    p.add_argument("--output", type=Path, help="Optional local verified result for deduplicated notifications")
     args = p.parse_args()
     day = args.date or today_in_vienna()
     if args.smoke:
@@ -139,6 +140,9 @@ def main():
         result = archive_editorial(json.loads(args.editorial.read_text()), day, args.run_id)
     else:
         result = archive_review(day, args.run_id)
+    if args.output is not None:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
     print(json.dumps(result, ensure_ascii=False))
 
 
