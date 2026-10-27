@@ -1,0 +1,52 @@
+name: Morgenzeitung 27 Oct v2 independent candidate preflight
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/morgenzeitung-20261027-rerun-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-source-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify unarchived private raw candidate identities and publisher dates
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/morgenzeitung
+          python3 - <<'PY'
+          import json, os, pathlib
+          from scripts.morgenzeitung_capture_preselection import PrivateRepo
+          from scripts.morgenzeitung_source_preflight import preflight
+          from scripts.morgenzeitung_candidate_triage import triage
+          token=os.environ.get('MORGENZEITUNG_FEEDBACK_TOKEN')
+          if not token:
+              raise SystemExit('BLOCKED: private GitHub Actions token missing')
+          repo=PrivateRepo(token)
+          entry=repo.read('research/drafts/2026-10-27-v2-preflight-r1.json')
+          if entry is None:
+              raise SystemExit('BLOCKED: unarchived candidate research not found')
+          pool=json.loads(entry[0])
+          report=preflight(pool,'2026-10-27',minimum=15)
+          # Raw preflight is a diagnostic; do not archive rejected candidates.
+          print('RAW PREFLIGHT',json.dumps(report,ensure_ascii=False))
+          pathlib.Path('/tmp/morgenzeitung/preflight.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
+          if not report['preflight_passed']:
+              raise SystemExit('PARTIAL: raw pool has blocked candidates; curate and rerun before S4')
+          print('PASS: all '+str(report['ready_count'])+' independently confirmed original candidates; S4 capture permitted')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 20261027-v2-independent-source-preflight
+          path: /tmp/morgenzeitung/preflight.json
+          if-no-files-found: warn
+          retention-days: 14
