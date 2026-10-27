@@ -1,7 +1,7 @@
 <!-- website-area: {"name": "Morgenzeitung neu", "paths": ["Privat/Pressespiegel-neu/"]} -->
 # Bereichsprotokoll: Morgenzeitung neu
 
-**Start:** 28.10.2026. **Auftrag:** eigenständige parallele Morgenzeitung mit identischer Oberfläche, redaktionell schlankem Backend und eigenständigem Lernen.
+**Stand:** 28.10.2026. **Status:** Erstimplementierung. **Auftrag:** eigenständige parallele Morgenzeitung mit identischer Oberfläche, redaktionell schlankem Backend und eigenständigem Lernen.
 
 - Kachel in `Privat/index.html` zeigt auf `/Privat/Pressespiegel-neu/`.
 - Oberfläche verwendet unverändert CSS/Darstellungs-JavaScript der bisherigen Morgenzeitung; `index.html` und `praeferenzen.html` sind gestalterisch gleich.
