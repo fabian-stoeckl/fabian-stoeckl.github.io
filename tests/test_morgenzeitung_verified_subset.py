@@ -81,6 +81,7 @@ class VerifiedSubsetTests(unittest.TestCase):
                             checker=lambda *a, **kw: self.fail("Network checker called"))
         self.assertTrue(result["ready_for_final_preflight"])
         self.assertEqual(result["eligible_count"], 6)
+        self.assertIn("No external link tests", result["important"])
 
     def test_recovery_no_link_tests_has_zero_retries(self):
         for item in self.pool:
