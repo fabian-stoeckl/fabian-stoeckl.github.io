@@ -90,14 +90,18 @@ def main():
     p.add_argument("--editorial-mode", action="store_true",
                    help="Use documented discovery provenance instead of live HTTP checks")
     args = p.parse_args()
-    if args.eligible == args.diagnostics:
-        p.error("Eligible and diagnostic files must not be the same")
+    if len({args.candidates.resolve(), args.eligible.resolve(), args.diagnostics.resolve()}) != 3:
+        p.error("Original candidates, eligible output and diagnostics must be distinct")
+    if args.eligible.exists() or args.diagnostics.exists():
+        p.error("Output files already exist; preserve original research and earlier runs")
     result = triage(json.loads(args.candidates.read_text()),
                     args.date, minimum=args.minimum, editorial_mode=args.editorial_mode,
                     no_link_tests=args.no_link_tests)
-    args.eligible.write_text(json.dumps(result["eligible"],ensure_ascii=False,indent=2)+"\n")
+    with args.eligible.open("x", encoding="utf-8") as output:
+        output.write(json.dumps(result["eligible"],ensure_ascii=False,indent=2)+"\n")
     report = {key:value for key,value in result.items() if key != "eligible"}
-    args.diagnostics.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
+    with args.diagnostics.open("x", encoding="utf-8") as output:
+        output.write(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
     print(json.dumps({"eligible":result["eligible_count"],
                       "needs_research":result["rejected_count"],
                       "ready_for_final_preflight":result["ready_for_final_preflight"]}))
