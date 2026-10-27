@@ -1,0 +1,28 @@
+name: Verify Morgenzeitung neu
+on:
+  pull_request:
+    paths:
+      - 'Privat/Morgenzeitung-neu/**'
+      - 'Privat/index.html'
+      - 'tests/morgenzeitung-neu.test.cjs'
+      - 'services/morgenzeitung-neu/**'
+      - '.github/workflows/verify-morgenzeitung-neu.yml'
+  push:
+    paths:
+      - 'Privat/Morgenzeitung-neu/**'
+      - 'Privat/index.html'
+      - 'tests/morgenzeitung-neu.test.cjs'
+      - 'services/morgenzeitung-neu/**'
+      - '.github/workflows/verify-morgenzeitung-neu.yml'
+permissions:
+  contents: read
+jobs:
+  structural-and-learning-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tests/morgenzeitung-neu.test.cjs
