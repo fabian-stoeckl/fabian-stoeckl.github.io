@@ -76,3 +76,35 @@ jobs:
                   '--index','Privat/Pressespiegel/data/index.json',
                   '--check-live-sources'],check=True)
           PY
+      - name: Validate independently archived 22-publisher editorial coverage
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+          REQUESTED_DATE: ${{ inputs.date }}
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+          python3 -m unittest tests.test_morgenzeitung_editorial_ledger_gate -v
+          python3 - <<'PY'
+          import os, pathlib, re, subprocess
+          event=os.environ.get('EVENT_NAME')
+          if event=='pull_request':
+              changed=subprocess.check_output(['git','diff','--name-only',os.environ['BASE_SHA'],'HEAD'],text=True).splitlines()
+              days=[pathlib.Path(p).stem for p in changed
+                    if re.fullmatch(r'Privat/Pressespiegel/data/\d{4}-\d{2}-\d{2}\.json',p)]
+          elif event=='push':
+              before=os.environ.get('PUSH_BEFORE','')
+              if not re.fullmatch(r'[0-9a-f]{40}',before) or before=='0'*40:
+                  raise SystemExit('Cannot establish before SHA for source ledger audit')
+              changed=subprocess.check_output(['git','diff','--name-only',before,'HEAD'],text=True).splitlines()
+              days=[pathlib.Path(p).stem for p in changed
+                    if re.fullmatch(r'Privat/Pressespiegel/data/\d{4}-\d{2}-\d{2}\.json',p)]
+          else:
+              days=[os.environ.get('REQUESTED_DATE','')]
+          for day in sorted(set(days)):
+              if not day or day < '2026-10-27':
+                  continue
+              subprocess.run(['python3','-m','scripts.morgenzeitung_editorial_ledger_gate',
+                  '--date',day,'--edition','Privat/Pressespiegel/data/'+day+'.json'],check=True)
+          PY

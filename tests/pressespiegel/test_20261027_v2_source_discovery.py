@@ -1,6 +1,7 @@
-"""Regression: 27 Oct v2 preserves owner feedback and exposes new-source trials."""
+"""Regression: 27 Oct versioned reruns preserve owner feedback and new-source trials."""
 import json
 import pathlib
+import re
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
@@ -9,7 +10,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 class NewSourceTrialRegression(unittest.TestCase):
     def test_public_source_trial_and_existing_rated_ids(self):
         edition = json.loads((ROOT / "Privat/Pressespiegel/data/2026-10-27.json").read_text())
-        self.assertEqual(edition["snapshot_version"], "v2")
+        self.assertRegex(edition["snapshot_version"], r"^v[2-9][0-9]*$")
         self.assertEqual(len(edition["articles"]), 15)
         self.assertEqual(len(edition["headlines"]), 19)
         feature_ids = {item["id"] for item in edition["articles"]}
