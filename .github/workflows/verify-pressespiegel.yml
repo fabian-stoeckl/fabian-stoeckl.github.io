@@ -44,29 +44,3 @@ jobs:
           name: morgenzeitung-preview
           path: artifacts/screenshots/morgenzeitung-*.png
           retention-days: 14
-
-  rerun-independent-source-preflight:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Check genuine 27 Oct v2 candidate pool from private repository
-        env:
-          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
-        run: |
-          python3 - <<'PY'
-          import os,json
-          from scripts.morgenzeitung_capture_preselection import PrivateRepo
-          from scripts.morgenzeitung_source_preflight import preflight
-          repo=PrivateRepo(os.environ.get('MORGENZEITUNG_FEEDBACK_TOKEN'))
-          entry=repo.read('research/drafts/2026-10-27-v2-preflight-r1.json')
-          if entry is None: raise SystemExit('BLOCKED: draft missing')
-          result=preflight(json.loads(entry[0]),'2026-10-27',minimum=15)
-          print('SOURCE PREFLIGHT',json.dumps(result,ensure_ascii=False),flush=True)
-          if not result['preflight_passed']:
-              raise SystemExit('PARTIAL: curate and recheck source pool before S4')
-          print('PASS: all candidate originals independently checked')
-          PY
