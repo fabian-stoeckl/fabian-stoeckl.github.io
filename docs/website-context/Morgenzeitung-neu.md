@@ -1,24 +1,15 @@
-<!-- website-area: {"name": "Morgenzeitung neu", "paths": ["Privat/Morgenzeitung-neu/"]} -->
+<!-- website-area: {"name": "Morgenzeitung neu", "paths": ["Privat/Pressespiegel-neu/"]} -->
 # Bereichsprotokoll: Morgenzeitung neu
 
-**Stand:** 27.10.2026. **Status:** eigenständiger neuer Bereich für tägliche, lernende Presseschau. Bestehende Morgenzeitung und ETF bleiben unverändert.
+**Start:** 28.10.2026. **Auftrag:** eigenständige parallele Morgenzeitung mit identischer Oberfläche, redaktionell schlankem Backend und eigenständigem Lernen.
 
-## Auftrag und vereinbarte Grundsätze
-- Separater Einstieg unter /Privat/Morgenzeitung-neu/, unveränderte Alt-Kachel.
-- Ziel täglich ab 07:45 Europe/Vienna: 10–15 Vertiefungen, 15–20 Headlines, einspaltig, Archiv und 3-Punkt-Bewertung.
-- Breite Recherche (vorhandene Fixstarter und offene internationale Quellensuche); **inhaltlicher Fit, Vielfalt und Neuigkeitswert vor Zugänglichkeit**.
-- Keine HTTP-/HEAD-/GET-Artikel-Linktests als redaktionelles Ranking-Gate. Paywall, 403 oder nur Teaser beeinflussen das Ranking nicht. Keine über die verfügbaren Belege hinausgehenden Behauptungen.
-- Feedback privat in fabian-stoeckl/morgenzeitung-feedback, ausschließlich gekennzeichnete Issues "[Morgenzeitung neu] Feedback YYYY-MM-DD"; eigenes Lernprofil "morgenzeitung-neu/profile.json"; nichts davon in das öffentliche Repository übernehmen.
-- Für einen Klick auf "Feedback speichern" wird wie in der bisherigen Morgenzeitung ein vorher lokal verbundener, eingeschränkter GitHub-Token benötigt. Dieser wird niemals öffentlich gespeichert.
-- Keine zusätzlichen Kosten, kein eigener Server, keine Änderung der bestehenden täglichen Aufgabe.
+- Kachel in `Privat/index.html` zeigt auf `/Privat/Pressespiegel-neu/`.
+- Oberfläche verwendet unverändert CSS/Darstellungs-JavaScript der bisherigen Morgenzeitung; `index.html` und `praeferenzen.html` sind gestalterisch gleich.
+- Eigene Ausgabe-JSONs unter `Privat/Pressespiegel-neu/data/`.
+- Eigenes Feedback im bestehenden privaten Repository durch Ausgabe-Issues mit Präfix `[Morgenzeitung neu]`; keine Vermischung mit der bisherigen Zeitung. Gleicher eingeschränkter Browser-GitHub-Token nutzbar, eigenes Quittungs-Storage.
+- Eigenes privates `morgenzeitung-neu/profile.json` als Lernspeicher. Ursprüngliches `profile.json` nur einmalig als Startwissen gelesen.
+- Redaktionelle Minimalarchitektur und Tagesablauf in `services/morgenzeitung-neu/REDAKTION.md`. Prüfung: JSON-Schema, belegte redaktionelle Fakten, Lerngegenprobe statt Artikel-Linktests. Geplante ChatGPT-Ausführung mit Ziel 07:45 Wien.
+- Pilot 27.10.2026 ausdrücklich aus alter Ausgabe übernommen und als Vorschau markiert, keine unabhängige Recherche behauptet.
+- ETF und bisherige Zeitung unangetastet.
 
-## Architektur
-- Neue statische Seite unter Privat/Morgenzeitung-neu/; datierte JSON-Ausgaben und einfacher Index.
-- GitHub-Pages-Jekyll übernimmt die Veröffentlichung nach PR, normalen CI-Checks und Merge.
-- Redaktionsablauf: services/morgenzeitung-neu/REDAKTION.md. Separater ChatGPT-Tagesauftrag; keine neue komplexe Capture- oder Feed-Pipeline.
-- Startausgabe vom 27.10. ist **transparent aus der bereits recherchierten Alt-Ausgabe kuratiert**, keine unabhängige Neurecherche behaupten. Ab der nächsten Ausgabe unabhängiger Redaktionslauf.
-- Einfache statische Strukturprüfungen: tests/morgenzeitung-neu.test.cjs und eigener GitHub-Workflow.
-
-## Offen / künftig zu prüfen
-- Echtes privates Feedback aus der **neuen** Kachel und dessen Einfluss auf die **darauffolgende** Ausgabe lassen sich erst nach mindestens einer echten neuen Nutzerbewertung und dem nächsten produktiven Lauf nachweisen.
-- Tägliche pünktliche Veröffentlichung hängt weiterhin von der Ausführung und GitHub Pages ab; Zielzeit 07:45 ist kein garantierter Fertigstellungstermin.
+**Rücknahme:** Nur neue `Privat/Pressespiegel-neu/`-Dateien, neue Kachel, neue Skripte/Workflows/Protokoll entfernen. Bisherige Website-Dateien und alter Pressespiegel bleiben erhalten.
