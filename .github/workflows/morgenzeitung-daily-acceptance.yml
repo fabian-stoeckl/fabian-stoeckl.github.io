@@ -23,6 +23,7 @@ on:
     - cron: '15 12 * * *'
 permissions:
   contents: read
+  issues: write # minimal rights for confirmed-publisher-gap notification
   issues: write
 concurrency:
   group: morgenzeitung-daily-acceptance
@@ -93,11 +94,11 @@ jobs:
           set -euo pipefail
           if [ -n "$REQUESTED_DATE" ]; then
             python3 -m scripts.morgenzeitung_source_health_archive --review \
-              --date "$REQUESTED_DATE" --run-id "$SOURCE_HEALTH_RUN_ID" \\
+              --date "$REQUESTED_DATE" --run-id "$SOURCE_HEALTH_RUN_ID" \
               --output /tmp/morgenzeitung/source-health-assessment.json
           else
             python3 -m scripts.morgenzeitung_source_health_archive --review \
-              --run-id "$SOURCE_HEALTH_RUN_ID" \\
+              --run-id "$SOURCE_HEALTH_RUN_ID" \
               --output /tmp/morgenzeitung/source-health-assessment.json
           fi
 
