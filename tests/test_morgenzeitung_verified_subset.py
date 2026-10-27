@@ -48,7 +48,7 @@ class VerifiedSubsetTests(unittest.TestCase):
         for item in self.pool:
             item["discovery_evidence"] = {
                 "method": "search_result",
-                "reference": "indexed article title and original publisher URL",
+                "reference": "https://example.org/search/article",
             }
             item["title"] = "A real editorial headline"
         with patch("scripts.morgenzeitung_source_preflight.check_date", return_value="ok"):
