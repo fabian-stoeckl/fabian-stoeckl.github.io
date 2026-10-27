@@ -68,6 +68,17 @@ class VerifiedSubsetTests(unittest.TestCase):
                                allow_partial=True, editorial_mode=True)
         self.assertFalse(result["preflight_passed"])
 
+    def test_no_link_tests_preserves_candidates_without_network(self):
+        for item in self.pool:
+            item["title"] = "A relevant article"
+        with patch("scripts.morgenzeitung_source_preflight.check_date",
+                   side_effect=AssertionError("date gate called")):
+            result = triage(self.pool, self.date, minimum=15,
+                            no_link_tests=True,
+                            checker=lambda *a, **kw: self.fail("Network checker called"))
+        self.assertTrue(result["ready_for_final_preflight"])
+        self.assertEqual(result["eligible_count"], 6)
+
     def test_triage_editorial_mode_without_network(self):
         for item in self.pool:
             item["title"] = "An actual editorial headline"
