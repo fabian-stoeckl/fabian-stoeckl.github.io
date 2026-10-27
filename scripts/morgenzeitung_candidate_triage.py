@@ -13,14 +13,15 @@ from scripts.morgenzeitung_source_diversity import audit_source_diversity
 from scripts.morgenzeitung_source_preflight import preflight
 
 
-def triage(candidates, date, *, minimum=15, checker=None, editorial_mode=False):
+def triage(candidates, date, *, minimum=15, checker=None, editorial_mode=False, no_link_tests=False):
     if not isinstance(candidates, list) or not candidates:
         raise ValueError("Original unselected research candidates required")
     if type(minimum) is not int or minimum < 1:
         raise ValueError("Positive minimum required")
-    if editorial_mode:
+    if editorial_mode or no_link_tests:
         result = preflight(candidates, date, minimum=minimum, checker=checker,
-                           allow_partial=True, editorial_mode=True)
+                           allow_partial=True, editorial_mode=editorial_mode,
+                           no_link_tests=no_link_tests)
         return {"schema": 1, "date": date, "raw_count": len(candidates),
                 "eligible_count": result["ready_count"],
                 "rejected_count": result["blocked_count"],
@@ -84,13 +85,16 @@ def main():
     p.add_argument("--eligible", type=Path, required=True)
     p.add_argument("--diagnostics", type=Path, required=True)
     p.add_argument("--minimum", type=int, default=15)
+    p.add_argument("--no-link-tests", action="store_true",
+                   help="Preserve discovered articles without HTTP, feed, or date gate")
     p.add_argument("--editorial-mode", action="store_true",
                    help="Use documented discovery provenance instead of live HTTP checks")
     args = p.parse_args()
     if args.eligible == args.diagnostics:
         p.error("Eligible and diagnostic files must not be the same")
     result = triage(json.loads(args.candidates.read_text()),
-                    args.date, minimum=args.minimum, editorial_mode=args.editorial_mode)
+                    args.date, minimum=args.minimum, editorial_mode=args.editorial_mode,
+                    no_link_tests=args.no_link_tests)
     args.eligible.write_text(json.dumps(result["eligible"],ensure_ascii=False,indent=2)+"\n")
     report = {key:value for key,value in result.items() if key != "eligible"}
     args.diagnostics.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
