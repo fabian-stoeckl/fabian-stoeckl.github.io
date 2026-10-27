@@ -44,7 +44,9 @@ class VerifiedSubsetTests(unittest.TestCase):
         with patch("scripts.morgenzeitung_source_preflight.check_date", return_value="ok"):
             result = preflight(self.pool, self.date, minimum=5,
                                checker=self.checker, allow_partial=True)
-        self.assertFalse(result["preflight_passed"])
+        self.assertTrue(result["preflight_passed"])
+        self.assertEqual(result["blocked_count"], 1)
+        self.assertNotIn("0", [x["id"] for x in result["verified_candidates"]])
 
     def test_editorial_mode_uses_discovery_not_http(self):
         for item in self.pool:
