@@ -1,19 +1,18 @@
 {
   "date": "2026-10-27",
   "window_start": "2026-10-26T12:10:00Z",
-  "window_end": "2026-10-27T13:37:24Z",
-  "available_at": "2026-10-27T12:20:16Z",
-  "researched_at": "2026-10-27T13:37:24Z",
+  "window_end": "2026-10-27T16:18:12Z",
+  "available_at": "2026-10-27T16:18:12Z",
+  "researched_at": "2026-10-27T16:18:12Z",
   "preview": false,
-  "snapshot_version": "v3",
+  "snapshot_version": "v4",
   "limitations": [
-    "Vollständiger erneuter Recherchelauf mit 22 Pflichtmedien; Quellenzugriffsprobleme führen nicht zum Ausschluss einzelner Verlage.",
-    "Alle zuvor bewerteten zehn Vertiefungen und sechzehn Nachrichten behalten ihre ursprünglichen Artikel-IDs. Fünf neue Vertiefungen und drei zusätzliche Nachrichten ergänzen dieselbe Tagesausgabe.",
-    "Zusammenfassungen hinter Paywalls beschränken sich auf tatsächlich zugängliche Originalinformationen und nachprüfbare ergänzende Belege. Volltextzugang beeinflusst das Ranking nicht.",
-    "Le Monde ist eine neue Testquelle, keine automatisch dauerhaft aufgenommene Pflichtzeitung. Die Aufnahme soll von wiederholter Relevanz und tatsächlichem Leserfeedback abhängen.",
-    "Erneute Recherche aller 22 Pflichtmedien mit einzelnem privaten Original-/Fallback-Protokoll; 18 Medien lieferten verifizierte Originalbelege, ein Medium nur einen nicht geeigneten Leserbrief und bei drei Medien blieb die Einzelartikelidentität unbestätigt. Keine Zeitung wurde aus dem Pool gestrichen.",
-    "Sechs weitere frische Rohhinweise wurden privat protokolliert, aber mangels unabhängigem GitHub-Preflight nicht als neue S4-Kandidaten zugelassen. Die 23 zuvor unabhängig verifizierten Kandidaten wurden für Version v3 byte-identisch übernommen und mit dem aktuellen echten Lernprofil neu ausgewertet.",
-    "Die unabhängige Drei-Tage-Quellenzugangsbeurteilung bleibt AUDIT_GAP, weil vollständige redaktionelle Tagesprotokolle für 25. und 26. Oktober fehlen. Das ist kein bestätigter Verlagsausfall."
+    "Vollständiger erneuter 22-Pflichtverlage-Rechercheabgleich einschließlich neuer internationaler Originalberichte. Technische Zugriffshürden, Paywalls und Volltextverfügbarkeit sind keine redaktionellen Ausschluss- oder Rankingkriterien.",
+    "Eine neue Washington-Post-Analyse wurde mit Originaltitel, Autor, Datum und Inhalt direkt recherchiert und in die 15 Vertiefungen aufgenommen; der zuvor enthaltene Beitrag zum Dax-Handel wurde wegen des begrenzten Platzes zurückgestellt, nicht wegen technischer Zugriffshürden.",
+    "Die bisher bewertbaren Artikel behalten ihre unveränderten IDs. Alle 19 Nachrichten bleiben erhalten.",
+    "Weitere aktuelle Originaltitel der Financial Times wurden recherchiert; wegen fehlender genauer Publikationszeit wird keine minutengenaue Zeit behauptet. Diese Recherchehinweise sind privat archiviert.",
+    "Quellen- und Feedbacknachweise sind privat archiviert; ein GitHub-CI-Prepublication-Gate prüft die unabhängige Auswahlreproduktion.",
+    "Die Drei-Tage-Quellenzugangsbeurteilung bleibt AUDIT_GAP, solange die vollständigen redaktionellen Protokolle vom 25. und 26. Oktober fehlen. Das ist kein bestätigter Verlagsausfall."
   ],
   "headlines": [
     {
@@ -247,6 +246,26 @@
         "Die EU-Kommission genehmigte 319 Millionen Euro staatliche Unterstützung; der Produktionsstart ist für Ende 2027 vorgesehen."
       ],
       "research_checked_at": "2026-10-27T08:00:31.659Z"
+    },
+    {
+      "id": "27d0000000000001",
+      "title": "There’s not enough money in the world to pay for the AI boom",
+      "url": "https://www.washingtonpost.com/technology/2026/10/27/ai-companies-are-desperate-cash-dont-know-where-it-will-come/",
+      "source": "The Washington Post",
+      "published_at": "2026-10-27T09:00:00Z",
+      "topic": "KI & Finanzierung",
+      "kind": "Wirtschafts- und Finanzierungsanalyse",
+      "region": "International",
+      "summary": "Die Washington Post analysiert, wie der Ausbau künstlicher Intelligenz immer größere Summen für Rechenzentren, Chips und Energie verschlingt. Unternehmen wie Meta und Anthropic suchen deshalb neue Wege zur Kapitalbeschaffung; hohe Vorleistungen und unsichere künftige Erträge erhöhen die Risiken für Investoren.",
+      "facts": [
+        "Die Washington Post berichtet über neue Eigenkapital- und Kreditfinanzierungen für den KI-Infrastrukturausbau.",
+        "Der Artikel beschreibt den hohen Kapitalbedarf und die Unsicherheit, wann die Investitionen entsprechende Erträge liefern."
+      ],
+      "event": "20261027-feature-27d0000000000001",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "research_checked_at": "2026-10-27T16:17:00Z"
     },
     {
       "id": "27a0000000000002",
@@ -487,29 +506,9 @@
       "research_access": "original_teaser",
       "event": "20261027-v2-feature-27c0000000000008",
       "research_checked_at": "2026-10-27T12:20:16Z"
-    },
-    {
-      "id": "27c0000000000002",
-      "title": "Deutsche Börse startet Dax-Handel rund um die Uhr",
-      "url": "https://www.handelsblatt.com/finanzen/maerkte/aktien/aktien-deutsche-boerse-startet-handel-mit-dax-aktien-rund-um-die-uhr/100264972.html",
-      "source": "Handelsblatt",
-      "published_at": "2026-10-27T09:36:00Z",
-      "topic": "Finanzmärkte",
-      "kind": "Kapitalmarkt- und Infrastrukturentwicklung",
-      "region": "International",
-      "summary": "Die Deutsche Börse erweitert über die Tochter 360X die Möglichkeiten, Dax-Aktien auch außerhalb der klassischen Xetra-Handelszeiten zu handeln. Der im Bericht beschriebene Handel läuft über ein Preisabfrageverfahren, während die reguläre Dax-Indexberechnung unverändert bleibt. Eine Ausweitung auf ETFs wird als mögliche spätere Option genannt.",
-      "facts": [
-        "360X ermöglicht Preisabfragen und Handel mit Dax-Titeln außerhalb der regulären Xetra-Zeiten.",
-        "Die Berechnung des Dax-Index bleibt an die regulären Handelszeiten gebunden."
-      ],
-      "paywall": true,
-      "access": "teaser",
-      "research_access": "original_teaser",
-      "event": "20261027-v2-feature-27c0000000000002",
-      "research_checked_at": "2026-10-27T12:20:16Z"
     }
   ],
-  "selection_note": "Produktiver v3-Rerun: neue Einzelrecherche der 22 Pflichtmedien und offene Zusatzsuche; 23 bereits unabhängig quellengeprüfte Kandidaten (identischer S4-Blob 0fd39a509cdb666c90fca6e707a707650005ef16) in neuem unveränderlichem privaten v3-Snapshot mit aktuellem echtem Feedbackprofil aus Issues 3–8; 15 Vertiefungen neu gerankt. Die Auswahl entspricht v2, weil frische Zusatzhinweise noch keine unabhängige Original-Minutenprüfung im GitHub-Runner bestanden haben. Bestehende Artikel-IDs und 19 Nachrichten bleiben unverändert; technische Volltextverfügbarkeit erhält keinen Rankingbonus.",
+  "selection_note": "Produktiver v4-Rerun vom 27.10.2026: alle 22 Pflichtverlage erneut über datumsbezogene Verlags- und Indexsuche abgeglichen; 24 Originalkandidaten im neuen privaten unveränderlichen S4-Snapshot (23 aus v3 plus neuer Washington-Post-Originalbericht). Aktuelles echtes Feedbackprofil aus Issues 3–8; 15 Vertiefungen unabhängig deterministisch neu gerankt. Keine Live-Linkexistenzkontrollen und kein Volltext-Bonus. Private S3/S4/S5-Belege und 22-Quellen-Tagebuch dokumentiert.",
   "new_sources": [
     {
       "name": "Le Monde",
@@ -520,16 +519,15 @@
   "editorial_audit": {
     "date": "2026-10-27",
     "mandatory_publishers_researched": 22,
-    "original_identity_evidence_publishers": 18,
+    "original_identity_evidence_publishers": 19,
     "verified_but_not_suitable_publishers": 1,
     "unverified_original_publishers": [
-      "Der Standard",
       "Bloomberg",
       "POLITICO Europe"
     ],
     "full_22_publisher_ledger_private_readback": true,
     "three_day_access_assessment": "AUDIT_GAP",
     "new_raw_leads_pending_preflight": 6,
-    "explanation": "Die redaktionelle Quellenabdeckung ist dokumentiert; fehlende Artikelbelege und historische Mehrtages-Audits werden nicht als PASS ausgegeben."
+    "explanation": "Recherchen und belegte Originale sind dokumentiert; technische Zugriffslücken führen nicht zu Quellenausschlüssen. Eine echte Publikationszeit wird nur bei entsprechender Quelle angegeben."
   }
 }
