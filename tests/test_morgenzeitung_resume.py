@@ -63,7 +63,9 @@ class RecoveryTests(unittest.TestCase):
         self.assertEqual(p["next_stage"], "S1")
 
     def test_remote_readback_required(self):
-        p = recovery_plan(DATE, [cp("S0", remote_readback=False)], {}, {})
+        record = cp("S0")
+        record["remote_readback"] = False
+        p = recovery_plan(DATE, [record], {}, {})
         self.assertEqual(p["next_stage"], "S0")
 
     def test_invalid_archive_preflight_fails_closed(self):
