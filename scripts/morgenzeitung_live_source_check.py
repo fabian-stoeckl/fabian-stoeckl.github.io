@@ -206,9 +206,17 @@ def check_candidates(candidates, edition_date, opener=None, *, publisher_dates=F
                 and candidate.get("title")):
             # The consent page itself proves nothing. An exact live publisher
             # RSS listing (title, story path, timestamp) is independent evidence.
+            # Preserve the legacy economy feed as the first route, but do not
+            # lose other STANDARD sections when that rolling feed has moved on.
             from scripts.morgenzeitung_publisher_feed import verify_standard_feed
-            record["publisher_feed_evidence"] = verify_standard_feed(candidate, opener=opener)
+            from scripts.morgenzeitung_official_feeds import verify_official_feed
+            try:
+                evidence = verify_standard_feed(candidate, opener=opener)
+            except ValueError:
+                evidence = verify_official_feed(candidate, opener=opener)
+            record["publisher_feed_evidence"] = evidence
             record["publisher_feed_verified"] = True
+            record["content_access"] = "metadata_only"
         if publisher_dates:
             from scripts.morgenzeitung_publisher_date_evidence import fetch_publisher_metadata
             record["publisher_date_evidence"] = (
