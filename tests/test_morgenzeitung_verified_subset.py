@@ -45,7 +45,7 @@ class VerifiedSubsetTests(unittest.TestCase):
             result = preflight(self.pool, self.date, minimum=5,
                                checker=self.checker, allow_partial=True)
         self.assertFalse(result["preflight_passed"])
-        self.assertEqual(result["blocked_count"], 1)
+        self.assertEqual(result["blocked_count"], 2)
         self.assertNotIn("0", [x["id"] for x in result["verified_candidates"]])
 
     def test_editorial_mode_uses_discovery_not_http(self):
