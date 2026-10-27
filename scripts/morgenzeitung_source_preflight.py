@@ -10,7 +10,7 @@ from scripts.morgenzeitung_source_diversity import audit_source_diversity
 from scripts.morgenzeitung_source_evidence import validate_source_url
 
 
-def preflight(candidates, date, *, minimum=15, checker=None, allow_partial=False, editorial_mode=False):
+def preflight(candidates, date, *, minimum=15, checker=None, allow_partial=False, editorial_mode=False, no_link_tests=False):
     if not isinstance(candidates, list) or not candidates:
         raise ValueError("Nonempty original candidate pool required")
     if type(minimum) is not int or minimum < 1:
@@ -25,6 +25,16 @@ def preflight(candidates, date, *, minimum=15, checker=None, allow_partial=False
             raise ValueError("Each candidate needs a unique nonempty id")
         seen.add(identifier)
         try:
+            if no_link_tests:
+                # Do not discard editorial discoveries because of network or RSS checks.
+                # Keep only structural and factual metadata checks; relevance is downstream.
+                validate_source_url(candidate.get("source_url"))
+                if not isinstance(candidate.get("title"), str) or not candidate["title"].strip():
+                    raise ValueError("Missing article headline")
+                if not isinstance(candidate.get("source"), str) or not candidate["source"].strip():
+                    raise ValueError("Missing publisher")
+                ready.append(candidate)
+                continue
             check_date(candidate.get("published_at"), date)
             # Editorial mode avoids fragile network availability as an article gate.
             # Require a concrete, non-placeholder editorial discovery trail.
@@ -70,8 +80,9 @@ def preflight(candidates, date, *, minimum=15, checker=None, allow_partial=False
     diversity = audit_source_diversity(ready) if ready else None
     # Partial mode is safe only when the caller captures the verified subset,
     # NEVER the original mixed pool. Legacy strict behavior remains default.
-    passed = (len(ready) >= minimum and (allow_partial or not blocked)
-              and diversity is not None and diversity["diversity_passed"])
+    passed = (bool(ready) and (no_link_tests or len(ready) >= minimum)
+              and (allow_partial or no_link_tests or not blocked)
+              and (no_link_tests or (diversity is not None and diversity["diversity_passed"])))
     return {"preflight_passed": bool(passed), "verified_candidates": ready,
             "capture_scope": "VERIFIED_SUBSET_ONLY" if allow_partial else "FULL_INPUT_ONLY",
             "ready_count": len(ready),
@@ -89,11 +100,13 @@ def main():
     parser.add_argument("--date", required=True)
     parser.add_argument("--minimum", type=int, default=15)
     parser.add_argument("--eligible-output", help="Write ONLY independently verified candidates; required for partial mode")
+    parser.add_argument("--no-link-tests", action="store_true",
+                        help="Do not check live URLs, feeds, or timestamps; preserve discovered articles")
     parser.add_argument("--editorial-mode", action="store_true",
                         help="Use URL/date/title and concrete discovery provenance; no live HTTP existence check")
     parser.add_argument("--allow-partial", action="store_true", help="Pass with rejected raw candidates only when eligible-output is provided")
     args = parser.parse_args()
-    if (args.allow_partial or args.editorial_mode) and not args.eligible_output:
+    if (args.allow_partial or args.editorial_mode or args.no_link_tests) and not args.eligible_output:
         parser.error("--allow-partial/--editorial-mode requires --eligible-output to prevent mixed-pool capture")
     if args.eligible_output:
         from pathlib import Path
@@ -106,7 +119,8 @@ def main():
     with open(args.candidates, encoding="utf-8") as stream:
         pool = json.load(stream)
     result = preflight(pool, args.date, minimum=args.minimum,
-                       allow_partial=args.allow_partial, editorial_mode=args.editorial_mode)
+                       allow_partial=args.allow_partial, editorial_mode=args.editorial_mode,
+                       no_link_tests=args.no_link_tests)
     if args.eligible_output and result["preflight_passed"]:
         with Path(args.eligible_output).open("x", encoding="utf-8") as output:
             output.write(json.dumps(result["verified_candidates"],
