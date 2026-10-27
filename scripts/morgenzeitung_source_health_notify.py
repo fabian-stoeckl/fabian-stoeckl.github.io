@@ -33,7 +33,11 @@ def plan_actions(report, open_issues):
     operations = []
 
     if verdict == "ACCESS_GAPS":
-        for row in report.get("confirmed_blackouts", []):
+        # An assessment lacking the independently checked date span is not an
+        # actionable publisher outage. Fail instead of silently omitting alerts.
+        if not isinstance(report.get("confirmed_blackout_details"), list):
+            raise ValueError("Verified blackout details missing from private assessment")
+        for row in report.get("confirmed_blackout_details", []):
             publisher = row["publisher"]
             if publisher not in REQUIRED_SOURCES:
                 raise ValueError("Unknown publisher in blackout notification")
