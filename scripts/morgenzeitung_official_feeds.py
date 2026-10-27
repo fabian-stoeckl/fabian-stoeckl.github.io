@@ -8,6 +8,7 @@ candidate, and HTTP redirects are disabled.
 import datetime as dt
 from email.utils import parsedate_to_datetime
 import unicodedata
+import re
 from urllib.parse import urlsplit, urlunsplit, parse_qsl
 import urllib.request
 import urllib.error
@@ -33,6 +34,23 @@ FEEDS = {
     "Handelsblatt": (("https://feeds.cms.handelsblatt.com/unternehmen",
                       "https://feeds.cms.handelsblatt.com/schlagzeilen"),
                      {"www.handelsblatt.com", "handelsblatt.com"}),
+    # Only first-party publisher endpoints. Each is subject to live
+    # GitHub-runner smoke tests; URLs are not proof of ongoing accessibility.
+    "The Guardian": (("https://www.theguardian.com/uk/business/rss",
+                      "https://www.theguardian.com/world/rss"),
+                     {"www.theguardian.com", "theguardian.com"}),
+    "The New York Times": (("https://rss.nytimes.com/services/xml/rss/nyt/Business.xml",
+                            "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"),
+                           {"www.nytimes.com", "nytimes.com"}),
+    "The Washington Post": (("https://www.washingtonpost.com/arcio/rss/category/business/",
+                              "https://www.washingtonpost.com/arcio/rss/category/technology/"),
+                             {"www.washingtonpost.com", "washingtonpost.com"}),
+    "Financial Times": (("https://www.ft.com/rss/home/international",
+                         "https://www.ft.com/rss/home"),
+                        {"www.ft.com", "ft.com"}),
+    "Süddeutsche Zeitung": (("https://rss.sueddeutsche.de/rss/Wirtschaft",
+                              "https://rss.sueddeutsche.de/alles"),
+                             {"www.sueddeutsche.de", "sueddeutsche.de"}),
 }
 ALIASES = {
     "Frankfurter Allgemeine Zeitung": "FAZ",
@@ -41,6 +59,13 @@ ALIASES = {
     "ZEIT": "DIE ZEIT",
     "Der Spiegel": "DER SPIEGEL",
     "SPIEGEL": "DER SPIEGEL",
+    "Guardian": "The Guardian",
+    "NYT": "The New York Times",
+    "New York Times": "The New York Times",
+    "Washington Post": "The Washington Post",
+    "FT": "Financial Times",
+    "SZ": "Süddeutsche Zeitung",
+    "Süddeutsche": "Süddeutsche Zeitung",
 }
 # Maximum two official RSS feeds per publisher; no third-party scrapers/proxies.
 
@@ -133,9 +158,19 @@ def canonical_feed_article_link(value, publisher):
     parts = urlsplit(value)
     if parts.scheme != "https" or parts.hostname not in hosts:
         raise ValueError("Not the expected first-party original")
-    allowed_query = {"at_medium", "at_campaign"} if label == "BBC News" else set()
-    if any(k.casefold() not in allowed_query for k, _ in
-           parse_qsl(parts.query, keep_blank_values=True)):
+    params = parse_qsl(parts.query, keep_blank_values=True)
+    if label == "Financial Times":
+        # FT's OWN RSS contains ?syn-xxxxxxxx=1. This is a narrowly scoped
+        # first-party feed tracking token, not a story identifier.
+        allowed = (not params or (len(params) == 1
+                   and re.fullmatch(r"syn-[0-9a-f]{8}", params[0][0])
+                   and params[0][1] == "1"))
+    elif label == "BBC News":
+        allowed = len(params) <= 2 and len({k for k, _ in params}) == len(params) and all(
+            k in {"at_medium", "at_campaign"} for k, _ in params)
+    else:
+        allowed = not params
+    if not allowed:
         raise ValueError("Unrecognized article URL query parameters")
     if parts.fragment and not (label == "DER SPIEGEL"
                                and parts.fragment.casefold() == "ref=rss"):

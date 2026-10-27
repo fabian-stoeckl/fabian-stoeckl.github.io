@@ -7,6 +7,10 @@ on:
       - 'scripts/morgenzeitung_official_feed_smoke.py'
       - 'scripts/morgenzeitung_live_source_check.py'
       - 'tests/test_morgenzeitung_official_feeds.py'
+      - 'scripts/morgenzeitung_source_health.py'
+      - 'scripts/morgenzeitung_source_health_archive.py'
+      - 'tests/test_morgenzeitung_source_health.py'
+      - 'tests/test_morgenzeitung_source_health_archive.py'
       - '.github/workflows/morgenzeitung-official-feed-tests.yml'
   push:
     branches: [main]
@@ -15,8 +19,15 @@ on:
       - 'scripts/morgenzeitung_official_feed_smoke.py'
       - 'scripts/morgenzeitung_live_source_check.py'
       - 'tests/test_morgenzeitung_official_feeds.py'
+      - 'scripts/morgenzeitung_source_health.py'
+      - 'scripts/morgenzeitung_source_health_archive.py'
+      - 'tests/test_morgenzeitung_source_health.py'
+      - 'tests/test_morgenzeitung_source_health_archive.py'
       - '.github/workflows/morgenzeitung-official-feed-tests.yml'
   workflow_dispatch:
+  schedule:
+    # 03:30 UTC = 04:30 CET / 05:30 CEST; before the 06:45 Vienna production run.
+    - cron: '30 3 * * *'
 permissions:
   contents: read
 jobs:
@@ -29,7 +40,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Offline first-party RSS identity and safety regressions
-        run: python3 -m unittest tests.test_morgenzeitung_official_feeds tests.test_morgenzeitung_source_preflight tests.test_morgenzeitung_live_source_check -v
+        run: python3 -m unittest tests.test_morgenzeitung_official_feeds tests.test_morgenzeitung_source_health tests.test_morgenzeitung_source_health_archive tests.test_morgenzeitung_source_preflight tests.test_morgenzeitung_live_source_check -v
   publisher-feed-network-smoke:
     # Read-only independent GitHub runner; blocked feeds are INCONCLUSIVE,
     # never fake PASS and never a reason to remove a publisher.
@@ -53,6 +64,17 @@ jobs:
               for row in report['results']:
                   out.write('- '+row['publisher']+': **'+row['status']+'** ('+str(row['items'])+' items)\n')
           PY
+      - name: Record a durable private 22-publisher feed-health report
+        # Also do a one-off real private write/readback on the merge into main.
+        if: github.event_name == 'schedule' || github.event_name == 'push'
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+          SOURCE_HEALTH_RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          python3 -m scripts.morgenzeitung_source_health_archive \
+            --smoke /tmp/morgenzeitung/official-feed-smoke.json \
+            --run-id "$SOURCE_HEALTH_RUN_ID"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

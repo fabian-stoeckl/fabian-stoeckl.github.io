@@ -17,6 +17,11 @@ CASES = [
     ("DIE ZEIT", "https://www.zeit.de/wirtschaft/2026-10/industrie-veraendert-sich"),
     ("DER SPIEGEL", "https://www.spiegel.de/wirtschaft/unternehmen/industrie-abc-123.html"),
     ("Handelsblatt", "https://www.handelsblatt.com/unternehmen/energie/industrie/100123456.html"),
+    ("The Guardian", "https://www.theguardian.com/business/2026/oct/27/industrial-energy-news"),
+    ("The New York Times", "https://www.nytimes.com/2026/10/27/business/energy-industry.html"),
+    ("The Washington Post", "https://www.washingtonpost.com/business/2026/10/27/industry-climate/"),
+    ("Financial Times", "https://www.ft.com/content/12345678-1234-1234-1234-123456789abc"),
+    ("Süddeutsche Zeitung", "https://www.sueddeutsche.de/wirtschaft/industrie-energie-1.123456"),
 ]
 
 
@@ -65,7 +70,7 @@ class FakeOpener:
 
 
 class OfficialFeedTests(unittest.TestCase):
-    def test_six_publishers_bypass_block_by_matching_official_xml_only(self):
+    def test_all_eleven_publishers_verify_official_xml_when_original_is_blocked(self):
         for label,url in CASES:
             with self.subTest(source=label):
                 op=FakeOpener(label,url)
@@ -180,6 +185,51 @@ class OfficialFeedTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             verify_official_feed(candidate(label,url),
                 opener=FakeOpener(label,url,xml=rss(url,date="not a date")))
+
+
+    def test_all_publisher_aliases_resolve_exact_first_party_domain(self):
+        aliases = {
+            "Guardian": CASES[6], "NYT": CASES[7],
+            "Washington Post": CASES[8], "FT": CASES[9],
+            "SZ": CASES[10],
+        }
+        for alias, (_label, article_url) in aliases.items():
+            with self.subTest(alias=alias):
+                evidence = verify_official_feed(
+                    candidate(alias, article_url),
+                    opener=FakeOpener(_label, article_url))
+                self.assertEqual(evidence["original_url"], article_url)
+                self.assertTrue(evidence["publisher_feed_verified"])
+
+    def test_extended_feeds_never_accept_wrong_story_identity(self):
+        for label, article_url in CASES[6:]:
+            with self.subTest(source=label):
+                other = article_url + "-different"
+                with self.assertRaisesRegex(ValueError, "not independently confirmed"):
+                    verify_official_feed(candidate(label, article_url),
+                        opener=FakeOpener(label, article_url, xml=rss(other)))
+
+    def test_feed_redirects_are_never_silently_followed(self):
+        label, article_url = CASES[6]
+        from scripts.morgenzeitung_official_feeds import NoRedirect
+        from urllib.request import Request
+        handler = NoRedirect()
+        request = Request(FEEDS[label][0][0])
+        self.assertIsNone(handler.redirect_request(
+            request, None, 302, "Found", {}, "https://evil.example/rss"))
+
+    def test_financial_times_first_party_tracking_tag_is_narrowly_supported(self):
+        label,url=CASES[9]
+        original=url+"?syn-25a6b1a6=1"
+        self.assertEqual(canonical_feed_article_link(original,label),url)
+        self.assertTrue(verify_official_feed(candidate(label,url),
+            opener=FakeOpener(label,url,xml=rss(original)))["publisher_feed_verified"])
+        for other in (url+"?syn-25a6b1a6=2",url+"?syn-25a6b1a6=1&auth=1",
+                      url+"?syn-25a6b1a6=",url+"?syn-gggggggg=1",
+                      url+"?syn-25a6b1a6=1&syn-25a6b1a6=1",
+                      url+"?article=other",url+"#rss"):
+            with self.subTest(other=other),self.assertRaises(ValueError):
+                canonical_feed_article_link(other,label)
 
     def test_source_preflight_accepts_independent_feed_identity_as_ready(self):
         # Production preflight uses check_candidates(...publisher_dates=True).

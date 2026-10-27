@@ -5,6 +5,12 @@ on:
     paths:
       - 'scripts/morgenzeitung_daily_acceptance.py'
       - 'tests/test_morgenzeitung_daily_acceptance.py'
+      - 'scripts/morgenzeitung_source_health.py'
+      - 'scripts/morgenzeitung_source_health_archive.py'
+      - 'scripts/morgenzeitung_source_health_notify.py'
+      - 'tests/test_morgenzeitung_source_health_notify.py'
+      - 'tests/test_morgenzeitung_source_health.py'
+      - 'tests/test_morgenzeitung_source_health_archive.py'
       - '.github/workflows/morgenzeitung-daily-acceptance.yml'
   workflow_dispatch:
     inputs:
@@ -17,6 +23,7 @@ on:
     - cron: '15 12 * * *'
 permissions:
   contents: read
+  issues: write # only for actionable deduplicated publisher-access notifications
 concurrency:
   group: morgenzeitung-daily-acceptance
   cancel-in-progress: false
@@ -31,7 +38,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Offline regression
-        run: python3 -m unittest tests.test_morgenzeitung_daily_acceptance tests.test_morgenzeitung_publisher_date_evidence -v
+        run: python3 -m unittest tests.test_morgenzeitung_daily_acceptance tests.test_morgenzeitung_publisher_date_evidence tests.test_morgenzeitung_source_health_notify -v
       - name: Query real ORF, Standard, Presse and Handelsblatt article pages
         run: |
           mkdir -p /tmp/morgenzeitung-evidence
@@ -72,3 +79,32 @@ jobs:
           else
             python3 -m scripts.morgenzeitung_daily_acceptance
           fi
+
+      - name: Independently audit publisher coverage and archive alert assessment
+        id: source_review
+        # Run even if the earlier daily public-edition test failed. An absent
+        # editorial research ledger is AUDIT_GAP, never a fake publisher outage.
+        if: always()
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+          SOURCE_HEALTH_RUN_ID: ${{ github.run_id }}
+          REQUESTED_DATE: ${{ inputs.date }}
+        run: |
+          set -euo pipefail
+          if [ -n "$REQUESTED_DATE" ]; then
+            python3 -m scripts.morgenzeitung_source_health_archive --review \
+              --date "$REQUESTED_DATE" --run-id "$SOURCE_HEALTH_RUN_ID" \
+              --output /tmp/morgenzeitung/source-health-assessment.json
+          else
+            python3 -m scripts.morgenzeitung_source_health_archive --review \
+              --run-id "$SOURCE_HEALTH_RUN_ID" \
+              --output /tmp/morgenzeitung/source-health-assessment.json
+          fi
+
+      - name: Notify only verified three-day source gaps without duplicate GitHub alerts
+        if: steps.source_review.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -m scripts.morgenzeitung_source_health_notify \
+            --report /tmp/morgenzeitung/source-health-assessment.json
