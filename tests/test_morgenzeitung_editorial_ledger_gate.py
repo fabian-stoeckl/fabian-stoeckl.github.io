@@ -12,7 +12,7 @@ def complete():
             "outcome": "NO_VERIFIABLE_ARTICLES",
             "verified_original_count": 0,
             "selected_count": 0,
-            "attempted_methods": ["direct_original", "independent_index"],
+            "attempted_methods": ["direct_original", "publisher_metadata", "independent_index"],
             "attempt_evidence": [
                 "Direct original https://example.com/article checked",
                 "Independent index https://example.org/search checked"
