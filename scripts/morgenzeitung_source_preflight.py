@@ -84,7 +84,7 @@ def preflight(candidates, date, *, minimum=15, checker=None, allow_partial=False
               and (allow_partial or no_link_tests or not blocked)
               and (no_link_tests or (diversity is not None and diversity["diversity_passed"])))
     return {"preflight_passed": bool(passed), "verified_candidates": ready,
-            "capture_scope": "VERIFIED_SUBSET_ONLY" if allow_partial else "FULL_INPUT_ONLY",
+            "capture_scope": "EDITORIAL_CANDIDATES" if no_link_tests else ("VERIFIED_SUBSET_ONLY" if allow_partial else "FULL_INPUT_ONLY"),
             "ready_count": len(ready),
             "minimum": minimum, "blocked_count": len(blocked), "blocked": blocked,
             "diversity": diversity,
