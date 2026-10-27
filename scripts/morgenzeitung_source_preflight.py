@@ -109,9 +109,8 @@ def main():
                        allow_partial=args.allow_partial, editorial_mode=args.editorial_mode)
     if args.eligible_output and result["preflight_passed"]:
         with Path(args.eligible_output).open("x", encoding="utf-8") as output:
-            output.write(
-            json.dumps(result["verified_candidates"], ensure_ascii=False, indent=2) + "\n",
-            )
+            output.write(json.dumps(result["verified_candidates"],
+                                    ensure_ascii=False, indent=2) + "\n")
     print(json.dumps({k: v for k, v in result.items() if k != "verified_candidates"},
                      ensure_ascii=False, indent=2))
     if not result["preflight_passed"]:
