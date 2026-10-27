@@ -8,6 +8,7 @@ candidate, and HTTP redirects are disabled.
 import datetime as dt
 from email.utils import parsedate_to_datetime
 import unicodedata
+import re
 from urllib.parse import urlsplit, urlunsplit, parse_qsl
 import urllib.request
 import urllib.error
@@ -157,9 +158,19 @@ def canonical_feed_article_link(value, publisher):
     parts = urlsplit(value)
     if parts.scheme != "https" or parts.hostname not in hosts:
         raise ValueError("Not the expected first-party original")
-    allowed_query = {"at_medium", "at_campaign"} if label == "BBC News" else set()
-    if any(k.casefold() not in allowed_query for k, _ in
-           parse_qsl(parts.query, keep_blank_values=True)):
+    params = parse_qsl(parts.query, keep_blank_values=True)
+    if label == "Financial Times":
+        # FT's OWN RSS contains ?syn-xxxxxxxx=1. This is a narrowly scoped
+        # first-party feed tracking token, not a story identifier.
+        allowed = (not params or (len(params) == 1
+                   and re.fullmatch(r"syn-[0-9a-f]{8}", params[0][0])
+                   and params[0][1] == "1"))
+    elif label == "BBC News":
+        allowed = len(params) <= 2 and len({k for k, _ in params}) == len(params) and all(
+            k in {"at_medium", "at_campaign"} for k, _ in params)
+    else:
+        allowed = not params
+    if not allowed:
         raise ValueError("Unrecognized article URL query parameters")
     if parts.fragment and not (label == "DER SPIEGEL"
                                and parts.fragment.casefold() == "ref=rss"):
