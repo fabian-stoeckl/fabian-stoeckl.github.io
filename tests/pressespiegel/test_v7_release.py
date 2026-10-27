@@ -37,7 +37,8 @@ class V7Release(unittest.TestCase):
             urls.add(row["url"])
     def test_index_and_v6_preserved(self):
         index=json.loads((DATA/"index.json").read_text())
-        self.assertEqual(index["dates"][0],"2026-10-26")
+        self.assertIn("2026-10-26", index["dates"])
+        self.assertEqual(index["dates"], sorted(index["dates"], reverse=True))
         preview=json.loads((ROOT/"Privat"/"Pressespiegel"/"previews"/"2026-10-26-v6.json").read_text())
         self.assertEqual(preview["snapshot_version"],"v6")
         payload=json.dumps(self.edition).lower()
