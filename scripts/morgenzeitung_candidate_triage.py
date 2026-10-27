@@ -30,7 +30,7 @@ def triage(candidates, date, *, minimum=15, checker=None, editorial_mode=False, 
                 "rejected": [{"state": "NEEDS_RESEARCH", **row}
                              for row in result["blocked"]],
                 "diversity": result["diversity"],
-                "important": "Editorial provenance assessed once; capture only eligible candidates. Separate publication and learning checks remain required."}
+                "important": ("No external link tests or publisher verification performed; preserve candidate metadata without asserting article existence." if no_link_tests else "Editorial provenance assessed once; capture only eligible candidates. Separate publication and learning checks remain required.")}
     checker = checker or check_candidates
     eligible, rejected, seen = [], [], set()
     for item in candidates:
