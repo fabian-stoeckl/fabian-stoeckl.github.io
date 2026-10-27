@@ -2,7 +2,10 @@
   "schema_version": 1,
   "publishers": {
     "Bloomberg": {
-      "article_hosts": ["www.bloomberg.com", "bloomberg.com"],
+      "article_hosts": [
+        "www.bloomberg.com",
+        "bloomberg.com"
+      ],
       "feeds": [
         "https://www.bloomberg.com/feeds/economics/news.rss",
         "https://www.bloomberg.com/feeds/industries/news.rss",
@@ -11,12 +14,25 @@
       ]
     },
     "POLITICO Europe": {
-      "article_hosts": ["www.politico.eu", "politico.eu"],
-      "feeds": [],
-      "discovery_note": "No independently verified official politico.eu RSS endpoint. Discover through official section pages/search; do not substitute politico.com US feeds."
+      "article_hosts": [
+        "www.politico.eu",
+        "politico.eu"
+      ],
+      "feeds": [
+        "https://www.politico.eu/feed/",
+        "https://www.politico.eu/section/energy/feed/",
+        "https://www.politico.eu/section/politics/feed/",
+        "https://www.politico.eu/section/sustainability/feed/"
+      ],
+      "discovery_note": "Candidate first-party politico.eu RSS endpoints reported by third-party live feed readers. Verify independently in GitHub runner; a readable feed is not an article identity PASS."
     },
     "Der Standard": {
-      "article_hosts": ["www.derstandard.at", "derstandard.at", "www.derstandard.de", "derstandard.de"],
+      "article_hosts": [
+        "www.derstandard.at",
+        "derstandard.at",
+        "www.derstandard.de",
+        "derstandard.de"
+      ],
       "feeds": [
         "https://www.derstandard.at/rss/wirtschaft",
         "https://www.derstandard.at/rss/inland",
