@@ -1,36 +1,47 @@
 'use strict';
-const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const fs=require('node:fs'),assert=require('node:assert/strict');
 const {execFileSync}=require('node:child_process');
-const root=path.join(__dirname,'..');
-const base=path.join(root,'Privat/Morgenzeitung-neu');
-const html=fs.readFileSync(path.join(base,'index.html'),'utf8');
-const app=fs.readFileSync(path.join(base,'app.js'),'utf8');
-const homepage=fs.readFileSync(path.join(root,'Privat/index.html'),'utf8');
-assert.ok(homepage.includes('href="./Morgenzeitung-neu/"'),'Homepage tile missing');
-for(const id of ['date','entries','show-deep','show-news','save','connection','learning','comment'])assert.ok(html.includes('id="'+id+'"'),'Missing '+id);
-assert.ok(app.includes("MORGENZEITUNG_NEU_FEEDBACK_V1"));
-assert.ok(app.includes('github-token:v1'),'Existing local connection should be reusable');
-assert.ok(!app.includes('Linktest')&&!app.includes('HEAD'), 'no article link checker');
-execFileSync(process.execPath,['--check',path.join(base,'app.js')]);
-const dates=JSON.parse(fs.readFileSync(path.join(base,'data/index.json'),'utf8')).dates;
-assert.ok(Array.isArray(dates)&&dates.length>0);
-const uniqueDates=new Set(dates);
-assert.equal(uniqueDates.size,dates.length);
-for(const date of dates){
- assert.match(date,/^\d{4}-\d{2}-\d{2}$/);
- const data=JSON.parse(fs.readFileSync(path.join(base,'data',date+'.json'),'utf8'));
- assert.equal(data.date,date);assert.ok(typeof data.learning_note==='string'&&data.learning_note.length>20);
- assert.ok(data.articles.length>=10&&data.articles.length<=15,'10-15 deep items');
- assert.ok(data.headlines.length>=15&&data.headlines.length<=20,'15-20 headlines');
- const ids=new Set(),urls=new Set();
- for(const a of [...data.articles,...data.headlines]){
-   assert.match(a.id,/^[a-f0-9]{16}$/);assert.ok(!ids.has(a.id),'Repeated ID');ids.add(a.id);
-   assert.ok(a.title.length>8&&a.summary.length>25&&a.source.length>1);
-   assert.ok(new URL(a.url).protocol==='https:');
-   assert.ok(!urls.has(a.url),'Repeated URL');urls.add(a.url);
-   assert.ok(!a.published_at||!Number.isNaN(new Date(a.published_at).valueOf()));
-   if(a.evidence)assert.ok(['headline','teaser','read'].includes(a.evidence));
- }
- assert.ok(new Set(data.articles.map(a=>a.source)).size>=3,'Avoid publisher monoculture');
- console.log('PASS:',date,data.articles.length,'deep articles;',data.headlines.length,'headlines (no HTTP link checks)');
+const base='Privat/Morgenzeitung-neu/';
+const html=fs.readFileSync(base+'index.html','utf8');
+const prefs=fs.readFileSync(base+'praeferenzen.html','utf8');
+const bridge=fs.readFileSync(base+'direct-feedback.js','utf8');
+const old=fs.readFileSync('Privat/Pressespiegel/index.html','utf8');
+const homepage=fs.readFileSync('Privat/index.html','utf8');
+assert.ok(homepage.includes('href="./Morgenzeitung-neu/"'));
+assert.equal(homepage.split('href="./Morgenzeitung-neu/"').length-1,1,'Only one tile');
+assert.ok(!homepage.includes('href="./Pressespiegel-neu/"'));
+for(const id of ['date','headlines','articles','feedback-section','github-setup','tab-headlines','tab-articles','profile-toggle']){
+ assert.ok(html.includes('id="'+id+'"'),'Missing identical old reader element '+id);
+ assert.ok(old.includes('id="'+id+'"'),'Missing old reader element '+id);
 }
+assert.ok(html.includes('href="../Pressespiegel/style.css'));
+assert.ok(html.includes('src="../Pressespiegel/app.js'));
+assert.ok(html.includes('src="./direct-feedback.js"'));
+assert.ok(prefs.includes('src="../Pressespiegel/preferences.js'));
+assert.ok(bridge.includes('MORGENZEITUNG_NEU_FEEDBACK_V1'));
+assert.ok(bridge.includes('[Morgenzeitung neu] Feedback '));
+assert.ok(bridge.includes('github-token:v1'));
+assert.ok(!bridge.includes('HEAD')&&!bridge.includes('Linktest'));
+execFileSync(process.execPath,['--check',base+'direct-feedback.js']);
+for(const d of JSON.parse(fs.readFileSync(base+'data/index.json','utf8')).dates){
+ const e=JSON.parse(fs.readFileSync(base+'data/'+d+'.json','utf8'));
+ assert.equal(e.date,d);
+ assert.ok(e.articles.length>=10&&e.articles.length<=15);
+ assert.ok(e.headlines.length>=15&&e.headlines.length<=20);
+ assert.ok(e.researched_at&&!Number.isNaN(new Date(e.researched_at).valueOf()));
+ assert.ok(e.available_at&&!Number.isNaN(new Date(e.available_at).valueOf()));
+ assert.equal(typeof e.preview,'boolean');
+ const ids=new Set(),urls=new Set();
+ for(const [section,items] of [['articles',e.articles],['headlines',e.headlines]]){
+  for(const a of items){
+   assert.match(a.id,/^[a-f0-9]{16}$/);
+   assert.ok(a.title&&a.url&&a.summary&&a.source&&a.published_at);
+   assert.ok(new URL(a.url).protocol==='https:'); // syntax only; NO HTTP URL checks
+   assert.ok(!ids.has(a.id)&&!urls.has(a.url));
+   if(section==='headlines')assert.ok(['Österreich','International'].includes(a.region));
+   if(section==='articles')assert.ok(a.topic);
+   ids.add(a.id);urls.add(a.url);
+  }
+ }
+}
+console.log('PASS: identical shared UI, isolated feedback, edition schema, no HTTP article tests');

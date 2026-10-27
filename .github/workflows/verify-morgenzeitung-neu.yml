@@ -1,43 +1,19 @@
 name: Verify Morgenzeitung neu
 on:
   pull_request:
-    paths:
-      - 'Privat/Pressespiegel-neu/**'
-      - 'Privat/index.html'
-      - 'scripts/check_morgenzeitung_neu.py'
-      - 'scripts/morgenzeitung_neu_learning.py'
-      - 'tests/morgenzeitung-neu/**'
-      - '.github/workflows/verify-morgenzeitung-neu.yml'
+    paths: ['Privat/Morgenzeitung-neu/**', 'Privat/index.html', 'tests/morgenzeitung-neu.test.cjs', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu_learning.py', 'tests/morgenzeitung-neu/**', '.github/workflows/verify-morgenzeitung-neu.yml']
   push:
-    paths:
-      - 'Privat/Pressespiegel-neu/**'
-      - 'Privat/index.html'
-      - 'scripts/check_morgenzeitung_neu.py'
-      - 'scripts/morgenzeitung_neu_learning.py'
-      - 'tests/morgenzeitung-neu/**'
-      - '.github/workflows/verify-morgenzeitung-neu.yml'
-permissions:
-  contents: read
+    paths: ['Privat/Morgenzeitung-neu/**', 'Privat/index.html', 'tests/morgenzeitung-neu.test.cjs', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu_learning.py', 'tests/morgenzeitung-neu/**', '.github/workflows/verify-morgenzeitung-neu.yml']
+permissions: {contents: read}
 jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - run: python3 scripts/check_morgenzeitung_neu.py
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: node tests/morgenzeitung-neu.test.cjs
       - run: python3 -m unittest discover -s tests/morgenzeitung-neu -v
-      - run: node --check Privat/Pressespiegel-neu/direct-feedback.js
-      - name: New site wiring and shared UI
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('Privat/Pressespiegel-neu/index.html').read_text()
-          assert '../Pressespiegel/app.js' in p
-          assert '../Pressespiegel/style.css' in p
-          assert './direct-feedback.js' in p
-          assert 'href="./Pressespiegel-neu/"' in Path('Privat/index.html').read_text()
-          f=Path('Privat/Pressespiegel-neu/direct-feedback.js').read_text()
-          assert r'\[Morgenzeitung neu\]' in f
-          assert "morgenzeitung-neu:github-receipts" in f
-          assert "morgenzeitung:github-token" in f
-          PY
