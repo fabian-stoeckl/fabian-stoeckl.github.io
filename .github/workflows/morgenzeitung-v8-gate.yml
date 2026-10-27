@@ -40,6 +40,13 @@ jobs:
           print(json.dumps(result,ensure_ascii=False))
           if not result['preflight_passed']: raise SystemExit('FAIL: original publisher preflight')
           print('PASS: 15 candidate originals verified; eligible for immutable 27 Oct capture')
+          rawh=repo.read('research/drafts/2026-10-27-headlines-preflight.json')
+          if rawh is None: raise SystemExit('FAIL: missing original headline draft')
+          headlines=json.loads(rawh[0])
+          result_h=preflight(headlines,'2026-10-27',minimum=15)
+          print('HEADLINE PREFLIGHT',json.dumps(result_h,ensure_ascii=False))
+          if not result_h['preflight_passed']: raise SystemExit('FAIL: headline publisher preflight')
+          print('PASS: 15+ original headline publisher URLs verified')
           PY
       - name: Verify S4 snapshot and live edition after archival
         if: hashFiles('Privat/Pressespiegel/data/2026-10-26.json') != ''
