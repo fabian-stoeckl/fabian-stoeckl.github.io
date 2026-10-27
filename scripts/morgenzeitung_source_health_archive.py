@@ -14,7 +14,7 @@ import urllib.error
 from zoneinfo import ZoneInfo
 
 from scripts.morgenzeitung_capture_preselection import PrivateRepo
-from scripts.morgenzeitung_source_health import feed_health, multi_day_alerts
+from scripts.morgenzeitung_source_health import feed_health, multi_day_alerts, validate_editorial_report
 
 PRIVATE_PREFIX = "source-health"
 SAFE_RUN = re.compile(r"^[A-Za-z0-9_-]{1,65}$")
@@ -83,6 +83,24 @@ def archive_feed_smoke(smoke, day, run_id, repo=None):
             "sample_identity_confirmations": result["live_identity_sample_confirmed"]}
 
 
+def archive_editorial(report, day, run_id, repo=None):
+    """Store ONLY a genuinely completed 22-publisher S3/S4 research ledger.
+
+    The runner cannot invent research: it receives the agent's actual findings
+    and fails closed on missing sources, access attempts or date mismatches.
+    A separate immutable path per execution preserves prior research and reruns.
+    """
+    if not SAFE_RUN.fullmatch(str(run_id)):
+        raise ValueError("Unsafe run ID")
+    if not isinstance(report, dict) or report.get("date") != day:
+        raise ValueError("Editorial ledger date must match the edition date")
+    validate_editorial_report(report)
+    path = f"{PRIVATE_PREFIX}/editorial/{day}/run-{run_id}.json"
+    saved = archive(_private(repo), path, report)
+    return {**saved, "date": day, "publishers": len(report["publishers"]),
+            "research_complete": True}
+
+
 def archive_review(day, run_id, repo=None):
     if not SAFE_RUN.fullmatch(str(run_id)):
         raise ValueError("Unsafe run ID")
@@ -110,12 +128,15 @@ def main():
     g = p.add_mutually_exclusive_group(required=True)
     g.add_argument("--smoke", type=Path)
     g.add_argument("--review", action="store_true")
+    g.add_argument("--editorial", type=Path, help="Actual completed 22-publisher research JSON; never synthesize")
     p.add_argument("--date", default=None)
     p.add_argument("--run-id", required=True)
     args = p.parse_args()
     day = args.date or today_in_vienna()
     if args.smoke:
         result = archive_feed_smoke(json.loads(args.smoke.read_text()), day, args.run_id)
+    elif args.editorial:
+        result = archive_editorial(json.loads(args.editorial.read_text()), day, args.run_id)
     else:
         result = archive_review(day, args.run_id)
     print(json.dumps(result, ensure_ascii=False))
