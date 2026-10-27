@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.morgenzeitung_official_feeds import FEEDS, load_publisher_registry, verify_official_feed
+from scripts.morgenzeitung_official_feeds import FEEDS, load_publisher_registry, verify_official_feed, canonical_feed_article_link
 
 
 class PublisherRegistryTests(unittest.TestCase):
@@ -23,6 +23,22 @@ class PublisherRegistryTests(unittest.TestCase):
                 "source_url": "https://www.politico.eu/article/test-story/",
                 "title": "An example story with a real title",
                 "published_at": "2026-10-27T10:00:00+00:00"})
+
+    def test_politico_rss_tracking_is_stripped_only_for_known_keys(self):
+        base = "https://www.politico.eu/article/example-story/"
+        self.assertEqual(canonical_feed_article_link(
+            base + "?utm_source=rss&utm_medium=rss&utm_campaign=feed",
+            "POLITICO Europe"), base)
+        for query in ("?redirect=https://evil.example", "?utm_source=a&utm_source=b",
+                      "?utm_source=a&story=other", "?utm_source="):
+            with self.assertRaises(ValueError):
+                canonical_feed_article_link(base + query, "POLITICO Europe")
+
+    def test_standard_rss_tracking_is_narrow(self):
+        base = "https://www.derstandard.at/story/12345/example"
+        self.assertEqual(canonical_feed_article_link(base + "?ref=rss", "Der Standard"), base)
+        with self.assertRaises(ValueError):
+            canonical_feed_article_link(base + "?ref=unrelated", "Der Standard")
 
     def test_reject_external_feed(self):
         data = {"schema_version": 1, "publishers": {"New Source": {
