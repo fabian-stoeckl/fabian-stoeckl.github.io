@@ -1,8 +1,7 @@
-"""Pre-archive source preflight: reject access failures before immutable selection.
+"""Preselection research check with optional low-friction editorial provenance.
 
-This is a research aid, NEVER evidence for a published gate PASS.
-Run on the full unarchived pool; replace inaccessible candidates with genuinely
-researched independent articles, then repeat until the pool is ready.
+This is a research aid, NEVER proof of summary accuracy or publication PASS.
+Only eligible candidates may enter the immutable private preselection snapshot.
 """
 import argparse
 import json
@@ -43,7 +42,8 @@ def preflight(candidates, date, *, minimum=15, checker=None, allow_partial=False
                             "news_index", "publisher_metadata")
                         and isinstance(discovery.get("reference"), str)
                         and discovery["reference"].strip()
-                        and discovery["reference"].startswith("https://")):
+                        and discovery["reference"].startswith("https://")
+                        and validate_source_url(discovery["reference"])):
                     ready.append(candidate)
                 else:
                     blocked.append({"id": candidate.get("id"), "source": candidate.get("source"),
@@ -95,15 +95,23 @@ def main():
     args = parser.parse_args()
     if (args.allow_partial or args.editorial_mode) and not args.eligible_output:
         parser.error("--allow-partial/--editorial-mode requires --eligible-output to prevent mixed-pool capture")
+    if args.eligible_output:
+        from pathlib import Path
+        source_path = Path(args.candidates).resolve()
+        output_path = Path(args.eligible_output).resolve()
+        if source_path == output_path:
+            parser.error("eligible-output must not overwrite original research candidates")
+        if output_path.exists():
+            parser.error("eligible-output already exists; use a new path for each run")
     with open(args.candidates, encoding="utf-8") as stream:
         pool = json.load(stream)
     result = preflight(pool, args.date, minimum=args.minimum,
                        allow_partial=args.allow_partial, editorial_mode=args.editorial_mode)
     if args.eligible_output and result["preflight_passed"]:
-        from pathlib import Path
-        Path(args.eligible_output).write_text(
+        with Path(args.eligible_output).open("x", encoding="utf-8") as output:
+            output.write(
             json.dumps(result["verified_candidates"], ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8")
+            )
     print(json.dumps({k: v for k, v in result.items() if k != "verified_candidates"},
                      ensure_ascii=False, indent=2))
     if not result["preflight_passed"]:
