@@ -38,6 +38,12 @@
       else h.textContent=a.title||'Ohne Titel';
       article.append(h);
       article.append(element('p','summary',a.summary||'Über den zugänglichen Titel hinaus liegen keine gesicherten Details vor.'));
+      if(a.paywall){
+        const alternative=element('p','source-note','Bezahlschranke möglich · ');
+        const link=element('a','','Alternative Textansicht (smry.ai) versuchen');
+        link.href='https://smry.ai/'+a.url;link.target='_blank';link.rel='noopener noreferrer';
+        alternative.append(link);article.append(alternative);
+      }
       if(a.evidence==='headline')article.append(element('p','source-note','Einordnung nur auf Basis von Titel und öffentlich bekannten Metadaten.'));
       else if(a.evidence==='teaser')article.append(element('p','source-note','Zusammenfassung auf Basis des zugänglichen Vorspanns.'));
       const vote=element('div','vote');
