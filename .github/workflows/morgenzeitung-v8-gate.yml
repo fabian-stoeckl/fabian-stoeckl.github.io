@@ -32,14 +32,14 @@ jobs:
           token=os.getenv('MORGENZEITUNG_FEEDBACK_TOKEN')
           if not token: raise SystemExit('FAIL: private token unavailable to CI')
           repo=PrivateRepo(token)
-          raw=repo.read('research/drafts/2026-10-26-v8-preflight-r2.json')
+          raw=repo.read('research/drafts/2026-10-27-v1-preflight.json')
           if raw is None: raise SystemExit('FAIL: missing unarchived candidate draft')
           pool=json.loads(raw[0])
           if len(pool)<15: raise SystemExit('FAIL: fewer than 15 candidates')
-          result=preflight(pool,'2026-10-26',minimum=15)
+          result=preflight(pool,'2026-10-27',minimum=15)
           print(json.dumps(result,ensure_ascii=False))
           if not result['preflight_passed']: raise SystemExit('FAIL: original publisher preflight')
-          print('PASS: 19 candidate originals verified; eligible for immutable v8 capture')
+          print('PASS: 17 candidate originals verified; eligible for immutable 27 Oct capture')
           PY
       - name: Verify S4 snapshot and live edition after archival
         if: hashFiles('Privat/Pressespiegel/data/2026-10-26.json') != ''
