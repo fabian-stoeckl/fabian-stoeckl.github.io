@@ -65,7 +65,8 @@ jobs:
                   out.write('- '+row['publisher']+': **'+row['status']+'** ('+str(row['items'])+' items)\n')
           PY
       - name: Record a durable private 22-publisher feed-health report
-        if: github.event_name == 'schedule'
+        # Also do a one-off real private write/readback on the merge into main.
+        if: github.event_name == 'schedule' || github.event_name == 'push'
         env:
           MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
           SOURCE_HEALTH_RUN_ID: ${{ github.run_id }}
