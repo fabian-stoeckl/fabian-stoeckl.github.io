@@ -46,12 +46,22 @@
     "The Conversation",
     "ProPublica"
   ],
-  "dynamic_additions": [],
+  "dynamic_additions": [
+    "Bruegel",
+    "ITIF",
+    "South China Morning Post",
+    "Al Jazeera"
+  ],
   "change_log": [
     {
       "date": "2026-10-28",
       "change": "Startbestand aus bisheriger Fixstarterliste plus bestätigte Erweiterungen POLITICO Europe und BBC News",
       "reason": "Breite ökonomische, politische und wissenschaftliche Recherche, ohne technischen Zugang als Relevanzsignal"
+    },
+    {
+      "date": "2026-10-28",
+      "change": "Vier tatsächlich recherchierte Quellen als dynamische Recherche-Einstiege ergänzt: Bruegel, ITIF, South China Morning Post, Al Jazeera",
+      "reason": "Relevante belegte Beiträge der eigenständigen V3-Ausgabe zu EU-Industriepolitik, Wärmeeffizienz, EU-China-Handel und asiatischer Konjunktur; keine Erscheinungsquote oder Rankingprämie."
     }
   ]
 }
