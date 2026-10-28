@@ -54,6 +54,33 @@ const {chromium}=require('playwright');
  const payload=JSON.parse(saved.body.split('\n').slice(1).join('\n'));
  assert.equal(payload.ratings.length,2);
  assert.deepEqual(payload.ratings.map(r=>r.rating).sort(),['Nicht relevant','Sehr relevant']);
+ // V3.5: Only genuine edition-provided editorial notes and comparisons show.
+ await page.evaluate(()=>{
+   edition.articles[0].article_type='analysis';
+   edition.articles[0].evidence_level='teaser';
+   edition.articles[0].why_selected='Dokumentiert einen belegten wirtschaftlichen Mechanismus.';
+   edition.editorial_comparisons=[{
+     id:'fedcba9876543210',
+     selected_title:edition.articles[0].title,
+     selected_url:edition.articles[0].url,
+     alternative_title:'Alternative, öffentlich recherchierte Analyse',
+     alternative_url:'https://example.org/verified-alternative'
+   }];
+   render();
+ });
+ await page.waitForSelector('#v3-comparisons fieldset');
+ assert.match(await page.locator('#articles article .v3-why').first().innerText(),
+              /Warum ausgewählt.*wirtschaftlichen Mechanismus/);
+ assert.match(await page.locator('#articles article .v3-extra-context').first().innerText(),
+              /analysis.*Vorspann/);
+ assert.equal(await page.locator('#v3-comparisons fieldset').count(),1);
+ await page.locator('#v3-comparisons input[value=alternative]').check();
+ await page.locator('#feedback-form button[type=submit]').click();
+ await page.waitForFunction(()=>document.querySelector('#feedback-status')?.textContent.includes('aktualisiert'));
+ const comparisonIssue=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('v3-mock-issue')));
+ const comparisonData=JSON.parse(comparisonIssue.body.split('\n').slice(1).join('\n'));
+ assert.match(comparisonData.comment,/V3-Vergleich.*alternative/);
+ assert.equal(comparisonData.ratings.length,2,'Comparisons never create fabricated article ratings');
  await page.goto('http://127.0.0.1:8766/Privat/Morgenzeitung-3/praeferenzen.html');
  await page.waitForFunction(()=>document.querySelector('#preference-feedback')?.textContent.includes('Artikelbewertungen'));
  assert.match(await page.locator('#preference-feedback').innerText(),/2 Artikelbewertungen/);

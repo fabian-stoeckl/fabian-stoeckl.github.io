@@ -12,6 +12,10 @@ from scripts.morgenzeitung_v3_editorial import (
     calibration_review, edition_feedback_review, edition_series_review
 )
 
+from scripts.morgenzeitung_v3_quality import (
+    v1_comparison, calibration_review_from_feedback, reader_comparison_candidates
+)
+
 PREFIX="[Morgenzeitung 3] Feedback "
 MARKER="MORGENZEITUNG_V3_FEEDBACK_V1\n"
 ID=re.compile(r"^[a-f0-9]{16}$")
@@ -565,6 +569,7 @@ def main():
     p.add_argument("action",choices=["verify","rank","facts","compare","learn","quality"])
     for a in ("edition","dossier","candidates","profile","before","issues","topic-map"):p.add_argument("--"+a)
     p.add_argument("--new-feedback",action="store_true")
+    p.add_argument("--benchmark-edition",help="Optional real published V1 reference JSON; read-only")
     p.add_argument("--section",choices=["Vertiefungen","Heute wichtig"],default="Vertiefungen")
     p.add_argument("--limit",type=int)
     p.add_argument("--history-dir",help="V3 data directory with index and historical editions")
@@ -598,7 +603,16 @@ def main():
             pool,selected,profile,section=a.section,
             previous_editions=history,edition_date=a.as_of_date)
         if a.edition:
-            out["whole_edition_feedback"]=edition_feedback_review(read(a.edition),profile)
+            current=read(a.edition)
+            out["whole_edition_feedback"]=edition_feedback_review(current,profile)
+            out["v1_editorial_quality_benchmark"]=v1_comparison(
+                current, read(a.benchmark_edition) if a.benchmark_edition else None)
+        if a.section=="Vertiefungen":
+            out["optional_reader_comparison_candidates"]=reader_comparison_candidates(
+                pool,selected,score,profile,section=a.section)
+        if a.before:
+            out["rating_calibration"]=calibration_review_from_feedback(
+                pool,read(a.before),profile,score,section=a.section)
         if history:
             out["past_edition_feedback"]=edition_series_review(history,profile)
         out["private_only"]=True
