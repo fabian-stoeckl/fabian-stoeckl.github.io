@@ -74,7 +74,7 @@ const {chromium}=require('playwright');
    const current=JSON.parse(sessionStorage.getItem('v3-mock-issue'));
    const x=JSON.parse(current.body.split('\n').slice(1).join('\n'));
    x.comment='Neuer privater Kommentar vom zweiten Gerät';
-   current.body='MORGENZEITUNG_V3_FEEDBACK_V1\\n'+JSON.stringify(x);
+   current.body='MORGENZEITUNG_V3_FEEDBACK_V1\n'+JSON.stringify(x);
    sessionStorage.setItem('v3-mock-issue',JSON.stringify(current));
  });
  await page.locator('#headlines .news-item').first()
