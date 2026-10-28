@@ -25,7 +25,9 @@ REASON_PATTERNS = {
 
 def reason_labels(reason, rating):
     """Label explicit criticism, never guess a topic from free text alone."""
-    if rating != NEGATIVE or not isinstance(reason, str):
+    # Reasons are meaningful at ALL rating levels: a partly relevant article
+    # may fit the topic perfectly while lacking depth or new information.
+    if rating not in RATINGS or not isinstance(reason, str):
         return ()
     text = " ".join(reason.casefold().split())
     return tuple(label for label, fragments in REASON_PATTERNS.items()
@@ -49,6 +51,48 @@ def style_signals(article_feedback):
         "broader_context": min(2, counts["too_niche"] // 2),
         "perspectives": min(2, counts["one_sided"] // 2),
     }
+
+
+
+def feedback_dimensions(article_feedback):
+    """Private descriptive evidence: separate subject interest from article quality.
+
+    A label is an explicit reader statement, never inferred from access, length,
+    the publication, an unclicked article, or a rating without a reason.
+    """
+    by_dimension = Counter()
+    samples = {}
+    for article_id, row in article_feedback.items():
+        if not isinstance(row, dict):
+            continue
+        for dimension in reason_labels(row.get("reason"), row.get("rating")):
+            by_dimension[dimension] += 1
+            samples.setdefault(dimension, []).append(article_id)
+    return {"counts": dict(by_dimension),
+            "examples": {k: v[:5] for k, v in samples.items()},
+            "status": "explicit_reader_reasons_only"}
+
+
+def editorial_depth_review(candidates, selected):
+    """An editorial quality prompt, not a length/HTTP/full-text gate."""
+    gaps = []
+    for article in selected:
+        if not isinstance(article, dict):
+            continue
+        analysis = article.get("analysis_value")
+        context = article.get("context_value")
+        if analysis is None or context is None:
+            gaps.append({"id": article.get("id"), "issue": "missing_analytical_quality_assessment",
+                         "missing": [k for k in ("analysis_value", "context_value")
+                                     if article.get(k) is None]})
+        # Summary length by itself never proves insight, but very short
+        # descriptive snippets should prompt a check for actual mechanisms.
+        summary = str(article.get("summary") or "")
+        if len(summary.split()) < 20:
+            gaps.append({"id": article.get("id"), "issue": "check_incremental_insight",
+                         "note": "Show an evidenced mechanism, figure, trade-off or consequence if available; never invent detail."})
+    return {"review": gaps, "release_blocked": False,
+            "note": "Evidence quality and substance, not word count or full-text availability, determine selection."}
 
 
 def editorial_feedback_metrics(profile, min_votes=5):
