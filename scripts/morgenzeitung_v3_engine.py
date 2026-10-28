@@ -132,9 +132,12 @@ def duplicate_story(item, chosen):
 
 def select(candidates, profile, limit=15, discovery_slots=2, section="Vertiefungen"):
     if not isinstance(limit,int) or not 1<=limit<=15: raise ValueError("limit")
+    if section not in ("Vertiefungen","Heute wichtig"):
+        raise ValueError("unknown editorial section")
     pool=[]
+    required=("id","title","source","url") if section=="Heute wichtig" else ("id","title","source","url","topic")
     for i,item in enumerate(candidates):
-        if not all(item.get(k) for k in ("id","title","source","url","topic")): continue
+        if not all(item.get(k) for k in required): continue
         if not ID.fullmatch(item["id"]) or not valid_url(item["url"]): continue
         pool.append((score(item,profile,section=section),i,item))
     pool.sort(key=lambda x:(-x[0],x[1]))
