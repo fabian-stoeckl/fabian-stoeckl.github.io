@@ -117,3 +117,47 @@ def research_window(last_successful, started_at):
         "extended_for_gap":(now-start)>timedelta(hours=24),
         "reference":"last_independent_research" if reference else "initial_24h",
     }
+
+
+def editorial_mix_report(candidates, selected, section="Vertiefungen"):
+    """Non-blocking prompt for broader editorial search, not a quota or gate."""
+    if not isinstance(candidates,list) or not isinstance(selected,list):
+        raise ValueError("expected candidate and selected lists")
+    def names(rows,key):
+        return Counter(str(row.get(key,"")).strip() for row in rows
+                       if isinstance(row,dict) and row.get(key))
+    sources=names(selected,"source")
+    candidate_sources=names(candidates,"source")
+    topics=names(selected,"topic")
+    genres=names(selected,"article_type")
+    if not genres:
+        genres=names(selected,"kind")
+    recommendations=[]
+    n=len(selected)
+    if n>=5 and sources and sources.most_common(1)[0][1]/n >.55 and len(candidate_sources)>=3:
+        recommendations.append("Publisher concentration: search additional independent reporting; do not enforce quotas")
+    if n>=5 and section=="Vertiefungen":
+        if topics and topics.most_common(1)[0][1]/n >.65 and len(names(candidates,"topic"))>=3:
+            recommendations.append("Thematic repetition: look for relevant original mechanisms in other subjects")
+        if genres and genres.most_common(1)[0][1]/n >.65 and len(names(candidates,"article_type") or names(candidates,"kind"))>=3:
+            recommendations.append("Similar article types: consider investigation, explanation and analysis mix")
+    debates={}
+    for row in selected:
+        if not isinstance(row,dict):continue
+        debate=row.get("debate_id")
+        stance=row.get("viewpoint")
+        if debate and stance in ("support","oppose","mixed"):
+            debates.setdefault(debate,set()).add(stance)
+    if any(len(views)==1 and "mixed" not in views for views in debates.values()):
+        recommendations.append("Contested topic: search credible counter-perspectives where available; no forced balance")
+    return {
+        "section":section,"candidate_count":len(candidates),
+        "selected_count":len(selected),
+        "candidate_publishers":len(candidate_sources),
+        "selected_publishers":len(sources),
+        "selected_source_distribution":dict(sources),
+        "selected_article_types":dict(genres),
+        "recommendations":recommendations,
+        "release_blocked":False,
+        "note":"Editorial warnings only; do not reward or penalize paywalls, publisher accessibility, or URL response codes.",
+    }
