@@ -127,6 +127,27 @@ const {chromium}=require('playwright');
  assert.match(notes,/Weitere eigene Gedanken/);
  assert.match(notes,/V3-Vergleich.*alternative/);
 
+ // Unsent free-text must stay attached to its originating edition, not leak
+ // into an issue from another date when the reader uses the date dropdown.
+ await page.locator('#feedback').fill('Ungesendete Gedanken 28. Oktober');
+ await page.evaluate(()=>{
+   const date='2026-10-29';
+   const option=document.createElement('option');option.value=date;option.textContent=date;
+   document.getElementById('date').append(option);
+   const existing=GitHubPaper.edition;
+   GitHubPaper.edition=async day=>day===date?{...edition,date}:existing.call(GitHubPaper,day);
+ });
+ await page.locator('#date').selectOption('2026-10-29');
+ await page.waitForFunction(()=>edition.date==='2026-10-29');
+ assert.equal(await page.locator('#feedback').inputValue(),'');
+ await page.locator('#feedback').fill('Ungesendeter Kommentar 29. Oktober');
+ await page.locator('#date').selectOption(latest);
+ await page.waitForFunction(d=>edition.date===d,latest);
+ assert.equal(await page.locator('#feedback').inputValue(),'Ungesendete Gedanken 28. Oktober');
+ await page.locator('#date').selectOption('2026-10-29');
+ await page.waitForFunction(()=>edition.date==='2026-10-29');
+ assert.equal(await page.locator('#feedback').inputValue(),'Ungesendeter Kommentar 29. Oktober');
+
  await page.goto('http://127.0.0.1:8766/Privat/Persoenliche-Zeitung/praeferenzen.html');
  await page.waitForFunction(()=>document.querySelector('#preference-feedback')?.textContent.includes('Artikelbewertungen'));
  assert.match(await page.locator('#preference-feedback').innerText(),/2 Artikelbewertungen/);
