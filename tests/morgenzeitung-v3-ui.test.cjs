@@ -44,3 +44,4 @@ assert.equal(fs.existsSync('Privat/Morgenzeitung-3'),false,
 const custom404=fs.readFileSync('404.html','utf8');
 assert.ok(custom404.includes('"/privat/morgenzeitung-3"'));
 assert.ok(custom404.includes('"/Privat/Persoenliche-Zeitung/"'));
+execFileSync(process.execPath,['tests/central-newspaper-redirects.test.cjs']);
