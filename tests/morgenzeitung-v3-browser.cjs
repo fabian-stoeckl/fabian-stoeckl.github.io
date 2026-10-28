@@ -28,6 +28,8 @@ const {chromium}=require('playwright');
        result=JSON.parse(sessionStorage.getItem('v3-mock-issue')||'null');
      }else if((method==='POST'||method==='PATCH')&&/^\/issues(?:\/91)?$/.test(path)){
        const payload=JSON.parse(opts.body);
+       sessionStorage.setItem('v3-mock-write-count',String(
+         1+Number(sessionStorage.getItem('v3-mock-write-count')||0)));
        const saved={...payload,number:91,updated_at:'2026-10-28T10:00:00Z',
          html_url:'https://github.com/fabian-stoeckl/morgenzeitung-feedback/issues/91'};
        sessionStorage.setItem('v3-mock-issue',JSON.stringify(saved));
@@ -50,8 +52,16 @@ const {chromium}=require('playwright');
  await page.locator('#headlines .news-item').first().getByLabel('Sehr relevant',{exact:true}).check();
  await page.locator('#tab-articles').click();
  await page.locator('#articles article').first().getByLabel('Nicht relevant',{exact:true}).check();
- await page.locator('#feedback-form button[type=submit]').click();
+ // Simultaneous submissions from different save buttons within the same
+ // tab must result in one API write, never duplicate same-date Issues.
+ await page.evaluate(()=>{
+   const form=document.getElementById('feedback-form');
+   form.requestSubmit();
+   form.requestSubmit();
+ });
  await page.waitForFunction(()=>document.querySelector('#feedback-status')?.textContent.includes('erfolgreich'));
+ assert.equal(await page.evaluate(()=>Number(sessionStorage.getItem('v3-mock-write-count'))),
+              1,'One tab must not start duplicate concurrent feedback writes');
  const saved=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('v3-mock-issue')));
  assert.equal(saved.title,'[Morgenzeitung 3] Feedback '+latest);
  assert.ok(saved.body.startsWith('MORGENZEITUNG_V3_FEEDBACK_V1\n'));

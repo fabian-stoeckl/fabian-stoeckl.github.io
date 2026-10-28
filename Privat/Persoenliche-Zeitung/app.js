@@ -1,7 +1,7 @@
 'use strict';
 // One explicit browser-owned state object; edition/config remain stable V3 hooks.
 let config, edition, latestDate;
-const readerState={visibleArticles:[],visibleHeadlines:[],ratingDrafts:{},loadSequence:0};
+const readerState={visibleArticles:[],visibleHeadlines:[],ratingDrafts:{},loadSequence:0,saving:false};
 const draftKey=a=>edition.date+':'+(a.id||a.url);
 function feedbackStatus(msg){$('feedback-status').textContent=msg;for(const id of ['news-feedback-status','features-feedback-status'])if($(id))$(id).textContent=msg;}
 const $=id=>document.getElementById(id);
@@ -185,11 +185,11 @@ function updatePublicationStatus(e) {
   else if(late)node.textContent='Hinweis: Die heutige Persönliche Zeitung fehlt noch. Letzte Ausgabe: '+e.date+'.';
   else node.textContent='Neue Ausgabe wird um 07:45 Uhr Wiener Zeit erwartet. Zuletzt: '+e.date+'.';
 }
-async function collectDraftRatings(){
+async function collectDraftRatings(date,groups){
   const selected=[];
-  for(const [items,section] of [[readerState.visibleHeadlines,'Heute wichtig'],[readerState.visibleArticles,'Vertiefungen']]){
+  for(const [items,section] of groups){
     for(const item of items){
-      const draft=readerState.ratingDrafts[draftKey(item)];
+      const draft=readerState.ratingDrafts[date+':'+(item.id||item.url)];
       if(draft&&(draft.value||draft.reason.trim()))
         selected.push({id:await GitHubPaper.ratingId(item),value:draft.value||'',reason:draft.reason||'',section});
     }
@@ -198,10 +198,18 @@ async function collectDraftRatings(){
 }
 
 $('feedback-form').onsubmit=async e=>{e.preventDefault();
+  // Section buttons and the main form may all request submission. One tab
+  // must never start competing writes to the same private GitHub Issue.
+  if(readerState.saving)return;
+  readerState.saving=true;
+  const submittedEdition=edition;
+  const submittedText=$('feedback').value;
+  const groups=[[readerState.visibleHeadlines.slice(),'Heute wichtig'],
+                [readerState.visibleArticles.slice(),'Vertiefungen']];
   const b=e.submitter||$('feedback-form').querySelector('button[type=submit]');
   try{
-    const selected=await collectDraftRatings();
-    const comment=EditorialExtras.enrichFeedback(edition,$('feedback').value).trim();
+    const selected=await collectDraftRatings(submittedEdition.date,groups);
+    const comment=EditorialExtras.enrichFeedback(submittedEdition,submittedText).trim();
     if(!selected.length&&!comment)throw Error('Bitte mindestens einen Artikel bewerten oder Feedback eingeben.');
     const token=DirectFeedback.readToken();
     if(!token){
@@ -212,7 +220,7 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
     b.disabled=true;
     feedbackStatus('Wird gemeinsam auf GitHub gespeichert …');
     $('feedback-confirmation').hidden=true;
-    const result=await DirectFeedback.submit(edition.date,selected,comment,token);
+    const result=await DirectFeedback.submit(submittedEdition.date,selected,comment,token);
     feedbackStatus(result.existing
       ? 'Beide Rubriken sind bereits auf GitHub gespeichert.'
       : (result.updated?'Bewertungen beider Rubriken auf GitHub aktualisiert.':'Bewertungen beider Rubriken erfolgreich auf GitHub gespeichert.'));
@@ -224,7 +232,7 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
       $('github-setup').hidden=false;
       $('github-connected').hidden=true;
     }
-  }finally{b.disabled=false;}
+  }finally{b.disabled=false;readerState.saving=false;}
 };
 (async()=>{try{config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode!=='github')throw Error('Ungültiger V3-Modus');
 $('feedback').maxLength=4000;

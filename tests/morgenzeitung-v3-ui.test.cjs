@@ -43,6 +43,8 @@ for(const path of ['app.js','github.js','direct-feedback.js','editorial-extras.j
 assert.match(html,/Content-Security-Policy/);
 assert.match(pref,/Content-Security-Policy/);
 assert.ok(!html.includes('id="login-form"')&&!html.includes('id="logout"'));
+assert.match(fs.readFileSync(base+'app.js','utf8'),/saving:false/);
+assert.match(fs.readFileSync(base+'app.js','utf8'),/if\(readerState\.saving\)return/);
 console.log('PASS: single reader, metadata, explicit enhancements and strict script policy');
 
 // All user entry points use only the actual single newspaper folder.
