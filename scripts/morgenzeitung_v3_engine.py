@@ -135,7 +135,7 @@ def score(item, profile, section="Vertiefungen"):
                       +quality_adjustment("broader_context","context_value")
                       +quality_adjustment("perspectives","perspective"))
     return (value+1.25*(base+max(-2,min(2,delta))-3)
-            +article_penalty(item,profile)+novelty_adjustment+style_adjustment)
+            +article_penalty(item,profile)+repeated+novelty_adjustment+style_adjustment)
 
 def normalized_url(value):
     u=urlsplit(value)
