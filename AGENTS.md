@@ -17,4 +17,4 @@
 
 Only Persönliche Zeitung remains active (technical path: Persoenliche-Zeitung). Its authoritative, short contract is `services/morgenzeitung-v3/REDAKTION.md`, its private learning profile is `morgenzeitung-v3/profile.json` in the private feedback repository. Reader scripts and CSS are local to `Privat/Persoenliche-Zeitung/`; never import removed Pressespiegel or Morgenzeitung-neu directories. Preserve the existing V3 privacy rules, original factual evidence and feedback. Run only V3 tests, not old legacy process tests.
 
-- The old `/Privat/Morgenzeitung-3/` path contains only three HTML bookmark redirects. Do not restore publication data there; keep the new `/Privat/Persoenliche-Zeitung/` as the sole production location. Feedback issue IDs and private repository remain unchanged.
+- The obsolete `Privat/Morgenzeitung-3` folder has been deleted completely. Exact old bookmarks are handled centrally through root `404.html` (GitHub Pages custom 404), never by separate redirect files. Keep `Privat/Persoenliche-Zeitung/` as the sole production location. Feedback issue IDs and private repository remain unchanged.

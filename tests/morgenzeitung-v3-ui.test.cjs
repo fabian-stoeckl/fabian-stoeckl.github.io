@@ -38,9 +38,9 @@ for(const path of ['app.js','github.js','direct-feedback.js','preferences.js','p
  execFileSync(process.execPath,['--check',base+path]);
 console.log('PASS: only V3 dashboard, independent local reader and feedback, valid editions');
 
-// Only old HTML bookmark routes remain under the former public folder.
-for(const alias of ['index.html','praeferenzen.html','lern-ausgabe-2026-10-28/index.html']) {
- const old='Privat/Morgenzeitung-3/'+alias;
- assert.ok(fs.existsSync(old),'Missing former-bookmark redirect '+alias);
- assert.match(fs.readFileSync(old,'utf8'),/Persoenliche-Zeitung\//);
-}
+// The sole live newspaper folder is Persoenliche-Zeitung.
+assert.equal(fs.existsSync('Privat/Morgenzeitung-3'),false,
+  'Historical newspaper folder must be completely absent');
+const custom404=fs.readFileSync('404.html','utf8');
+assert.ok(custom404.includes('"/privat/morgenzeitung-3"'));
+assert.ok(custom404.includes('"/Privat/Persoenliche-Zeitung/"'));

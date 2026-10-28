@@ -1,11 +1,11 @@
 <!-- website-area: {"name": "Persönliche Zeitung", "paths": ["Privat/Persoenliche-Zeitung/"]} -->
 # Bereichsprotokoll: Persönliche Zeitung
 
-**Stand:** 28.10.2026. **Status:** eine einzige produktive Persönliche Zeitung. Die früheren Versionen wurden aus Website und Prozessen entfernt; ihre wichtigen redaktionellen Erkenntnisse sind im aktuellen Vertrag zusammengeführt. Der produktive GitHub- und Website-Ordner heißt `Privat/Persoenliche-Zeitung/`. Die frühere Adresse `/Privat/Morgenzeitung-3/` hat Weiterleitungen für Hauptseite, Präferenzen und Lernausgabe. Die privaten Feedback-IDs und Issue-Marker bleiben unverändert.
+**Stand:** 28.10.2026. **Status:** eine einzige produktive Persönliche Zeitung. Die früheren Versionen wurden aus Website und Prozessen entfernt; ihre wichtigen redaktionellen Erkenntnisse sind im aktuellen Vertrag zusammengeführt. Der produktive GitHub- und Website-Ordner heißt `Privat/Persoenliche-Zeitung/`. Der alte GitHub-Ordner `Privat/Morgenzeitung-3` ist vollständig gelöscht. Die zentrale `404.html` kann bisherige Lesezeichen für Hauptseite, Präferenzen und Lernausgabe per JavaScript zum neuen Ordner weiterleiten. Die privaten Feedback-IDs und Issue-Marker bleiben unverändert.
 
 ## Geltungsbereich
 - Auf `Privat/index.html` bleiben **drei Kacheln**: ETF, Persönliche Zeitung, Website ändern. Die Kachel „Website ändern“ sowie ihr Skill-Link und Layout sind ausdrücklich unverändert zu erhalten.
-- Leseroberfläche, CSS, GitHub-Feedback und Präferenzanzeige eigenständig in `Privat/Persoenliche-Zeitung/`; die separat veröffentlichte Lernausgabe vom 28.10. ist in den neuen Ordner umgezogen und unter der alten URL weiter erreichbar.
+- Leseroberfläche, CSS, GitHub-Feedback und Präferenzanzeige eigenständig in `Privat/Persoenliche-Zeitung/`; die separat veröffentlichte Lernausgabe vom 28.10. liegt ausschließlich im neuen Ordner; die frühere URL wird über die zentrale 404-Seite behandelt.
 - Verbindliche redaktionelle Anweisung: `services/morgenzeitung-v3/REDAKTION.md`; Quellen: `services/morgenzeitung-v3/sources.json`; Tests und Redaktion ausschließlich V3. Eigenes privates Profil: `fabian-stoeckl/morgenzeitung-feedback:morgenzeitung-v3/profile.json`.
 - Bestehende Issue-Titel `[Morgenzeitung 3] Feedback YYYY-MM-DD`, Marker `MORGENZEITUNG_V3_FEEDBACK_V1` und lokale technische Token-/Feedback-IDs dürfen nicht umbenannt werden, damit alle Bewertungen erhalten bleiben.
 - Nur der tägliche V3-Lauf (06:45 Europe/Vienna) und die V3-Störungswache bleiben aktiviert; die ehemaligen V1/V2-Aufgaben sind deaktiviert.
@@ -28,4 +28,8 @@
 
 ## 28.10.2026 – Ordner und Kachelgestaltung
 
-Der produktive GitHub-Ordner wurde auf `Privat/Persoenliche-Zeitung/` umgestellt. Nur drei Weiterleitungsseiten verbleiben im alten Ordner für bestehende Lesezeichen; dort liegen keine zweiten Datensätze oder produktiven Skripte. Die drei Kacheln ETF, Persönliche Zeitung und Website ändern behalten ihre Form und Funktion und unterscheiden sich nun in Terrakotta, Blau und Violett. ETF-Finanzdaten, die Website-ändern-Skill-Adresse sowie private Feedback-Kennungen sind unverändert.
+Der produktive GitHub-Ordner wurde auf `Privat/Persoenliche-Zeitung/` umgestellt. Der alte Ordner ist vollständig gelöscht; `404.html` behandelt bekannte Alt-Adressen. Es gibt weder zweite Datenverzeichnisse noch eigene Weiterleitungsdateien. Die drei Kacheln ETF, Persönliche Zeitung und Website ändern behalten ihre Form und Funktion und unterscheiden sich nun in Terrakotta, Blau und Violett. ETF-Finanzdaten, die Website-ändern-Skill-Adresse sowie private Feedback-Kennungen sind unverändert.
+
+## 28.10.2026 – letzte Verzeichnisbereinigung
+
+Das Verzeichnis `Privat/Morgenzeitung-3/` wurde restlos entfernt. Bestehende Lesezeichen werden nur über die zentrale GitHub-Pages-Fehlerseite `404.html` per JavaScript weitergeleitet; das ist eine clientseitige Weiterleitung nach einer HTTP-404-Antwort, kein serverseitiger HTTP-301-Redirect. Ohne JavaScript kann der alte URL-Pfad eine echte Fehlerseite zeigen. Hauptseite, Präferenzen und Lernausgabe selbst sind ausschließlich unter `Privat/Persoenliche-Zeitung/` verfügbar. Redaktion, tägliche Automation, Feedback-Repositories und drei Kacheln unverändert.
