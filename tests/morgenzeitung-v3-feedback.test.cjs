@@ -117,5 +117,24 @@ async function transport(url,options){
               'Network retry must not duplicate a successfully saved comment');
  assert.ok(current.feedback.includes(tagTwo));
  assert.equal(current.ratings.find(r=>r.id==='f'.repeat(16)).value,'Sehr relevant');
+ // An unedited cached comment must NEVER overwrite newer prose added on
+ // another device when the reader saves only ratings or optional comparisons.
+ await D.submit(date,[],'Ein neuer Text vom zweiten Gerät','token',store,transport);
+ const beforeComparison=(await D.savedFeedback(date,'token',store,transport)).feedback;
+ const comparison='[V3-Vergleich '+date+' 1234567890abcdef: equal]';
+ await D.submit(date,[{id:'9'.repeat(16),value:'Sehr relevant',
+   reason:'Interessant',section:'Vertiefungen'}],comparison,
+   'token',store,transport,{comparisonOnly:true});
+ current=await D.savedFeedback(date,'token',store,transport);
+ assert.ok(current.feedback.includes('Ein neuer Text vom zweiten Gerät'),
+    'Rating-only write silently overwrote remote comment');
+ assert.ok(current.feedback.includes(comparison));
+ assert.ok(!current.feedback.includes('1234567890abcdef: published'),
+    'Old answer to same explicit comparison must be replaced');
+ assert.equal(current.ratings.find(r=>r.id==='9'.repeat(16)).value,'Sehr relevant');
+ assert.equal(current.feedback.split('Ein neuer Text vom zweiten Gerät').length-1,1);
+ assert.ok(beforeComparison.includes('Ein neuer Text vom zweiten Gerät'));
+ await assert.rejects(D.submit(date,[],'Unerlaubter Freitext','token',store,transport,
+   {comparisonOnly:true}),/Ungültige Vergleichsrückmeldung/);
  console.log('PASS: V3 feedback isolated, issue updated, past comparisons and appended comments retained');
 })().catch(e=>{console.error(e);process.exitCode=1});
