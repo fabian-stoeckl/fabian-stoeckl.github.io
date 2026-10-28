@@ -14,7 +14,8 @@ def validate_article_metadata(article):
     errors=[]
     if not isinstance(article, dict):
         return ["article is not an object"]
-    number=article.get("novelty_score",article.get("novelty"))
+    number=(article.get("novelty_score") if article.get("novelty_score") is not None
+            else article.get("novelty"))
     if number is not None and (
         isinstance(number,bool) or not isinstance(number,(int,float))
         or not 0<=number<=5

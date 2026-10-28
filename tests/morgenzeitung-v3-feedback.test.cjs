@@ -117,5 +117,39 @@ async function transport(url,options){
               'Network retry must not duplicate a successfully saved comment');
  assert.ok(current.feedback.includes(tagTwo));
  assert.equal(current.ratings.find(r=>r.id==='f'.repeat(16)).value,'Sehr relevant');
+ // An unedited cached comment must NEVER overwrite newer prose added on
+ // another device when the reader saves only ratings or optional comparisons.
+ await D.submit(date,[],'Ein neuer Text vom zweiten Gerät','token',store,transport);
+ const beforeComparison=(await D.savedFeedback(date,'token',store,transport)).feedback;
+ const comparison='[V3-Vergleich '+date+' 1234567890abcdef: equal]';
+ await D.submit(date,[{id:'9'.repeat(16),value:'Sehr relevant',
+   reason:'Interessant',section:'Vertiefungen'}],comparison,
+   'token',store,transport,{comparisonOnly:true});
+ current=await D.savedFeedback(date,'token',store,transport);
+ assert.ok(current.feedback.includes('Ein neuer Text vom zweiten Gerät'),
+    'Rating-only write silently overwrote remote comment');
+ assert.ok(current.feedback.includes(comparison));
+ assert.ok(!current.feedback.includes('1234567890abcdef: published'),
+    'Old answer to same explicit comparison must be replaced');
+ assert.equal(current.ratings.find(r=>r.id==='9'.repeat(16)).value,'Sehr relevant');
+ assert.equal(current.feedback.split('Ein neuer Text vom zweiten Gerät').length-1,1);
+ assert.ok(beforeComparison.includes('Ein neuer Text vom zweiten Gerät'));
+ await assert.rejects(D.submit(date,[],'Unerlaubter Freitext','token',store,transport,
+   {comparisonOnly:true}),/Ungültige Vergleichsrückmeldung/);
+ // Explicit real free-text is not a technical test flag. The browser
+ // must agree with Python's structured origin/test checks.
+ const candidate=JSON.parse(issues[0].body.slice('MORGENZEITUNG_V3_FEEDBACK_V1\n'.length));
+ candidate.comment='TEST: true ist hier ein echter Leserkommentar.';
+ const realIssue={...issues[0],body:'MORGENZEITUNG_V3_FEEDBACK_V1\n'+JSON.stringify(candidate)};
+ const onlyIssue=async(url,opts)=>((opts.method||'GET')==='GET'&&
+   String(url).includes('/issues?'))?response([realIssue]):transport(url,opts);
+ assert.equal((await D.feedbackHistory('token',onlyIssue)).length,1,
+   'Free-text must never be mistaken for a structured test marker');
+ const testIssue={...realIssue,body:'MORGENZEITUNG_V3_FEEDBACK_V1\n'+
+   JSON.stringify({...candidate,test:true})};
+ const simulated=async(url,opts)=>((opts.method||'GET')==='GET'&&
+   String(url).includes('/issues?'))?response([testIssue]):transport(url,opts);
+ assert.equal((await D.feedbackHistory('token',simulated)).length,0,
+   'Explicit structured test votes must be discarded');
  console.log('PASS: V3 feedback isolated, issue updated, past comparisons and appended comments retained');
 })().catch(e=>{console.error(e);process.exitCode=1});

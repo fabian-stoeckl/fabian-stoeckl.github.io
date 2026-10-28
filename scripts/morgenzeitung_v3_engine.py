@@ -535,12 +535,38 @@ def evidence_guard(edition,dossier):
             "claims_checked":checked,"warnings":warnings,
             "note":"Mechanical guard only; editorial semantic check remains obligatory"}
 
+def parsed_aware_timestamp(value):
+    if not isinstance(value,str) or "T" not in value:
+        return None
+    try:
+        dt=datetime.fromisoformat(value.replace("Z","+00:00"))
+        return dt if dt.tzinfo is not None and dt.utcoffset() is not None else None
+    except (ValueError,TypeError,OverflowError):
+        return None
+
+
+def valid_publication_date(value):
+    if not isinstance(value,str):
+        return False
+    if DATE.fullmatch(value):
+        try:datetime.strptime(value,"%Y-%m-%d");return True
+        except ValueError:return False
+    return parsed_aware_timestamp(value) is not None
+
+
 def validate_edition(ed,dossier=None,require_dossier=False):
     errors=[]; date=ed.get("date")
-    if not isinstance(date,str) or not DATE.fullmatch(date):errors.append("invalid date")
-    for key in ("researched_at","available_at"):
-        try:datetime.fromisoformat(ed[key].replace("Z","+00:00"))
-        except (KeyError,TypeError,ValueError,AttributeError):errors.append("invalid "+key)
+    if not isinstance(date,str) or not DATE.fullmatch(date):
+        errors.append("invalid date")
+    else:
+        try:datetime.strptime(date,"%Y-%m-%d")
+        except ValueError:errors.append("invalid date")
+    research=parsed_aware_timestamp(ed.get("researched_at"))
+    available=parsed_aware_timestamp(ed.get("available_at"))
+    if research is None:errors.append("invalid researched_at")
+    if available is None:errors.append("invalid available_at")
+    if research is not None and available is not None and available<research:
+        errors.append("publication precedes research")
     if not isinstance(ed.get("preview"),bool):errors.append("invalid preview")
     ids=set();urls=set()
     for section,limit in (("articles",15),("headlines",20)):
@@ -552,8 +578,11 @@ def validate_edition(ed,dossier=None,require_dossier=False):
                 or not all(row.get(k) for k in ("title","url","source","summary","published_at"))
                 or not valid_url(row.get("url"))):
                 errors.append("invalid identity");continue
-            if row["id"] in ids or row["url"] in urls:errors.append("duplicate")
-            ids.add(row["id"]);urls.add(row["url"])
+            canonical_url=normalized_url(row["url"])
+            if row["id"] in ids or canonical_url in urls:errors.append("duplicate")
+            ids.add(row["id"]);urls.add(canonical_url)
+            if not valid_publication_date(row.get("published_at")):
+                errors.append("invalid published_at")
             errors.extend(validate_article_metadata(row))
             if section=="articles" and not row.get("topic"):errors.append("missing topic")
             if section=="headlines" and row.get("region") not in ("Österreich","International"):

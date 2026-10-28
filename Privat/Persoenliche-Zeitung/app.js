@@ -1,12 +1,21 @@
 'use strict';
 // One explicit browser-owned state object; edition/config remain stable V3 hooks.
 let config, edition, latestDate;
-const readerState={visibleArticles:[],visibleHeadlines:[],ratingDrafts:{},commentDrafts:{},loadSequence:0,saving:false};
+const readerState={visibleArticles:[],visibleHeadlines:[],ratingDrafts:{},commentDrafts:{},
+  commentBaselines:{},loadSequence:0,saving:false};
 const draftKey=a=>edition.date+':'+(a.id||a.url);
 function feedbackStatus(msg){$('feedback-status').textContent=msg;for(const id of ['news-feedback-status','features-feedback-status'])if($(id))$(id).textContent=msg;}
 const $=id=>document.getElementById(id);
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
-const fmt=v=>new Intl.DateTimeFormat('de-AT',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Vienna'}).format(new Date(v));
+function fmt(v){
+  // Many publishers provide a date only. Never invent a precise time by
+  // formatting midnight UTC as 01:00/02:00 in Vienna.
+  if(typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v))
+    return new Intl.DateTimeFormat('de-AT',{dateStyle:'medium',timeZone:'UTC'})
+      .format(new Date(v+'T12:00:00Z'));
+  return new Intl.DateTimeFormat('de-AT',
+    {dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Vienna'}).format(new Date(v));
+}
 function safeURL(value){const u=new URL(value);if(u.protocol!=='https:'||u.username||u.password)throw Error('Ungültiger Link');return u.href;}
 function link(text,url){const n=el('a',text);n.href=safeURL(url);n.target='_blank';n.rel='noopener noreferrer';return n;}
 function status(text){
@@ -50,7 +59,8 @@ function article(a,index,section='Vertiefungen'){
   const body=el('div',undefined,'body');
   const title=el('h2');title.append(link(a.title,a.url));
   body.append(title,el('p',a.summary,isHeadline?'news-summary':undefined));
-  if(a.access==='teaser')body.append(el('p','Zusammenfassung beruht ausschließlich auf dem zugänglichen Vorspann.','small'));
+  if(a.evidence_level==='teaser'||a.level==='teaser')
+    body.append(el('p','Zusammenfassung beruht ausschließlich auf dem tatsächlich ausgewerteten Vorspann.','small'));
   if(!isHeadline&&typeof a.novelty_explanation==='string'&&a.novelty_explanation.trim())
     body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty_explanation,'novelty'));
   body.append(githubRating(a,section));node.append(intro,body);return node;
@@ -144,7 +154,12 @@ async function restoreSavedRatings(){
       if(note)note.value=savedRow.reason;
       const disclosure=field.querySelector('.rating-reason');if(disclosure)disclosure.open=!!savedRow.reason;
     }
-    if(!$('feedback').value&&saved.feedback)$('feedback').value=saved.feedback;
+    if(!Object.hasOwn(readerState.commentBaselines,date))
+      readerState.commentBaselines[date]=saved.feedback||'';
+    if(!$('feedback').value&&saved.feedback){
+      $('feedback').value=saved.feedback;
+      readerState.commentDrafts[date]=saved.feedback;
+    }
   }catch(err){feedbackStatus('Gespeicherte Bewertungen konnten nicht geladen werden: '+err.message);}
 }
 
@@ -218,7 +233,14 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
   const b=e.submitter||$('feedback-form').querySelector('button[type=submit]');
   try{
     const selected=await collectDraftRatings(submittedEdition.date,groups);
-    const comment=EditorialExtras.enrichFeedback(submittedEdition,submittedText).trim();
+    // Unedited restored feedback is not a new author instruction to replace
+    // another device's newer comment. Only the explicitly chosen comparison
+    // answers may be merged into that newer canonical issue.
+    const baseline=readerState.commentBaselines[submittedEdition.date]||'';
+    const unchanged=submittedText.trim()===baseline.trim();
+    const comment=(unchanged
+      ? EditorialExtras.comparisonChoices(submittedEdition)
+      : EditorialExtras.enrichFeedback(submittedEdition,submittedText)).trim();
     if(!selected.length&&!comment)throw Error('Bitte mindestens einen Artikel bewerten oder Feedback eingeben.');
     const token=DirectFeedback.readToken();
     if(!token){
@@ -229,7 +251,16 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
     b.disabled=true;
     feedbackStatus('Wird gemeinsam auf GitHub gespeichert …');
     $('feedback-confirmation').hidden=true;
-    const result=await DirectFeedback.submit(submittedEdition.date,selected,comment,token);
+    const result=await DirectFeedback.submit(submittedEdition.date,selected,comment,token,
+      localStorage,fetch,{comparisonOnly:unchanged});
+    // Remember the exact confirmed canonical comment as the next baseline.
+    if(typeof result.feedback==='string'){
+      readerState.commentBaselines[submittedEdition.date]=result.feedback;
+      if(edition===submittedEdition&&$('feedback').value===submittedText){
+        $('feedback').value=result.feedback;
+        readerState.commentDrafts[submittedEdition.date]=result.feedback;
+      }
+    }
     // The previous issue may finish writing after the reader changed dates.
     if(edition!==submittedEdition)return;
     feedbackStatus(result.existing

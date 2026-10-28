@@ -4,30 +4,23 @@ const GitHubPaper = {
   canonical(url) {
     const u=new URL(url);
     if(u.protocol!=='https:'||u.username||u.password)throw Error('Ungültige Artikeladresse');
-    const query=[...u.searchParams.entries()].filter(([key])=>!key.startsWith('utm_')&&!['fbclid','gclid'].includes(key)).sort(([a,av],[b,bv])=>a.localeCompare(b)||av.localeCompare(bv));
+    const query=[...u.searchParams.entries()].filter(([key])=>!key.toLowerCase().startsWith('utm_')&&!['fbclid','gclid'].includes(key.toLowerCase())).sort(([a,av],[b,bv])=>a.localeCompare(b)||av.localeCompare(bv));
     const tail=query.length?'?'+new URLSearchParams(query):'';
     return 'https://'+u.host.toLowerCase()+u.pathname.replace(/\/+$/,'')+tail;
-  },
-  similarTitles(a,b) {
-    const stop=new Set(['eine','einen','einer','einem','über','dies','sich','auch','werden','wurde','sind','wird','dass','nicht','nach','mehr']);
-    const tokens=t=>new Set((t.toLowerCase().match(/[\p{L}\p{N}]{4,}/gu)||[]).filter(w=>!stop.has(w)));
-    const x=tokens(a),y=tokens(b);
-    if(x.size<2||y.size<2)return false;
-    const shared=[...x].filter(w=>y.has(w)).length;
-    return shared/Math.max(1,new Set([...x,...y]).size)>=0.65;
   },
   partition(edition) {
     const articles=Array.isArray(edition.articles)?edition.articles:[];
     const news=Array.isArray(edition.headlines)?edition.headlines:[];
-    const seenUrls=new Set(articles.map(a=>this.canonical(a.url)));
-    const seenEvents=new Set(articles.map(a=>a.event).filter(Boolean));
-    const seenTitles=articles.map(a=>a.title);
+    // Only exact canonical duplicate URLs are hidden at presentation time.
+    // Editorially distinct articles about one event, or similar headlines
+    // from other publishers, must never be silently removed by the reader.
+    const seen=new Set(articles.map(a=>this.canonical(a.url)));
     const headlines=[];
     for(const item of news){
       const url=this.canonical(item.url);
-      if(seenUrls.has(url)||(item.event&&seenEvents.has(item.event))||seenTitles.some(t=>this.similarTitles(t,item.title)))continue;
+      if(seen.has(url))continue;
+      seen.add(url);
       headlines.push(item);
-      seenUrls.add(url);if(item.event)seenEvents.add(item.event);seenTitles.push(item.title);
     }
     return {articles,headlines,duplicatesRemoved:news.length-headlines.length};
   },
