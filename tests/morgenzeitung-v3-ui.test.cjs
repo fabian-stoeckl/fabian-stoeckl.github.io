@@ -1,11 +1,11 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs');
 const {execFileSync}=require('node:child_process');
-const base='Privat/Morgenzeitung-3/';
+const base='Privat/Persoenliche-Zeitung/';
 const html=fs.readFileSync(base+'index.html','utf8'),home=fs.readFileSync('Privat/index.html','utf8');
 const pref=fs.readFileSync(base+'praeferenzen.html','utf8');
 const js=fs.readFileSync(base+'direct-feedback.js','utf8');
-assert.equal((home.match(/href="\.\/Morgenzeitung-3\/"/g)||[]).length,1);
+assert.equal((home.match(/href="\.\/Persoenliche-Zeitung\/"/g)||[]).length,1);
 assert.match(home,/Persönliche<br>Zeitung/);
 assert.match(html,/<title>Persönliche Zeitung<\/title>/);
 assert.match(pref,/<title>Meine Präferenzen · Persönliche Zeitung<\/title>/);
@@ -37,3 +37,10 @@ for(const date of index.dates){
 for(const path of ['app.js','github.js','direct-feedback.js','preferences.js','preference-timeline.js'])
  execFileSync(process.execPath,['--check',base+path]);
 console.log('PASS: only V3 dashboard, independent local reader and feedback, valid editions');
+
+// Only old HTML bookmark routes remain under the former public folder.
+for(const alias of ['index.html','praeferenzen.html','lern-ausgabe-2026-10-28/index.html']) {
+ const old='Privat/Morgenzeitung-3/'+alias;
+ assert.ok(fs.existsSync(old),'Missing former-bookmark redirect '+alias);
+ assert.match(fs.readFileSync(old,'utf8'),/Persoenliche-Zeitung\//);
+}
