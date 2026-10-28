@@ -141,7 +141,7 @@ def distinct_perspective(a,b):
 
 def duplicate_story(item, chosen):
     """Conservative cross-publisher detection; uncertain reports remain eligible."""
-    if any((x.get("event") and item.get("event") and x["event"]==item["event"])
+    if any((x.get("event") and item.get("event") and (x["event"]==item["event"] and not distinct_perspective(item,x)))
            or normalized_url(x["url"])==normalized_url(item["url"])
            for _,x in chosen):
         return True
