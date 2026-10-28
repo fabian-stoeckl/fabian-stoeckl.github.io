@@ -69,4 +69,8 @@ Quelle: am 17.10. recherchierte Skill-Notizen, damals mit PRs #2–#18 abgeglich
 ## 28.10.2026: Bereinigte Privat-Kacheln
 
 - Drei Kacheln beibehalten: ETF, **Persönliche Zeitung**, **Website ändern**. Die Website-ändern-Skill-Kachel ist ausdrücklich vom Nutzer zum Beibehalten bestimmt; ihr Link und ihr Design bleiben unverändert.
-- Alte Zeitungs-Versionen sind nicht mehr produktiv. Der technische Ordner `Privat/Morgenzeitung-3/` bleibt aus Gründen stabiler URLs und Feedbackkennungen; die aktuelle Produktgeschichte liegt im Bereichsprotokoll `Persoenliche-Zeitung.md`.
+- Alte Zeitungs-Versionen sind nicht mehr produktiv. Der Produktordner lautet jetzt `Privat/Persoenliche-Zeitung/`; die alte URL wird auf den neuen Pfad weitergeleitet; die aktuelle Produktgeschichte liegt im Bereichsprotokoll `Persoenliche-Zeitung.md`.
+
+## Aktueller Farbstil und Ordner – 28.10.2026
+
+Auf `/Privat/` stehen weiterhin genau drei Kacheln: ETF (Terrakotta), Persönliche Zeitung (Blau), Website ändern (Violett). Der Skill-Link und die ETF-Funktionalität bleiben unverändert. Neue Zeitungsadresse: `/Privat/Persoenliche-Zeitung/`, frühere Leseadressen werden weitergeleitet.

@@ -6,7 +6,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'Privat/Morgenzeitung-3/data/**'
+      - 'Privat/Persoenliche-Zeitung/data/**'
       - 'scripts/morgenzeitung_v3_*.py'
       - '.github/workflows/morgenzeitung-prepublication-gate.yml'
   workflow_dispatch:
@@ -25,7 +25,7 @@ jobs:
           python3 -m unittest discover -s tests/morgenzeitung-v3 -v
           python3 - <<'PY'
           import json, pathlib, subprocess, sys
-          root=pathlib.Path("Privat/Morgenzeitung-3/data")
+          root=pathlib.Path("Privat/Persoenliche-Zeitung/data")
           days=json.loads((root/"index.json").read_text(encoding="utf-8"))["dates"]
           assert days and days==sorted(set(days),reverse=True)
           for day in days:

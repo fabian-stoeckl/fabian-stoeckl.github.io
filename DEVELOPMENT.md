@@ -28,7 +28,7 @@ Start Jekyll in terminal 1:
 ./scripts/preview.sh
 ```
 
-The main site is at <http://127.0.0.1:4000/>, the dashboard at <http://127.0.0.1:4000/Privat/>, the ETF dashboard at <http://127.0.0.1:4000/Privat/ETFs/>, and Persönliche Zeitung at <http://127.0.0.1:4000/Privat/Morgenzeitung-3/>. In terminal 2 run:
+The main site is at <http://127.0.0.1:4000/>, the dashboard at <http://127.0.0.1:4000/Privat/>, the ETF dashboard at <http://127.0.0.1:4000/Privat/ETFs/>, and Persönliche Zeitung at <http://127.0.0.1:4000/Privat/Persoenliche-Zeitung/>. In terminal 2 run:
 
 ```sh
 npm run check:preview

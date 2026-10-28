@@ -8,7 +8,7 @@ const pages = [
   { name: 'homepage', path: '/', ready: 'h1' },
   { name: 'dashboard', path: '/Privat/', ready: '.grid' },
   { name: 'etf-dashboard', path: '/Privat/ETFs/', ready: '.year-key' },
-  { name: 'morgenzeitung', path: '/Privat/Morgenzeitung-3/', ready: 'h1' },
+  { name: 'morgenzeitung', path: '/Privat/Persoenliche-Zeitung/', ready: 'h1' },
 ];
 const viewports = [
   { name: 'desktop', width: 1440, height: 1000 },

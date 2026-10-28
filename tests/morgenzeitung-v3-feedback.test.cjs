@@ -1,6 +1,6 @@
 'use strict';
 const assert=require('node:assert/strict');
-const D=require('../Privat/Morgenzeitung-3/direct-feedback.js');
+const D=require('../Privat/Persoenliche-Zeitung/direct-feedback.js');
 const issues=[{number:1,title:'[Morgenzeitung neu] Feedback 2026-10-27',body:'MORGENZEITUNG_NEU_FEEDBACK_V1\n{}'}];
 const store={map:new Map(),getItem(k){return this.map.get(k)||null},setItem(k,v){this.map.set(k,v)},removeItem(k){this.map.delete(k)}};
 const response=x=>({ok:true,json:async()=>JSON.parse(JSON.stringify(x))});
@@ -48,8 +48,8 @@ async function transport(url,options){
  assert.equal(D.RECEIPTS_KEY,'morgenzeitung-v3:github-receipts:v1');
  // Additional same-day V3 learning edition must not replace prior feedback.
  const fs=require('node:fs');
- const regular=JSON.parse(fs.readFileSync('Privat/Morgenzeitung-3/data/2026-10-28.json','utf8'));
- const extra=JSON.parse(fs.readFileSync('Privat/Morgenzeitung-3/lern-ausgabe-2026-10-28/data/2026-10-28.json','utf8'));
+ const regular=JSON.parse(fs.readFileSync('Privat/Persoenliche-Zeitung/data/2026-10-28.json','utf8'));
+ const extra=JSON.parse(fs.readFileSync('Privat/Persoenliche-Zeitung/lern-ausgabe-2026-10-28/data/2026-10-28.json','utf8'));
  const earlierIds=new Set([...regular.articles,...regular.headlines].map(r=>r.id));
  const extraIds=[...extra.articles,...extra.headlines].map(r=>r.id);
  assert.equal(extra.date,regular.date);

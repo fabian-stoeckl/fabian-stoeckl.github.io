@@ -17,7 +17,7 @@ from urllib.request import Request, urlopen
 from scripts.morgenzeitung_v3_engine import validate_edition
 
 REPO = "fabian-stoeckl/morgenzeitung-feedback"
-DATE_FILE = re.compile(r"^Privat/Morgenzeitung-3/data/(\d{4}-\d{2}-\d{2})\.json$")
+DATE_FILE = re.compile(r"^Privat/Persoenliche-Zeitung/data/(\d{4}-\d{2}-\d{2})\.json$")
 COMMIT = re.compile(r"^[a-f0-9]{40}$")
 
 
@@ -26,7 +26,7 @@ def changed_dates(files):
     dates = set()
     index_changed = False
     for name in files:
-        if name == "Privat/Morgenzeitung-3/data/index.json":
+        if name == "Privat/Persoenliche-Zeitung/data/index.json":
             index_changed = True
         match = DATE_FILE.fullmatch(name)
         if match:
@@ -73,14 +73,38 @@ def fetch_private_dossier(date, token, opener=urlopen):
     return value
 
 
-def verify_changed(root, files, token, fetcher=fetch_private_dossier):
+def unchanged_migration(root, day, base_sha):
+    """Only bypass a new-release fetch for the byte-identical ONE-TIME folder move.
+
+    Never exempt edited articles, new dates, changed index or missing baseline.
+    The recorded original must be a real already-published V3 edition.
+    """
+    if day != "2026-10-28" or not COMMIT.fullmatch(str(base_sha)):
+        return False
+    current = Path(root) / "Privat/Persoenliche-Zeitung/data"
+    old_path = "Privat/Morgenzeitung-3/data/" + day + ".json"
+    old_index = "Privat/Morgenzeitung-3/data/index.json"
+    try:
+        old_edition = subprocess.run(
+            ["git", "show", base_sha + ":" + old_path],
+            cwd=root, check=True, capture_output=True).stdout
+        old_dates = subprocess.run(
+            ["git", "show", base_sha + ":" + old_index],
+            cwd=root, check=True, capture_output=True).stdout
+        return (old_edition == (current / (day + ".json")).read_bytes()
+                and old_dates == (current / "index.json").read_bytes())
+    except (OSError, subprocess.CalledProcessError):
+        return False
+
+
+def verify_changed(root, files, token, fetcher=fetch_private_dossier, migration_base=None):
     days = changed_dates(files)
     if not days:
         return {"checked": [], "preview_skipped": []}
-    data_dir = Path(root) / "Privat/Morgenzeitung-3/data"
+    data_dir = Path(root) / "Privat/Persoenliche-Zeitung/data"
     index = json.loads((data_dir / "index.json").read_text(encoding="utf-8"))
     listed = index.get("dates", [])
-    checked, retired = [], []
+    checked, retired, migrated = [], [], []
     for day in days:
         path = data_dir / (day + ".json")
         if day not in listed:
@@ -95,6 +119,9 @@ def verify_changed(root, files, token, fetcher=fetch_private_dossier):
             raise ValueError("V3 edition/index date mismatch")
         if edition.get("preview") is True:
             raise ValueError("New V3 editions cannot be previews")
+        if unchanged_migration(root, day, migration_base):
+            migrated.append(day)
+            continue
         # A new real edition MUST have its private original-source dossier in
         # the feedback repo and must pass the actual private review, not just a
         # self-declared public receipt.
@@ -104,7 +131,7 @@ def verify_changed(root, files, token, fetcher=fetch_private_dossier):
             raise ValueError("V3 private factual review failed for " + day
                              + ": " + ", ".join(errors[:8]))
         checked.append(day)
-    return {"checked": checked, "preview_skipped": [], "retired_preview": retired}
+    return {"checked": checked, "preview_skipped": [], "retired_preview": retired, "migrated_unchanged": migrated}
 
 
 def main():
@@ -113,7 +140,7 @@ def main():
     parser.add_argument("--root", default=".")
     args = parser.parse_args()
     report = verify_changed(args.root, files_since(args.base),
-                            os.getenv("MORGENZEITUNG_FEEDBACK_TOKEN", ""))
+                            os.getenv("MORGENZEITUNG_FEEDBACK_TOKEN", ""), migration_base=args.base)
     print("V3 private dossier check: " + json.dumps(report, ensure_ascii=False))
 
 

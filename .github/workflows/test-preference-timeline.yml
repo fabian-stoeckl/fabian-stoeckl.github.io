@@ -2,17 +2,17 @@ name: V3 preference timeline tests
 on:
   pull_request:
     paths:
-      - 'Privat/Morgenzeitung-3/preferences.js'
-      - 'Privat/Morgenzeitung-3/preference-timeline.js'
-      - 'Privat/Morgenzeitung-3/praeferenzen.html'
+      - 'Privat/Persoenliche-Zeitung/preferences.js'
+      - 'Privat/Persoenliche-Zeitung/preference-timeline.js'
+      - 'Privat/Persoenliche-Zeitung/praeferenzen.html'
       - 'tests/test_preference_timeline.cjs'
       - '.github/workflows/test-preference-timeline.yml'
   push:
     branches: [main]
     paths:
-      - 'Privat/Morgenzeitung-3/preferences.js'
-      - 'Privat/Morgenzeitung-3/preference-timeline.js'
-      - 'Privat/Morgenzeitung-3/praeferenzen.html'
+      - 'Privat/Persoenliche-Zeitung/preferences.js'
+      - 'Privat/Persoenliche-Zeitung/preference-timeline.js'
+      - 'Privat/Persoenliche-Zeitung/praeferenzen.html'
       - 'tests/test_preference_timeline.cjs'
       - '.github/workflows/test-preference-timeline.yml'
   workflow_dispatch:
