@@ -6,7 +6,10 @@ from collections import Counter
 from datetime import datetime, timedelta
 from pathlib import Path
 from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
-from scripts.morgenzeitung_v3_editorial import reason_labels, style_signals, editorial_feedback_metrics, editorial_mix_report
+from scripts.morgenzeitung_v3_editorial import (
+    reason_labels, style_signals, editorial_feedback_metrics, editorial_mix_report,
+    calibration_review, edition_feedback_review, edition_series_review
+)
 
 PREFIX="[Morgenzeitung 3] Feedback "
 MARKER="MORGENZEITUNG_V3_FEEDBACK_V1\n"
@@ -275,6 +278,40 @@ def select(candidates, profile, limit=None, discovery_slots=2,
         chosen.sort(key=lambda x:-x[0])
     return [x for _,x in chosen]
 
+def missed_candidate_review(pool, selected, profile, section="Vertiefungen",
+                            previous_editions=(), edition_date=None, max_suggestions=5):
+    """Point to plausible editorial misses; NEVER infer a negative/positive rating.
+
+    Compare the same candidate pool and consistent, preselection metadata.
+    No URL checking, no automatic re-ranking, no saving as learning signals.
+    """
+    if not selected:
+        return {"review_candidates":[],"reason":"no_selected_articles",
+                "feedback_inferred":False}
+    threshold=min(score(x,profile,section=section) for x in selected)
+    selected_ids={x["id"] for x in selected}
+    considered=[]
+    for row in mark_recent_stories(pool,previous_editions,edition_date):
+        if not isinstance(row,dict) or row.get("id") in selected_ids:continue
+        required=("id","title","source","url") if section=="Heute wichtig" else (
+            "id","title","source","url","topic")
+        if not all(row.get(k) for k in required):continue
+        if not ID.fullmatch(str(row["id"])) or not valid_url(row["url"]):continue
+        value=score(row,profile,section=section)
+        if value < threshold-6:continue
+        same_story=duplicate_story(row,[(0,item) for item in selected])
+        considered.append({"id":row["id"],"source":row["source"],
+                           "topic":row.get("topic"),"score":round(value,2),
+                           "compared_to_lowest_selected":round(value-threshold,2),
+                           "review_reason":"alternate_story_coverage" if same_story
+                               else "comparable_relevance_but_omitted"})
+    considered.sort(key=lambda x:(-x["score"],x["id"]))
+    return {"review_candidates":considered[:max_suggestions],
+            "considered_near_cutoff":len(considered),
+            "review_only":True,"feedback_inferred":False,
+            "note":"An omitted candidate is not a user preference. Editorially inspect fit, novelty and distinct new facts; never auto-promote."}
+
+
 def compare_learning(pool,before,after,new_feedback=False,limit=None,
                      section="Vertiefungen",previous_editions=(),edition_date=None):
     old=[x["id"] for x in select(pool,before,limit,section=section,
@@ -435,10 +472,21 @@ def main():
     elif a.action=="quality":
         if a.history_dir and not a.as_of_date: p.error("--as-of-date required with --history-dir")
         pool=read(a.candidates)
-        selected=select(pool,read(a.profile),limit=a.limit,section=a.section,
-                        previous_editions=load_edition_history(a.history_dir) if a.history_dir else (),
-                        edition_date=a.as_of_date)
+        profile=read(a.profile)
+        history=load_edition_history(a.history_dir) if a.history_dir else []
+        selected=select(pool,profile,limit=a.limit,section=a.section,
+                        previous_editions=history,edition_date=a.as_of_date)
         out=editorial_mix_report(pool,selected,section=a.section)
+        out["calibration"]=calibration_review(pool,section=a.section)
+        out["omitted_candidate_review"]=missed_candidate_review(
+            pool,selected,profile,section=a.section,
+            previous_editions=history,edition_date=a.as_of_date)
+        if a.edition:
+            out["whole_edition_feedback"]=edition_feedback_review(read(a.edition),profile)
+        if history:
+            out["past_edition_feedback"]=edition_series_review(history,profile)
+        out["private_only"]=True
+        out["feedback_inferred_from_omissions"]=False
     elif a.action=="facts":out=evidence_guard(read(a.edition),read(a.dossier))
     elif a.action=="compare":
         if a.history_dir and not a.as_of_date: p.error("--as-of-date required with --history-dir")
