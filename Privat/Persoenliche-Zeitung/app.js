@@ -10,7 +10,7 @@ const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefine
 function fmt(v){
   // Many publishers provide a date only. Never invent a precise time by
   // formatting midnight UTC as 01:00/02:00 in Vienna.
-  if(typeof v==='string'&&/^\\d{4}-\\d{2}-\\d{2}$/.test(v))
+  if(typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v))
     return new Intl.DateTimeFormat('de-AT',{dateStyle:'medium',timeZone:'UTC'})
       .format(new Date(v+'T12:00:00Z'));
   return new Intl.DateTimeFormat('de-AT',
