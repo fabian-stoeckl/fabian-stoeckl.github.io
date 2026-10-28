@@ -19,6 +19,10 @@ for(const src of ['./preferences.js','./preference-timeline.js'])assert.ok(pref.
 for(const path of ['app.js','github.js','style.css','preferences.js','preference-timeline.js'])assert.ok(fs.existsSync(base+path));
 assert.ok(!html.includes('Pressespiegel/')&&!pref.includes('Pressespiegel/'));
 assert.ok(js.includes('MORGENZEITUNG_V3_FEEDBACK_V1'));
+for(const name of ['app.js','preferences.js','rating-reasons.js','editorial-extras.js']) {
+ assert.doesNotMatch(fs.readFileSync(base+name,'utf8'),/resetOldTokenOnce\s*\(|new\s+MutationObserver\s*\(/,
+   'No stale token reset or permanent DOM observers: '+name);
+}
 assert.ok(!js.includes('MORGENZEITUNG_NEU_FEEDBACK_V1'));
 const index=JSON.parse(fs.readFileSync(base+'data/index.json','utf8'));
 for(const date of index.dates){
@@ -34,9 +38,12 @@ for(const date of index.dates){
   else assert.ok(['Österreich','International'].includes(x.region));
  }
 }
-for(const path of ['app.js','github.js','direct-feedback.js','preferences.js','preference-timeline.js'])
+for(const path of ['app.js','github.js','direct-feedback.js','editorial-extras.js','rating-reasons.js','preferences.js','preference-timeline.js'])
  execFileSync(process.execPath,['--check',base+path]);
-console.log('PASS: only V3 dashboard, independent local reader and feedback, valid editions');
+assert.match(html,/Content-Security-Policy/);
+assert.match(pref,/Content-Security-Policy/);
+assert.ok(!html.includes('id="login-form"')&&!html.includes('id="logout"'));
+console.log('PASS: single reader, metadata, explicit enhancements and strict script policy');
 
 // All user entry points use only the actual single newspaper folder.
 assert.equal(fs.existsSync('Privat/Morgenzeitung-3'),false,'Legacy folder must not exist');

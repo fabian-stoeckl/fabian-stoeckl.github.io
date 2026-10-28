@@ -2,7 +2,7 @@
  * No changes to V1/V2. Nothing is transmitted until the normal save action.
  */
 'use strict';
-(function(){
+const RatingReasons=(()=>{
   const CHOICES=[
     ['Thema unpassend','Thema interessiert mich nicht'],
     ['Zu oberflächlich','Zu oberflächlich'],
@@ -42,10 +42,5 @@
       input.parentNode.insertBefore(toolbar,input);
     }
   }
-  document.addEventListener('DOMContentLoaded',()=>{
-    enhance();
-    const observer=new MutationObserver(enhance);
-    observer.observe(document.getElementById('newspaper-view')||document.body,
-      {childList:true,subtree:true});
-  });
+  return {enhance};
 })();

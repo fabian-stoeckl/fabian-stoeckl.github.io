@@ -85,6 +85,21 @@ const {chromium}=require('playwright');
  assert.match(await page.locator('#articles article .v3-extra-context').first().innerText(),
               /analysis.*Vorspann/);
  assert.equal(await page.locator('#v3-comparisons fieldset').count(),1);
+ // Lead/rest ordering can differ from edition order when a story is a treat.
+ // Every context note must follow its immutable article ID, not DOM index.
+ await page.evaluate(()=>{
+   edition.articles[1].treat=true;
+   edition.articles[1].article_type='interview';
+   edition.articles[1].why_selected='Gesondert belegte Perspektive aus einem Interview.';
+   render();
+ });
+ const secondId=edition.articles[1].id;
+ const second=page.locator('#articles article[data-article-id="'+secondId+'"]');
+ assert.equal(await second.count(),1);
+ assert.match(await second.locator('.v3-extra-context').first().innerText(),/interview/);
+ assert.match(await second.locator('.v3-why').first().innerText(),/Gesondert belegte Perspektive/);
+ assert.ok(await second.evaluate(node=>node.parentElement.classList.contains('article-list')));
+
  await page.locator('#v3-comparisons input[value=alternative]').check();
  await page.locator('#feedback-form button[type=submit]').click();
  await page.waitForFunction(()=>document.querySelector('#feedback-status')?.textContent.includes('aktualisiert'));
@@ -98,4 +113,4 @@ const {chromium}=require('playwright');
  assert.equal(errors.length,0,errors.join('\n'));
  await context.close();await browser.close();
  console.log('PASS V3 browser: mobile reader, both ratings, private API mock, preference history');
-})().catch(e=>{console.error(e);process.exitCode=1;});
+})().catch(e=>{console.error(e);process.exit(1);});

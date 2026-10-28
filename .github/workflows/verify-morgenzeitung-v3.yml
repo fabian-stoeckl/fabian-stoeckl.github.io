@@ -1,7 +1,7 @@
 name: Verify Morgenzeitung 3
 on:
   pull_request:
-    paths: ['Privat/Persoenliche-Zeitung/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_editorial.py','scripts/morgenzeitung_v3_release.py','scripts/morgenzeitung_v3_private_ci.py','scripts/morgenzeitung_v3_quality.py','tests/test_preference_timeline.cjs','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','tests/morgenzeitung-v3-browser.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
+    paths: ['Privat/Persoenliche-Zeitung/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_editorial.py','scripts/morgenzeitung_v3_release.py','scripts/morgenzeitung_v3_private_ci.py','scripts/morgenzeitung_v3_quality.py','scripts/morgenzeitung_v3_schema.py','scripts/morgenzeitung_v3_audit.py','tests/test_preference_timeline.cjs','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','tests/morgenzeitung-v3-browser.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
   push:
     paths: ['Privat/Persoenliche-Zeitung/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_editorial.py','scripts/morgenzeitung_v3_release.py','scripts/morgenzeitung_v3_private_ci.py','scripts/morgenzeitung_v3_quality.py','tests/test_preference_timeline.cjs','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
 permissions: {contents: read}

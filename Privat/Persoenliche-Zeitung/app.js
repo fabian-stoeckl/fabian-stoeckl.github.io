@@ -1,6 +1,7 @@
 'use strict';
-let config, edition, latestDate, visibleArticles=[], visibleHeadlines=[];
-const ratingDrafts={};
+// One explicit browser-owned state object; edition/config remain stable V3 hooks.
+let config, edition, latestDate;
+const readerState={visibleArticles:[],visibleHeadlines:[],ratingDrafts:{},loadSequence:0};
 const draftKey=a=>edition.date+':'+(a.id||a.url);
 function feedbackStatus(msg){$('feedback-status').textContent=msg;for(const id of ['news-feedback-status','features-feedback-status'])if($(id))$(id).textContent=msg;}
 const $=id=>document.getElementById(id);
@@ -20,22 +21,25 @@ function githubRating(a,section='Vertiefungen') {
   box.dataset.ratingKey=key;
   for(const value of ['Sehr relevant','Teilweise relevant','Nicht relevant']) {
     const label=el('label');const input=el('input');input.type='radio';input.name='rating-'+key;
-    input.value=value;input.checked=ratingDrafts[key]?.value===value;
-    input.onchange=()=>{ratingDrafts[key]={value,reason:ratingDrafts[key]?.reason||'',section};feedbackStatus('Auswahl vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};
+    input.value=value;input.checked=readerState.ratingDrafts[key]?.value===value;
+    input.onchange=()=>{readerState.ratingDrafts[key]={value,reason:readerState.ratingDrafts[key]?.reason||'',section};feedbackStatus('Auswahl vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};
     label.append(input,el('span',value));box.append(label);
   }
   const details=el('details',undefined,'rating-reason');
   details.append(el('summary','Optional begründen'));
   const label=el('label','Deine Begründung','reason');const reason=el('textarea');
   reason.rows=2;reason.maxLength=600;reason.placeholder='Was war hilfreich oder hat dir gefehlt?';
-  reason.value=ratingDrafts[key]?.reason||'';details.open=!!reason.value;
-  reason.oninput=()=>{ratingDrafts[key]={value:ratingDrafts[key]?.value||'',reason:reason.value,section};feedbackStatus('Änderung vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};
+  reason.value=readerState.ratingDrafts[key]?.reason||'';details.open=!!reason.value;
+  reason.oninput=()=>{readerState.ratingDrafts[key]={value:readerState.ratingDrafts[key]?.value||'',reason:reason.value,section};feedbackStatus('Änderung vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};
   label.append(reason);details.append(label);box.append(details);
   return box;
 }
 function article(a,index,section='Vertiefungen'){
   const isHeadline=section==='Heute wichtig';
   const node=el('article',undefined,isHeadline?'news-item':(a.treat?'treat':''));
+  // Stable identity for editorial enrichment, regardless of lead/rest ordering.
+  node.dataset.articleId=String(a.id||'');
+  node.dataset.section=section;
   const intro=el('div');
   intro.append(el('span',isHeadline?'NACHRICHT':(a.treat?'DAS ZUCKERL':a.topic),'eyebrow'));
   const details=[a.source];
@@ -47,7 +51,8 @@ function article(a,index,section='Vertiefungen'){
   const title=el('h2');title.append(link(a.title,a.url));
   body.append(title,el('p',a.summary,isHeadline?'news-summary':undefined));
   if(a.access==='teaser')body.append(el('p','Zusammenfassung beruht ausschließlich auf dem zugänglichen Vorspann.','small'));
-  if(!isHeadline&&a.novelty)body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty,'novelty'));
+  if(!isHeadline&&typeof a.novelty_explanation==='string'&&a.novelty_explanation.trim())
+    body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty_explanation,'novelty'));
   body.append(githubRating(a,section));node.append(intro,body);return node;
 }
 function addSaveAction(section,statusId){
@@ -60,21 +65,21 @@ function addSaveAction(section,statusId){
 }
 function render(){
   const e=edition,selection=GitHubPaper.partition(e);
-  visibleArticles=selection.articles;
-  visibleHeadlines=selection.headlines;
+  readerState.visibleArticles=selection.articles;
+  readerState.visibleHeadlines=selection.headlines;
   $('articles').replaceChildren();
   const lead=el('div',undefined,'lead-grid'),rest=el('div',undefined,'article-list');
-  visibleArticles.forEach((a,i)=>(i<3&&!a.treat?lead:rest).append(article(a,i)));
+  readerState.visibleArticles.forEach((a,i)=>(i<3&&!a.treat?lead:rest).append(article(a,i)));
   $('articles').append(lead,rest);
-  $('article-count').textContent=visibleArticles.length;
-  $('headline-count').textContent=visibleHeadlines.length;
+  $('article-count').textContent=readerState.visibleArticles.length;
+  $('headline-count').textContent=readerState.visibleHeadlines.length;
   $('headlines').replaceChildren();
   const cols=el('div',undefined,'headline-columns');
   for(const region of ['Österreich','International']){
     const sec=el('section',undefined,'headline-region');
     sec.append(el('h2',region,'region-title'));
     const list=el('div',undefined,'article-list');
-    const regional=visibleHeadlines.filter(a=>a.region===region);
+    const regional=readerState.visibleHeadlines.filter(a=>a.region===region);
     if(!regional.length){
       list.append(el('p',e.preview?'Keine zusätzlichen eigenständigen Nachrichten in dieser reduzierten Vorschau.':'Keine weiteren aktuellen Meldungen in dieser Ausgabe.','small empty-region'));
     }
@@ -114,6 +119,9 @@ function render(){
   const errors=[...(Array.isArray(e.errors)?e.errors:[]),...(Array.isArray(e.warnings)?e.warnings:[])];
   if(selection.duplicatesRemoved)errors.unshift('Doppelte Nachrichtenmeldungen ausgeblendet: '+selection.duplicatesRemoved+'.');
   status(errors.filter(x=>typeof x==='string'&&x.trim()).join(' '));
+  // Deterministic one-shot enhancement after each render, no MutationObservers.
+  RatingReasons.enhance();
+  EditorialExtras.render(e);
 }
 async function restoreSavedRatings(){
   if(config?.mode!=='github'||!edition)return;
@@ -123,12 +131,12 @@ async function restoreSavedRatings(){
     const saved=await DirectFeedback.savedFeedback(date,token);
     if(!saved||edition.date!==date)return;
     const byId=new Map(saved.ratings.map(r=>[r.id,r]));
-    for(const item of [...visibleHeadlines,...visibleArticles]){
+    for(const item of [...readerState.visibleHeadlines,...readerState.visibleArticles]){
       const id=await GitHubPaper.ratingId(item);
       if(edition.date!==date)return;
       const savedRow=byId.get(id),key=draftKey(item);
-      if(!savedRow||ratingDrafts[key])continue;
-      ratingDrafts[key]={value:savedRow.value,reason:savedRow.reason,section:savedRow.section};
+      if(!savedRow||readerState.ratingDrafts[key])continue;
+      readerState.ratingDrafts[key]={value:savedRow.value,reason:savedRow.reason,section:savedRow.section};
       const field=[...document.querySelectorAll('.rating-dots')].find(x=>x.dataset.ratingKey===key);
       if(!field)continue;
       for(const input of field.querySelectorAll('input[type=radio]'))input.checked=input.value===savedRow.value;
@@ -140,7 +148,17 @@ async function restoreSavedRatings(){
   }catch(err){feedbackStatus('Gespeicherte Bewertungen konnten nicht geladen werden: '+err.message);}
 }
 
-$('date').onchange=async()=>{try{edition=await GitHubPaper.edition($('date').value);render();await restoreSavedRatings();}catch(e){status(e.message);}};
+$('date').onchange=async()=>{
+  const sequence=++readerState.loadSequence;
+  const requested=$('date').value;
+  try{
+    const next=await GitHubPaper.edition(requested);
+    if(sequence!==readerState.loadSequence)return;
+    edition=next;
+    render();
+    await restoreSavedRatings();
+  }catch(e){if(sequence===readerState.loadSequence)status(e.message);}
+};
 for(const tab of ['headlines','articles'])$('tab-'+tab).onclick=()=>{
   // Preserve unsent feedback; switching only changes visibility.
   if($('tab-'+tab).getAttribute('aria-pressed')==='true')return;
@@ -169,9 +187,9 @@ function updatePublicationStatus(e) {
 }
 async function collectDraftRatings(){
   const selected=[];
-  for(const [items,section] of [[visibleHeadlines,'Heute wichtig'],[visibleArticles,'Vertiefungen']]){
+  for(const [items,section] of [[readerState.visibleHeadlines,'Heute wichtig'],[readerState.visibleArticles,'Vertiefungen']]){
     for(const item of items){
-      const draft=ratingDrafts[draftKey(item)];
+      const draft=readerState.ratingDrafts[draftKey(item)];
       if(draft&&(draft.value||draft.reason.trim()))
         selected.push({id:await GitHubPaper.ratingId(item),value:draft.value||'',reason:draft.reason||'',section});
     }
@@ -183,7 +201,7 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
   const b=e.submitter||$('feedback-form').querySelector('button[type=submit]');
   try{
     const selected=await collectDraftRatings();
-    const comment=$('feedback').value.trim();
+    const comment=EditorialExtras.enrichFeedback(edition,$('feedback').value).trim();
     if(!selected.length&&!comment)throw Error('Bitte mindestens einen Artikel bewerten oder Feedback eingeben.');
     const token=DirectFeedback.readToken();
     if(!token){
@@ -208,10 +226,10 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
     }
   }finally{b.disabled=false;}
 };
-(async()=>{try{const oldTokenCleared=DirectFeedback.resetOldTokenOnce();config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode!=='github')throw Error('Ungültiger V3-Modus');
-$('login').hidden=true;$('logout').hidden=true;$('feedback').maxLength=4000;
+(async()=>{try{config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode!=='github')throw Error('Ungültiger V3-Modus');
+$('feedback').maxLength=4000;
 $('feedback-form').querySelector('button').textContent='Feedback speichern';
-refreshGitHubConnection();if(oldTokenCleared)$('github-setup-status').textContent='Alter lokal gespeicherter Token gelöscht. Bitte neuen Token verbinden und den alten auf GitHub widerrufen.';$('feedback').required=false;
+refreshGitHubConnection();$('feedback').required=false;
 const index=await GitHubPaper.json('./data/index.json');latestDate=index.dates[0];$('date').replaceChildren();
 for(const d of index.dates){const o=el('option',d);o.value=d;$('date').append(o);}
 $('operating-state').textContent='Ausgaben aus GitHub · Feedback wird nach einmaliger Verbindung direkt auf GitHub gespeichert.';
@@ -250,7 +268,8 @@ $('github-setup-form').onsubmit=async e=>{
     $('github-setup-status').textContent=err.message+' Kein Token gespeichert.';
   }finally{button.disabled=false;}
 };
-if($('github-disconnect')) $('github-disconnect').onclick=()=>{
+const disconnect=$('github-disconnect');
+if(disconnect)disconnect.onclick=()=>{
   DirectFeedback.clearToken();
   refreshGitHubConnection();
   feedbackStatus('GitHub-Verbindung auf diesem Gerät entfernt. Bereits gespeicherte GitHub-Rückmeldungen bleiben erhalten.');

@@ -153,7 +153,6 @@ $('preference-comment-form').onsubmit=async event=>{
 };
 (async()=>{
   try{
-    DirectFeedback.resetOldTokenOnce();
     const index=await GitHubPaper.json('./data/index.json');
     currentDate=index.dates?.[0]||'';
     await showPreferenceSummary();

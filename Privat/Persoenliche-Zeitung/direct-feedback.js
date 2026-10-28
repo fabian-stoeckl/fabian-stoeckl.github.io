@@ -1,10 +1,9 @@
-/* Browser interface for Morgenzeitung 3. Identical reader UI; isolated JSON feedback backend.
-   The old Morgenzeitung uses distinct issue titles and stays untouched. */
+/* Private, explicit GitHub feedback backend for the Persönliche Zeitung.
+   Historical issue prefix and localStorage key remain stable for continuity. */
 'use strict';
 const DirectFeedback=(()=>{
   const REPO='fabian-stoeckl/morgenzeitung-feedback';
   const TOKEN_KEY='morgenzeitung:github-token:v1';
-  const RESET_KEY='morgenzeitung:github-token-reset:2026-10-20';
   const RECEIPTS_KEY='morgenzeitung-v3:github-receipts:v1';
   const API='https://api.github.com/repos/'+REPO;
   const PREFIX='[Morgenzeitung 3] Feedback ';
@@ -12,9 +11,6 @@ const DirectFeedback=(()=>{
   const VALID=['','Sehr relevant','Teilweise relevant','Nicht relevant'];
   function readToken(store=localStorage){try{return store.getItem(TOKEN_KEY)||'';}catch(_){return '';}}
   function clearToken(store=localStorage){store.removeItem(TOKEN_KEY);}
-  // The new V3 tile must NEVER delete a previously connected reader token.
-  // Only the legacy application owns any one-time token migration.
-  function resetOldTokenOnce(){return false;}
   function saveToken(token,store=localStorage){
     const value=String(token||'').trim();
     if(!/^github_pat_[A-Za-z0-9_]{20,500}$/.test(value))throw Error('Bitte ausschließlich einen eingeschränkten Fine-grained GitHub-Token verwenden.');
@@ -64,38 +60,80 @@ const DirectFeedback=(()=>{
     catch(_){return {};}
   }
   async function savedFeedback(date,token,store=localStorage,transport=fetch){
+    // Fast path: use the recorded private issue number. Still GET the canonical
+    // issue from GitHub, not a potentially stale browser cache.
+    const receipt=readReceipts(store)[date];
+    if(receipt && Number.isSafeInteger(receipt.number) && receipt.number>0){
+      try{
+        const current=parse(await request(token,'/issues/'+receipt.number,'GET',undefined,transport));
+        if(current?.date===date)return current;
+      }catch(err){
+        // Authorization failures must not be silently swallowed.
+        if(/ungültig oder abgelaufen|verweigert Zugriff/.test(err.message))throw err;
+      }
+    }
     const items=await feedbackHistory(token,transport);
     return items.find(x=>x.date===date)||null;
   }
   async function submit(date,ratings,feedback,token,store=localStorage,transport=fetch){
-    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Array.isArray(ratings)||ratings.length>100||typeof feedback!=='string'||feedback.length>4000)throw Error('Ungültige Feedbackdaten');
-    const latest=await savedFeedback(date,token,store,transport);
-    const existing=latest?.number;
-    // Cross-device safety: the listing may lag behind a newer edit. Always use
-    // the canonical issue's current body as the merge base, not a stale list.
-    const record=existing?await request(token,'/issues/'+existing,'GET',undefined,transport):null;
-    const fresh=record?parse(record):null;
-    if(existing&&!fresh)throw Error('Aktuelle GitHub-Bewertungen konnten nicht sicher gelesen werden. Bitte erneut versuchen.');
-    const current=fresh||latest;
-    const byId=new Map((current?.ratings||[]).map(r=>[r.id,r]));
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Array.isArray(ratings)||
+       ratings.length>100||typeof feedback!=='string'||feedback.length>4000)
+      throw Error('Ungültige Feedbackdaten');
+    const intended=new Map();
     for(const r of ratings){
-      if(!r||!((typeof r.id==='string')&&/^[a-f0-9]{16}$/.test(r.id))||!VALID.includes(r.value||'')||typeof r.reason!=='string'||r.reason.length>600)throw Error('Ungültige Artikelbewertung');
-      byId.set(r.id,{id:r.id,value:r.value||'',reason:r.reason,section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen'});
+      if(!r||typeof r.id!=='string'||!/^[a-f0-9]{16}$/.test(r.id)||
+         !VALID.includes(r.value||'')||typeof r.reason!=='string'||r.reason.length>600)
+        throw Error('Ungültige Artikelbewertung');
+      intended.set(r.id,{id:r.id,value:r.value||'',reason:r.reason,
+                         section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen'});
     }
-    const combined=[...byId.values()];
-    const comment=feedback.trim()||current?.feedback||'';
-    if(!combined.length&&!comment)throw Error('Bitte mindestens eine Bewertung oder Feedback eingeben.');
-    const title=PREFIX+date;
-    const payload={version:1,date,ratings:combined.map(r=>({id:r.id,section:r.section,rating:r.value,reason:r.reason})),
-      comment,origin:'website-explicit'};
-    const body=MARKER+JSON.stringify(payload,null,2);
-    // Avoid a useless PATCH on repeated clicks; the canonical record was read above.
-    if(record?.body===body)return {ok:true,existing:true,html_url:record.html_url};
-    const result=await request(token,existing?'/issues/'+existing:'/issues',existing?'PATCH':'POST',{title,body},transport);
-    if(!Number.isSafeInteger(result.number)||!result.html_url?.startsWith('https://github.com/'+REPO+'/issues/'))throw Error('GitHub hat das Speichern nicht bestätigt.');
-    try{const receipts=readReceipts(store);receipts[date]={number:result.number,url:result.html_url};store.setItem(RECEIPTS_KEY,JSON.stringify(receipts));}catch(_){}
-    return {ok:true,updated:!!existing,html_url:result.html_url};
+    const comment=feedback.trim();
+    let previousIssue=null;
+    // Optimistic retries: read the canonical issue, merge intended changes,
+    // write, then verify that the submitted ratings survived. GitHub Issues
+    // PATCH has no atomic compare-and-swap; this is best effort, not a lock.
+    for(let attempt=0;attempt<3;attempt++){
+      const latest=attempt&&previousIssue?previousIssue:
+        await savedFeedback(date,token,store,transport);
+      const existing=latest?.number;
+      const record=existing?await request(token,'/issues/'+existing,'GET',undefined,transport):null;
+      const fresh=record?parse(record):null;
+      if(existing&&!fresh)throw Error('Aktuelle GitHub-Bewertungen konnten nicht sicher gelesen werden.');
+      const base=fresh||latest;
+      const byId=new Map((base?.ratings||[]).map(r=>[r.id,r]));
+      for(const [id,row] of intended)byId.set(id,row);
+      const mergedComment=comment||base?.feedback||'';
+      if(!byId.size&&!mergedComment)throw Error('Bitte mindestens eine Bewertung oder Feedback eingeben.');
+      const title=PREFIX+date;
+      const payload={version:1,date,
+        ratings:[...byId.values()].map(r=>({id:r.id,section:r.section,rating:r.value,reason:r.reason})),
+        comment:mergedComment,origin:'website-explicit'};
+      const body=MARKER+JSON.stringify(payload,null,2);
+      if(record?.body===body)return {ok:true,existing:true,html_url:record.html_url};
+      const result=await request(token,existing?'/issues/'+existing:'/issues',
+                                 existing?'PATCH':'POST',{title,body},transport);
+      if(!Number.isSafeInteger(result.number)||
+         !result.html_url?.startsWith('https://github.com/'+REPO+'/issues/'))
+        throw Error('GitHub hat das Speichern nicht bestätigt.');
+      const receipt={number:result.number,url:result.html_url};
+      try{
+        const receipts=readReceipts(store);
+        receipts[date]=receipt;store.setItem(RECEIPTS_KEY,JSON.stringify(receipts));
+      }catch(_){}
+      const confirmed=await request(token,'/issues/'+result.number,'GET',undefined,transport);
+      const verified=parse(confirmed);
+      if(!verified)throw Error('Gespeichertes GitHub-Feedback konnte nicht nachgelesen werden.');
+      const found=new Map(verified.ratings.map(row=>[row.id,row]));
+      const preserved=[...intended].every(([id,row])=>
+        found.has(id)&&found.get(id).value===row.value&&
+        found.get(id).reason===row.reason&&found.get(id).section===row.section);
+      if(preserved&&(!comment||verified.feedback===comment))
+        return {ok:true,updated:!!existing,html_url:result.html_url};
+      // A competing edit has won at least one write; merge it on the next read.
+      previousIssue=verified;
+    }
+    throw Error('Gleichzeitige Änderungen konnten nicht sicher zusammengeführt werden. Bitte erneut speichern.');
   }
-  return {REPO,TOKEN_KEY,RESET_KEY,RECEIPTS_KEY,readToken,clearToken,saveToken,resetOldTokenOnce,verify,feedbackHistory,readReceipts,savedFeedback,submit};
+  return {REPO,TOKEN_KEY,RECEIPTS_KEY,readToken,clearToken,saveToken,verify,feedbackHistory,readReceipts,savedFeedback,submit};
 })();
 if(typeof module!=='undefined')module.exports=DirectFeedback;

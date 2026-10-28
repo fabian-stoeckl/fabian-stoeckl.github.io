@@ -28,8 +28,8 @@ async function transport(url,options){
  assert.equal(history.length,1);assert.equal(history[0].ratings.length,2);
  assert.equal(history[0].feedback,'Mehr Vielfalt');assert.equal(issues.length,2);
  store.setItem(D.TOKEN_KEY,'existing-restricted-token');
- assert.equal(D.resetOldTokenOnce(store),false);
- assert.equal(store.getItem(D.TOKEN_KEY),'existing-restricted-token','V3 must not wipe an existing private reader token');
+ assert.equal(store.getItem(D.TOKEN_KEY),'existing-restricted-token',
+   'Refactor must preserve the existing restricted private reader token');
  // A stale issues-list response must never erase a newer rating saved elsewhere.
  const stale=JSON.parse(JSON.stringify(issues[0]));
  const data=JSON.parse(stale.body.slice('MORGENZEITUNG_V3_FEEDBACK_V1\n'.length));
@@ -46,6 +46,7 @@ async function transport(url,options){
  assert.equal(consolidated[0].ratings.find(x=>x.id===b).value,'Nicht relevant');
  assert.equal(D.TOKEN_KEY,'morgenzeitung:github-token:v1');
  assert.equal(D.RECEIPTS_KEY,'morgenzeitung-v3:github-receipts:v1');
+ assert.equal(Object.hasOwn(D,'RESET_KEY'),false);
  // Additional same-day V3 learning edition must not replace prior feedback.
  const fs=require('node:fs');
  const regular=JSON.parse(fs.readFileSync('Privat/Persoenliche-Zeitung/data/2026-10-28.json','utf8'));
@@ -64,5 +65,29 @@ async function transport(url,options){
  assert.equal(sameDay[0].ratings.length,4);
  assert.equal(sameDay[0].ratings.find(r=>r.id===b).value,'Nicht relevant');
  assert.equal(sameDay[0].ratings.find(r=>r.id===extra.articles[0].id).value,'Sehr relevant');
+ // An intervening device may overwrite the payload right after PATCH. The
+ // writer must read back, discover the conflict and restore BOTH changes.
+ let injected=false,patches=0;
+ const raced=async(url,opts)=>{
+   const path=new URL(url).pathname, method=opts.method||'GET';
+   const reply=await transport(url,opts);
+   if(method==='PATCH'&&path.endsWith('/issues/2')){
+     patches++;
+     if(!injected){
+       injected=true;
+       const current=issues[0],remote=JSON.parse(current.body.slice('MORGENZEITUNG_V3_FEEDBACK_V1\n'.length));
+       remote.ratings=remote.ratings.filter(r=>r.id!=='d'.repeat(16));
+       remote.ratings.push({id:'e'.repeat(16),section:'Vertiefungen',rating:'Sehr relevant',reason:'Von anderem Gerät'});
+       current.body='MORGENZEITUNG_V3_FEEDBACK_V1\n'+JSON.stringify(remote);
+     }
+   }
+   return reply;
+ };
+ await D.submit(date,[{id:'d'.repeat(16),value:'Teilweise relevant',reason:'Mehr Tiefe',section:'Vertiefungen'}],
+                '', 'token',store,raced);
+ const afterRace=(await D.feedbackHistory('token',transport))[0];
+ assert.equal(afterRace.ratings.find(r=>r.id==='d'.repeat(16)).value,'Teilweise relevant');
+ assert.equal(afterRace.ratings.find(r=>r.id==='e'.repeat(16)).value,'Sehr relevant');
+ assert.equal(patches,2,'Lost user update must trigger bounded optimistic retry');
  console.log('PASS: V3 feedback isolated, issue updated, old/v2 filtered');
 })().catch(e=>{console.error(e);process.exitCode=1});
