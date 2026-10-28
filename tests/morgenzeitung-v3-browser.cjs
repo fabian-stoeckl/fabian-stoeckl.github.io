@@ -38,7 +38,7 @@ const {chromium}=require('playwright');
  });
  await page.goto('http://127.0.0.1:8766/Privat/Morgenzeitung-3/');
  await page.waitForSelector('#headlines .news-item .rating-dots input');
- assert.match(await page.locator('h1').first().innerText(),/Morgenzeitung/);
+ assert.match(await page.locator('h1').first().innerText(),/Persönliche Zeitung/);
  const publicationStatus=await page.locator('#publication-status').innerText();
  if(edition.preview)assert.match(publicationStatus,/Beispielausgabe/);
  else assert.doesNotMatch(publicationStatus,/Beispielausgabe/);

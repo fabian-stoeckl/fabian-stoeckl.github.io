@@ -37,8 +37,8 @@ const viewports = [
         fullPage: true,
       });
       if (target.name === 'dashboard') {
-        if (await page.getByRole('link', { name: 'Morgenzeitung öffnen' }).count() !== 1) {
-          throw new Error('Morgenzeitung tile missing in private dashboard');
+        if (await page.getByRole('link', { name: 'Persönliche Zeitung öffnen' }).count() !== 1) {
+          throw new Error('Persönliche Zeitung tile missing in private dashboard');
         }
         if (await page.getByRole('link', { name: 'Website ändern – ChatGPT-Skill öffnen' }).count() !== 1) {
           throw new Error('Existing Website ändern skill link missing');

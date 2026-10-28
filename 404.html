@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex">
 <script>
 const path = window.location.pathname.toLowerCase().replace(/\/+$/, "");
-const target = {"/privat": "/Privat/", "/privat/etfs": "/Privat/ETFs/"}[path];
+const target = {"/privat": "/Privat/", "/privat/etfs": "/Privat/ETFs/", "/privat/pressespiegel": "/Privat/Morgenzeitung-3/", "/privat/morgenzeitung-neu": "/Privat/Morgenzeitung-3/", "/privat/persoenliche-zeitung": "/Privat/Morgenzeitung-3/"}[path];
 if (target && window.location.pathname !== target) {
   window.location.replace(target + window.location.search + window.location.hash);
 }
