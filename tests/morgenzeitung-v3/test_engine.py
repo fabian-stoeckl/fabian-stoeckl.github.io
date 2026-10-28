@@ -69,7 +69,7 @@ class V3EngineTests(unittest.TestCase):
         payload={"date":"2026-10-28","origin":"website-explicit","ratings":rows}
         issue={"number":109,"updated_at":"2026-10-28T10:00:00Z",
                "title":"[Morgenzeitung 3] Feedback 2026-10-28",
-               "body":"MORGENZEITUNG_V3_FEEDBACK_V1\\n"+json.dumps(payload)}
+               "body":"MORGENZEITUNG_V3_FEEDBACK_V1\n"+json.dumps(payload)}
         topics={r["id"]:"Industrie & Innovation" for r in rows}
         result,changed=ingest_feedback({},[issue],topics)
         self.assertEqual(changed,["109"])
