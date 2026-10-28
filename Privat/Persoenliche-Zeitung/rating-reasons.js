@@ -1,5 +1,5 @@
-/* Morgenzeitung 3 only: quick, OPTIONAL explanations for the shared feedback UI.
- * No changes to V1/V2. Nothing is transmitted until the normal save action.
+/* Optional short rating reasons in the only Persönliche Zeitung reader.
+ * Nothing leaves the browser before the reader explicitly saves feedback.
  */
 'use strict';
 const RatingReasons=(()=>{

@@ -1,7 +1,7 @@
 'use strict';
 // One explicit browser-owned state object; edition/config remain stable V3 hooks.
 let config, edition, latestDate;
-const readerState={visibleArticles:[],visibleHeadlines:[],ratingDrafts:{},loadSequence:0,saving:false};
+const readerState={visibleArticles:[],visibleHeadlines:[],ratingDrafts:{},commentDrafts:{},loadSequence:0,saving:false};
 const draftKey=a=>edition.date+':'+(a.id||a.url);
 function feedbackStatus(msg){$('feedback-status').textContent=msg;for(const id of ['news-feedback-status','features-feedback-status'])if($(id))$(id).textContent=msg;}
 const $=id=>document.getElementById(id);
@@ -151,10 +151,19 @@ async function restoreSavedRatings(){
 $('date').onchange=async()=>{
   const sequence=++readerState.loadSequence;
   const requested=$('date').value;
+  const previous=edition;
+  // A comment draft belongs to one edition, never the date currently selected
+  // in a dropdown while the asynchronous edition fetch is running.
+  if(previous)readerState.commentDrafts[previous.date]=$('feedback').value;
   try{
     const next=await GitHubPaper.edition(requested);
     if(sequence!==readerState.loadSequence)return;
+    if(previous&&edition===previous)
+      readerState.commentDrafts[previous.date]=$('feedback').value;
     edition=next;
+    $('feedback').value=Object.hasOwn(readerState.commentDrafts,next.date)
+      ?readerState.commentDrafts[next.date]:'';
+    $('feedback-confirmation').hidden=true;
     render();
     await restoreSavedRatings();
   }catch(e){if(sequence===readerState.loadSequence)status(e.message);}
@@ -221,6 +230,8 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
     feedbackStatus('Wird gemeinsam auf GitHub gespeichert …');
     $('feedback-confirmation').hidden=true;
     const result=await DirectFeedback.submit(submittedEdition.date,selected,comment,token);
+    // The previous issue may finish writing after the reader changed dates.
+    if(edition!==submittedEdition)return;
     feedbackStatus(result.existing
       ? 'Beide Rubriken sind bereits auf GitHub gespeichert.'
       : (result.updated?'Bewertungen beider Rubriken auf GitHub aktualisiert.':'Bewertungen beider Rubriken erfolgreich auf GitHub gespeichert.'));
@@ -245,7 +256,7 @@ if(!latestDate){status('Noch keine veröffentlichte Ausgabe verfügbar.');return
 edition=await GitHubPaper.edition(latestDate);render();await restoreSavedRatings();return;
 }catch(e){status('Persönliche Zeitung nicht erreichbar. '+e.message);}})();
 
-$('feedback').addEventListener('input',()=>{feedbackStatus('Änderung noch nicht gesendet.');});
+$('feedback').addEventListener('input',()=>{if(edition)readerState.commentDrafts[edition.date]=$('feedback').value;feedbackStatus('Änderung noch nicht gesendet.');});
 
 
 function refreshGitHubConnection(){
