@@ -17,13 +17,16 @@ def candidate(n, topic):
             "fit":4,"novelty":3,"impact":4,"perspective":3}
 
 
+SETTINGS={"articles":{"limit":12,"discovery_slots":2,"min_score":15},
+          "headlines":{"limit":15,"discovery_slots":0,"min_score":15}}
+
 class LearningSnapshotTests(unittest.TestCase):
     def test_frozen_pool_is_replayed_without_inference(self):
         rows={"articles":[candidate(1,"Industrie"),candidate(2,"Klima")],"headlines":[]}
         before={"topic_priorities":{"Industrie":4,"Klima":4}}
         after={"topic_priorities":{"Industrie":4,"Klima":4},
                "feedback_topic_deltas":{"Industrie":-2,"Klima":2}}
-        frozen=before_snapshot(rows,before,"2026-10-28")
+        frozen=before_snapshot(rows,before,"2026-10-28",selection=SETTINGS)
         after_report=learning_result(frozen,after)
         self.assertTrue(after_report["comparison"]["Vertiefungen"]["selection_changed"])
         self.assertFalse(after_report["feedback_quality_improvement_proven"])
@@ -43,12 +46,14 @@ class LearningSnapshotTests(unittest.TestCase):
                 '[remote "origin"]\n url = https://github.com/fabian-stoeckl/morgenzeitung-feedback.git\n')
             candidates=root/"candidates.json"
             profile=root/"profile.json"
+            settings=root/"selection.json"
+            settings.write_text(json.dumps(SETTINGS))
             candidates.write_text(json.dumps({"articles":[candidate(1,"Industrie")],"headlines":[]}))
             profile.write_text(json.dumps({"topic_priorities":{"Industrie":4}}))
             relative="morgenzeitung-v3/snapshots/2026-10-28-before.json"
             args=["audit","before","--private-root",str(root),
                   "--output",relative,"--profile",str(profile),
-                  "--candidates",str(candidates),"--date","2026-10-28"]
+                  "--candidates",str(candidates),"--date","2026-10-28","--selection",str(settings)]
             with patch.object(sys,"argv",args),redirect_stdout(io.StringIO()):
                 main()
             original=(root/relative).read_bytes()

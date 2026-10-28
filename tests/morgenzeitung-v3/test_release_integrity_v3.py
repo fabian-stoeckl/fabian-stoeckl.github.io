@@ -12,11 +12,11 @@ from scripts.morgenzeitung_v3_schema import validate_article_metadata
 
 
 class PublicReceiptCoverageTests(unittest.TestCase):
-    def test_existing_historical_edition_v2_remains_untouched_and_valid(self):
+    def test_corrected_historical_edition_uses_complete_v3_receipt(self):
         edition=json.loads(Path("Privat/Persoenliche-Zeitung/data/2026-10-28.json").read_text(encoding="utf-8"))
-        self.assertEqual(edition["fact_audit"]["audit_version"],LEGACY_RECEIPT_VERSION)
+        self.assertEqual(edition["fact_audit"]["audit_version"],RECEIPT_VERSION)
         self.assertEqual(check_public_receipt(edition),[])
-        self.assertEqual(edition_hash(edition,LEGACY_RECEIPT_VERSION),edition["fact_audit"]["edition_sha256"])
+        self.assertEqual(edition_hash(edition),edition["fact_audit"]["edition_sha256"])
 
     def test_future_receipt_covers_all_editorial_assertions(self):
         row={"id":"a"*16,"source":"Example","title":"New material evidence",
@@ -30,6 +30,8 @@ class PublicReceiptCoverageTests(unittest.TestCase):
         dossier={"proofs":{row["id"]:{"source_url":row["url"],"level":"teaser",
             "claims":[{"text":row["summary"],"source_excerpt":row["summary"],"supported":True}]}},
             "editorial_review":{"approved":True,"reviewed_at":"2026-10-29T06:05:00Z"}}
+        dossier["proofs"][row["id"]]["fields"]={k:[{"text":row[k],"source_excerpt":"Synthetic fixture metadata: "+row[k],"supported":True}]
+            for k in ("why_selected","novelty_explanation","title","source","published_at","article_type")}
         edition["fact_audit"]=private_review(edition,dossier)
         self.assertEqual(edition["fact_audit"]["audit_version"],RECEIPT_VERSION)
         self.assertEqual(check_public_receipt(edition),[])
@@ -48,6 +50,7 @@ class PublicReceiptCoverageTests(unittest.TestCase):
     def test_legacy_format_cannot_be_used_for_new_issue(self):
         edition=json.loads(Path("Privat/Persoenliche-Zeitung/data/2026-10-28.json").read_text(encoding="utf-8"))
         edition["date"]="2026-10-29"
+        edition["fact_audit"]["audit_version"]=LEGACY_RECEIPT_VERSION
         edition["fact_audit"]["edition_sha256"]=edition_hash(edition,LEGACY_RECEIPT_VERSION)
         self.assertIn("Wrong fact audit version",check_public_receipt(edition))
 

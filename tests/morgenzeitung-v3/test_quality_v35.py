@@ -30,7 +30,7 @@ class EditorialQualityV35Tests(unittest.TestCase):
         report=v1_comparison(v3,v1)
         self.assertEqual(report["v1_reference"]["articles"],15)
         self.assertEqual(report["v3"]["articles"],12)
-        self.assertEqual(report["v3"]["article_genre_identified"],0)
+        self.assertEqual(report["v3"]["article_genre_identified"],12)
         self.assertEqual(report["v3"]["headlines_from_austria"],1)
         self.assertGreater(report["v1_reference"]["articles_with_documented_facts"],0)
         self.assertTrue(report["summary_length_is_not_quality"])

@@ -4,6 +4,7 @@ This module intentionally contains no networking, publisher URL probes or
 publication gates. Reader feedback is data, never an instruction to execute.
 """
 from collections import Counter
+import re
 from datetime import datetime, timedelta, timezone
 
 NEGATIVE = "Nicht relevant"
@@ -24,15 +25,21 @@ REASON_PATTERNS = {
 }
 
 
-def reason_labels(reason, rating):
-    """Label explicit criticism, never guess a topic from free text alone."""
-    # Reasons are meaningful at ALL rating levels: a partly relevant article
-    # may fit the topic perfectly while lacking depth or new information.
-    if rating not in RATINGS or not isinstance(reason, str):
+def reason_labels(reason, rating, reason_codes=None):
+    """Structured choices are authoritative; legacy prose only exact known clauses.
+
+    Unknown free text is retained for editorial review, never guessed as sentiment.
+    """
+    if rating not in RATINGS:
         return ()
-    text = " ".join(reason.casefold().split())
-    return tuple(label for label, fragments in REASON_PATTERNS.items()
-                 if any(fragment in text for fragment in fragments))
+    if isinstance(reason_codes, list):
+        return tuple(sorted({c for c in reason_codes if isinstance(c,str) and c in REASON_PATTERNS}))
+    if not isinstance(reason,str):
+        return ()
+    text=" ".join(reason.casefold().split()).strip(" .!?")
+    clauses={x.strip(" .!?") for x in re.split(r"[,;\n]|\bund\b",text)}
+    return tuple(label for label,fragments in REASON_PATTERNS.items()
+                 if any(fragment in clauses for fragment in fragments))
 
 
 def style_signals(article_feedback):
@@ -41,7 +48,7 @@ def style_signals(article_feedback):
     for row in article_feedback.values():
         if not isinstance(row, dict):
             continue
-        labels = reason_labels(row.get("reason"), row.get("rating"))
+        labels = reason_labels(row.get("reason"), row.get("rating"), row.get("reason_codes"))
         for label in labels:
             if label not in ("topic_dislike", "more_of_this"):
                 counts[label] += 1
@@ -66,7 +73,7 @@ def feedback_dimensions(article_feedback):
     for article_id, row in article_feedback.items():
         if not isinstance(row, dict):
             continue
-        for dimension in reason_labels(row.get("reason"), row.get("rating")):
+        for dimension in reason_labels(row.get("reason"), row.get("rating"), row.get("reason_codes")):
             by_dimension[dimension] += 1
             samples.setdefault(dimension, []).append(article_id)
     return {"counts": dict(by_dimension),
@@ -179,6 +186,10 @@ def editorial_mix_report(candidates, selected, section="Vertiefungen"):
         genres=names(selected,"kind")
     recommendations=[]
     n=len(selected)
+    if candidates and n/len(candidates)>.7:
+        recommendations.append("Thin candidate pool: research credible alternatives before final selection; fewer articles are preferable to filler")
+    if section=="Heute wichtig" and n and sum(x.get("region")=="Österreich" for x in selected)/n<.2:
+        recommendations.append("Austria underrepresented: research politics, economy, industry and public finances again; document result, no country quota")
     if n>=5 and sources and sources.most_common(1)[0][1]/n >.55 and len(candidate_sources)>=3:
         recommendations.append("Publisher concentration: search additional independent reporting; do not enforce quotas")
     if n>=5 and section=="Vertiefungen":

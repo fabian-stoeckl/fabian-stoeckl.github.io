@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "editions": [
+    {
+      "id": "regular",
+      "data_dir": "Privat/Persoenliche-Zeitung/data",
+      "dossier_suffix": "",
+      "dossier_overrides": {
+        "2026-10-28": "2026-10-28-reviewed"
+      }
+    },
+    {
+      "id": "learning-2026-10-28",
+      "data_dir": "Privat/Persoenliche-Zeitung/lern-ausgabe-2026-10-28/data",
+      "dossier_suffix": "-learning-extra",
+      "dossier_overrides": {
+        "2026-10-28": "2026-10-28-learning-extra-reviewed"
+      }
+    }
+  ]
+}

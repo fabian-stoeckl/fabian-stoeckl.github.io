@@ -110,17 +110,44 @@ def check_private_receipt(edition,dossier):
             errors.append("Fact audit does not match actual private evidence: "+k)
     return errors
 
+def prepare_edition(edition,candidates,dossier):
+    """Export only public metadata, never profiles, scores or source excerpts."""
+    import copy
+    out=copy.deepcopy(edition)
+    rows=candidates if isinstance(candidates,list) else [*candidates.get("articles",[]),*candidates.get("headlines",[])]
+    by_id={x["id"]:x for x in rows}
+    for item in [*out.get("articles",[]),*out.get("headlines",[])]:
+        original=by_id.get(item["id"],{})
+        proof=dossier.get("proofs",{}).get(item["id"],{})
+        if original.get("url")!=item["url"] or proof.get("source_url")!=item["url"]:
+            raise ValueError("Candidate/proof identity mismatch: "+item["id"])
+        if proof.get("level") not in ("headline","teaser","read"):
+            raise ValueError("Missing documented evidence level")
+        item["evidence_level"]=proof["level"]
+        for key in ("article_type","source_context","why_selected","novelty_explanation"):
+            if original.get(key) is not None:item[key]=original[key]
+        item.pop("access",None)
+    out.pop("fact_audit",None)
+    return out
+
+
 def main():
     ap=argparse.ArgumentParser()
-    ap.add_argument("action",choices=("audit","verify"))
+    ap.add_argument("action",choices=("prepare","audit","verify"))
     ap.add_argument("--edition",required=True)
     ap.add_argument("--dossier")
+    ap.add_argument("--candidates")
     ap.add_argument("--require-dossier",action="store_true")
     args=ap.parse_args()
     with open(args.edition,encoding="utf-8") as f:ed=json.load(f)
     proof=None
     if args.dossier:
         with open(args.dossier,encoding="utf-8") as f:proof=json.load(f)
+    if args.action=="prepare":
+        if proof is None or not args.candidates:ap.error("prepare requires --dossier and --candidates")
+        with open(args.candidates,encoding="utf-8") as f:candidates=json.load(f)
+        print(json.dumps(prepare_edition(ed,candidates,proof),ensure_ascii=False,indent=2))
+        return
     if args.action=="audit":
         if proof is None:ap.error("audit requires the private evidence dossier")
         print(json.dumps(private_review(ed,proof),ensure_ascii=False,indent=2))

@@ -43,3 +43,7 @@ The existing “Fabians Website ändern” skill owns the editing workflow. Cano
 Run `npm run context:update` to regenerate README from all area protocols. Run `npm run check:context` to validate metadata, unique names/paths, registered files, canonical private-page coverage, README freshness and exclusion from Jekyll. New areas need a protocol and their source path, not a test-code edit. Empty planned areas may use `"paths":[]` until their website files are added; record their draft status in the protocol.
 
 The context test also exercises temporary fixtures for a fourth area, missing protocols, stale registry entries and unsafe paths. It never modifies website content or financial data.
+
+## Persönliche Zeitung
+
+Run `npm run check:morgenzeitung` for the isolated newspaper tests. Run `python3 -m http.server 8766 --bind 127.0.0.1` and `node tests/morgenzeitung-v3-browser.cjs` for mocked mobile feedback journeys; no publisher or real feedback writes are performed. Registry `services/morgenzeitung-v3/editions.json` covers regular and special editions. Both existing CI workflows verify all registered public receipts; changed editions additionally require their mapped private evidence dossier. Production selection and private snapshots must share the same `--selection` settings file; see the current editorial contract.

@@ -24,7 +24,7 @@ def validate_article_metadata(article):
     if (article.get("novelty_score") is not None and article.get("novelty") is not None
         and article["novelty_score"]!=article["novelty"]):
         errors.append("novelty and novelty_score conflict")
-    for key in ("novelty_explanation","why_selected","event","update_evidence"):
+    for key in ("novelty_explanation","why_selected","event","update_evidence","source_context"):
         if key in article and article[key] is not None and (
             not isinstance(article[key],str) or len(article[key])>1500
         ):

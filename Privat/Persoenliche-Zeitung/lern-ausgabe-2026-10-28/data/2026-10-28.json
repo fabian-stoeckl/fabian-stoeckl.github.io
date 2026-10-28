@@ -12,9 +12,9 @@
       "source": "Financial Times",
       "url": "https://www.ft.com/content/0b0ae366-c1e0-4c35-8cad-c924a23d33e7",
       "published_at": "2026-10-28",
-      "summary": "Der Beitrag untersucht, wie schwierig es ist, sich als Anleger gegen Risiken des KI-Investitionsbooms abzusichern.",
+      "summary": "Lesehinweis zu den Grenzen einer Absicherung gegen Risiken des KI-Booms.",
       "topic": "KI & Finanzierung",
-      "access": "headline"
+      "evidence_level": "headline"
     },
     {
       "id": "28c0000000000002",
@@ -22,9 +22,9 @@
       "source": "Reuters",
       "url": "https://www.reuters.com/business/openai-plans-buy-googles-ai-chips-information-reports-2026-10-28/",
       "published_at": "2026-10-28",
-      "summary": "Laut einem Medienbericht plant OpenAI den Kauf von Google-KI-Chips. Der mögliche Schritt würde Alternativen zu Nvidia stärken; Einzelheiten sind nicht bestätigt.",
+      "summary": "OpenAI plant laut einem von Reuters aufgegriffenen Bericht von The Information den Kauf von Google-KI-Chips.",
       "topic": "KI & Infrastruktur",
-      "access": "teaser"
+      "evidence_level": "teaser"
     },
     {
       "id": "28c0000000000003",
@@ -32,9 +32,9 @@
       "source": "Reuters",
       "url": "https://www.reuters.com/world/eu-readying-major-australian-resources-investment-ambassador-says-2026-10-27/",
       "published_at": "2026-10-27",
-      "summary": "Die EU prüft größere Investitionen in australische kritische Rohstoffe, um Lieferketten gegenüber China zu diversifizieren. Auch Verarbeitungskapazitäten stehen im Blick.",
+      "summary": "Die EU erwartet laut Bericht eine Welle von Investitionen in den australischen Sektor für kritische Rohstoffe.",
       "topic": "Industrie & Welthandel",
-      "access": "teaser"
+      "evidence_level": "teaser"
     },
     {
       "id": "28c0000000000004",
@@ -42,9 +42,9 @@
       "source": "Reuters",
       "url": "https://www.reuters.com/world/uk/britain-eu-finding-way-through-made-europe-concerns-uk-minister-says-2026-10-27/",
       "published_at": "2026-10-27",
-      "summary": "Großbritannien und die EU suchen nach einer Lösung für Konflikte um geplante „Made in Europe“-Vergaberegeln. Diese würden europäische Produkte bei öffentlichen Aufträgen und Förderungen bevorzugen.",
+      "summary": "Großbritannien und die EU suchen laut einem britischen Minister einen Weg durch den Streit über Made-in-Europe-Vorschläge. Diese würden europäische Produkte bei öffentlichen Aufträgen, Auktionen und Förderungen bevorzugen.",
       "topic": "Industrie & Welthandel",
-      "access": "teaser"
+      "evidence_level": "teaser"
     },
     {
       "id": "28c0000000000005",
@@ -52,9 +52,9 @@
       "source": "Reuters",
       "url": "https://www.reuters.com/technology/cable-capacity-emerges-bottleneck-ai-data-centres-nexans-says-2026-10-22/",
       "published_at": "2026-10-22",
-      "summary": "Nicht nur Chips und Energie, auch Kabelkapazitäten werden laut Nexans zum Engpass beim Bau von KI-Rechenzentren. Neue Produktionslinien brauchen mehrere Jahre.",
+      "summary": "Kabelproduktionskapazitäten werden laut Nexans zum Engpass für den Bau von KI-Rechenzentren.",
       "topic": "KI & Infrastruktur",
-      "access": "teaser"
+      "evidence_level": "teaser"
     },
     {
       "id": "28c0000000000006",
@@ -62,9 +62,9 @@
       "source": "Der Standard",
       "url": "https://www.derstandard.at/story/3000000345380/neuer-anlauf-fuer-europas-traum-vom-billigen-wuestenstrom",
       "published_at": "2026-10-27",
-      "summary": "Das Projekt Sila Atlantik plant, Solar- und Windstrom aus Marokko über ein rund 4800 Kilometer langes Unterseekabel nach Deutschland zu bringen. Finanzierung und Auslastung bleiben zentrale Fragen.",
+      "summary": "Ein 4800 Kilometer langes Kabel soll Solar- und Windstrom aus Marokko nach Deutschland bringen. Laut Bericht soll das Projekt etwa 40 Milliarden Euro kosten, davon knapp die Hälfte allein das Kabel.",
       "topic": "Energie & Industrie",
-      "access": "teaser"
+      "evidence_level": "read"
     },
     {
       "id": "28c0000000000007",
@@ -72,9 +72,10 @@
       "source": "OeNB",
       "url": "https://www.oenb.at/news-und-events/presse/presseaussendungen/2026/20261027.html",
       "published_at": "2026-10-27",
-      "summary": "Österreichs Banken erwarten im vierten Quartal eine stärkere Nachfrage nach Unternehmens- und Wohnbaukrediten. Bislang sehen sie kaum Auswirkungen betrieblicher KI-Nutzung auf das Kreditgeschäft.",
+      "summary": "Österreichs Banken erwarten laut der veröffentlichten Befragung für das vierte Quartal wieder eine stärkere Kreditnachfrage.",
       "topic": "Wirtschaft & Fiskalpolitik",
-      "access": "teaser"
+      "evidence_level": "teaser",
+      "source_context": "Pressemitteilung der OeNB über ihre Bankenbefragung."
     },
     {
       "id": "28c0000000000008",
@@ -82,9 +83,9 @@
       "source": "Der Standard",
       "url": "https://www.derstandard.at/story/3000000344202/70-milliarden-fuer-made-in-europe-warum-die-rechnung-nicht-so-einfach-aufgeht",
       "published_at": "2026-10-14",
-      "summary": "Ein Bericht hinterfragt, wie viel öffentliches Beschaffungsvolumen in Österreich tatsächlich zu europäischen Lieferanten umgelenkt werden kann. Komplexe Lieferketten erschweren die Abgrenzung.",
+      "summary": "Der Beitrag hinterfragt die Umlenkung öffentlicher Beschaffung zu europäischen Lieferanten: Nur ein Teil des Volumens sei tatsächlich umlenkbar; Lieferketten könnten zum Bürokratieproblem werden.",
       "topic": "Industrie & Innovation",
-      "access": "teaser"
+      "evidence_level": "teaser"
     },
     {
       "id": "28c0000000000009",
@@ -92,9 +93,9 @@
       "source": "Handelsblatt",
       "url": "https://www.handelsblatt.com/meinung/wirtschaftsforum/lars-felds-ordnungsruf-eine-ki-steuer-waere-eine-schlechte-idee/100262622.html",
       "published_at": "2026-10-20",
-      "summary": "Der Ökonom Lars Feld warnt in einem Gastbeitrag davor, KI-Umsätze zusätzlich zu besteuern: Er befürchtet negative Investitionsanreize.",
+      "summary": "Lars Feld argumentiert in seinem Gastbeitrag gegen eine KI-Steuer und warnt vor negativen Investitionsanreizen.",
       "topic": "KI & Arbeit",
-      "access": "teaser"
+      "evidence_level": "teaser"
     },
     {
       "id": "28c000000000000a",
@@ -102,9 +103,9 @@
       "source": "Handelsblatt",
       "url": "https://www.handelsblatt.com/politik/international/china-neue-exportkontrollen-fuer-schluesseltechnologien-geplant/100263058.html",
       "published_at": "2026-10-18",
-      "summary": "China plant strengere Regeln für die Weitergabe ausgewählter KI-, Solar- und Biotechnologien ins Ausland. Die vorgesehenen Verbote und Genehmigungen sind noch nicht beschlossen.",
+      "summary": "China bereitet laut Bericht strengere Exportkontrollen für KI- und Solartechnik vor; die Regeln sind noch in Vorbereitung.",
       "topic": "Industrie & Welthandel",
-      "access": "teaser"
+      "evidence_level": "teaser"
     },
     {
       "id": "28c000000000000b",
@@ -112,9 +113,9 @@
       "source": "Financial Times",
       "url": "https://www.ft.com/content/703b7dc9-086f-4985-9afa-232afd94e087",
       "published_at": "2026-10-28",
-      "summary": "Die Financial Times beleuchtet, wie unterschiedlich regionales Wirtschaftswachstum in Großbritannien ausfällt und was dahintersteckt.",
+      "summary": "Lesehinweis zur regionalen Verteilung des Wirtschaftswachstums in Großbritannien.",
       "topic": "Produktivität & Wettbewerbsfähigkeit",
-      "access": "headline"
+      "evidence_level": "headline"
     },
     {
       "id": "28c000000000000c",
@@ -122,9 +123,9 @@
       "source": "Handelsblatt",
       "url": "https://www.handelsblatt.com/finanzen/banken-versicherungen/banken-ezb-gibt-intesa-sanpaolo-gruenes-licht-fuer-mps-uebernahme/100265409.html",
       "published_at": "2026-10-28",
-      "summary": "Die EZB hat den geplanten Kauf der italienischen Bank MPS durch Intesa Sanpaolo gebilligt. Kartellrechtliche und börsenaufsichtliche Entscheidungen stehen noch aus.",
+      "summary": "Die Europäische Zentralbank hat laut Bericht die Übernahme von MPS durch Intesa Sanpaolo erlaubt.",
       "topic": "Wirtschaft & Fiskalpolitik",
-      "access": "teaser"
+      "evidence_level": "teaser"
     }
   ],
   "headlines": [
@@ -134,9 +135,9 @@
       "source": "Associated Press",
       "url": "https://apnews.com/article/stock-markets-ai-earnings-oil-b07c5abe1fbaacc7618aeb610eaa91e0",
       "published_at": "2026-10-28",
-      "summary": "Asiens Börsen legten überwiegend zu; besonders südkoreanische Chipwerte profitierten von starken KI-Geschäftszahlen.",
+      "summary": "Asiens Börsen legten überwiegend zu, nachdem KI-Aktien zuvor die Wall Street gestützt hatten.",
       "region": "International",
-      "access": "teaser"
+      "evidence_level": "teaser"
     },
     {
       "id": "28d0000000000002",
@@ -144,9 +145,9 @@
       "source": "Reuters",
       "url": "https://www.reuters.com/business/europe-shares-fall-hsbc-weighs-france-protests-keep-investors-wary-2026-10-27/",
       "published_at": "2026-10-27",
-      "summary": "Der europäische STOXX 600 schloss trotz schwacher HSBC-Zahlen im Plus; der österreichische Technologiewert AT&S gehörte zu den stärksten Gewinnern.",
+      "summary": "Europäische Aktien legten laut Bericht trotz schwächerer HSBC-Zahlen zu. AT&S und Besi gehörten zu den stärksten Gewinnern.",
       "region": "International",
-      "access": "teaser"
+      "evidence_level": "teaser"
     },
     {
       "id": "28d0000000000003",
@@ -156,7 +157,7 @@
       "published_at": "2026-10-28",
       "summary": "Frankreichs Beauftragter für strategische Metalle hält eine breitere Versorgung mit Seltenen Erden außerhalb Chinas innerhalb von drei bis fünf Jahren für möglich.",
       "region": "International",
-      "access": "teaser"
+      "evidence_level": "teaser"
     },
     {
       "id": "28d0000000000004",
@@ -166,7 +167,7 @@
       "published_at": "2026-10-27",
       "summary": "Boeings Aktie geriet nach Hinweisen auf langsamer als erwartete 737-Produktion und schwächeren freien Cashflow unter Druck.",
       "region": "International",
-      "access": "teaser"
+      "evidence_level": "teaser"
     },
     {
       "id": "28d0000000000005",
@@ -176,7 +177,7 @@
       "published_at": "2026-10-27",
       "summary": "Der südkoreanische Speicherchiphersteller SK Hynix meldete einen Rekordgewinn und kündigte Pläne für Kapitalrückführungen an Aktionäre an.",
       "region": "International",
-      "access": "teaser"
+      "evidence_level": "teaser"
     },
     {
       "id": "28d0000000000006",
@@ -184,9 +185,9 @@
       "source": "Reuters",
       "url": "https://www.reuters.com/business/media-telecom/global-markets-view-europe-2026-10-27/",
       "published_at": "2026-10-27",
-      "summary": "Der geplante Anthropic-Börsengang stützt die Stimmung bei KI-Aktien, während hohe Finanzierungskosten der Branche Sorgen bereiten.",
+      "summary": "Der Marktkommentar beschreibt eine positive Börsenstimmung nach einem großen amerikanischen Börsengangantrag.",
       "region": "International",
-      "access": "teaser"
+      "evidence_level": "teaser"
     }
   ],
   "selection_audit": {
@@ -199,7 +200,15 @@
     "note": "Additional editorially researched feedback sample. No causally attributable selection effect certified for this independent supplementary issue."
   },
   "fact_audit": {
-    "status": "not_formally_run",
-    "note": "Zusätzliche Lern-Sonderausgabe außerhalb des regulären täglichen Freigabeprozesses; redaktioneller Abgleich der kurzen Summaries mit den jeweils verfügbaren Originaltiteln und Quellenauszügen."
-  }
+    "status": "pass",
+    "warning_count": 0,
+    "claims_checked": 82,
+    "audit_version": 3,
+    "edition_sha256": "472504de9d8e606ea9a116ab74bc0553875aaf3bb985b4328ecb8bc4afb4d86a",
+    "dossier_sha256": "0961a373a72baca08d7b7c518d49ad78328e11c98d354912ad3e9dcdd99e76c0",
+    "reviewed_at": "2026-10-28T11:45:22.103200Z",
+    "review_method": "private_dossier_and_editorial_review"
+  },
+  "corrected_at": "2026-10-28T11:45:22.103200Z",
+  "correction_note": "Redaktionell korrigiert: Aussagen präzisiert und Quellengrundlagen ergänzt. Die Artikelauswahl und bisherigen Bewertungen bleiben erhalten."
 }

@@ -93,6 +93,43 @@ const {chromium}=require('playwright');
    'Neuer privater Kommentar vom zweiten Gerät');
  await page.locator('#tab-articles').click();
 
+ // A stale tab must send only edited rows, preserving newer ratings from another device.
+ await page.evaluate(()=>{
+   const current=JSON.parse(sessionStorage.getItem('v3-mock-issue'));
+   const x=JSON.parse(current.body.split('\n').slice(1).join('\n'));
+   x.ratings.find(r=>r.section==='Vertiefungen').rating='Sehr relevant';
+   current.body='MORGENZEITUNG_V3_FEEDBACK_V1\n'+JSON.stringify(x);
+   sessionStorage.setItem('v3-mock-issue',JSON.stringify(current));
+ });
+ await page.locator('#tab-headlines').click();
+ const first=page.locator('#headlines .news-item').first();
+ await first.getByLabel('Sehr relevant',{exact:true}).check();
+ await first.locator('.rating-reason summary').click();
+ await first.getByRole('button',{name:'Mehr davon',exact:true}).click();
+ await first.locator('textarea').fill('Nicht zu oberflächlich, gute Gegenposition.');
+ await page.locator('#feedback-form button[type=submit]').click();
+ await page.waitForFunction(()=>!readerState.saving);
+ const cleanSave=await page.evaluate(()=>JSON.parse(JSON.parse(sessionStorage.getItem('v3-mock-issue')).body.split('\n').slice(1).join('\n')));
+ assert.equal(cleanSave.ratings.find(r=>r.section==='Vertiefungen').rating,'Sehr relevant');
+ assert.deepEqual(cleanSave.ratings.find(r=>r.section==='Heute wichtig').reason_codes,['more_of_this']);
+ // A genuine conflicting edit to the SAME rating is surfaced, never silently overwritten.
+ await page.evaluate(()=>{
+   const current=JSON.parse(sessionStorage.getItem('v3-mock-issue'));
+   const x=JSON.parse(current.body.split('\n').slice(1).join('\n'));
+   x.ratings.find(r=>r.section==='Heute wichtig').rating='Nicht relevant';
+   current.body='MORGENZEITUNG_V3_FEEDBACK_V1\n'+JSON.stringify(x);
+   sessionStorage.setItem('v3-mock-issue',JSON.stringify(current));
+ });
+ await first.getByLabel('Teilweise relevant',{exact:true}).check();
+ const writesBefore=await page.evaluate(()=>sessionStorage.getItem('v3-mock-write-count'));
+ await page.locator('#feedback-form button[type=submit]').click();
+ await page.waitForFunction(()=>document.querySelector('#feedback-status').textContent.includes('anderen Gerät'));
+ assert.equal(await page.evaluate(()=>sessionStorage.getItem('v3-mock-write-count')),writesBefore);
+ assert.equal(await first.getByLabel('Teilweise relevant',{exact:true}).isChecked(),true);
+ await page.reload();
+ await page.waitForFunction(()=>Object.keys(readerState.ratingBaselines).length>0);
+ await page.locator('#tab-articles').click();
+
  // The old access="full" flag never proves the editorial team read that text.
  await page.evaluate(()=>{
    edition.articles[0].access='full';
@@ -118,7 +155,7 @@ const {chromium}=require('playwright');
  assert.match(await page.locator('#articles article .v3-why').first().innerText(),
               /Warum ausgewählt.*wirtschaftlichen Mechanismus/);
  assert.match(await page.locator('#articles article .v3-extra-context').first().innerText(),
-              /analysis.*Vorspann/);
+              /Analyse.*Vorspann/);
  assert.equal(await page.locator('#v3-comparisons fieldset').count(),1);
  // Lead/rest ordering can differ from edition order when a story is a treat.
  // Every context note must follow its immutable article ID, not DOM index.
@@ -131,7 +168,7 @@ const {chromium}=require('playwright');
  const secondId=edition.articles[1].id;
  const second=page.locator('#articles article[data-article-id="'+secondId+'"]');
  assert.equal(await second.count(),1);
- assert.match(await second.locator('.v3-extra-context').first().innerText(),/interview/);
+ assert.match(await second.locator('.v3-extra-context').first().innerText(),/Interview/);
  assert.match(await second.locator('.v3-why').first().innerText(),/Gesondert belegte Perspektive/);
  assert.ok(await second.evaluate(node=>node.parentElement.classList.contains('article-list')));
 
