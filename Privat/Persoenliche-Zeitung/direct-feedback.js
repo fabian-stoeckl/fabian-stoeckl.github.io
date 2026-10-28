@@ -37,7 +37,8 @@ const DirectFeedback=(()=>{
     if(!issue||typeof issue.body!=='string'||!issue.body.startsWith(MARKER)||!issue.title?.startsWith(PREFIX)||issue.pull_request)return null;
     try{
       const x=JSON.parse(issue.body.slice(MARKER.length));
-      if(!/^\d{4}-\d{2}-\d{2}$/.test(x.date)||issue.title!==PREFIX+x.date||!Array.isArray(x.ratings)||issue.body.includes('TEST: true'))return null;
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(x.date)||issue.title!==PREFIX+x.date||
+         !Array.isArray(x.ratings)||x.origin!=='website-explicit'||x.test===true)return null;
       const ratings=x.ratings.filter(r=>r&&/^[a-f0-9]{16}$/.test(r.id)&&VALID.includes(r.rating||'')).map(r=>({
         id:r.id,value:r.rating||'',reason:String(r.reason||'').slice(0,600),
         section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen'

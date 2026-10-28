@@ -77,6 +77,7 @@ const {chromium}=require('playwright');
    current.body='MORGENZEITUNG_V3_FEEDBACK_V1\n'+JSON.stringify(x);
    sessionStorage.setItem('v3-mock-issue',JSON.stringify(current));
  });
+ await page.locator('#tab-headlines').click();
  await page.locator('#headlines .news-item').first()
    .getByLabel('Teilweise relevant',{exact:true}).check();
  await page.locator('#feedback-form button[type=submit]').click();
@@ -86,6 +87,7 @@ const {chromium}=require('playwright');
    /Neuer privater Kommentar vom zweiten Gerät/);
  assert.equal(await page.locator('#feedback').inputValue(),
    'Neuer privater Kommentar vom zweiten Gerät');
+ await page.locator('#tab-articles').click();
 
  // The old access="full" flag never proves the editorial team read that text.
  await page.evaluate(()=>{
