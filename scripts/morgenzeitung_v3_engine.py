@@ -227,7 +227,9 @@ def mix_adjustment(item, chosen, section):
         if topic:
             n=sum(row.get("topic")==topic for row in prior)
             score_delta-=1.2*max(0,n-2)
-    return max(-6.0,score_delta)
+    if section=="Vertiefungen" and any(distinct_perspective(item,row) for row in prior):
+        score_delta+=1.5
+    return max(-6.0,min(2.0,score_delta))
 
 
 def select(candidates, profile, limit=None, discovery_slots=2,
