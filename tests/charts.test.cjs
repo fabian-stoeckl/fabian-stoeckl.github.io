@@ -7,7 +7,7 @@ const assert = require('assert');
   if(!data.fx?.some(f=>f.status==='ok'))data.fx=['USD','JPY','GBP'].map((code,i)=>({code,name:code,status:'ok',series:Object.fromEntries(Object.entries(data.etfs[0].series).map(([year,points])=>[year,points.map((p,j)=>({...p,price:(i+1)*(1+j*.001)}))]))}));
   const chart = fs.readFileSync('node_modules/chart.js/dist/chart.umd.js','utf8');
   // Keep the ETF's design tokens synchronized with the actual Morgenzeitung.
-  const pressCSS=fs.readFileSync('Privat/Pressespiegel/style.css','utf8');
+  const pressCSS=fs.readFileSync('Privat/Morgenzeitung-3/style.css','utf8');
   const pressToken=name=>{
     const match=pressCSS.match(new RegExp('--'+name+':(#[0-9a-fA-F]{3,8})'));
     assert(match,'Missing Morgenzeitung token '+name);

@@ -1,6 +1,6 @@
 const test=require('node:test');
 const assert=require('node:assert/strict');
-const timeline=require('../Privat/Pressespiegel/preference-timeline.js');
+const timeline=require('../Privat/Morgenzeitung-3/preference-timeline.js');
 test('chronological score changes, corrected vote, no geographic topic inference',()=>{
  const metadata=new Map([['2026-10-21:a',{topic:'KI',title:'AI'}],
  ['2026-10-22:b',{topic:'KI',title:'AI 2'}],

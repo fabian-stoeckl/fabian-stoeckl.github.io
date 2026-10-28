@@ -3,7 +3,7 @@
 - Begin every task by checking the current GitHub state (`git status`, `git fetch origin`, open PRs and workflows). Work on a separate branch and have changes reviewed through a pull request; never commit directly to `main`.
 - The public homepage is the Jekyll site (`index.md`, `_layouts/default.html`, `assets/css/style.scss`, `_config.yml`). The private dashboard is static HTML under `Privat/`; its ETF dashboard and checked-in data are under `Privat/ETFs/`. Lowercase paths contain compatibility redirects.
 - Install everything with `./scripts/setup.sh`. Build/check with `npm test`; run ETF checks separately with `npm run check:etf` and `npm run check:charts`.
-- Preview with `./scripts/preview.sh`, then open `/`, `/Privat/`, `/Privat/ETFs/`, and `/Privat/Pressespiegel/`. With the preview running, check responsive pages and create screenshots using `npm run check:preview`.
+- Preview with `./scripts/preview.sh`, then open `/`, `/Privat/`, `/Privat/ETFs/`, and `/Privat/Morgenzeitung-3/`. With the preview running, check responsive pages and create screenshots using `npm run check:preview`.
 - Never run `scripts/update_etf_data.py` merely to test a change: it downloads and rewrites financial data.
 
 ## Repository context and safety
@@ -13,6 +13,6 @@
 - Run `npm run context:update` after adding or renaming a protocol, then `npm run check:context`. Registry generation and validation discover areas dynamically from protocol metadata.
 - `docs/` is excluded from Jekyll output. This repository is public: exclusions do not make repository documentation confidential. Do not commit secrets or private chat transcripts.
 
-## Morgenzeitung agent protocol
+## Morgenzeitung 3 editorial protocol
 
-For every scheduled Morgenzeitung publication and fallback, follow `services/morgenzeitung/AGENT-ABLAUF.md` in order. Do not claim a complete run unless public publication, private feedback processing and private run audit are verified. The historical Python/SQLite prototype is not the production learning pipeline. Never commit private feedback to this public repository.
+Only Morgenzeitung 3 remains active. Its authoritative, short contract is `services/morgenzeitung-v3/REDAKTION.md`, its private learning profile is `morgenzeitung-v3/profile.json` in the private feedback repository. Reader scripts and CSS are local to `Privat/Morgenzeitung-3/`; never import removed Pressespiegel or Morgenzeitung-neu directories. Preserve the existing V3 privacy rules, original factual evidence and feedback. Run only V3 tests, not old legacy process tests.

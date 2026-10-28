@@ -13,7 +13,7 @@ async function renderSelectionHistory() {
   if(!node)return;
   const index=await GitHubPaper.json('./data/index.json');
   if(!Array.isArray(index.dates)||index.dates.length<2){
-    node.replaceChildren(el('p','Noch keine zwei veröffentlichten Ausgaben für einen überprüfbaren Vergleich. Die bisherige Demofassung ist kein Beleg für redaktionelles Lernen.','small'));
+    node.replaceChildren(el('p','Noch keine zwei veröffentlichten Ausgaben für einen überprüfbaren Vergleich. Ein früherer Entwurf ist kein Beleg für redaktionelles Lernen.','small'));
     return;
   }
   const available=index.dates.slice(0,6);

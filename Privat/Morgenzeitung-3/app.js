@@ -1,5 +1,5 @@
 'use strict';
-let config, secret='', currentProfile, ratings={}, edition, latestDate, visibleArticles=[], visibleHeadlines=[];
+let config, edition, latestDate, visibleArticles=[], visibleHeadlines=[];
 const ratingDrafts={};
 const draftKey=a=>edition.date+':'+(a.id||a.url);
 function feedbackStatus(msg){$('feedback-status').textContent=msg;for(const id of ['news-feedback-status','features-feedback-status'])if($(id))$(id).textContent=msg;}
@@ -8,7 +8,6 @@ const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefine
 const fmt=v=>new Intl.DateTimeFormat('de-AT',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Vienna'}).format(new Date(v));
 function safeURL(value){const u=new URL(value);if(u.protocol!=='https:'||u.username||u.password)throw Error('Ungültiger Link');return u.href;}
 function link(text,url){const n=el('a',text);n.href=safeURL(url);n.target='_blank';n.rel='noopener noreferrer';return n;}
-async function api(path, data){const response=await fetch(config.api+path,{method:data?'POST':'GET',cache:'no-store',headers:{'Authorization':'Bearer '+secret,...(data?{'Content-Type':'application/json'}:{})},...(data?{body:JSON.stringify(data)}:{})});const result=await response.json();if(!response.ok)throw Error(result.error||'Verbindung fehlgeschlagen');return result;}
 function status(text){
   const notice=$('notice');
   notice.textContent=text||'';
@@ -49,11 +48,9 @@ function article(a,index,section='Vertiefungen'){
   body.append(title,el('p',a.summary,isHeadline?'news-summary':undefined));
   if(a.access==='teaser')body.append(el('p','Zusammenfassung beruht ausschließlich auf dem zugänglichen Vorspann.','small'));
   if(!isHeadline&&a.novelty)body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty,'novelty'));
-  if(config.mode==='github'){body.append(githubRating(a,section));node.append(intro,body);return node;}const controls=el('div',undefined,'ratings');controls.setAttribute('aria-label','Relevanz bewerten');const state=el('p','','rating-state');state.setAttribute('role','status');const reasonLabel=el('label','Optionaler Grund ','reason');const reason=el('select');reason.setAttribute('aria-label','Grund für die Bewertung');for(const t of ['','Mehr davon','Schon bekannt','Zu oberflächlich','Thema interessiert mich nicht']){const o=el('option',t||'–');o.value=t;reason.append(o);}reasonLabel.append(reason);let saved=ratings[a.id];reason.value=saved?.reason||'';const buttons=[];function refresh(){for(const [b,v] of buttons)b.setAttribute('aria-pressed',String(saved?.value===v));state.textContent=saved?'Gespeichert · jederzeit änderbar':'';reason.disabled=!saved;}
-async function save(value){buttons.forEach(([b])=>b.disabled=true);reason.disabled=true;state.textContent='Wird gespeichert …';try{await api('/api/rating',{id:a.id,value,reason:reason.value});saved={value,reason:reason.value};ratings[a.id]=saved;refresh();}catch(e){state.textContent=e.message+' – nicht gespeichert';reason.value=saved?.reason||'';}finally{buttons.forEach(([b])=>b.disabled=false);reason.disabled=!saved;}}
-for(const [text,value] of [['Sehr relevant',1],['Teilweise relevant',0],['Nicht relevant',-1]]){const b=el('button',text);b.type='button';b.onclick=()=>save(value);controls.append(b);buttons.push([b,value]);}reason.onchange=()=>save(saved.value);refresh();body.append(controls,state,reasonLabel);node.append(intro,body);return node;}
+  body.append(githubRating(a,section));node.append(intro,body);return node;
+}
 function addSaveAction(section,statusId){
-  if(config.mode!=='github')return;
   const bar=el('div',undefined,'section-save');
   const button=el('button','Alle Bewertungen speichern');button.type='button';
   button.onclick=()=>$('feedback-form').requestSubmit();
@@ -143,8 +140,7 @@ async function restoreSavedRatings(){
   }catch(err){feedbackStatus('Alte Bewertungen konnten nicht geladen werden: '+err.message);}
 }
 
-async function load(){try{const [list,r]=await Promise.all([api('/api/editions'),api('/api/ratings')]);ratings=r;latestDate=list.dates[0];$('date').replaceChildren();for(const d of list.dates){const o=el('option',d);o.value=d;$('date').append(o);}if(!list.dates.length){status('Noch keine erfolgreiche Ausgabe verfügbar.');return; }edition=await api('/api/edition');render();$('login').hidden=true;$('logout').hidden=config.preview;$('operating-state').textContent=list.scheduler_enabled?'Automatik konfiguriert · tatsächlicher Stand siehe Ausgabe.':'Täglicher Betrieb noch nicht aktiviert.';}catch(e){status(e.message);$('login').hidden=false;}}
-$('date').onchange=async()=>{try{edition=config.mode==='github'?await GitHubPaper.edition($('date').value):await api('/api/edition?date='+encodeURIComponent($('date').value));render();await restoreSavedRatings();}catch(e){status(e.message);}};
+$('date').onchange=async()=>{try{edition=await GitHubPaper.edition($('date').value);render();await restoreSavedRatings();}catch(e){status(e.message);}};
 for(const tab of ['headlines','articles'])$('tab-'+tab).onclick=()=>{
   // Preserve unsent feedback; switching only changes visibility.
   if($('tab-'+tab).getAttribute('aria-pressed')==='true')return;
@@ -155,8 +151,6 @@ for(const tab of ['headlines','articles'])$('tab-'+tab).onclick=()=>{
   // Sticky tabs may have been clicked far down the page: show the masthead again.
   window.scrollTo(0,0);
 };
-$('login-form').onsubmit=async e=>{e.preventDefault();secret=$('token').value;$('token').value='';await load();};
-$('logout').onclick=()=>{secret='';location.reload();};
 
 function updatePublicationStatus(e) {
   const node=$('publication-status');
@@ -185,7 +179,7 @@ async function collectDraftRatings(){
   return selected;
 }
 
-$('feedback-form').onsubmit=async e=>{e.preventDefault();if(config.mode==='github'){
+$('feedback-form').onsubmit=async e=>{e.preventDefault();
   const b=e.submitter||$('feedback-form').querySelector('button[type=submit]');
   try{
     const selected=await collectDraftRatings();
@@ -213,8 +207,8 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();if(config.mode==='githu
       $('github-connected').hidden=true;
     }
   }finally{b.disabled=false;}
-  return;}const b=e.submitter;b.disabled=true;try{await api('/api/feedback',{text:$('feedback').value});$('feedback-status').textContent='Gespeichert · wird beim nächsten Recherchelauf berücksichtigt';$('feedback').value='';}catch(e){$('feedback-status').textContent=e.message+' – bitte erneut versuchen';}finally{b.disabled=false;}};
-(async()=>{try{const oldTokenCleared=DirectFeedback.resetOldTokenOnce();config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode==='github') {
+};
+(async()=>{try{const oldTokenCleared=DirectFeedback.resetOldTokenOnce();config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode!=='github')throw Error('Ungültiger V3-Modus');
 $('login').hidden=true;$('logout').hidden=true;$('feedback').maxLength=4000;
 $('feedback-form').querySelector('button').textContent='Feedback speichern';
 refreshGitHubConnection();if(oldTokenCleared)$('github-setup-status').textContent='Alter lokal gespeicherter Token gelöscht. Bitte neuen Token verbinden und den alten auf GitHub widerrufen.';$('feedback').required=false;
@@ -223,7 +217,7 @@ for(const d of index.dates){const o=el('option',d);o.value=d;$('date').append(o)
 $('operating-state').textContent='Ausgaben aus GitHub · Feedback wird nach einmaliger Verbindung direkt auf GitHub gespeichert.';
 if(!latestDate){status('Noch keine veröffentlichte Ausgabe verfügbar.');return;}
 edition=await GitHubPaper.edition(latestDate);render();await restoreSavedRatings();return;
-}if(config.api===null){status('Die Morgenzeitung wird vorbereitet. Der private Zeitungsdienst ist noch nicht verbunden.');return;}if(config.api&&!config.api.startsWith('https://'))throw Error('Unsichere Dienstadresse');if(config.preview)await load();else{$('login').hidden=false;status('Bitte öffne deine persönliche Morgenzeitung.');}}catch(e){status('Zeitungsdienst nicht erreichbar. '+e.message);}})();
+}catch(e){status('Morgenzeitung 3 nicht erreichbar. '+e.message);}})();
 
 $('feedback').addEventListener('input',()=>{feedbackStatus('Änderung noch nicht gesendet.');});
 

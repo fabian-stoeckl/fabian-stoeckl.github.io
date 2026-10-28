@@ -25,7 +25,7 @@ def story(n, **kwargs):
 class EditorialQualityV35Tests(unittest.TestCase):
     def test_v1_vs_v3_comparison_uses_real_read_only_editions(self):
         root=Path("Privat")
-        v1=json.loads((root/"Pressespiegel/data/2026-10-27.json").read_text())
+        v1=json.loads((Path("services/morgenzeitung-v3/fixtures/v1-reference-2026-10-27.json")).read_text())
         v3=json.loads((root/"Morgenzeitung-3/data/2026-10-28.json").read_text())
         report=v1_comparison(v3,v1)
         self.assertEqual(report["v1_reference"]["articles"],15)
