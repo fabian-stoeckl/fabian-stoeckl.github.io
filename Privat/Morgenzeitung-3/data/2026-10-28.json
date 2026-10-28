@@ -1,0 +1,289 @@
+{
+  "date": "2026-10-28",
+  "window_start": "2026-10-27T03:56:00Z",
+  "window_end": "2026-10-28T03:56:23.306Z",
+  "researched_at": "2026-10-28T03:56:23.306Z",
+  "available_at": "2026-10-28T03:56:23.306Z",
+  "preview": false,
+  "editorial_note": "Eigenständige Recherche für die Morgenzeitung 3. Die Auswahl priorisiert Erkenntnisgewinn, aktuelle Ereignisse und unabhängige Perspektiven. Einzelne längerfristig relevante Analysen stammen vom 24. bis 26. Oktober; die übrigen Meldungen überwiegend vom 27. und 28. Oktober. Bei begrenztem Originalzugang sind Zusammenfassungen bewusst knapp.",
+  "learning_note": "Noch keine echten V3-Leserbewertungen; daher keine beobachtete Lernänderung. Übersehene Kandidaten und Bewertungskalibrierung wurden privat als nicht blockierende redaktionelle Fragen geprüft.",
+  "articles": [
+    {
+      "id": "28a0000000000004",
+      "title": "EU tells countries to make plans to cope with 3C of global warming",
+      "url": "https://www.ft.com/content/9640cae1-98bb-4509-adb1-729ca6a5f2a8",
+      "source": "Financial Times",
+      "published_at": "2026-10-27",
+      "summary": "Die EU fordert ihre Mitgliedstaaten auf, sich auf eine mögliche Erwärmung um drei Grad vorzubereiten.",
+      "topic": "Klima & Energie",
+      "access": "headline"
+    },
+    {
+      "id": "28a0000000000006",
+      "title": "Comments to the European Commission Regarding Its ‘Diversify EU’ Proposal",
+      "url": "https://itif.org/publications/2026/10/27/comments-to-the-european-commission-regarding-its-diversify-eu-proposal/",
+      "source": "ITIF",
+      "published_at": "2026-10-27",
+      "summary": "Europa soll seine Lieferketten stärker auf verbündete Produktionsstandorte ausrichten und chinesische Handelspraktiken gezielter adressieren.",
+      "topic": "Industrie & Welthandel"
+    },
+    {
+      "id": "28a000000000000b",
+      "title": "EU-China hybrid car deal won’t really help European carmakers",
+      "url": "https://www.scmp.com/opinion/world-opinion/article/3372117/eu-china-hybrid-car-deal-wont-really-help-european-carmakers",
+      "source": "South China Morning Post",
+      "published_at": "2026-10-27",
+      "summary": "Quoten für chinesische Hybridautos helfen europäischen Autobauern laut Kommentar langfristig kaum; entscheidend sei mehr Wettbewerbsfähigkeit.",
+      "topic": "Industrie & Welthandel",
+      "access": "teaser"
+    },
+    {
+      "id": "28a0000000000001",
+      "title": "Märkte Insight: Das lange Warten auf die KI-Rendite",
+      "url": "https://www.handelsblatt.com/finanzen/anlagestrategie/kolumnen/maerkte-insight-das-lange-warten-auf-die-ki-rendite/100265170.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-27",
+      "summary": "Der KI-Boom hebt die Erwartungen an Technologiekonzerne; sein Nutzen für die übrige Wirtschaft bleibt laut Analyse bisher begrenzt.",
+      "topic": "KI & Finanzierung"
+    },
+    {
+      "id": "28a0000000000007",
+      "title": "Proposing heating efficiency standards for Europe",
+      "url": "https://www.bruegel.org/analysis/proposing-heating-efficiency-standards-europe",
+      "source": "Bruegel",
+      "published_at": "2026-10-27",
+      "summary": "Heizeffizienzstandards sollen in Europa einen künftigen Marktmechanismus für Wärmepumpen ermöglichen.",
+      "topic": "Energie & Industrie",
+      "access": "teaser"
+    },
+    {
+      "id": "28a0000000000005",
+      "title": "Super-rich get ‘double dividend’ from causes and costs of climate crisis, report finds",
+      "url": "https://www.theguardian.com/environment/2026/oct/27/super-rich-double-dividend-climate-crisis-oxfam",
+      "source": "The Guardian",
+      "published_at": "2026-10-27",
+      "summary": "Reiche verdienen einer Studie zufolge sowohl an emissionsintensiven Geschäften als auch an der Bewältigung von Klimafolgen.",
+      "topic": "Klima & Energie"
+    },
+    {
+      "id": "28a000000000000a",
+      "title": "In Österreich muss sich alles ändern",
+      "url": "https://www.diepresse.com/41389770/in-oesterreich-muss-sich-alles-aendern",
+      "source": "Die Presse",
+      "published_at": "2026-10-25",
+      "summary": "Österreich könnte trotz wirtschaftlicher Schwäche ein Innovationsstandort sein, argumentiert ein Leitartikel, der weitreichende Reformen fordert.",
+      "topic": "Produktivität & Wettbewerbsfähigkeit"
+    },
+    {
+      "id": "28a0000000000009",
+      "title": "Burnham in danger of sleepwalking into climate disaster, say campaigners",
+      "url": "https://www.theguardian.com/environment/2026/oct/27/burnham-sleepwalking-climate-disaster-campaigners",
+      "source": "The Guardian",
+      "published_at": "2026-10-27",
+      "summary": "Umweltverbände in Großbritannien warnen vor der gemeinsamen Klimawirkung von Ölprojekten, Flughafenausbau und schwächeren Vorgaben für Elektroautos und Wärmepumpen.",
+      "topic": "Klima & Energie"
+    },
+    {
+      "id": "28a000000000000c",
+      "title": "Italien: Meloni wird die Strompreise mit einem riskanten Manöver deckeln. Zieht Österreich nach?",
+      "url": "https://www.derstandard.at/story/3000000345767/italien-meloni-wird-die-strompreise-mit-einem-riskanten-manoever-deckeln-zieht-oesterreich-nach",
+      "source": "Der Standard",
+      "published_at": "2026-10-24",
+      "summary": "Italien will Gaspreise subventionieren, um Strom günstiger zu machen; Experten beurteilen den Eingriff skeptisch.",
+      "topic": "Energie & Industrie",
+      "access": "teaser"
+    },
+    {
+      "id": "28a0000000000002",
+      "title": "Chinas Industriegewinne steigen kräftiger – Kluft zwischen Branchen wächst",
+      "url": "https://www.wiwo.de/politik/konjunktur/chinas-wirtschaft-chinas-industriegewinne-steigen-kraeftiger-kluft-zwischen-branchen-waechst/100265155.html",
+      "source": "WirtschaftsWoche",
+      "published_at": "2026-10-27",
+      "summary": "Gewinne im chinesischen Industriesektor legten deutlich zu, während sich die Elektronik- und Möbelbranche sehr unterschiedlich entwickelten.",
+      "topic": "Industrie & Welthandel",
+      "access": "teaser"
+    },
+    {
+      "id": "28a0000000000003",
+      "title": "Consumer Confidence in France Falls to Lowest Level Since 2013",
+      "url": "https://www.wsj.com/economy/central-banking/french-consumer-confidence-sinks-to-13-year-low-amid-protests-bond-selloff-d7002c30",
+      "source": "The Wall Street Journal",
+      "published_at": "2026-10-27",
+      "summary": "Frankreich erlebt den niedrigsten Stand der Verbraucherstimmung seit Jahren; Proteste und Anleiheverkäufe prägen das Umfeld.",
+      "topic": "Wirtschaft & Fiskalpolitik"
+    },
+    {
+      "id": "28a0000000000008",
+      "title": "South Korea’s GDP growth beats forecasts amid AI boom",
+      "url": "https://www.aljazeera.com/economy/2026/10/27/south-koreas-gdp-growth-beats-forecasts-amid-ai-boom",
+      "source": "Al Jazeera",
+      "published_at": "2026-10-27",
+      "summary": "Südkorea wächst wirtschaftlich stärker als erwartet, gestützt durch hohe Nachfrage nach Halbleitern.",
+      "topic": "Industrie & Innovation"
+    }
+  ],
+  "headlines": [
+    {
+      "id": "28b0000000000001",
+      "title": "Israel's election appears to have no clear winner. Here's what to know and what's likely next",
+      "url": "https://apnews.com/article/9962f87d11534908f553146f07039e92",
+      "source": "Associated Press",
+      "published_at": "2026-10-28",
+      "summary": "Nach der Parlamentswahl in Israel zeigen die Nachwahlbefragungen keinen klaren Sieger; die Regierungsbildung bleibt offen.",
+      "region": "International"
+    },
+    {
+      "id": "28b0000000000003",
+      "title": "Migration: Die EU will Frontex massiv ausbauen",
+      "url": "https://www.sueddeutsche.de/politik/frontex-eu-abschiebungen-migration-grenzschutz-li.3569701",
+      "source": "Süddeutsche Zeitung",
+      "published_at": "2026-10-27",
+      "summary": "Frontex soll mehr Geld und Personal erhalten.",
+      "region": "International"
+    },
+    {
+      "id": "28b0000000000006",
+      "title": "Saudi-led coalition says it downed Houthi missiles, drones aimed at kingdom",
+      "url": "https://www.aljazeera.com/news/2026/10/27/saudi-led-coalition-destroys-four-houthi-drones",
+      "source": "Al Jazeera",
+      "published_at": "2026-10-27",
+      "summary": "Eine saudisch geführte Koalition meldet abgewehrte Angriffe der Huthi; gleichzeitig laufen regionale Gespräche zur Deeskalation.",
+      "region": "International",
+      "access": "teaser"
+    },
+    {
+      "id": "28b000000000000a",
+      "title": "Klimaresilienz: Neuer EU-Plan soll Europa besser schützen",
+      "url": "https://germany.representation.ec.europa.eu/nachrichten-und-veranstaltungen/pressemitteilungen/klimaresilienz-neuer-eu-plan-soll-europa-besser-schutzen-2026-10-27_de?prefLang=it",
+      "source": "Europäische Kommission",
+      "published_at": "2026-10-27",
+      "summary": "Die Europäische Kommission hat einen neuen Rahmen vorgestellt, der die Vorbereitung auf Klimarisiken in verschiedenen Politikbereichen stärken soll.",
+      "region": "International"
+    },
+    {
+      "id": "28b0000000000009",
+      "title": "What to expect from the Fed as Warsh weighs hot inflation, oil and US midterms",
+      "url": "https://www.euronews.com/2026/10/27/what-to-expect-from-the-fed-as-warsh-weighs-hot-inflation-oil-and-us-midterms",
+      "source": "Euronews",
+      "published_at": "2026-10-27",
+      "summary": "Die US-Notenbank steht vor einer Zinsentscheidung unter dem Eindruck hoher Inflation und gestiegener Energiepreise.",
+      "region": "International",
+      "access": "headline"
+    },
+    {
+      "id": "28b0000000000002",
+      "title": "Israel's shekel jumps to 5-week high amid record election turnout",
+      "url": "https://www.reuters.com/world/middle-east/israels-shekel-jumps-3-week-high-amid-high-election-turnout-2026-10-27/",
+      "source": "Reuters",
+      "published_at": "2026-10-27",
+      "summary": "Der israelische Schekel stieg am Wahltag deutlich; die hohe Wahlbeteiligung stärkte Erwartungen eines Regierungswechsels.",
+      "region": "International"
+    },
+    {
+      "id": "28b0000000000008",
+      "title": "Brasilien: Wahlverlierer Flávio Bolsonaro flieht in die USA",
+      "url": "https://www.sueddeutsche.de/politik/wahlverlierer-flavio-bolsonaro-brasilien-korruptionsvorwuerfe-li.3569705",
+      "source": "Süddeutsche Zeitung",
+      "published_at": "2026-10-27",
+      "summary": "Nach seiner Wahlniederlage soll sich der brasilianische Kandidat Flávio Bolsonaro in die USA abgesetzt haben; gegen ihn wird ermittelt.",
+      "region": "International"
+    },
+    {
+      "id": "28b000000000000c",
+      "title": "Racist attack in Paris suburb: Tributes across France reflect shared outrage and political divides",
+      "url": "https://www.lemonde.fr/en/france/article/2026/10/27/racist-attack-in-paris-suburb-tributes-across-france-reflect-shared-outrage-and-political-divides_6765347_7.html",
+      "source": "Le Monde",
+      "published_at": "2026-10-27",
+      "summary": "Nach einem rassistisch motivierten tödlichen Angriff fanden landesweit Trauerkundgebungen statt; über die politische Reaktion besteht Streit.",
+      "region": "International"
+    },
+    {
+      "id": "28b0000000000004",
+      "title": "French teachers say government education measures to quell protests fall short",
+      "url": "https://www.reuters.com/world/french-teachers-say-government-education-measures-quell-protests-fall-short-2026-10-27/",
+      "source": "Reuters",
+      "published_at": "2026-10-27",
+      "summary": "Lehrergewerkschaften in Frankreich halten die angekündigten Bildungsreformen nach anhaltenden Protesten für unzureichend.",
+      "region": "International"
+    },
+    {
+      "id": "28b0000000000011",
+      "title": "Global stock markets rise as investors continue to bet on AI",
+      "url": "https://www.aljazeera.com/news/2026/10/28/global-stock-markets-rise-as-investors-continue-to-bet-on-ai",
+      "source": "Al Jazeera",
+      "published_at": "2026-10-28",
+      "summary": "Die internationalen Aktienmärkte legten zu, während Anleger weiter auf den Aufschwung durch künstliche Intelligenz setzen.",
+      "region": "International",
+      "access": "teaser"
+    },
+    {
+      "id": "28b000000000000b",
+      "title": "Working with academic communities to build scientific understanding",
+      "url": "https://openai.com/index/building-scientific-understanding-with-academic-communities/",
+      "source": "OpenAI",
+      "published_at": "2026-10-26",
+      "summary": "Forschende kündigen neue Ergebnisse aus Mathematik, theoretischer Informatik und Physik an.",
+      "region": "International"
+    },
+    {
+      "id": "28b0000000000007",
+      "title": "Lula’s victory echoes across BRICS after fears of a Bolsonaro win",
+      "url": "https://www.aljazeera.com/news-analysis/2026/10/27/lulas-victory-echoes-across-brics-after-fears-over-a-bolsonaro-win",
+      "source": "Al Jazeera",
+      "published_at": "2026-10-27",
+      "summary": "Lula könnte mit seinem Wahlsieg die Zusammenarbeit der BRICS-Staaten stabilisieren, argumentiert eine Analyse.",
+      "region": "International",
+      "access": "teaser"
+    },
+    {
+      "id": "28b000000000000f",
+      "title": "Japanese companies compensate users as cyberattacks buffet economy",
+      "url": "https://www.reuters.com/business/finance/japan-companies-compensate-users-cyberattacks-buffet-economy-2026-10-26/",
+      "source": "Reuters",
+      "published_at": "2026-10-26",
+      "summary": "Cyberangriffe stören japanische Onlineangebote; betroffene Firmen beginnen, ihre Kunden zu entschädigen.",
+      "region": "International"
+    },
+    {
+      "id": "28b000000000000e",
+      "title": "Wirtschaft, Sicherheit und eine Orchidee: Merz in Singapur",
+      "url": "https://www.wiwo.de/politik/ausland/kanzler-auf-asienreise-wirtschaft-sicherheit-und-eine-orchidee-merz-in-singapur/100265113.html",
+      "source": "WirtschaftsWoche",
+      "published_at": "2026-10-27",
+      "summary": "Der deutsche Bundeskanzler will bei seinem Besuch in Singapur die strategische Partnerschaft mit dem Stadtstaat ausbauen.",
+      "region": "International",
+      "access": "teaser"
+    },
+    {
+      "id": "28b0000000000005",
+      "title": "Feuerwehreinsatz auf Areal der OMV-Raffinerie in Schwechat",
+      "url": "https://www.derstandard.at/story/3000000346218/feuerwehreinsatz-auf-areal-der-omv-raffinerie-in-schwechat",
+      "source": "Der Standard",
+      "published_at": "2026-10-27",
+      "summary": "Reparaturarbeiten in Schwechat gingen mit Rauchentwicklung einher; eine Person wurde vorsorglich ins Krankenhaus gebracht.",
+      "region": "Österreich"
+    }
+  ],
+  "selection_audit": {
+    "feedback_applied": false,
+    "feedback_received": false,
+    "selection_changed": false,
+    "independent_research": true,
+    "candidate_count": 32,
+    "selected_count": 27,
+    "source_count": 18,
+    "history_used": "2026-10-27 preview (not independent)",
+    "method": "access_neutral_two_section_editorial_scoring_and_soft_mix",
+    "quality_review_private": true
+  },
+  "fact_audit": {
+    "status": "pass",
+    "warning_count": 0,
+    "claims_checked": 27,
+    "audit_version": 2,
+    "edition_sha256": "08abddd44ab32505c48e7e1870cd4d0c3eb027ce19ee12c77fe6e465e640215c",
+    "dossier_sha256": "b36686728cf52eaf8cfd1518d3ca2840e47895cfc2f604bdcd8ec94a00a17ed9",
+    "reviewed_at": "2026-10-28T03:56:01.008Z",
+    "review_method": "private_dossier_and_editorial_review"
+  }
+}
