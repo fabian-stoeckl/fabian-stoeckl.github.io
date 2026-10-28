@@ -135,7 +135,7 @@ const {chromium}=require('playwright');
    const option=document.createElement('option');option.value=date;option.textContent=date;
    document.getElementById('date').append(option);
    const existing=GitHubPaper.edition;
-   GitHubPaper.edition=async day=>day===date?{...edition,date}:existing(day);
+   GitHubPaper.edition=async day=>day===date?{...edition,date}:existing.call(GitHubPaper,day);
  });
  await page.locator('#date').selectOption('2026-10-29');
  await page.waitForFunction(()=>edition.date==='2026-10-29');
