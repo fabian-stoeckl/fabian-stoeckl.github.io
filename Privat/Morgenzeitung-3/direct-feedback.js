@@ -12,13 +12,9 @@ const DirectFeedback=(()=>{
   const VALID=['','Sehr relevant','Teilweise relevant','Nicht relevant'];
   function readToken(store=localStorage){try{return store.getItem(TOKEN_KEY)||'';}catch(_){return '';}}
   function clearToken(store=localStorage){store.removeItem(TOKEN_KEY);}
-  function resetOldTokenOnce(store=localStorage){
-    try{
-      if(store.getItem(RESET_KEY)==='1')return false;
-      const had=!!store.getItem(TOKEN_KEY);
-      store.removeItem(TOKEN_KEY);store.setItem(RESET_KEY,'1');return had;
-    }catch(_){return false;}
-  }
+  // The new V3 tile must NEVER delete a previously connected reader token.
+  // Only the legacy application owns any one-time token migration.
+  function resetOldTokenOnce(){return false;}
   function saveToken(token,store=localStorage){
     const value=String(token||'').trim();
     if(!/^github_pat_[A-Za-z0-9_]{20,500}$/.test(value))throw Error('Bitte ausschließlich einen eingeschränkten Fine-grained GitHub-Token verwenden.');

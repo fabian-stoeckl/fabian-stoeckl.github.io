@@ -27,6 +27,9 @@ async function transport(url,options){
  const history=await D.feedbackHistory('token',transport);
  assert.equal(history.length,1);assert.equal(history[0].ratings.length,2);
  assert.equal(history[0].feedback,'Mehr Vielfalt');assert.equal(issues.length,2);
+ store.setItem(D.TOKEN_KEY,'existing-restricted-token');
+ assert.equal(D.resetOldTokenOnce(store),false);
+ assert.equal(store.getItem(D.TOKEN_KEY),'existing-restricted-token','V3 must not wipe an existing private reader token');
  assert.equal(D.TOKEN_KEY,'morgenzeitung:github-token:v1');
  assert.equal(D.RECEIPTS_KEY,'morgenzeitung-v3:github-receipts:v1');
  console.log('PASS: V3 feedback isolated, issue updated, old/v2 filtered');
