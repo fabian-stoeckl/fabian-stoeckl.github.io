@@ -97,15 +97,25 @@ const EditorialExtras=(()=>{
   }
 
   function enrichFeedback(edition,rawText){
-    const previous=String(rawText||'').replace(/(?:^|\n)\[V3-Vergleich [^\n]*\]/g,'').trim();
+    // Persist ALL past comparison choices, including those no longer shown in
+    // the current layout. Only replace the same explicitly re-answered pair.
+    const previous=String(rawText||'').trim();
     if(!edition)return previous;
-    const notes=[];
+    const chosen=new Map();
     for(const field of document.querySelectorAll('#v3-comparisons fieldset')){
       const checked=field.querySelector('input[type=radio]:checked');
-      if(!checked)continue;
-      notes.push('[V3-Vergleich '+edition.date+' '+field.dataset.comparisonId+': '+checked.value+']');
+      const id=field.dataset.comparisonId||'';
+      if(!checked||!['published','alternative','equal'].includes(checked.value)||
+         !/^[a-zA-Z0-9_-]{1,90}$/.test(id))continue;
+      const key=edition.date+' '+id;
+      chosen.set(key,'[V3-Vergleich '+key+': '+checked.value+']');
     }
-    const next=[previous,...notes].filter(Boolean).join('\n');
+    const tag=/^\[V3-Vergleich (\d{4}-\d{2}-\d{2} [a-zA-Z0-9_-]{1,90}): (?:published|alternative|equal)\]$/;
+    const preserved=previous.split('\n').filter(line=>{
+      const found=line.trim().match(tag);
+      return !found||!chosen.has(found[1]);
+    }).join('\n').trim();
+    const next=[preserved,...chosen.values()].filter(Boolean).join('\n');
     if(next.length>4000)throw Error('Die Rückmeldung ist zu lang. Bitte etwas kürzen.');
     return next;
   }
