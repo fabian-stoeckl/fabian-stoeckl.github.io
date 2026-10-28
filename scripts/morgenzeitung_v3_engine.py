@@ -13,6 +13,24 @@ DATE=re.compile(r"^\d{4}-\d{2}-\d{2}$")
 NUMBER=re.compile(r"(?<![\w])\d+(?:[.,]\d+)*(?:\s?%)?")
 QUOTE=re.compile(r"[„\"]([^“\"]{3,})[“\"]")
 CAUSE=re.compile(r"\b(?:verursach\w*|führt(?:e)?\s+(?:damit\s+)?zu|aufgrund|infolge|weil)\b",re.I)
+MONTHS=re.compile(r"\b(?:januar|februar|märz|april|mai|juni|juli|august|september|oktober|november|dezember)\b",re.I)
+PERSON=re.compile(r"\b[A-ZÄÖÜ][a-zäöüß]{2,}\s+[A-ZÄÖÜ][a-zäöüß]{2,}\b")
+ACRONYM=re.compile(r"\b[A-ZÄÖÜ]{2,6}\b")
+
+def numeric_facts(sentence):
+    """Normalize decimal comma/point and thousands separators without fetching URLs."""
+    values=set()
+    for raw in NUMBER.findall(sentence):
+        n=re.sub(r"\s+","",raw)
+        pct=n.endswith("%")
+        n=n.rstrip("%")
+        if re.fullmatch(r"\d{1,3}(?:[.,]\d{3})+",n):
+            n=n.replace(".","").replace(",","")
+        elif re.fullmatch(r"\d+[.,]\d{1,2}",n):
+            n=n.replace(",",".")
+        values.add(n+("%" if pct else ""))
+    return values
+
 
 def valid_url(value):
     try:
@@ -198,9 +216,14 @@ def evidence_guard(edition,dossier):
             excerpt=str(claim.get("source_excerpt","")).strip()
             if claim.get("supported") is not True or len(excerpt)<12:
                 warnings.append({"id":key,"code":"UNSUPPORTED_CLAIM","claim":sentence[:90]});continue
-            nums=lambda s:{re.sub(r"\s+","",x) for x in NUMBER.findall(s)}
-            for x in nums(sentence)-nums(excerpt):
+            for x in numeric_facts(sentence)-numeric_facts(excerpt):
                 warnings.append({"id":key,"code":"NUMBER_MISMATCH","number":x})
+            for month in set(MONTHS.findall(sentence.casefold()))-set(MONTHS.findall(excerpt.casefold())):
+                warnings.append({"id":key,"code":"DATE_UNCONFIRMED","month":month})
+            actors={v for v in PERSON.findall(sentence) if v not in excerpt}
+            acronyms={v for v in ACRONYM.findall(sentence) if v not in excerpt}
+            for actor in sorted(actors|acronyms):
+                warnings.append({"id":key,"code":"ACTOR_UNCONFIRMED","actor":actor[:80]})
             for x in QUOTE.findall(sentence):
                 if x not in excerpt:warnings.append({"id":key,"code":"QUOTE_MISMATCH","quote":x[:90]})
             if CAUSE.search(sentence) and not claim.get("causality_verified",False):
