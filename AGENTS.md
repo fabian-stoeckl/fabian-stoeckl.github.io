@@ -13,6 +13,6 @@
 - Run `npm run context:update` after adding or renaming a protocol, then `npm run check:context`. Registry generation and validation discover areas dynamically from protocol metadata.
 - `docs/` is excluded from Jekyll output. This repository is public: exclusions do not make repository documentation confidential. Do not commit secrets or private chat transcripts.
 
-## Morgenzeitung 3 editorial protocol
+## Persönliche Zeitung editorial protocol
 
-Only Morgenzeitung 3 remains active. Its authoritative, short contract is `services/morgenzeitung-v3/REDAKTION.md`, its private learning profile is `morgenzeitung-v3/profile.json` in the private feedback repository. Reader scripts and CSS are local to `Privat/Morgenzeitung-3/`; never import removed Pressespiegel or Morgenzeitung-neu directories. Preserve the existing V3 privacy rules, original factual evidence and feedback. Run only V3 tests, not old legacy process tests.
+Only Persönliche Zeitung remains active (technical path: Morgenzeitung-3). Its authoritative, short contract is `services/morgenzeitung-v3/REDAKTION.md`, its private learning profile is `morgenzeitung-v3/profile.json` in the private feedback repository. Reader scripts and CSS are local to `Privat/Morgenzeitung-3/`; never import removed Pressespiegel or Morgenzeitung-neu directories. Preserve the existing V3 privacy rules, original factual evidence and feedback. Run only V3 tests, not old legacy process tests.
