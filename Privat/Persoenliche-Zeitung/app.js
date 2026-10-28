@@ -226,10 +226,10 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
     }
   }finally{b.disabled=false;}
 };
-(async()=>{try{const oldTokenCleared=DirectFeedback.resetOldTokenOnce();config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode!=='github')throw Error('Ungültiger V3-Modus');
+(async()=>{try{config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode!=='github')throw Error('Ungültiger V3-Modus');
 $('feedback').maxLength=4000;
 $('feedback-form').querySelector('button').textContent='Feedback speichern';
-refreshGitHubConnection();if(oldTokenCleared)$('github-setup-status').textContent='Alter lokal gespeicherter Token gelöscht. Bitte neuen Token verbinden und den alten auf GitHub widerrufen.';$('feedback').required=false;
+refreshGitHubConnection();$('feedback').required=false;
 const index=await GitHubPaper.json('./data/index.json');latestDate=index.dates[0];$('date').replaceChildren();
 for(const d of index.dates){const o=el('option',d);o.value=d;$('date').append(o);}
 $('operating-state').textContent='Ausgaben aus GitHub · Feedback wird nach einmaliger Verbindung direkt auf GitHub gespeichert.';
