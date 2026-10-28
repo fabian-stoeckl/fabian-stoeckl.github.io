@@ -137,7 +137,7 @@ async function restoreSavedRatings(){
       const disclosure=field.querySelector('.rating-reason');if(disclosure)disclosure.open=!!savedRow.reason;
     }
     if(!$('feedback').value&&saved.feedback)$('feedback').value=saved.feedback;
-  }catch(err){feedbackStatus('Alte Bewertungen konnten nicht geladen werden: '+err.message);}
+  }catch(err){feedbackStatus('Gespeicherte Bewertungen konnten nicht geladen werden: '+err.message);}
 }
 
 $('date').onchange=async()=>{try{edition=await GitHubPaper.edition($('date').value);render();await restoreSavedRatings();}catch(e){status(e.message);}};
@@ -164,7 +164,7 @@ function updatePublicationStatus(e) {
   if(!e.preview&&e.date===d){node.hidden=true;node.textContent='';return;}
   node.hidden=false;
   if(e.preview)node.textContent='Beispielausgabe: Der tägliche Betrieb ist für diese Ausgabe noch nicht bestätigt.';
-  else if(late)node.textContent='Hinweis: Die heutige Morgenzeitung fehlt noch. Letzte Ausgabe: '+e.date+'.';
+  else if(late)node.textContent='Hinweis: Die heutige Persönliche Zeitung fehlt noch. Letzte Ausgabe: '+e.date+'.';
   else node.textContent='Neue Ausgabe wird um 07:45 Uhr Wiener Zeit erwartet. Zuletzt: '+e.date+'.';
 }
 async function collectDraftRatings(){
@@ -217,7 +217,7 @@ for(const d of index.dates){const o=el('option',d);o.value=d;$('date').append(o)
 $('operating-state').textContent='Ausgaben aus GitHub · Feedback wird nach einmaliger Verbindung direkt auf GitHub gespeichert.';
 if(!latestDate){status('Noch keine veröffentlichte Ausgabe verfügbar.');return;}
 edition=await GitHubPaper.edition(latestDate);render();await restoreSavedRatings();return;
-}catch(e){status('Morgenzeitung 3 nicht erreichbar. '+e.message);}})();
+}catch(e){status('Persönliche Zeitung nicht erreichbar. '+e.message);}})();
 
 $('feedback').addEventListener('input',()=>{feedbackStatus('Änderung noch nicht gesendet.');});
 
