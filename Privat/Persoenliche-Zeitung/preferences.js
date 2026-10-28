@@ -134,11 +134,10 @@ $('preference-comment-form').onsubmit=async event=>{
   button.disabled=true;
   out.textContent='Dein Kommentar wird privat zusammen mit bisherigen Bewertungen gespeichert …';
   try {
-    // submit() reloads the original private issue before PATCH and preserves all article ratings.
-    const saved=await DirectFeedback.savedFeedback(date,token);
-    const combined=[(saved?.feedback||'').trim(),fresh].filter(Boolean).join('\n\n');
-    if(combined.length>4000)throw Error('Die gesammelten Kommentare überschreiten 4000 Zeichen. Bitte kürze deinen neuen Kommentar.');
-    const result=await DirectFeedback.submit(date,[],combined,token);
+    // The feedback helper re-reads the canonical issue before each attempt.
+    // Append only the new text so concurrent comments are not overwritten and
+    // retries after an uncertain acknowledgement do not duplicate paragraphs.
+    const result=await DirectFeedback.appendComment(date,fresh,token);
     field.value='';
     out.replaceChildren(
       el('span',result.existing?'Dein Kommentar ist bereits gespeichert.':'Kommentar erfolgreich privat auf GitHub gespeichert.'),
