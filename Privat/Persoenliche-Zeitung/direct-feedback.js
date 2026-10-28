@@ -9,6 +9,9 @@ const DirectFeedback=(()=>{
   const PREFIX='[Morgenzeitung 3] Feedback ';
   const MARKER='MORGENZEITUNG_V3_FEEDBACK_V1\n';
   const VALID=['','Sehr relevant','Teilweise relevant','Nicht relevant'];
+  const CODES=['topic_dislike','too_shallow','already_known','too_niche','one_sided','more_of_this'];
+  const codes=r=>Array.isArray(r.reason_codes)?[...new Set(r.reason_codes.filter(c=>CODES.includes(c)))].sort():[];
+  const sameRating=(a,b)=>!a&&!b||!!a&&!!b&&a.value===b.value&&a.reason===b.reason&&a.section===b.section&&JSON.stringify(codes(a))===JSON.stringify(codes(b));
   function readToken(store=localStorage){try{return store.getItem(TOKEN_KEY)||'';}catch(_){return '';}}
   function clearToken(store=localStorage){store.removeItem(TOKEN_KEY);}
   function saveToken(token,store=localStorage){
@@ -41,7 +44,7 @@ const DirectFeedback=(()=>{
          !Array.isArray(x.ratings)||x.origin!=='website-explicit'||x.test===true)return null;
       const ratings=x.ratings.filter(r=>r&&/^[a-f0-9]{16}$/.test(r.id)&&VALID.includes(r.rating||'')).map(r=>({
         id:r.id,value:r.rating||'',reason:String(r.reason||'').slice(0,600),
-        section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen'
+        section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen',reason_codes:codes(r)
       }));
       return {date:x.date,ratings,feedback:typeof x.comment==='string'?x.comment:'',number:issue.number,updated_at:issue.updated_at||''};
     }catch(_){return null;}
@@ -130,7 +133,7 @@ const DirectFeedback=(()=>{
          !VALID.includes(r.value||'')||typeof r.reason!=='string'||r.reason.length>600)
         throw Error('Ungültige Artikelbewertung');
       intended.set(r.id,{id:r.id,value:r.value||'',reason:r.reason,
-                         section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen'});
+                         section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen',reason_codes:codes(r)});
     }
     const comment=feedback.trim();
     const appendText=options?.appendComment===undefined?'':String(options.appendComment).trim();
@@ -150,7 +153,12 @@ const DirectFeedback=(()=>{
       if(existing&&!fresh)throw Error('Aktuelle GitHub-Bewertungen konnten nicht sicher gelesen werden.');
       const base=fresh||latest;
       const byId=new Map((base?.ratings||[]).map(r=>[r.id,r]));
-      for(const [id,row] of intended)byId.set(id,row);
+      for(const [id,row] of intended){
+        if(options.baselineRatings&&Object.hasOwn(options.baselineRatings,id)&&
+           !sameRating(byId.get(id),options.baselineRatings[id])&&!sameRating(byId.get(id),row))
+          throw Error('Diese Artikelbewertung wurde auf einem anderen Gerät geändert. Bitte den aktuellen Stand neu laden und deine Änderung erneut auswählen.');
+        byId.set(id,row);
+      }
       const mergedComment=appendText?appendOnce(base?.feedback,appendText):
         options.comparisonOnly?mergeComparisonOnly(base?.feedback,comment):
         comment?preserveComparisonNotes(base?.feedback,comment):(base?.feedback||'');
@@ -158,7 +166,7 @@ const DirectFeedback=(()=>{
       if(!byId.size&&!mergedComment)throw Error('Bitte mindestens eine Bewertung oder Feedback eingeben.');
       const title=PREFIX+date;
       const payload={version:1,date,
-        ratings:[...byId.values()].map(r=>({id:r.id,section:r.section,rating:r.value,reason:r.reason})),
+        ratings:[...byId.values()].map(r=>({id:r.id,section:r.section,rating:r.value,reason:r.reason,...(codes(r).length?{reason_codes:codes(r)}:{})})),
         comment:mergedComment,origin:'website-explicit'};
       const body=MARKER+JSON.stringify(payload,null,2);
       if(record?.body===body)return {ok:true,existing:true,html_url:record.html_url,feedback:mergedComment};
@@ -177,8 +185,7 @@ const DirectFeedback=(()=>{
       if(!verified)throw Error('Gespeichertes GitHub-Feedback konnte nicht nachgelesen werden.');
       const found=new Map(verified.ratings.map(row=>[row.id,row]));
       const preserved=[...intended].every(([id,row])=>
-        found.has(id)&&found.get(id).value===row.value&&
-        found.get(id).reason===row.reason&&found.get(id).section===row.section);
+        found.has(id)&&sameRating(found.get(id),row));
       if(preserved&&verified.feedback===mergedComment)
         return {ok:true,updated:!!existing,html_url:result.html_url,feedback:verified.feedback};
       // A competing edit has won at least one write; merge it on the next read.

@@ -77,7 +77,7 @@ def article_penalty(item, profile):
     rating=feedback.get("rating")
     penalty= -13 if rating=="Nicht relevant" else 0
     reason=feedback.get("reason","").lower()
-    if "schon bekannt" in reason: penalty-=7
+    if "already_known" in reason_labels(reason,rating,feedback.get("reason_codes")): penalty-=7
     # Seen-recently costs 12 points once in score(), equally in both sections.
     return penalty
 
@@ -115,7 +115,7 @@ def score(item, profile, section="Vertiefungen"):
     # When two or more explicit style critiques agree within a subject,
     # prefer that topic-specific signal over the general editorial preference.
     topic_style=(profile.get("topic_style_signals") or {}).get(topic) or {}
-    style={**style,**topic_style}
+    style={**style,**{k:v for k,v in topic_style.items() if isinstance(v,(int,float)) and not isinstance(v,bool) and v>0}}
     novelty_demand=style.get("novelty",0)
     if isinstance(novelty_demand,bool) or not isinstance(novelty_demand,(int,float)):
         novelty_demand=0
@@ -268,7 +268,9 @@ def mix_adjustment(item, chosen, section):
 
 
 def select(candidates, profile, limit=None, discovery_slots=2,
-           section="Vertiefungen", previous_editions=(), edition_date=None):
+           section="Vertiefungen", previous_editions=(), edition_date=None, min_score=15):
+    if not isinstance(min_score,(int,float)) or isinstance(min_score,bool) or not 0<=min_score<=50:
+        raise ValueError("min_score must be 0..50")
     if section not in ("Vertiefungen","Heute wichtig"):
         raise ValueError("unknown editorial section")
     if limit is None:
@@ -280,7 +282,9 @@ def select(candidates, profile, limit=None, discovery_slots=2,
     for i,item in enumerate(mark_recent_stories(candidates,previous_editions,edition_date)):
         if not all(item.get(k) for k in required): continue
         if not ID.fullmatch(item["id"]) or not valid_url(item["url"]): continue
-        pool.append((score(item,profile,section=section),i,item))
+        value=score(item,profile,section=section)
+        if item.get("editorial_eligible") is False or value<min_score:continue
+        pool.append((value,i,item))
     pool.sort(key=lambda x:(-x[0],x[1]))
     chosen=[]
     remaining=list(pool)
@@ -345,11 +349,11 @@ def missed_candidate_review(pool, selected, profile, section="Vertiefungen",
 
 
 def compare_learning(pool,before,after,new_feedback=False,limit=None,
-                     section="Vertiefungen",previous_editions=(),edition_date=None):
+                     section="Vertiefungen",previous_editions=(),edition_date=None,discovery_slots=2,min_score=15):
     old=[x["id"] for x in select(pool,before,limit,section=section,
-                                 previous_editions=previous_editions,edition_date=edition_date)]
+                                 previous_editions=previous_editions,edition_date=edition_date,discovery_slots=discovery_slots,min_score=min_score)]
     new=[x["id"] for x in select(pool,after,limit,section=section,
-                                 previous_editions=previous_editions,edition_date=edition_date)]
+                                 previous_editions=previous_editions,edition_date=edition_date,discovery_slots=discovery_slots,min_score=min_score)]
     return {"feedback_applied":bool(new_feedback and old!=new),
             "feedback_received":bool(new_feedback),"selection_changed":old!=new,
             "before_ids":old,"after_ids":new,
@@ -391,7 +395,8 @@ def ingest_feedback(profile, issues, topics_by_id):
                 topic=raw_topic.get("topic","") if isinstance(raw_topic,dict) else raw_topic
                 rows.append({"id":row["id"],"rating":row["rating"],
                              "section":section,"reason":str(row.get("reason",""))[:600],
-                             "topic":topic if isinstance(topic,str) else ""})
+                             "topic":topic if isinstance(topic,str) else "",
+                             **({"reason_codes":list(reason_labels("",row["rating"],row["reason_codes"]))} if isinstance(row.get("reason_codes"),list) else {})})
             snapshot={"updated_at":updated,"date":date,"ratings":rows,
                       "comment":str(payload.get("comment",""))[:4000]}
             if stored.get(key)!=snapshot:
@@ -423,7 +428,7 @@ def ingest_feedback(profile, issues, topics_by_id):
         raw_topic=row.get("topic","")
         if not raw_topic:continue
         topic=topic_family(raw_topic,out)
-        reason_labels_for_row=reason_labels(row.get("reason",""),row.get("rating"))
+        reason_labels_for_row=reason_labels(row.get("reason",""),row.get("rating"),row.get("reason_codes"))
         current=exact_evidence.setdefault(topic,Counter())
         current[row["rating"]]+=1
         if row["rating"]=="Sehr relevant":
@@ -483,7 +488,7 @@ def ingest_feedback(profile, issues, topics_by_id):
                 "status":"pending_editorial_review",
                 "note":"Review which articles, quality and novelty differ; never override an explicit user rule."})
     for aid,row in sorted(articles.items(), key=lambda entry:entry[1].get("updated_at","")):
-        labels=reason_labels(row.get("reason",""),row.get("rating"))
+        labels=reason_labels(row.get("reason",""),row.get("rating"),row.get("reason_codes"))
         if "more_of_this" in labels or ("topic_dislike" in labels and
             row.get("rating")!="Nicht relevant"):
             out["editorial_review_queue"].append({
@@ -499,6 +504,18 @@ def ingest_feedback(profile, issues, topics_by_id):
 def evidence_guard(edition,dossier):
     """PRIVATE short excerpts; warning is not an automatic claim of semantic falsity."""
     proofs=dossier.get("proofs",{}); warnings=[]; checked=0
+    strict=dossier.get("schema_version",1)>=2 or str(edition.get("date",""))>="2026-10-29"
+    def field_claims(fields, values, required, key):
+        collected=[]
+        for name in required:
+            value=values.get(name)
+            if value is None:continue
+            claims=fields.get(name,[])
+            if (not isinstance(claims,list) or not claims or
+                " ".join(str(c.get("text","")).strip() for c in claims if isinstance(c,dict))!=str(value).strip()):
+                warnings.append({"id":key,"code":"UNCOVERED_FIELD","field":name})
+            else:collected.extend(claims)
+        return collected
     for item in [*edition.get("articles",[]),*edition.get("headlines",[])]:
         key=item.get("id","?"); proof=proofs.get(key,{})
         if not proof or proof.get("source_url")!=item.get("url"):
@@ -511,7 +528,15 @@ def evidence_guard(edition,dossier):
             warnings.append({"id":key,"code":"MISSING_CLAIMS"});continue
         if " ".join(str(c.get("text","")).strip() for c in claims)!=item.get("summary","").strip():
             warnings.append({"id":key,"code":"UNCOVERED_SUMMARY"})
+        extras=[name for name in ("why_selected","novelty_explanation","update_evidence","source_context") if item.get(name)]
+        if strict:
+            extras.extend(["title","source","published_at","article_type","region"])
+            if item.get("evidence_level")!=level:
+                warnings.append({"id":key,"code":"EVIDENCE_LEVEL_MISMATCH"})
+        claims=claims+field_claims(proof.get("fields",{}),item,extras,key)
         for claim in claims:
+            if not isinstance(claim,dict):
+                warnings.append({"id":key,"code":"INVALID_CLAIM"});continue
             checked+=1
             sentence=str(claim.get("text","")).strip()
             excerpt=str(claim.get("source_excerpt","")).strip()
@@ -523,7 +548,13 @@ def evidence_guard(edition,dossier):
                 warnings.append({"id":key,"code":"DATE_UNCONFIRMED","month":month})
             actors={v for v in PERSON.findall(sentence) if v not in excerpt}
             acronyms={v for v in ACRONYM.findall(sentence) if v not in excerpt}
+            entity_review=claim.get("entity_review",{})
+            non_entities=entity_review.get("non_entities",{})
+            translations=entity_review.get("translations",{})
             for actor in sorted(actors|acronyms):
+                # Explicit private semantic review of regex false positives and translations.
+                if isinstance(non_entities.get(actor),str) and len(non_entities[actor])>=12:continue
+                if isinstance(translations.get(actor),str) and translations[actor] and translations[actor] in excerpt:continue
                 warnings.append({"id":key,"code":"ACTOR_UNCONFIRMED","actor":actor[:80]})
             for x in QUOTE.findall(sentence):
                 if x not in excerpt:warnings.append({"id":key,"code":"QUOTE_MISMATCH","quote":x[:90]})
@@ -531,6 +562,18 @@ def evidence_guard(edition,dossier):
                 warnings.append({"id":key,"code":"CAUSALITY_UNCONFIRMED","claim":sentence[:90]})
             if level=="headline" and len(sentence.split())>30:
                 warnings.append({"id":key,"code":"HEADLINE_ONLY_OVERREACH"})
+    if strict:
+        values={k:edition[k] for k in ("editorial_note","learning_note","correction_note") if edition.get(k)}
+        for i,pair in enumerate(edition.get("editorial_comparisons",[])):
+            for name in ("selected_title","selected_url","alternative_title","alternative_url"):
+                values[f"editorial_comparisons.{i}.{name}"]=pair.get(name,"")
+        for i,row in enumerate(edition.get("new_sources",[])):
+            for name in ("name","why","example_url"):
+                values[f"new_sources.{i}.{name}"]=row.get(name,"")
+        for claim in field_claims(dossier.get("edition_fields",{}),values,values,"edition"):
+            checked+=1
+            if claim.get("supported") is not True or len(str(claim.get("source_excerpt","")))<12:
+                warnings.append({"id":"edition","code":"UNSUPPORTED_FIELD"})
     return {"status":"warn" if warnings else "pass","warning_count":len(warnings),
             "claims_checked":checked,"warnings":warnings,
             "note":"Mechanical guard only; editorial semantic check remains obligatory"}
@@ -606,6 +649,7 @@ def main():
     p.add_argument("--benchmark-edition",help="Optional real published V1 reference JSON; read-only")
     p.add_argument("--section",choices=["Vertiefungen","Heute wichtig"],default="Vertiefungen")
     p.add_argument("--limit",type=int)
+    p.add_argument("--selection",help="Actual selection settings JSON shared with private snapshot")
     p.add_argument("--history-dir",help="V3 data directory with index and historical editions")
     p.add_argument("--as-of-date",help="YYYY-MM-DD; required if --history-dir used")
     p.add_argument("--require-dossier",action="store_true",
@@ -614,12 +658,17 @@ def main():
     def read(path):
         if not path:raise ValueError("required path missing")
         with open(path,encoding="utf-8") as f:return json.load(f)
+    settings={"limit":a.limit}
+    if a.selection:
+        settings=read(a.selection)["articles" if a.section=="Vertiefungen" else "headlines"]
+        if set(settings)!={"limit","discovery_slots","min_score"}:p.error("invalid selection parameters")
+        if a.limit is not None and a.limit!=settings["limit"]:p.error("--limit conflicts with frozen settings")
     if a.action=="verify":
         out={"errors":validate_edition(read(a.edition),
             read(a.dossier) if a.dossier else None,a.require_dossier)}
     elif a.action=="rank":
         if a.history_dir and not a.as_of_date: p.error("--as-of-date required with --history-dir")
-        out=select(read(a.candidates),read(a.profile),limit=a.limit,section=a.section,
+        out=select(read(a.candidates),read(a.profile),**settings,section=a.section,
                    previous_editions=load_edition_history(a.history_dir) if a.history_dir else (),
                    edition_date=a.as_of_date)
     elif a.action=="quality":
@@ -627,7 +676,7 @@ def main():
         pool=read(a.candidates)
         profile=read(a.profile)
         history=load_edition_history(a.history_dir) if a.history_dir else []
-        selected=select(pool,profile,limit=a.limit,section=a.section,
+        selected=select(pool,profile,**settings,section=a.section,
                         previous_editions=history,edition_date=a.as_of_date)
         out=editorial_mix_report(pool,selected,section=a.section)
         out["calibration"]=calibration_review(pool,section=a.section)
@@ -655,7 +704,7 @@ def main():
     elif a.action=="compare":
         if a.history_dir and not a.as_of_date: p.error("--as-of-date required with --history-dir")
         out=compare_learning(read(a.candidates),read(a.before),read(a.profile),
-                             a.new_feedback,limit=a.limit,section=a.section,
+                             a.new_feedback,**settings,section=a.section,
                              previous_editions=load_edition_history(a.history_dir) if a.history_dir else (),
                              edition_date=a.as_of_date)
     else:

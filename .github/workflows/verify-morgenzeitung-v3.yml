@@ -39,16 +39,8 @@ jobs:
         run: |
           python3 - <<'PY'
           import json, pathlib, subprocess, sys
-          folder=pathlib.Path('Privat/Persoenliche-Zeitung/data')
-          index=json.loads((folder/'index.json').read_text(encoding='utf-8'))
-          days=index.get('dates',[])
-          assert days and days==sorted(set(days),reverse=True),"Invalid date index"
-          disk={p.stem for p in folder.glob('????-??-??.json')}
-          assert disk==set(days),"Orphan/unlisted edition JSON"
-          for day in days:
-              path=folder/(day+'.json')
-              edition=json.loads(path.read_text(encoding='utf-8'))
-              assert edition['date']==day,"Edition date mismatch"
+          from scripts.morgenzeitung_v3_private_ci import public_edition_paths
+          for path in public_edition_paths('.'):
               subprocess.run([sys.executable,'-m','scripts.morgenzeitung_v3_engine',
                 'verify','--edition',str(path)],check=True)
               subprocess.run([sys.executable,'-m','scripts.morgenzeitung_v3_release',

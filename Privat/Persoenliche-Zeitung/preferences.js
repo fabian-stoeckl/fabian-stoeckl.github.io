@@ -101,7 +101,9 @@ async function showPreferenceSummary() {
     for(const item of items.filter(r=>r.value).slice(-7).reverse()){
       const meta=dateMap.get(item.date+':'+item.id);
       const title=meta?.title||'Artikel '+item.id.slice(0,8);
-      const text=item.value+': '+title+(item.reason?' – '+item.reason:'')+' ('+item.date+')';
+      const labels={topic_dislike:'Thema unpassend',too_shallow:'Zu oberflächlich',already_known:'Schon bekannt',too_niche:'Zu speziell',one_sided:'Einseitige Perspektive',more_of_this:'Mehr davon'};
+      const reasons=[...(item.reason_codes||[]).map(c=>labels[c]).filter(Boolean),item.reason||''].filter(Boolean).join(' · ');
+      const text=item.value+': '+title+(reasons?' – '+reasons:'')+' ('+item.date+')';
       list.append(el('li',text));
     }
     summary.replaceChildren(top,count);

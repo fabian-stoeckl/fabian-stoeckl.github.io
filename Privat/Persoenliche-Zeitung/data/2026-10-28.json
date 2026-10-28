@@ -16,7 +16,8 @@
       "published_at": "2026-10-27",
       "summary": "Die EU fordert ihre Mitgliedstaaten auf, sich auf eine mögliche Erwärmung um drei Grad vorzubereiten.",
       "topic": "Klima & Energie",
-      "access": "headline"
+      "evidence_level": "headline",
+      "article_type": "report"
     },
     {
       "id": "28a0000000000006",
@@ -24,8 +25,11 @@
       "url": "https://itif.org/publications/2026/10/27/comments-to-the-european-commission-regarding-its-diversify-eu-proposal/",
       "source": "ITIF",
       "published_at": "2026-10-27",
-      "summary": "Europa soll seine Lieferketten stärker auf verbündete Produktionsstandorte ausrichten und chinesische Handelspraktiken gezielter adressieren.",
-      "topic": "Industrie & Welthandel"
+      "summary": "ITIF empfiehlt, europäische Lieferketten stärker auf verbündete Produktionsstandorte auszurichten und gemeinsam auf chinesische Handelspraktiken zu reagieren.",
+      "topic": "Industrie & Welthandel",
+      "evidence_level": "read",
+      "article_type": "analysis",
+      "source_context": "Stellungnahme von ITIF an die Europäische Kommission."
     },
     {
       "id": "28a000000000000b",
@@ -35,7 +39,8 @@
       "published_at": "2026-10-27",
       "summary": "Quoten für chinesische Hybridautos helfen europäischen Autobauern laut Kommentar langfristig kaum; entscheidend sei mehr Wettbewerbsfähigkeit.",
       "topic": "Industrie & Welthandel",
-      "access": "teaser"
+      "evidence_level": "teaser",
+      "article_type": "opinion"
     },
     {
       "id": "28a0000000000001",
@@ -44,7 +49,9 @@
       "source": "Handelsblatt",
       "published_at": "2026-10-27",
       "summary": "Der KI-Boom hebt die Erwartungen an Technologiekonzerne; sein Nutzen für die übrige Wirtschaft bleibt laut Analyse bisher begrenzt.",
-      "topic": "KI & Finanzierung"
+      "topic": "KI & Finanzierung",
+      "evidence_level": "read",
+      "article_type": "analysis"
     },
     {
       "id": "28a0000000000007",
@@ -52,9 +59,10 @@
       "url": "https://www.bruegel.org/analysis/proposing-heating-efficiency-standards-europe",
       "source": "Bruegel",
       "published_at": "2026-10-27",
-      "summary": "Heizeffizienzstandards sollen in Europa einen künftigen Marktmechanismus für Wärmepumpen ermöglichen.",
+      "summary": "Bruegel schlägt Heizeffizienzstandards als Grundlage für einen künftigen europäischen Marktmechanismus zur Förderung von Wärmepumpen vor.",
       "topic": "Energie & Industrie",
-      "access": "teaser"
+      "evidence_level": "teaser",
+      "article_type": "analysis"
     },
     {
       "id": "28a0000000000005",
@@ -62,8 +70,10 @@
       "url": "https://www.theguardian.com/environment/2026/oct/27/super-rich-double-dividend-climate-crisis-oxfam",
       "source": "The Guardian",
       "published_at": "2026-10-27",
-      "summary": "Reiche verdienen einer Studie zufolge sowohl an emissionsintensiven Geschäften als auch an der Bewältigung von Klimafolgen.",
-      "topic": "Klima & Energie"
+      "summary": "Laut einer im Guardian beschriebenen Studie von Oxfam verdienen besonders Vermögende sowohl an emissionsintensiven Geschäften als auch an der Bewältigung von Klimafolgen.",
+      "topic": "Klima & Energie",
+      "evidence_level": "read",
+      "article_type": "investigation"
     },
     {
       "id": "28a000000000000a",
@@ -72,7 +82,9 @@
       "source": "Die Presse",
       "published_at": "2026-10-25",
       "summary": "Österreich könnte trotz wirtschaftlicher Schwäche ein Innovationsstandort sein, argumentiert ein Leitartikel, der weitreichende Reformen fordert.",
-      "topic": "Produktivität & Wettbewerbsfähigkeit"
+      "topic": "Produktivität & Wettbewerbsfähigkeit",
+      "evidence_level": "read",
+      "article_type": "opinion"
     },
     {
       "id": "28a0000000000009",
@@ -80,8 +92,10 @@
       "url": "https://www.theguardian.com/environment/2026/oct/27/burnham-sleepwalking-climate-disaster-campaigners",
       "source": "The Guardian",
       "published_at": "2026-10-27",
-      "summary": "Umweltverbände in Großbritannien warnen vor der gemeinsamen Klimawirkung von Ölprojekten, Flughafenausbau und schwächeren Vorgaben für Elektroautos und Wärmepumpen.",
-      "topic": "Klima & Energie"
+      "summary": "Umweltverbände warnen vor der kumulierten Klimawirkung anstehender britischer Entscheidungen über Ölprojekte, Flughafenausbau, Elektroautos und Wärmepumpenförderung.",
+      "topic": "Klima & Energie",
+      "evidence_level": "read",
+      "article_type": "report"
     },
     {
       "id": "28a000000000000c",
@@ -91,7 +105,8 @@
       "published_at": "2026-10-24",
       "summary": "Italien will Gaspreise subventionieren, um Strom günstiger zu machen; Experten beurteilen den Eingriff skeptisch.",
       "topic": "Energie & Industrie",
-      "access": "teaser"
+      "evidence_level": "teaser",
+      "article_type": "analysis"
     },
     {
       "id": "28a0000000000002",
@@ -99,9 +114,10 @@
       "url": "https://www.wiwo.de/politik/konjunktur/chinas-wirtschaft-chinas-industriegewinne-steigen-kraeftiger-kluft-zwischen-branchen-waechst/100265155.html",
       "source": "WirtschaftsWoche",
       "published_at": "2026-10-27",
-      "summary": "Gewinne im chinesischen Industriesektor legten deutlich zu, während sich die Elektronik- und Möbelbranche sehr unterschiedlich entwickelten.",
+      "summary": "Die Gewinne chinesischer Hersteller von Computern und anderer Elektronikausrüstung haben sich laut Beitrag mehr als verdoppelt; in der Möbelindustrie brachen sie um mehr als die Hälfte ein.",
       "topic": "Industrie & Welthandel",
-      "access": "teaser"
+      "evidence_level": "teaser",
+      "article_type": "report"
     },
     {
       "id": "28a0000000000003",
@@ -109,8 +125,10 @@
       "url": "https://www.wsj.com/economy/central-banking/french-consumer-confidence-sinks-to-13-year-low-amid-protests-bond-selloff-d7002c30",
       "source": "The Wall Street Journal",
       "published_at": "2026-10-27",
-      "summary": "Frankreich erlebt den niedrigsten Stand der Verbraucherstimmung seit Jahren; Proteste und Anleiheverkäufe prägen das Umfeld.",
-      "topic": "Wirtschaft & Fiskalpolitik"
+      "summary": "Frankreichs Verbraucherstimmung fiel laut Bericht auf den niedrigsten Stand seit 2013. Der Beitrag ordnet dies in ein Umfeld von Protesten und Anleiheverkäufen ein.",
+      "topic": "Wirtschaft & Fiskalpolitik",
+      "evidence_level": "read",
+      "article_type": "report"
     },
     {
       "id": "28a0000000000008",
@@ -118,8 +136,10 @@
       "url": "https://www.aljazeera.com/economy/2026/10/27/south-koreas-gdp-growth-beats-forecasts-amid-ai-boom",
       "source": "Al Jazeera",
       "published_at": "2026-10-27",
-      "summary": "Südkorea wächst wirtschaftlich stärker als erwartet, gestützt durch hohe Nachfrage nach Halbleitern.",
-      "topic": "Industrie & Innovation"
+      "summary": "Südkoreas Wirtschaft wuchs laut Bericht um 3,4 Prozent gegenüber dem Vorjahr und damit stärker als erwartet. Der Beitrag nennt eine hohe Halbleiternachfrage als Stütze.",
+      "topic": "Industrie & Innovation",
+      "evidence_level": "read",
+      "article_type": "report"
     }
   ],
   "headlines": [
@@ -129,8 +149,10 @@
       "url": "https://apnews.com/article/9962f87d11534908f553146f07039e92",
       "source": "Associated Press",
       "published_at": "2026-10-28",
-      "summary": "Nach der Parlamentswahl in Israel zeigen die Nachwahlbefragungen keinen klaren Sieger; die Regierungsbildung bleibt offen.",
-      "region": "International"
+      "summary": "Nach der Parlamentswahl in Israel gibt es laut Bericht keinen klaren Sieger und keinen offensichtlichen Weg zu einer Regierungsmehrheit.",
+      "region": "International",
+      "evidence_level": "read",
+      "article_type": "report"
     },
     {
       "id": "28b0000000000003",
@@ -139,7 +161,9 @@
       "source": "Süddeutsche Zeitung",
       "published_at": "2026-10-27",
       "summary": "Frontex soll mehr Geld und Personal erhalten.",
-      "region": "International"
+      "region": "International",
+      "evidence_level": "read",
+      "article_type": "report"
     },
     {
       "id": "28b0000000000006",
@@ -149,7 +173,8 @@
       "published_at": "2026-10-27",
       "summary": "Eine saudisch geführte Koalition meldet abgewehrte Angriffe der Huthi; gleichzeitig laufen regionale Gespräche zur Deeskalation.",
       "region": "International",
-      "access": "teaser"
+      "evidence_level": "teaser",
+      "article_type": "report"
     },
     {
       "id": "28b000000000000a",
@@ -158,7 +183,10 @@
       "source": "Europäische Kommission",
       "published_at": "2026-10-27",
       "summary": "Die Europäische Kommission hat einen neuen Rahmen vorgestellt, der die Vorbereitung auf Klimarisiken in verschiedenen Politikbereichen stärken soll.",
-      "region": "International"
+      "region": "International",
+      "evidence_level": "read",
+      "article_type": "report",
+      "source_context": "Mitteilung der Europäischen Kommission."
     },
     {
       "id": "28b0000000000009",
@@ -166,9 +194,10 @@
       "url": "https://www.euronews.com/2026/10/27/what-to-expect-from-the-fed-as-warsh-weighs-hot-inflation-oil-and-us-midterms",
       "source": "Euronews",
       "published_at": "2026-10-27",
-      "summary": "Die US-Notenbank steht vor einer Zinsentscheidung unter dem Eindruck hoher Inflation und gestiegener Energiepreise.",
+      "summary": "Lesehinweis zur bevorstehenden Entscheidung der amerikanischen Notenbank im Umfeld hoher Inflation, der Ölpreisentwicklung und der Zwischenwahlen.",
       "region": "International",
-      "access": "headline"
+      "evidence_level": "headline",
+      "article_type": "explainer"
     },
     {
       "id": "28b0000000000002",
@@ -177,7 +206,9 @@
       "source": "Reuters",
       "published_at": "2026-10-27",
       "summary": "Der israelische Schekel stieg am Wahltag deutlich; die hohe Wahlbeteiligung stärkte Erwartungen eines Regierungswechsels.",
-      "region": "International"
+      "region": "International",
+      "evidence_level": "read",
+      "article_type": "report"
     },
     {
       "id": "28b0000000000008",
@@ -186,7 +217,9 @@
       "source": "Süddeutsche Zeitung",
       "published_at": "2026-10-27",
       "summary": "Nach seiner Wahlniederlage soll sich der brasilianische Kandidat Flávio Bolsonaro in die USA abgesetzt haben; gegen ihn wird ermittelt.",
-      "region": "International"
+      "region": "International",
+      "evidence_level": "read",
+      "article_type": "report"
     },
     {
       "id": "28b000000000000c",
@@ -194,8 +227,10 @@
       "url": "https://www.lemonde.fr/en/france/article/2026/10/27/racist-attack-in-paris-suburb-tributes-across-france-reflect-shared-outrage-and-political-divides_6765347_7.html",
       "source": "Le Monde",
       "published_at": "2026-10-27",
-      "summary": "Nach einem rassistisch motivierten tödlichen Angriff fanden landesweit Trauerkundgebungen statt; über die politische Reaktion besteht Streit.",
-      "region": "International"
+      "summary": "Le Monde berichtet über Trauerkundgebungen nach einem tödlichen rassistischen Angriff und über unterschiedliche politische Reaktionen.",
+      "region": "International",
+      "evidence_level": "read",
+      "article_type": "report"
     },
     {
       "id": "28b0000000000004",
@@ -204,7 +239,9 @@
       "source": "Reuters",
       "published_at": "2026-10-27",
       "summary": "Lehrergewerkschaften in Frankreich halten die angekündigten Bildungsreformen nach anhaltenden Protesten für unzureichend.",
-      "region": "International"
+      "region": "International",
+      "evidence_level": "read",
+      "article_type": "report"
     },
     {
       "id": "28b0000000000011",
@@ -214,7 +251,8 @@
       "published_at": "2026-10-28",
       "summary": "Die internationalen Aktienmärkte legten zu, während Anleger weiter auf den Aufschwung durch künstliche Intelligenz setzen.",
       "region": "International",
-      "access": "teaser"
+      "evidence_level": "teaser",
+      "article_type": "report"
     },
     {
       "id": "28b000000000000b",
@@ -222,8 +260,11 @@
       "url": "https://openai.com/index/building-scientific-understanding-with-academic-communities/",
       "source": "OpenAI",
       "published_at": "2026-10-26",
-      "summary": "Forschende kündigen neue Ergebnisse aus Mathematik, theoretischer Informatik und Physik an.",
-      "region": "International"
+      "summary": "OpenAI kündigt nach eigenen Angaben neue wissenschaftliche Ergebnisse aus Mathematik, Informatik und Physik an.",
+      "region": "International",
+      "evidence_level": "read",
+      "article_type": "report",
+      "source_context": "Unternehmensmitteilung von OpenAI; keine unabhängige Bestätigung der Ergebnisse."
     },
     {
       "id": "28b0000000000007",
@@ -233,7 +274,8 @@
       "published_at": "2026-10-27",
       "summary": "Lula könnte mit seinem Wahlsieg die Zusammenarbeit der BRICS-Staaten stabilisieren, argumentiert eine Analyse.",
       "region": "International",
-      "access": "teaser"
+      "evidence_level": "teaser",
+      "article_type": "analysis"
     },
     {
       "id": "28b000000000000f",
@@ -242,7 +284,9 @@
       "source": "Reuters",
       "published_at": "2026-10-26",
       "summary": "Cyberangriffe stören japanische Onlineangebote; betroffene Firmen beginnen, ihre Kunden zu entschädigen.",
-      "region": "International"
+      "region": "International",
+      "evidence_level": "read",
+      "article_type": "report"
     },
     {
       "id": "28b000000000000e",
@@ -252,7 +296,8 @@
       "published_at": "2026-10-27",
       "summary": "Der deutsche Bundeskanzler will bei seinem Besuch in Singapur die strategische Partnerschaft mit dem Stadtstaat ausbauen.",
       "region": "International",
-      "access": "teaser"
+      "evidence_level": "teaser",
+      "article_type": "report"
     },
     {
       "id": "28b0000000000005",
@@ -261,7 +306,9 @@
       "source": "Der Standard",
       "published_at": "2026-10-27",
       "summary": "Reparaturarbeiten in Schwechat gingen mit Rauchentwicklung einher; eine Person wurde vorsorglich ins Krankenhaus gebracht.",
-      "region": "Österreich"
+      "region": "Österreich",
+      "evidence_level": "read",
+      "article_type": "report"
     }
   ],
   "selection_audit": {
@@ -279,11 +326,13 @@
   "fact_audit": {
     "status": "pass",
     "warning_count": 0,
-    "claims_checked": 27,
-    "audit_version": 2,
-    "edition_sha256": "08abddd44ab32505c48e7e1870cd4d0c3eb027ce19ee12c77fe6e465e640215c",
-    "dossier_sha256": "b36686728cf52eaf8cfd1518d3ca2840e47895cfc2f604bdcd8ec94a00a17ed9",
-    "reviewed_at": "2026-10-28T03:56:01.008Z",
+    "claims_checked": 156,
+    "audit_version": 3,
+    "edition_sha256": "4211733b9917b78dc2e8adf304e296a19e133832db80730960c091e531496e72",
+    "dossier_sha256": "2d55fd7f97d43467cb8f0524bdfcb0249a201e76211bb9f161a6cb47808b69c0",
+    "reviewed_at": "2026-10-28T11:45:22.103200Z",
     "review_method": "private_dossier_and_editorial_review"
-  }
+  },
+  "corrected_at": "2026-10-28T11:45:22.103200Z",
+  "correction_note": "Redaktionell korrigiert: Aussagen präzisiert und Quellengrundlagen ergänzt. Die Artikelauswahl und bisherigen Bewertungen bleiben erhalten."
 }

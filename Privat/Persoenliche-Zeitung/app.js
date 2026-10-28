@@ -2,7 +2,7 @@
 // One explicit browser-owned state object; edition/config remain stable V3 hooks.
 let config, edition, latestDate;
 const readerState={visibleArticles:[],visibleHeadlines:[],ratingDrafts:{},commentDrafts:{},
-  commentBaselines:{},loadSequence:0,saving:false};
+  commentBaselines:{},ratingBaselines:{},loadSequence:0,saving:false};
 const draftKey=a=>edition.date+':'+(a.id||a.url);
 function feedbackStatus(msg){$('feedback-status').textContent=msg;for(const id of ['news-feedback-status','features-feedback-status'])if($(id))$(id).textContent=msg;}
 const $=id=>document.getElementById(id);
@@ -28,10 +28,12 @@ function githubRating(a,section='Vertiefungen') {
   box.append(el('legend','Wie relevant ist dieser Artikel?'));
   const key=draftKey(a);
   box.dataset.ratingKey=key;
+  box.dataset.reasonCodes=JSON.stringify(readerState.ratingDrafts[key]?.reason_codes||[]);
+  box.addEventListener('reasoncodes',e=>{readerState.ratingDrafts[key]={value:'',reason:'',section,...readerState.ratingDrafts[key],reason_codes:e.detail,dirty:true};feedbackStatus('Begründung vorgemerkt.');});
   for(const value of ['Sehr relevant','Teilweise relevant','Nicht relevant']) {
     const label=el('label');const input=el('input');input.type='radio';input.name='rating-'+key;
     input.value=value;input.checked=readerState.ratingDrafts[key]?.value===value;
-    input.onchange=()=>{readerState.ratingDrafts[key]={value,reason:readerState.ratingDrafts[key]?.reason||'',section};feedbackStatus('Auswahl vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};
+    input.onchange=()=>{readerState.ratingDrafts[key]={...readerState.ratingDrafts[key],value,reason:readerState.ratingDrafts[key]?.reason||'',section,dirty:true};feedbackStatus('Auswahl vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};
     label.append(input,el('span',value));box.append(label);
   }
   const details=el('details',undefined,'rating-reason');
@@ -39,7 +41,7 @@ function githubRating(a,section='Vertiefungen') {
   const label=el('label','Deine Begründung','reason');const reason=el('textarea');
   reason.rows=2;reason.maxLength=600;reason.placeholder='Was war hilfreich oder hat dir gefehlt?';
   reason.value=readerState.ratingDrafts[key]?.reason||'';details.open=!!reason.value;
-  reason.oninput=()=>{readerState.ratingDrafts[key]={value:readerState.ratingDrafts[key]?.value||'',reason:reason.value,section};feedbackStatus('Änderung vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};
+  reason.oninput=()=>{readerState.ratingDrafts[key]={...readerState.ratingDrafts[key],value:readerState.ratingDrafts[key]?.value||'',reason:reason.value,section,dirty:true};feedbackStatus('Änderung vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};
   label.append(reason);details.append(label);box.append(details);
   return box;
 }
@@ -59,8 +61,7 @@ function article(a,index,section='Vertiefungen'){
   const body=el('div',undefined,'body');
   const title=el('h2');title.append(link(a.title,a.url));
   body.append(title,el('p',a.summary,isHeadline?'news-summary':undefined));
-  if(a.evidence_level==='teaser'||a.level==='teaser')
-    body.append(el('p','Zusammenfassung beruht ausschließlich auf dem tatsächlich ausgewerteten Vorspann.','small'));
+  if(a.source_context)body.append(el('p',a.source_context,'small'));
   if(!isHeadline&&typeof a.novelty_explanation==='string'&&a.novelty_explanation.trim())
     body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty_explanation,'novelty'));
   body.append(githubRating(a,section));node.append(intro,body);return node;
@@ -124,6 +125,9 @@ function render(){
   $('edition-meta').textContent=issueDay+' · Stand '+issueTime+' Uhr (Wien)'+(e.preview?' · Vorschau':'');
   $('feedback-section').hidden=false;
   updatePublicationStatus(e);
+  let correction=$('correction-note');
+  if(!correction){correction=el('p','','small');correction.id='correction-note';$('edition-meta').after(correction);}
+  correction.textContent=e.correction_note||'';correction.hidden=!e.correction_note;
   // The edition's free-form limitations are editorial notes, not errors. Display
   // only explicitly flagged operational issues or genuinely filtered duplicates.
   const errors=[...(Array.isArray(e.errors)?e.errors:[]),...(Array.isArray(e.warnings)?e.warnings:[])];
@@ -145,10 +149,13 @@ async function restoreSavedRatings(){
       const id=await GitHubPaper.ratingId(item);
       if(edition.date!==date)return;
       const savedRow=byId.get(id),key=draftKey(item);
-      if(!savedRow||readerState.ratingDrafts[key])continue;
-      readerState.ratingDrafts[key]={value:savedRow.value,reason:savedRow.reason,section:savedRow.section};
+      if(!Object.hasOwn(readerState.ratingBaselines,key))readerState.ratingBaselines[key]=savedRow||null;
+      if(!savedRow||readerState.ratingDrafts[key]?.dirty)continue;
+      readerState.ratingDrafts[key]={value:savedRow.value,reason:savedRow.reason,section:savedRow.section,reason_codes:savedRow.reason_codes||[],dirty:false};
       const field=[...document.querySelectorAll('.rating-dots')].find(x=>x.dataset.ratingKey===key);
       if(!field)continue;
+      field.dataset.reasonCodes=JSON.stringify(savedRow.reason_codes||[]);
+      RatingReasons.sync(field);
       for(const input of field.querySelectorAll('input[type=radio]'))input.checked=input.value===savedRow.value;
       const note=field.querySelector('textarea');
       if(note)note.value=savedRow.reason;
@@ -214,8 +221,8 @@ async function collectDraftRatings(date,groups){
   for(const [items,section] of groups){
     for(const item of items){
       const draft=readerState.ratingDrafts[date+':'+(item.id||item.url)];
-      if(draft&&(draft.value||draft.reason.trim()))
-        selected.push({id:await GitHubPaper.ratingId(item),value:draft.value||'',reason:draft.reason||'',section});
+      if(draft?.dirty&&(draft.value||draft.reason.trim()||draft.reason_codes?.length))
+        selected.push({id:await GitHubPaper.ratingId(item),value:draft.value||'',reason:draft.reason||'',reason_codes:draft.reason_codes||[],section});
     }
   }
   return selected;
@@ -252,7 +259,13 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
     feedbackStatus('Wird gemeinsam auf GitHub gespeichert …');
     $('feedback-confirmation').hidden=true;
     const result=await DirectFeedback.submit(submittedEdition.date,selected,comment,token,
-      localStorage,fetch,{comparisonOnly:unchanged});
+      localStorage,fetch,{comparisonOnly:unchanged,baselineRatings:Object.fromEntries(selected.map(row=>[row.id,readerState.ratingBaselines[submittedEdition.date+':'+row.id]||null]))});
+    for(const row of selected){
+      const key=submittedEdition.date+':'+row.id;
+      readerState.ratingBaselines[key]=row;
+      const current=readerState.ratingDrafts[key];
+      if(current&&current.value===row.value&&current.reason===row.reason&&JSON.stringify(current.reason_codes||[])===JSON.stringify(row.reason_codes||[]))current.dirty=false;
+    }
     // Remember the exact confirmed canonical comment as the next baseline.
     if(typeof result.feedback==='string'){
       readerState.commentBaselines[submittedEdition.date]=result.feedback;

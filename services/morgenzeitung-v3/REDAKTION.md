@@ -1,6 +1,6 @@
 # Persönliche Zeitung – verbindlicher Redaktionsvertrag
 
-Stand 28. Oktober 2026, V3.5. Dieser Vertrag gilt für die einzige produktive Persönliche Zeitung. Wichtige früher vereinbarte Details sind unten integriert; ein zweiter paralleler Redaktionsvertrag entfällt. Niemals V1, Morgenzeitung neu oder ETFs ändern.
+Stand 28. Oktober 2026, V3.6. Dieser Vertrag gilt für die einzige produktive Persönliche Zeitung. Wichtige früher vereinbarte Details sind unten integriert; ein zweiter paralleler Redaktionsvertrag entfällt. Niemals V1, Morgenzeitung neu oder ETFs ändern.
 
 ## 1. Journalistisches Produkt
 
@@ -83,3 +83,32 @@ Die private Freigabe bleibt faktisch und redaktionell bindend. Für **neue Ausga
 Im Browser werden redaktionell ausgewählte Artikel **nicht** allein wegen ähnlicher Überschriften oder gleicher Ereigniskennungen entfernt: nur dieselbe kanonische Original-URL wird doppelt ausgeblendet. Die Python-Ausgabenprüfung verhindert außerdem doppelte kanonische Links, auch wenn Trackingparameter abweichen. Zugriffskategorien wie `access=teaser/full` sind keine Bescheinigung über tatsächlich ausgewertete Texte; hierfür gilt nur explizite private `evidence_level`-Dokumentation. Die Browser- und Python-Lernparser verwenden denselben strukturierten Testmarker (`test:true`) und einen realen `origin:website-explicit`; das bloße Wort `TEST: true` im Lesekommentar ist kein Testsignal.
 
 Die Rückmeldeoberfläche unterscheidet bereits geladene, **unveränderte** Kommentare von neuen expliziten Lesertexten. Beim Speichern nur neuer Bewertungen oder freiwilliger Vergleichsurteile bleibt zwischenzeitlich neu eingegangener privater Kommentartext anderer Geräte erhalten. GitHub-Issues-PATCH ist weiterhin keine transaktionale Sperre; erkennbare Überlagerungen werden durch erneutes Einlesen und enges Zusammenführen begrenzt korrigiert. Alte Feedback-Kennungen, Profile und aktuelle Bewertungen bleiben vollständig erhalten.
+
+## V3.6 – verbindliche Korrekturen nach journalistischem und technischem Audit
+
+Diese Regeln präzisieren den bisherigen Vertrag; widersprechende historische Hinweise zur unveränderten Ausgabe vom 28.10. sind durch die ausdrücklich freigegebene redaktionelle Korrektur überholt. Originaldossiers, Kandidaten und Bewertungen bleiben privat unverändert erhalten. Die korrigierten öffentlichen Ausgaben behalten Artikel-IDs und Auswahl, dokumentieren `corrected_at` und `correction_note` und verwenden vollständig neu berechnete v3-Receipts.
+
+### Recherche und echte Auswahl
+
+- Vor der endgültigen Auswahl mehrere ernsthafte Alternativen für die vorderen Plätze suchen. Ein Pool, aus dem mehr als 70 Prozent übernommen werden, löst eine erneute redaktionelle Suche aus; das ist ein Arbeitsauftrag, keine künstliche Mindestzahl von Kandidaten. Die tatsächlich durchgeführten Suchanfragen, gefundenen Alternativen und Ablehnungsgründe privat dokumentieren. Leere Suchergebnisse ehrlich protokollieren.
+- Bei unter 20 Prozent Österreich-Meldungen zusätzlich österreichische Politik, Konjunktur, Industrie und öffentliche Finanzen recherchieren und den Ausgang privat festhalten. Keine Länderquote und kein Verdrängen wichtiger Weltnachrichten allein wegen Herkunft.
+- `analysis_value` und `context_value` vor Auswahl anhand tatsächlich erkennbarer Mechanismen und Einordnung beurteilen; wenn unbekannt, unbekannt lassen und den offenen Punkt im Qualitätsbericht prüfen. Aus fehlendem Volltext weder Bonus noch Malus ableiten. `editorial_eligible:false` schließt redaktionell ungeeignete Kandidaten aus. Standarduntergrenze `min_score:15` vermeidet offenkundige Füllartikel; Qualität bleibt eine redaktionelle Entscheidung. Weniger als die Zielzahl veröffentlichen, wenn der Pool nicht trägt.
+- Vertiefungen vermitteln einen belegten Mechanismus, eine relevante Größenordnung, einen Zielkonflikt oder eine neue Perspektive, sofern die Originalquelle das hergibt. Überschriftenbasierte Empfehlungen heißen Lesehinweise. Unternehmensmitteilungen, Thinktank-Empfehlungen und Regierungsaussagen klar dem Urheber zuschreiben; keine Empfehlung als beschlossene Politik darstellen.
+
+### Einheitlicher Export und vollständige Belege
+
+- Vor dem Audit `python3 -m scripts.morgenzeitung_v3_release prepare --edition DRAFT.json --candidates ORIGINAL.json --dossier DOSSIER.json` ausführen und die Ausgabe als öffentliche Arbeitsfassung verwenden. Nur erlaubte Metadaten werden übernommen; private Auszüge, Bewertungen und Scores bleiben privat. Quellentiefe kommt ausschließlich aus dem Dossier, nicht aus `access`.
+- Neue Dossiers verwenden `schema_version:2`. Neben `claims` für die Zusammenfassung stehen in `proofs[id].fields` getrennte Claim-Listen für `title`, `source`, `published_at` sowie vorhandene `article_type`, `region`, `source_context`, `why_selected`, `novelty_explanation` und `update_evidence`. Jede Liste enthält tatsächlichen Text, echten Belegauszug/Originalmetadaten und die nach Prüfung gesetzte Unterstützung. Das ist keine Erlaubnis, Auszüge zu erfinden oder eigene Zusammenfassungen als Originalquelle auszugeben.
+- Öffentliche redaktionelle Hinweise, Lernhinweise und Alternativvergleiche erhalten entsprechende Nachweise in `edition_fields` (bei Vergleichen Pfade wie `editorial_comparisons.0.alternative_title`). Metadatenprovenienz und überprüfte Textpassagen getrennt kennzeichnen. Übersetzungen und Fehlalarme der Namensheuristik nur nach echter Einzelfallprüfung mit `entity_review.translations` beziehungsweise begründeten `non_entities` auflösen; niemals pauschal ignorieren.
+- Alle öffentlich erreichbaren regulären und Sonderausgaben stehen in `services/morgenzeitung-v3/editions.json`. Neue Unterordner ohne Registrierung werden zurückgewiesen. Dieselbe öffentliche Integritätsprüfung und private Belegprüfung gilt für jede Ausgabe. Dossierzuordnung über `dossier_suffix` beziehungsweise explizite `dossier_overrides`; keine Ausnahmen für Lernmaterial.
+- Nach Vorbereitung das private Audit berechnen, `fact_audit` einsetzen, mit beiden bestehenden Verify-Befehlen samt `--require-dossier` prüfen und das private Dossier zurücklesen. Öffentliche Begründungen dürfen nicht erst nach dem Audit ergänzt werden.
+
+### Feedback und reproduzierbares Lernen
+
+- Strukturierte `reason_codes` sind explizite Leserentscheidungen. Freitext bleibt unverändert; automatische Interpretation nur für eindeutige vollständige bekannte Altformulierungen. Lob, Verneinungen und zitierte Kritik erzeugen keine Kritiksignale durch bloße Worttreffer. Unklare Texte bleiben zur redaktionellen Prüfung erhalten.
+- Der Browser sendet nur tatsächlich bearbeitete Bewertungen. Bekannte abweichende Änderungen desselben Artikels auf einem anderen Gerät blockieren den Schreibvorgang mit einer verständlichen Meldung. Nicht bearbeitete Werte werden nie als neue Leserentscheidung übertragen. Die GitHub-Issues-API bleibt ohne transaktionale Sperre.
+- Themenspezifische Signale ersetzen nur die jeweilige positiv belegte Dimension, keine unbeteiligten allgemeinen Stilwünsche durch Nullwerte.
+- Für jeden echten Lauf eine private `selection.json` mit den TATSÄCHLICH verwendeten Parametern anlegen, zum Beispiel `{"articles":{"limit":12,"discovery_slots":2,"min_score":15},"headlines":{"limit":15,"discovery_slots":0,"min_score":15}}`. Diese Datei sowohl an `engine rank/quality/compare --selection` als auch an `audit before --selection` übergeben. Kein stiller Wechsel auf 15/20 beim Lernvergleich.
+- Snapshots v2 enthalten Auswahlparameter, Code-Commit und Prüfsummen aller Auswahlmodule. `after` verweigert die Wiederholung mit geändertem Code. Ein alter Snapshot ohne diese Angaben ist kein vollständiger Nachweis. Tatsächliches Vorher-Profil unverändert sichern, keine Rückrekonstruktion; neue Einstellungen oder neuer Code benötigen einen neuen, klar bezeichneten Vergleich. Rankings und spätere Leserqualität weiterhin getrennt bewerten.
+
+Die bestehenden zwei Automationen lesen diesen Vertrag frisch. Keine neuen Routinen, Verlags-HTTP-Tests, privaten Daten auf Pages oder Änderungen an ETF und anderen Website-Bereichen.

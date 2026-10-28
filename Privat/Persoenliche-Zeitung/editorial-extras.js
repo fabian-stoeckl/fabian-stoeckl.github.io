@@ -14,9 +14,9 @@ const EditorialExtras=(()=>{
   };
   function articleContext(edition){
     if(!edition||!Array.isArray(edition.articles))return;
-    const byId=new Map([...document.querySelectorAll('#articles article[data-article-id]')]
+    const byId=new Map([...document.querySelectorAll('article[data-article-id]')]
       .map(node=>[node.dataset.articleId,node]));
-    edition.articles.forEach((story,i)=>{
+    [...edition.articles,...(edition.headlines||[])].forEach((story,i)=>{
       const node=byId.get(String(story.id));
       if(!node||node.dataset.v3Context===story.id)return;
       node.dataset.v3Context=story.id;
@@ -24,24 +24,25 @@ const EditorialExtras=(()=>{
       if(!body)return;
       node.querySelectorAll('.v3-extra-context').forEach(x=>x.remove());
       const meta=document.createElement('p');meta.className='v3-extra-context small';
-      const genre=String(story.article_type||story.kind||'').trim();
+      const rawGenre=String(story.article_type||story.kind||'').trim();
+      const genre=({analysis:'Analyse',investigation:'Recherche',report:'Bericht',explainer:'Erklärung',opinion:'Kommentar',interview:'Interview',feature:'Reportage'})[rawGenre]||rawGenre;
       // A technically accessible full text is not evidence that it was read.
       const evidence=String(story.evidence_level||story.level||'unknown').toLowerCase();
       const evidenceText={
-        'headline':'Quelle: Überschrift/Metadaten',
+        'headline':'Lesehinweis · Grundlage: Überschrift/Metadaten',
         'teaser':'Quelle: Vorspann',
-        'read':'Quelle: gelesener Originaltext',
+        'read':'Quelle: ausgewerteter Originaltext oder Originalauszug',
         'unknown':'Quellentiefe noch nicht dokumentiert'
       }[evidence]||'Quellentiefe noch nicht dokumentiert';
       meta.textContent=[genre,evidenceText].filter(Boolean).join(' · ');
-      body.append(meta);
+      body.querySelector('h2').after(meta);
       if(i>=3)return;
       const why=String(story.why_selected||'').trim();
       if(why){
         const reason=document.createElement('p');reason.className='v3-extra-context v3-why';
         const strong=document.createElement('strong');strong.textContent='Warum ausgewählt: ';
         reason.append(strong,document.createTextNode(why));
-        body.append(reason);
+        body.insertBefore(reason,body.querySelector('.ratings'));
       }
     });
   }

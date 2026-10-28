@@ -224,3 +224,5 @@ body.preferences-view .topline #profile-toggle{display:none!important}
   #headlines .news-item .body h2{font-size:27px}
   #headlines .news-item .rating-dots label{font-size:11px}
 }
+
+.v3-reason-choice[aria-pressed="true"] { background: #204c70; color: white; border-color: #204c70; }
