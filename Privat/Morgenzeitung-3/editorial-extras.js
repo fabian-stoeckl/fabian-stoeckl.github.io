@@ -24,12 +24,12 @@
       node.querySelectorAll('.v3-extra-context').forEach(x=>x.remove());
       const meta=document.createElement('p');meta.className='v3-extra-context small';
       const genre=String(story.article_type||story.kind||'').trim();
-      const evidence=String(story.evidence_level||story.level||story.access||'unknown').toLowerCase();
+      // A technically accessible full text is not evidence that it was read.
+      const evidence=String(story.evidence_level||story.level||'unknown').toLowerCase();
       const evidenceText={
         'headline':'Quelle: Überschrift/Metadaten',
         'teaser':'Quelle: Vorspann',
         'read':'Quelle: gelesener Originaltext',
-        'full':'Quelle: gelesener Originaltext',
         'unknown':'Quellentiefe noch nicht dokumentiert'
       }[evidence]||'Quellentiefe noch nicht dokumentiert';
       meta.textContent=[genre,evidenceText].filter(Boolean).join(' · ');

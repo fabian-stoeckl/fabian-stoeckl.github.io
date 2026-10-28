@@ -23,8 +23,9 @@ def editorial_snapshot(edition):
     sizes = [len(str(r.get("summary") or "").split()) for r in articles]
     genres = Counter(str(r.get("article_type") or r.get("kind") or "").strip()
                      for r in articles)
-    evidence = Counter(str(r.get("evidence_level") or r.get("level")
-                           or r.get("access") or "unknown").lower()
+    # "access" describes technical availability, NOT which source text was read.
+    # Only explicit editorial evidence records may establish reading depth.
+    evidence = Counter(str(r.get("evidence_level") or r.get("level") or "unknown").lower()
                        for r in articles)
     return {
         "date": edition.get("date"),
