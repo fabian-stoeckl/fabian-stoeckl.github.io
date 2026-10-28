@@ -10,21 +10,40 @@ import re
 from datetime import datetime, timezone
 
 HEX64=re.compile(r"^[a-f0-9]{64}$")
-RECEIPT_VERSION=2
+RECEIPT_VERSION=3
+LEGACY_RECEIPT_VERSION=2
+# One audited edition predates the stronger complete-edition fingerprint.
+LEGACY_LAST_DATE="2026-10-28"
 
 def canonical(obj):
     return json.dumps(obj,ensure_ascii=False,sort_keys=True,separators=(",",":")).encode("utf-8")
 
-def edition_hash(edition):
-    fields=("id","url","source","title","summary","published_at")
-    rows=[{k:entry.get(k) for k in fields}
-          for entry in [*edition.get("articles",[]),*edition.get("headlines",[])]]
-    return hashlib.sha256(canonical({"date":edition.get("date"),"items":rows})).hexdigest()
+def edition_hash(edition, version=RECEIPT_VERSION):
+    """Versioned receipt hash; the modern version covers ALL public fields.
+
+    Only fact_audit is excluded to avoid a circular self-reference.
+    Edition 2026-10-28 keeps its original v2 historical fingerprint.
+    """
+    if version==LEGACY_RECEIPT_VERSION:
+        fields=("id","url","source","title","summary","published_at")
+        rows=[{k:entry.get(k) for k in fields}
+              for entry in [*edition.get("articles",[]),*edition.get("headlines",[])]]
+        payload={"date":edition.get("date"),"items":rows}
+    elif version==RECEIPT_VERSION:
+        payload={k:v for k,v in edition.items() if k!="fact_audit"}
+    else:
+        raise ValueError("Unsupported receipt format")
+    return hashlib.sha256(canonical(payload)).hexdigest()
+
 
 def evidence_hash(dossier):
     return hashlib.sha256(canonical(dossier)).hexdigest()
 
-def private_review(edition,dossier):
+def private_review(edition,dossier,receipt_version=RECEIPT_VERSION):
+    if receipt_version!=RECEIPT_VERSION and not (
+        receipt_version==LEGACY_RECEIPT_VERSION
+        and edition.get("date")<=LEGACY_LAST_DATE):
+        raise ValueError("Historic receipt format not allowed for this issue")
     """Requires the actual private dossier, not a self-reported PASS string."""
     from scripts.morgenzeitung_v3_engine import evidence_guard
     report=evidence_guard(edition,dossier)
@@ -42,8 +61,8 @@ def private_review(edition,dossier):
     return {
         "status":"pass","warning_count":0,
         "claims_checked":report["claims_checked"],
-        "audit_version":RECEIPT_VERSION,
-        "edition_sha256":edition_hash(edition),
+        "audit_version":receipt_version,
+        "edition_sha256":edition_hash(edition, receipt_version),
         "dossier_sha256":evidence_hash(dossier),
         "reviewed_at":review["reviewed_at"],
         "review_method":"private_dossier_and_editorial_review",
@@ -58,10 +77,14 @@ def check_public_receipt(edition):
     errors=[]
     if report.get("status")!="pass" or report.get("warning_count")!=0:
         errors.append("Unresolved fact audit")
-    if report.get("audit_version")!=RECEIPT_VERSION:
+    version=report.get("audit_version")
+    legacy=(version==LEGACY_RECEIPT_VERSION and isinstance(edition.get("date"),str)
+            and edition["date"]<=LEGACY_LAST_DATE)
+    if version!=RECEIPT_VERSION and not legacy:
         errors.append("Wrong fact audit version")
-    if report.get("edition_sha256")!=edition_hash(edition):
-        errors.append("Fact audit not bound to current edition")
+    else:
+        if report.get("edition_sha256")!=edition_hash(edition,version):
+            errors.append("Fact audit not bound to current edition")
     if not HEX64.fullmatch(str(report.get("dossier_sha256",""))):
         errors.append("Missing private evidence dossier fingerprint")
     if type(report.get("claims_checked")) is not int or report["claims_checked"]<count:
@@ -79,7 +102,7 @@ def check_private_receipt(edition,dossier):
     errors=check_public_receipt(edition)
     if errors:return errors
     try:
-        expected=private_review(edition,dossier)
+        expected=private_review(edition,dossier,receipt_version=edition["fact_audit"]["audit_version"])
     except (ValueError,TypeError) as e:
         return ["Private evidence verification failed: "+str(e)]
     for k,value in expected.items():

@@ -50,7 +50,8 @@ function article(a,index,section='Vertiefungen'){
   const body=el('div',undefined,'body');
   const title=el('h2');title.append(link(a.title,a.url));
   body.append(title,el('p',a.summary,isHeadline?'news-summary':undefined));
-  if(a.access==='teaser')body.append(el('p','Zusammenfassung beruht ausschließlich auf dem zugänglichen Vorspann.','small'));
+  if(a.evidence_level==='teaser'||a.level==='teaser')
+    body.append(el('p','Zusammenfassung beruht ausschließlich auf dem tatsächlich ausgewerteten Vorspann.','small'));
   if(!isHeadline&&typeof a.novelty_explanation==='string'&&a.novelty_explanation.trim())
     body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty_explanation,'novelty'));
   body.append(githubRating(a,section));node.append(intro,body);return node;
