@@ -52,6 +52,15 @@ const {chromium}=require('playwright');
  const publicationStatus=await page.locator('#publication-status').innerText();
  if(edition.preview)assert.match(publicationStatus,/Beispielausgabe/);
  else assert.doesNotMatch(publicationStatus,/Beispielausgabe/);
+ // An archive view must not report a missing current newspaper.
+ const archiveStatus=await page.evaluate(()=>{
+   const saved=latestDate;
+   latestDate=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Vienna',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+   updatePublicationStatus({date:'2000-01-01',preview:false});
+   const result=document.getElementById('publication-status').textContent;
+   latestDate=saved;render();return result;
+ });
+ assert.match(archiveStatus,/Archivansicht/);assert.doesNotMatch(archiveStatus,/fehlt noch/);
  assert.equal(await page.locator('#github-connected').isHidden(),false);
  await page.locator('#headlines .news-item').first().getByLabel('Sehr relevant',{exact:true}).check();
  await page.locator('#tab-articles').click();

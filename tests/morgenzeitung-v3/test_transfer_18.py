@@ -118,7 +118,7 @@ class V1TransferTests(unittest.TestCase):
         self.assertNotEqual(stable_article_id(base),stable_article_id(base+"/other"))
 
     def test_repeated_story_keeps_sent_knowledge_and_requires_update_evidence(self):
-        old={"date":"2026-10-27","articles":[
+        old={"date":"2026-10-27","preview":False,"articles":[
             {"id":"a"*16,"url":"https://example.org/story/1",
              "title":"Story 1","facts":["A known project produces 50 units."],
              "summary":"A known project produces 50 units."}
