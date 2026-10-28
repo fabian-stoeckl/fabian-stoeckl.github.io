@@ -4,6 +4,7 @@ This module intentionally contains no networking, publisher URL probes or
 publication gates. Reader feedback is data, never an instruction to execute.
 """
 from collections import Counter
+from datetime import datetime, timedelta, timezone
 
 NEGATIVE = "Nicht relevant"
 POSITIVE = "Sehr relevant"
@@ -89,4 +90,30 @@ def editorial_feedback_metrics(profile, min_votes=5):
             round(sufficient[-1]["very_relevant_share"] - sufficient[-2]["very_relevant_share"], 4)
             if len(sufficient) >= 2 else None),
         "causal_quality_improvement_proven": False,
+    }
+
+
+def research_window(last_successful, started_at):
+    """Cover elapsed time since previous real editorial cutoff, including missed days.
+
+    A preview is never evidence of completed research. Timestamps must be
+    timezone-aware; no network call or article freshness gate is performed.
+    """
+    def aware(value):
+        parsed=datetime.fromisoformat(value.replace("Z","+00:00"))
+        if parsed.tzinfo is None:
+            raise ValueError("Research timestamps need a timezone")
+        return parsed.astimezone(timezone.utc)
+    now=aware(started_at)
+    reference=None
+    if isinstance(last_successful,dict) and last_successful.get("preview") is False:
+        reference=last_successful.get("window_end") or last_successful.get("researched_at")
+    start=aware(reference) if reference else now-timedelta(hours=24)
+    if start>now:
+        raise ValueError("Previous coverage cannot end after new research starts")
+    return {
+        "window_start":start.isoformat().replace("+00:00","Z"),
+        "window_end":now.isoformat().replace("+00:00","Z"),
+        "extended_for_gap":(now-start)>timedelta(hours=24),
+        "reference":"last_independent_research" if reference else "initial_24h",
     }
