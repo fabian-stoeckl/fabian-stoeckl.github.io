@@ -45,6 +45,11 @@ const {chromium}=require('playwright');
  assert.equal(new URL(page.url()).pathname,'/Privat/Persoenliche-Zeitung/');
  await page.waitForSelector('#headlines .news-item .rating-dots input');
  assert.match(await page.locator('h1').first().innerText(),/Persönliche Zeitung/);
+ // A date-only publication value must not display an invented 01:00 or 02:00.
+ const firstStoryMeta=await page.locator('#articles article .meta').first().innerText();
+ assert.match(firstStoryMeta,/27\\.10\\.2026/);
+ assert.doesNotMatch(firstStoryMeta,/\\b(?:01|02):00\\b/);
+
  const publicationStatus=await page.locator('#publication-status').innerText();
  if(edition.preview)assert.match(publicationStatus,/Beispielausgabe/);
  else assert.doesNotMatch(publicationStatus,/Beispielausgabe/);

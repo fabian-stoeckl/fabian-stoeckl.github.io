@@ -66,6 +66,31 @@ class PublicReceiptCoverageTests(unittest.TestCase):
                  "articles":[row],"headlines":[same]}
         self.assertIn("duplicate",validate_edition(edition))
 
+    def test_no_fictitious_source_times_and_invalid_dates(self):
+        from scripts.morgenzeitung_v3_engine import valid_publication_date,validate_edition
+        self.assertTrue(valid_publication_date("2026-10-27"))
+        self.assertTrue(valid_publication_date("2026-10-27T14:32:00+01:00"))
+        self.assertFalse(valid_publication_date("2026-02-30"))
+        self.assertFalse(valid_publication_date("2026-10-27T14:32:00"))
+        row={"id":"a"*16,"title":"Bericht","url":"https://example.org/article",
+             "source":"Medium","summary":"Belegte Aussage",
+             "topic":"Wirtschaft","published_at":"2026-10-27"}
+        headline={**row,"id":"b"*16,"url":"https://example.org/headline",
+                  "region":"International"}
+        edition={"date":"2026-10-28","preview":True,
+                 "researched_at":"2026-10-28T05:30:00Z",
+                 "available_at":"2026-10-28T05:40:00Z",
+                 "articles":[row],"headlines":[headline]}
+        self.assertEqual(validate_edition(edition),[])
+        edition["date"]="2026-02-30"
+        self.assertIn("invalid date",validate_edition(edition))
+        edition["date"]="2026-10-28"
+        edition["articles"][0]["published_at"]="2026-02-30"
+        self.assertIn("invalid published_at",validate_edition(edition))
+        edition["articles"][0]["published_at"]="2026-10-27"
+        edition["available_at"]="2026-10-28T05:20:00Z"
+        self.assertIn("publication precedes research",validate_edition(edition))
+
     def test_none_novelty_score_falls_back_to_legacy_number(self):
         self.assertEqual(validate_article_metadata({"novelty":7,"novelty_score":None}),
                          ["novelty score must be a number from 0 to 5"])

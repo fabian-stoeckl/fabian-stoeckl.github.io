@@ -7,7 +7,15 @@ const draftKey=a=>edition.date+':'+(a.id||a.url);
 function feedbackStatus(msg){$('feedback-status').textContent=msg;for(const id of ['news-feedback-status','features-feedback-status'])if($(id))$(id).textContent=msg;}
 const $=id=>document.getElementById(id);
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
-const fmt=v=>new Intl.DateTimeFormat('de-AT',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Vienna'}).format(new Date(v));
+function fmt(v){
+  // Many publishers provide a date only. Never invent a precise time by
+  // formatting midnight UTC as 01:00/02:00 in Vienna.
+  if(typeof v==='string'&&/^\\d{4}-\\d{2}-\\d{2}$/.test(v))
+    return new Intl.DateTimeFormat('de-AT',{dateStyle:'medium',timeZone:'UTC'})
+      .format(new Date(v+'T12:00:00Z'));
+  return new Intl.DateTimeFormat('de-AT',
+    {dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Vienna'}).format(new Date(v));
+}
 function safeURL(value){const u=new URL(value);if(u.protocol!=='https:'||u.username||u.password)throw Error('Ungültiger Link');return u.href;}
 function link(text,url){const n=el('a',text);n.href=safeURL(url);n.target='_blank';n.rel='noopener noreferrer';return n;}
 function status(text){
