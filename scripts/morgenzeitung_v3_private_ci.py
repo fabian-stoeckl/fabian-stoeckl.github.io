@@ -80,18 +80,21 @@ def verify_changed(root, files, token, fetcher=fetch_private_dossier):
     data_dir = Path(root) / "Privat/Morgenzeitung-3/data"
     index = json.loads((data_dir / "index.json").read_text(encoding="utf-8"))
     listed = index.get("dates", [])
-    checked, skipped = [], []
+    checked, retired = [], []
     for day in days:
+        path = data_dir / (day + ".json")
         if day not in listed:
+            # One-time retirement of the non-independent V1-copy preview.
+            # No new/real daily edition can be silently removed this way.
+            if day == "2026-10-27" and not path.exists():
+                retired.append(day)
+                continue
             raise ValueError("V3 dated edition is missing from index: " + day)
-        edition = json.loads((data_dir / (day + ".json")).read_text(encoding="utf-8"))
+        edition = json.loads(path.read_text(encoding="utf-8"))
         if edition.get("date") != day:
             raise ValueError("V3 edition/index date mismatch")
         if edition.get("preview") is True:
-            if day != "2026-10-27":
-                raise ValueError("New V3 editions cannot be previews")
-            skipped.append(day)
-            continue
+            raise ValueError("New V3 editions cannot be previews")
         # A new real edition MUST have its private original-source dossier in
         # the feedback repo and must pass the actual private review, not just a
         # self-declared public receipt.
@@ -101,7 +104,7 @@ def verify_changed(root, files, token, fetcher=fetch_private_dossier):
             raise ValueError("V3 private factual review failed for " + day
                              + ": " + ", ".join(errors[:8]))
         checked.append(day)
-    return {"checked": checked, "preview_skipped": skipped}
+    return {"checked": checked, "preview_skipped": [], "retired_preview": retired}
 
 
 def main():
