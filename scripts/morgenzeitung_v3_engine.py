@@ -466,6 +466,16 @@ def ingest_feedback(profile, issues, topics_by_id):
       {"type":"explicit_reader_request",**req,"status":"pending_editorial_review"}
       for req in out["explicit_reader_requests"][-20:]
     ]
+    for aid,row in sorted(articles.items(), key=lambda entry:entry[1].get("updated_at","")):
+        labels=reason_labels(row.get("reason",""),row.get("rating"))
+        if "more_of_this" in labels or ("topic_dislike" in labels and
+            row.get("rating")!="Nicht relevant"):
+            out["editorial_review_queue"].append({
+                "type":"explicit_article_preference","date":row.get("date"),
+                "article_id":aid,"topic":row.get("topic"),
+                "section":row.get("section"),"reason":row.get("reason"),
+                "status":"pending_editorial_review"})
+    out["editorial_review_queue"]=out["editorial_review_queue"][-30:]
     out["feedback_metrics"]=editorial_feedback_metrics(out)
     return out,changed
 
