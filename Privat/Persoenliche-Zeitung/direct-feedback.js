@@ -92,6 +92,23 @@ const DirectFeedback=(()=>{
     // Deduplicate old notes and preserve the reader's authored text unchanged.
     return [text,...new Set(missing)].filter(Boolean).join('\n').trim();
   }
+  function mergeComparisonOnly(previous,incoming){
+    // A rating/comment save may submit ONLY the optional comparison votes.
+    // Preserve all prose written earlier, including newer prose from another
+    // device that this browser never saw.
+    const lines=String(incoming||'').trim().split('\n').filter(Boolean);
+    const chosen=new Map();
+    for(const line of lines){
+      const m=line.match(COMPARISON_NOTE);
+      if(!m)throw Error('Ungültige Vergleichsrückmeldung.');
+      chosen.set(m[1],line);
+    }
+    const saved=String(previous||'').split('\n').filter(line=>{
+      const m=line.trim().match(COMPARISON_NOTE);
+      return !m||!chosen.has(m[1]);
+    });
+    return [...saved,...chosen.values()].join('\n').trim();
+  }
   function appendOnce(previous,fragment){
     const base=String(previous||'').trim(), fresh=String(fragment||'').trim();
     if(!fresh)return base;
@@ -116,7 +133,8 @@ const DirectFeedback=(()=>{
     }
     const comment=feedback.trim();
     const appendText=options?.appendComment===undefined?'':String(options.appendComment).trim();
-    if(appendText.length>4000||appendText&&comment)
+    if(appendText.length>4000||appendText&&comment||
+       options.comparisonOnly&&appendText)
       throw Error('Kommentar bitte entweder anhängen oder ausdrücklich ersetzen.');
     let previousIssue=null;
     // Optimistic retries: read the canonical issue, merge intended changes,
@@ -133,6 +151,7 @@ const DirectFeedback=(()=>{
       const byId=new Map((base?.ratings||[]).map(r=>[r.id,r]));
       for(const [id,row] of intended)byId.set(id,row);
       const mergedComment=appendText?appendOnce(base?.feedback,appendText):
+        options.comparisonOnly?mergeComparisonOnly(base?.feedback,comment):
         comment?preserveComparisonNotes(base?.feedback,comment):(base?.feedback||'');
       if(mergedComment.length>4000)throw Error('Der gespeicherte Kommentar überschreitet 4000 Zeichen. Bitte kürzen.');
       if(!byId.size&&!mergedComment)throw Error('Bitte mindestens eine Bewertung oder Feedback eingeben.');
@@ -141,7 +160,7 @@ const DirectFeedback=(()=>{
         ratings:[...byId.values()].map(r=>({id:r.id,section:r.section,rating:r.value,reason:r.reason})),
         comment:mergedComment,origin:'website-explicit'};
       const body=MARKER+JSON.stringify(payload,null,2);
-      if(record?.body===body)return {ok:true,existing:true,html_url:record.html_url};
+      if(record?.body===body)return {ok:true,existing:true,html_url:record.html_url,feedback:mergedComment};
       const result=await request(token,existing?'/issues/'+existing:'/issues',
                                  existing?'PATCH':'POST',{title,body},transport);
       if(!Number.isSafeInteger(result.number)||
@@ -160,7 +179,7 @@ const DirectFeedback=(()=>{
         found.has(id)&&found.get(id).value===row.value&&
         found.get(id).reason===row.reason&&found.get(id).section===row.section);
       if(preserved&&verified.feedback===mergedComment)
-        return {ok:true,updated:!!existing,html_url:result.html_url};
+        return {ok:true,updated:!!existing,html_url:result.html_url,feedback:verified.feedback};
       // A competing edit has won at least one write; merge it on the next read.
       previousIssue=verified;
     }

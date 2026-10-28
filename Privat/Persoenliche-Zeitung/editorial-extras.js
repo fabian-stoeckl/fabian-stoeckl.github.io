@@ -96,6 +96,19 @@ const EditorialExtras=(()=>{
     comparisons(edition);
   }
 
+  function comparisonChoices(edition){
+    if(!edition)return '';
+    const chosen=new Map();
+    for(const field of document.querySelectorAll('#v3-comparisons fieldset')){
+      const checked=field.querySelector('input[type=radio]:checked');
+      const id=field.dataset.comparisonId||'';
+      if(!checked||!['published','alternative','equal'].includes(checked.value)||
+         !/^[a-zA-Z0-9_-]{1,90}$/.test(id))continue;
+      const key=edition.date+' '+id;
+      chosen.set(key,'[V3-Vergleich '+key+': '+checked.value+']');
+    }
+    return [...chosen.values()].join('\n');
+  }
   function enrichFeedback(edition,rawText){
     // Persist ALL past comparison choices, including those no longer shown in
     // the current layout. Only replace the same explicitly re-answered pair.
@@ -120,5 +133,5 @@ const EditorialExtras=(()=>{
     return next;
   }
 
-  return {render,enrichFeedback};
+  return {render,enrichFeedback,comparisonChoices};
 })();
