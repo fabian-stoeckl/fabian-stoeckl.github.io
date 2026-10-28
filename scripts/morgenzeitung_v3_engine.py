@@ -419,6 +419,13 @@ def main():
         out=select(read(a.candidates),read(a.profile),limit=a.limit,section=a.section,
                    previous_editions=load_edition_history(a.history_dir) if a.history_dir else (),
                    edition_date=a.as_of_date)
+    elif a.action=="quality":
+        if a.history_dir and not a.as_of_date: p.error("--as-of-date required with --history-dir")
+        pool=read(a.candidates)
+        selected=select(pool,read(a.profile),limit=a.limit,section=a.section,
+                        previous_editions=load_edition_history(a.history_dir) if a.history_dir else (),
+                        edition_date=a.as_of_date)
+        out=editorial_mix_report(pool,selected,section=a.section)
     elif a.action=="facts":out=evidence_guard(read(a.edition),read(a.dossier))
     elif a.action=="compare":
         if a.history_dir and not a.as_of_date: p.error("--as-of-date required with --history-dir")
