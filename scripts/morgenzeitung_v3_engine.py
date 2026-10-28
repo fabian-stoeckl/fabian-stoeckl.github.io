@@ -466,6 +466,14 @@ def ingest_feedback(profile, issues, topics_by_id):
       {"type":"explicit_reader_request",**req,"status":"pending_editorial_review"}
       for req in out["explicit_reader_requests"][-20:]
     ]
+    for subject,votes in sorted(exact_evidence.items()):
+        if votes["Sehr relevant"] and votes["Nicht relevant"] and sum(votes.values())>=3:
+            out["editorial_review_queue"].append({
+                "type":"conflicting_topic_feedback","topic":subject,
+                "positive":votes["Sehr relevant"],"negative":votes["Nicht relevant"],
+                "neutral":votes["Teilweise relevant"],
+                "status":"pending_editorial_review",
+                "note":"Review which articles, quality and novelty differ; never override an explicit user rule."})
     for aid,row in sorted(articles.items(), key=lambda entry:entry[1].get("updated_at","")):
         labels=reason_labels(row.get("reason",""),row.get("rating"))
         if "more_of_this" in labels or ("topic_dislike" in labels and
