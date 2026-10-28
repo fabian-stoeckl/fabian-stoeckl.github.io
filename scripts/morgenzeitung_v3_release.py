@@ -144,8 +144,8 @@ def prepare_edition(edition,candidates,dossier):
         if proof.get("level") not in ("headline","teaser","read"):
             raise ValueError("Missing documented evidence level")
         item["evidence_level"]=proof["level"]
-        for key in ("article_type","source_context","why_selected","novelty_explanation"):
-            if original.get(key) is not None:item[key]=original[key]
+        metadata=fields(original,{"article_type","source_context","why_selected","novelty_explanation"})
+        item.update({k:v for k,v in metadata.items() if v is not None})
         item.pop("access",None)
     out.pop("fact_audit",None)
     return out

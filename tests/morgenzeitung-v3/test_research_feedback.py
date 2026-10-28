@@ -18,6 +18,8 @@ class ResearchFeedbackTests(unittest.TestCase):
         self.assertNotIn('private',json.dumps(out));self.assertNotIn('fit',out['articles'][0])
         self.assertEqual(out['articles'][0]['evidence_level'],'teaser')
         self.assertEqual(edition,original)
+        with self.assertRaises(ValueError):
+            prepare_edition(edition,[{**row,'source_context':{'private':'nested'}}],proof)
         edition['articles'][0]['title']={'private':'nested'}
         with self.assertRaises(ValueError):prepare_edition(edition,[row],proof)
 
