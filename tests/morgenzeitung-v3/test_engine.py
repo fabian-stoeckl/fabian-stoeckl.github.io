@@ -90,7 +90,7 @@ class V3EngineTests(unittest.TestCase):
                  "available_at":"2026-10-28T05:40:00Z","preview":False,
                  "articles":[article],"headlines":[headline],
                  "fact_audit":{"status":"warn"},"selection_audit":{"feedback_applied":False}}
-        self.assertIn("fact audit not passed",validate_edition(edition))
+        self.assertTrue(validate_edition(edition), "Missing actual private proof must not pass")
         # A handwritten pass is NOT a valid release receipt.
         edition["fact_audit"]={"status":"pass","warning_count":0,"claims_checked":2}
         self.assertTrue(validate_edition(edition))
