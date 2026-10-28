@@ -39,7 +39,7 @@ class EditorialQualityV35Tests(unittest.TestCase):
     def test_editorial_snapshot_reports_unknown_not_fabricated_fulltext(self):
         d={"date":"2026-10-28",
            "articles":[story(1,article_type="analysis",evidence_level="teaser"),
-                       story(2,article_type="explainer")],
+                       story(2,article_type="explainer",access="full")],
            "headlines":[{"region":"Österreich"},{"region":"International"}]}
         s=editorial_snapshot(d)
         self.assertEqual(s["article_genre_identified"],2)
