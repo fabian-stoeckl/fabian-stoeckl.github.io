@@ -1,9 +1,9 @@
 name: Verify Morgenzeitung 3
 on:
   pull_request:
-    paths: ['Privat/Morgenzeitung-3/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
+    paths: ['Privat/Morgenzeitung-3/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_release.py','Privat/Pressespiegel/app.js','Privat/Pressespiegel/github.js','Privat/Pressespiegel/preferences.js','Privat/Pressespiegel/preference-timeline.js','Privat/Pressespiegel/style.css','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
   push:
-    paths: ['Privat/Morgenzeitung-3/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
+    paths: ['Privat/Morgenzeitung-3/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_release.py','Privat/Pressespiegel/app.js','Privat/Pressespiegel/github.js','Privat/Pressespiegel/preferences.js','Privat/Pressespiegel/preference-timeline.js','Privat/Pressespiegel/style.css','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
 permissions: {contents: read}
 jobs:
   verify:
@@ -18,4 +18,22 @@ jobs:
       - run: node tests/morgenzeitung-v3-ui.test.cjs
       - run: node tests/morgenzeitung-v3-feedback.test.cjs
       - run: python3 -m unittest discover -s tests/morgenzeitung-v3 -v
-      - run: python3 -m scripts.morgenzeitung_v3_engine verify --edition Privat/Morgenzeitung-3/data/2026-10-27.json
+      - name: Verify every V3 edition and daily index (without requests to article URLs)
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, subprocess, sys
+          folder=pathlib.Path('Privat/Morgenzeitung-3/data')
+          index=json.loads((folder/'index.json').read_text(encoding='utf-8'))
+          days=index.get('dates',[])
+          assert days and days==sorted(set(days),reverse=True),"Invalid date index"
+          disk={p.stem for p in folder.glob('????-??-??.json')}
+          assert disk==set(days),"Orphan/unlisted edition JSON"
+          for day in days:
+              path=folder/(day+'.json')
+              edition=json.loads(path.read_text(encoding='utf-8'))
+              assert edition['date']==day,"Edition date mismatch"
+              subprocess.run([sys.executable,'-m','scripts.morgenzeitung_v3_engine',
+                'verify','--edition',str(path)],check=True)
+              subprocess.run([sys.executable,'-m','scripts.morgenzeitung_v3_release',
+                'verify','--edition',str(path)],check=True)
+          PY
