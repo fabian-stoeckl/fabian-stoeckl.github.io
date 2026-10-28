@@ -35,6 +35,12 @@ class OriginalCoreTransferTests(unittest.TestCase):
                  "article_feedback":{significant["id"]:{"rating":"Nicht relevant","reason":""}}}
         self.assertEqual(select([significant,personalized],profile,section="Heute wichtig")[0]["id"],significant["id"])
         self.assertEqual(select([significant,personalized],profile,section="Vertiefungen")[0]["id"],personalized["id"])
+        # V1 breaking headlines deliberately do not have a personal topic field.
+        headline=story(3,topic="Politik",fit=0,novelty=5,impact=5,perspective=5)
+        headline.pop("topic")
+        self.assertEqual(select([headline,personalized],profile,section="Heute wichtig")[0]["id"],headline["id"])
+        self.assertEqual(len(select([headline,personalized],profile,section="Heute wichtig")),2)
+        self.assertEqual(len(select([headline,personalized],profile,section="Vertiefungen")),1)
 
     def test_quality_reason_is_not_topic_rejection(self):
         labels=reason_labels("Schon bekannt und zu oberflächlich","Nicht relevant")
