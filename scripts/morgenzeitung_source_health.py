@@ -134,7 +134,9 @@ def validate_editorial_report(report):
             # plus contemporaneous immutable references. It may still be
             # incomplete if all those methods fail, never an implicit outage.
             if "direct_original" not in methods or not EVIDENCE_GATES.intersection(
-                    set(methods) - {"direct_original"}):
+                    set(methods) - {"direct_original"}) and not (
+                    report.get("research_policy") == "no-link-tests"
+                    and "direct_original" in methods and "independent_index" in methods):
                 raise ValueError("Blocked claim lacks independent alternative attempt")
             evidence = row.get("attempt_evidence")
             if (not isinstance(evidence, list) or len(evidence) < 2
