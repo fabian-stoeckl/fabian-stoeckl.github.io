@@ -7,7 +7,8 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
 from scripts.morgenzeitung_v3_editorial import (
-    reason_labels, style_signals, editorial_feedback_metrics, editorial_mix_report,
+    reason_labels, style_signals, feedback_dimensions, editorial_depth_review,
+    editorial_feedback_metrics, editorial_mix_report,
     calibration_review, edition_feedback_review, edition_series_review
 )
 
@@ -103,6 +104,10 @@ def score(item, profile, section="Vertiefungen"):
     if isinstance(base,bool) or not isinstance(base,(int,float)) or not 0<=base<=5: base=3
     if isinstance(delta,bool) or not isinstance(delta,(int,float)): delta=0
     style=profile.get("style_preference_signals") or {}
+    # When two or more explicit style critiques agree within a subject,
+    # prefer that topic-specific signal over the general editorial preference.
+    topic_style=(profile.get("topic_style_signals") or {}).get(topic) or {}
+    style={**style,**topic_style}
     novelty_demand=style.get("novelty",0)
     if isinstance(novelty_demand,bool) or not isinstance(novelty_demand,(int,float)):
         novelty_demand=0
@@ -129,6 +134,17 @@ def normalized_url(value):
     query=urlencode(sorted((k,v) for k,v in parse_qsl(u.query,keep_blank_values=True)
                            if not k.lower().startswith("utm_") and k.lower() not in ("fbclid","gclid")))
     return urlunsplit((u.scheme,u.netloc.lower(),u.path.rstrip("/"),query,""))
+
+
+def stable_article_id(url):
+    """Stable original-article identity for NEW V3 candidates.
+
+    Historical date-based IDs remain valid and untouched. The research agent
+    may use this before first capture; feedback is never re-keyed retroactively.
+    """
+    if not valid_url(url):
+        raise ValueError("Invalid original article URL")
+    return hashlib.sha256(normalized_url(url).encode("utf-8")).hexdigest()[:16]
 
 
 def distinct_perspective(a,b):
@@ -188,10 +204,18 @@ def mark_recent_stories(candidates, previous_editions, edition_date, max_age_day
         entry=dict(item)
         if recent and duplicate_story(entry,recent):
             entry["seen_recently"]=True
-            entry["material_update"]=bool(
-                entry.get("material_update") and
-                isinstance(entry.get("update_evidence"),str) and
-                len(entry["update_evidence"].strip())>=15)
+            old_stories=[row for _,row in recent if duplicate_story(entry,[(0,row)])]
+            # Keep previous transmitted facts private in the scoring context.
+            entry["known_facts"]=[fact for row in old_stories
+                for fact in (row.get("facts") if isinstance(row.get("facts"),list)
+                             else [row.get("summary","")]) if isinstance(fact,str) and fact.strip()]
+            update=entry.get("update_evidence")
+            evidence=update.strip() if isinstance(update,str) else ""
+            # An update flag is never enough: demand specific, documented new
+            # facts not identical to the text the user already received.
+            known={" ".join(f.casefold().split()) for f in entry["known_facts"]}
+            entry["material_update"]=bool(entry.get("material_update") and len(evidence)>=15
+                and " ".join(evidence.casefold().split()) not in known)
         enriched.append(entry)
     return enriched
 
@@ -324,8 +348,12 @@ def compare_learning(pool,before,after,new_feedback=False,limit=None,
             "added_ids":[x for x in new if x not in old],
             "removed_ids":[x for x in old if x not in new]}
 
-def ingest_feedback(profile,issues,topics_by_id):
-    """Replace edited Issue snapshots; negative topic generalization needs explicit reasons."""
+def ingest_feedback(profile, issues, topics_by_id):
+    """Replace genuine edited V3 issue snapshots, never double-count feedback.
+
+    Article quality, general subject interest and explicit requests stay
+    distinct. Headlines inform public-interest news, not subject preference.
+    """
     out=json.loads(json.dumps(profile))
     stored=out.setdefault("feedback_by_issue",{})
     processed=out.setdefault("processed_new_issues",{})
@@ -345,34 +373,102 @@ def ingest_feedback(profile,issues,topics_by_id):
                 continue
             rows=[]
             for row in payload["ratings"][:100]:
-                if isinstance(row,dict) and ID.fullmatch(str(row.get("id",""))) and row.get("rating") in ("Sehr relevant","Teilweise relevant","Nicht relevant"):
-                    rows.append({"id":row["id"],"rating":row["rating"],
-                                 "reason":str(row.get("reason",""))[:600],
-                                 "topic":topics_by_id.get(row["id"],"")})
-            snapshot={"updated_at":updated,"date":date,"ratings":rows}
+                if not isinstance(row,dict) or not ID.fullmatch(str(row.get("id",""))) or row.get("rating") not in ("Sehr relevant","Teilweise relevant","Nicht relevant"):
+                    continue
+                section=row.get("section","Vertiefungen")
+                if section not in ("Vertiefungen","Heute wichtig"):continue
+                raw_topic=topics_by_id.get(row["id"],"")
+                # A caller may supply an explicit typed article record; keep
+                # compatibility with earlier simple string topic maps.
+                topic=raw_topic.get("topic","") if isinstance(raw_topic,dict) else raw_topic
+                rows.append({"id":row["id"],"rating":row["rating"],
+                             "section":section,"reason":str(row.get("reason",""))[:600],
+                             "topic":topic if isinstance(topic,str) else ""})
+            snapshot={"updated_at":updated,"date":date,"ratings":rows,
+                      "comment":str(payload.get("comment",""))[:4000]}
             if stored.get(key)!=snapshot:
                 stored[key]=snapshot;processed[key]=snapshot["updated_at"];changed.append(key)
         except (KeyError,TypeError,ValueError):continue
-    # Only latest evaluation per article, no phantom votes on edit.
     articles={}
     for issue_number,saved in sorted(stored.items(),
                     key=lambda x:(x[1].get("updated_at",""),int(x[0]))):
         for row in saved.get("ratings",[]):
             articles[row["id"]]={**row,"updated_at":saved.get("updated_at",""),
-                                 "date":saved.get("date",""),"source_issue":issue_number}
+                                "date":saved.get("date",""),"source_issue":issue_number}
     out["article_feedback"]=dict(list(sorted(articles.items(),
         key=lambda x:x[1].get("updated_at",""),reverse=True))[:1000])
+    # The editorial agent must review explicit requests, never execute free
+    # text as commands or infer a numerical weight without reader consent.
+    out["explicit_reader_requests"]=[
+        {"date":saved.get("date",""),"updated_at":saved.get("updated_at",""),
+         "issue":issue_number,"text":saved["comment"]}
+        for issue_number,saved in sorted(stored.items())
+        if isinstance(saved.get("comment"),str) and saved["comment"].strip()
+    ][-100:]
     pos,neg=Counter(),Counter()
+    exact_evidence={}
+    family_evidence={}
+    style_by_topic={}
     for row in articles.values():
-        topic=topic_family(row.get("topic",""),out);reason=row.get("reason","").lower()
-        if not topic:continue
-        if row["rating"]=="Sehr relevant":pos[topic]+=1
-        if row["rating"]=="Nicht relevant" and any(x in reason for x in
-            ("thema interessiert mich nicht","thema nicht interessant","weniger über","grundsätzlich uninteressant")):neg[topic]+=1
-    out["feedback_topic_deltas"]={k:max(-2,min(2,pos[k]//2-neg[k]//2)) for k in set(pos)|set(neg)}
-    out["style_preference_signals"]=style_signals(articles)
+        if row.get("section","Vertiefungen")!="Vertiefungen":
+            continue
+        raw_topic=row.get("topic","")
+        if not raw_topic:continue
+        topic=topic_family(raw_topic,out)
+        reason_labels_for_row=reason_labels(row.get("reason",""),row.get("rating"))
+        current=exact_evidence.setdefault(topic,Counter())
+        current[row["rating"]]+=1
+        if row["rating"]=="Sehr relevant":
+            pos[topic]+=1
+        if row["rating"]=="Nicht relevant" and "topic_dislike" in reason_labels_for_row:
+            neg[topic]+=1
+        # Do not infer broad interest from geographic metadata or free text.
+        aliases=out.get("topic_aliases") or {}
+        parent=aliases.get(raw_topic)
+        if parent and parent!=topic and parent in out.get("topic_priorities",{}):
+            broad=family_evidence.setdefault(parent,Counter())
+            broad[row["rating"]]+=1
+            if row["rating"]=="Sehr relevant":pos[parent]+=1
+            if row["rating"]=="Nicht relevant" and "topic_dislike" in reason_labels_for_row:neg[parent]+=1
+        for dimension in reason_labels_for_row:
+            if dimension=="topic_dislike":continue
+            style_by_topic.setdefault(topic,Counter())[dimension]+=1
+    out["topic_evidence"]={t:{"positive":v["Sehr relevant"],"neutral":v["Teilweise relevant"],
+                               "negative":v["Nicht relevant"],"total":sum(v.values())}
+                           for t,v in sorted(exact_evidence.items())}
+    out["topic_family_evidence"]={t:dict(v) for t,v in sorted(family_evidence.items())}
+    deltas={}
+    for t in set(pos)|set(neg):
+        observations=exact_evidence.get(t) or family_evidence.get(t) or {}
+        n=sum(observations.values())
+        is_family=t in family_evidence and t not in exact_evidence
+        threshold=3 if is_family else 2
+        if n<threshold:
+            deltas[t]=0;continue
+        net=pos[t]-neg[t]
+        deltas[t]=max(-2,min(2,(net//2 if net>=2 else
+                -((-net)//2) if net<=-2 else 0)))
+    out["feedback_topic_deltas"]=deltas
+    # Global style signals and narrower topical style effects are independent
+    # and require repeated EXPLICIT criticism, never negative vote alone.
+    scoped={k:v for k,v in articles.items()
+            if v.get("section","Vertiefungen")=="Vertiefungen"}
+    out["style_preference_signals"]=style_signals(scoped)
+    out["topic_style_signals"]={
+       topic:{"novelty":min(2,values["already_known"]//2),
+              "analysis":min(2,values["too_shallow"]//2),
+              "broader_context":min(2,values["too_niche"]//2),
+              "perspectives":min(2,values["one_sided"]//2)}
+       for topic,values in style_by_topic.items()
+       if any(value>=2 for value in values.values())}
+    out["feedback_dimensions"]=feedback_dimensions(articles)
+    out["editorial_review_queue"]=[
+      {"type":"explicit_reader_request",**req,"status":"pending_editorial_review"}
+      for req in out["explicit_reader_requests"][-20:]
+    ]
     out["feedback_metrics"]=editorial_feedback_metrics(out)
     return out,changed
+
 
 def evidence_guard(edition,dossier):
     """PRIVATE short excerpts; warning is not an automatic claim of semantic falsity."""
@@ -478,6 +574,8 @@ def main():
                         previous_editions=history,edition_date=a.as_of_date)
         out=editorial_mix_report(pool,selected,section=a.section)
         out["calibration"]=calibration_review(pool,section=a.section)
+        if a.section=="Vertiefungen":
+            out["depth_review"]=editorial_depth_review(pool,selected)
         out["omitted_candidate_review"]=missed_candidate_review(
             pool,selected,profile,section=a.section,
             previous_editions=history,edition_date=a.as_of_date)
