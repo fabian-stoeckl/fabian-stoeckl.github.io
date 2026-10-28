@@ -128,6 +128,17 @@ def normalized_url(value):
     return urlunsplit((u.scheme,u.netloc.lower(),u.path.rstrip("/"),query,""))
 
 
+def distinct_perspective(a,b):
+    """Two separately attributed analytical views can address the same event."""
+    return bool(a.get("debate_id") and a.get("debate_id")==b.get("debate_id")
+                and a.get("viewpoint") in ("support","oppose")
+                and b.get("viewpoint") in ("support","oppose")
+                and a["viewpoint"]!=b["viewpoint"]
+                and a.get("source")!=b.get("source")
+                and a.get("article_type") in ("analysis","opinion","investigation")
+                and b.get("article_type") in ("analysis","opinion","investigation"))
+
+
 def duplicate_story(item, chosen):
     """Conservative cross-publisher detection; uncertain reports remain eligible."""
     if any((x.get("event") and item.get("event") and x["event"]==item["event"])
