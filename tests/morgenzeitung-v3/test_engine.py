@@ -64,6 +64,18 @@ class V3EngineTests(unittest.TestCase):
                "body":"MORGENZEITUNG_V3_FEEDBACK_V1\n"+json.dumps(body)}
         p,_=ingest_feedback({},[issue],{"a"*16:"Industrie","b"*16:"Industrie"})
         self.assertEqual(p["feedback_topic_deltas"]["Industrie"],1)
+    def test_many_same_day_extra_ratings_are_not_truncated(self):
+        rows=[{"id":f"{i:016x}","rating":"Sehr relevant","reason":""} for i in range(1,46)]
+        payload={"date":"2026-10-28","origin":"website-explicit","ratings":rows}
+        issue={"number":109,"updated_at":"2026-10-28T10:00:00Z",
+               "title":"[Morgenzeitung 3] Feedback 2026-10-28",
+               "body":"MORGENZEITUNG_V3_FEEDBACK_V1\n"+json.dumps(payload)}
+        topics={r["id"]:"Industrie & Innovation" for r in rows}
+        result,changed=ingest_feedback({},[issue],topics)
+        self.assertEqual(changed,["109"])
+        self.assertEqual(len(result["article_feedback"]),45)
+        self.assertEqual(result["feedback_metrics"]["days"][0]["ratings"],45)
+
     def test_mismatched_number_quote_and_causality_warn(self):
         s1="Das Projekt kostet 95 Millionen Euro."
         s2="„Wir schaffen das“, sagte die Ministerin."

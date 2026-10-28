@@ -344,7 +344,7 @@ def ingest_feedback(profile,issues,topics_by_id):
             if previous and updated<previous.get("updated_at",""):
                 continue
             rows=[]
-            for row in payload["ratings"][:40]:
+            for row in payload["ratings"][:100]:
                 if isinstance(row,dict) and ID.fullmatch(str(row.get("id",""))) and row.get("rating") in ("Sehr relevant","Teilweise relevant","Nicht relevant"):
                     rows.append({"id":row["id"],"rating":row["rating"],
                                  "reason":str(row.get("reason",""))[:600],

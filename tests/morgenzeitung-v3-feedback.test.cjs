@@ -46,5 +46,23 @@ async function transport(url,options){
  assert.equal(consolidated[0].ratings.find(x=>x.id===b).value,'Nicht relevant');
  assert.equal(D.TOKEN_KEY,'morgenzeitung:github-token:v1');
  assert.equal(D.RECEIPTS_KEY,'morgenzeitung-v3:github-receipts:v1');
+ // Additional same-day V3 learning edition must not replace prior feedback.
+ const fs=require('node:fs');
+ const regular=JSON.parse(fs.readFileSync('Privat/Morgenzeitung-3/data/2026-10-28.json','utf8'));
+ const extra=JSON.parse(fs.readFileSync('Privat/Morgenzeitung-3/lern-ausgabe-2026-10-28/data/2026-10-28.json','utf8'));
+ const earlierIds=new Set([...regular.articles,...regular.headlines].map(r=>r.id));
+ const extraIds=[...extra.articles,...extra.headlines].map(r=>r.id);
+ assert.equal(extra.date,regular.date);
+ assert.equal(extra.articles.length,12);
+ assert.equal(extra.headlines.length,6);
+ assert.equal(new Set(extraIds).size,extraIds.length);
+ assert.ok(extraIds.every(id=>/^[a-f0-9]{16}$/.test(id)&&!earlierIds.has(id)));
+ await D.submit(date,[{id:extra.articles[0].id,value:'Sehr relevant',reason:'Echte Zusatzbewertung',section:'Vertiefungen'}],
+  '', 'token',store,transport);
+ const sameDay=await D.feedbackHistory('token',transport);
+ assert.equal(sameDay.length,1);
+ assert.equal(sameDay[0].ratings.length,4);
+ assert.equal(sameDay[0].ratings.find(r=>r.id===b).value,'Nicht relevant');
+ assert.equal(sameDay[0].ratings.find(r=>r.id===extra.articles[0].id).value,'Sehr relevant');
  console.log('PASS: V3 feedback isolated, issue updated, old/v2 filtered');
 })().catch(e=>{console.error(e);process.exitCode=1});
