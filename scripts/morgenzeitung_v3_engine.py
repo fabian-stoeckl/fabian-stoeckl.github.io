@@ -398,7 +398,7 @@ def validate_edition(ed,dossier=None,require_dossier=False):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument("action",choices=["verify","rank","facts","compare","learn"])
+    p.add_argument("action",choices=["verify","rank","facts","compare","learn","quality"])
     for a in ("edition","dossier","candidates","profile","before","issues","topic-map"):p.add_argument("--"+a)
     p.add_argument("--new-feedback",action="store_true")
     p.add_argument("--section",choices=["Vertiefungen","Heute wichtig"],default="Vertiefungen")
