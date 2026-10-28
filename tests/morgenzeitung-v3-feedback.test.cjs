@@ -138,14 +138,14 @@ async function transport(url,options){
    {comparisonOnly:true}),/Ungültige Vergleichsrückmeldung/);
  // Explicit real free-text is not a technical test flag. The browser
  // must agree with Python's structured origin/test checks.
- const candidate=JSON.parse(issues[0].body.slice('MORGENZEITUNG_V3_FEEDBACK_V1\\n'.length));
+ const candidate=JSON.parse(issues[0].body.slice('MORGENZEITUNG_V3_FEEDBACK_V1\n'.length));
  candidate.comment='TEST: true ist hier ein echter Leserkommentar.';
- const realIssue={...issues[0],body:'MORGENZEITUNG_V3_FEEDBACK_V1\\n'+JSON.stringify(candidate)};
+ const realIssue={...issues[0],body:'MORGENZEITUNG_V3_FEEDBACK_V1\n'+JSON.stringify(candidate)};
  const onlyIssue=async(url,opts)=>((opts.method||'GET')==='GET'&&
    String(url).includes('/issues?'))?response([realIssue]):transport(url,opts);
  assert.equal((await D.feedbackHistory('token',onlyIssue)).length,1,
    'Free-text must never be mistaken for a structured test marker');
- const testIssue={...realIssue,body:'MORGENZEITUNG_V3_FEEDBACK_V1\\n'+
+ const testIssue={...realIssue,body:'MORGENZEITUNG_V3_FEEDBACK_V1\n'+
    JSON.stringify({...candidate,test:true})};
  const simulated=async(url,opts)=>((opts.method||'GET')==='GET'&&
    String(url).includes('/issues?'))?response([testIssue]):transport(url,opts);
