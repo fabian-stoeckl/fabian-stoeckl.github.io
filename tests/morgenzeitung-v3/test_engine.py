@@ -145,4 +145,22 @@ class V3EngineTests(unittest.TestCase):
         b["url"]=a["url"]+"?utm_source=homepage&fbclid=123"
         self.assertEqual(len(select([a,b],self.profile)),1)
 
+    def test_unverified_person_and_date_warn(self):
+        text="Friedrich Merz spricht im Oktober über Energie."
+        row={"id":"e"*16,"url":"https://example.org/aktor","summary":text}
+        proof={"proofs":{row["id"]:{"source_url":row["url"],"level":"teaser",
+               "claims":[{"text":text,
+                          "source_excerpt":"Olaf Scholz spricht im September über Energie.",
+                          "supported":True}]}}}
+        report=evidence_guard({"articles":[row],"headlines":[]},proof)
+        self.assertIn("ACTOR_UNCONFIRMED",{w["code"] for w in report["warnings"]})
+        self.assertIn("DATE_UNCONFIRMED",{w["code"] for w in report["warnings"]})
+    def test_equal_thousands_formats_are_not_false_mismatch(self):
+        row={"id":"f"*16,"url":"https://example.org/zahlen",
+             "summary":"Der Betrag steigt um 1.000 Euro."}
+        proof={"proofs":{row["id"]:{"source_url":row["url"],"level":"teaser",
+            "claims":[{"text":row["summary"],"source_excerpt":"Der Betrag steigt um 1000 Euro.","supported":True}]}}}
+        report=evidence_guard({"articles":[row],"headlines":[]},proof)
+        self.assertNotIn("NUMBER_MISMATCH",{w["code"] for w in report["warnings"]})
+
 if __name__=="__main__":unittest.main()
