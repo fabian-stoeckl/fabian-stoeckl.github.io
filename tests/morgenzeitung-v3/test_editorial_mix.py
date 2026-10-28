@@ -49,8 +49,8 @@ class EditorialMixTests(unittest.TestCase):
                                                  discovery_slots=0)],first)
 
     def test_research_report_warns_without_blocking_or_quota(self):
-        pool=[item(i,publisher=("A" if i<7 else "B"),
-                   topic=("Industry" if i<7 else "Climate")) for i in range(1,9)]
+        pool=[item(i,publisher=("A" if i<7 else ("B" if i==7 else "C")),
+                   topic=("Industry" if i<7 else ("Climate" if i==7 else "Finance"))) for i in range(1,9)]
         chosen=pool[:6]
         report=editorial_mix_report(pool,chosen)
         self.assertFalse(report["release_blocked"])
