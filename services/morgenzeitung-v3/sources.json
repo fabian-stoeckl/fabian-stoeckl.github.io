@@ -46,12 +46,7 @@
     "The Conversation",
     "ProPublica"
   ],
-  "dynamic_additions": [
-    "Bruegel",
-    "ITIF",
-    "South China Morning Post",
-    "Al Jazeera"
-  ],
+  "dynamic_additions": [],
   "change_log": [
     {
       "date": "2026-10-28",
@@ -62,6 +57,46 @@
       "date": "2026-10-28",
       "change": "Vier tatsächlich recherchierte Quellen als dynamische Recherche-Einstiege ergänzt: Bruegel, ITIF, South China Morning Post, Al Jazeera",
       "reason": "Relevante belegte Beiträge der eigenständigen V3-Ausgabe zu EU-Industriepolitik, Wärmeeffizienz, EU-China-Handel und asiatischer Konjunktur; keine Erscheinungsquote oder Rankingprämie."
+    },
+    {
+      "date": "2026-10-28",
+      "change": "Neu entdeckte Quellen als trial_only geführt, nicht automatisch dauerhaft zu Fixstartern ernannt.",
+      "reason": "Realistische Quellenentwicklung und Relevanz zuerst aus wiederholten Leserbewertungen beurteilen."
     }
-  ]
+  ],
+  "source_trials": [
+    {
+      "name": "Bruegel",
+      "status": "trial_only",
+      "first_observed": "2026-10-28",
+      "publisher_access_neutral": true,
+      "feedback_days": 0,
+      "reason": "Originalbeitrag redaktionell gesichtet; Wiederholung und Leserrelevanz vor dauerhafter Aufnahme noch nicht festgestellt."
+    },
+    {
+      "name": "ITIF",
+      "status": "trial_only",
+      "first_observed": "2026-10-28",
+      "publisher_access_neutral": true,
+      "feedback_days": 0,
+      "reason": "Originalbeitrag redaktionell gesichtet; Wiederholung und Leserrelevanz vor dauerhafter Aufnahme noch nicht festgestellt."
+    },
+    {
+      "name": "South China Morning Post",
+      "status": "trial_only",
+      "first_observed": "2026-10-28",
+      "publisher_access_neutral": true,
+      "feedback_days": 0,
+      "reason": "Originalbeitrag redaktionell gesichtet; Wiederholung und Leserrelevanz vor dauerhafter Aufnahme noch nicht festgestellt."
+    },
+    {
+      "name": "Al Jazeera",
+      "status": "trial_only",
+      "first_observed": "2026-10-28",
+      "publisher_access_neutral": true,
+      "feedback_days": 0,
+      "reason": "Originalbeitrag redaktionell gesichtet; Wiederholung und Leserrelevanz vor dauerhafter Aufnahme noch nicht festgestellt."
+    }
+  ],
+  "promotion_policy": "Nur mehrmals belegte relevante Artikel über unterschiedliche Kalendertage; kein Veröffentlichungsanteil und kein Rankingbonus nach Verlagsname, Volltextzugang oder Paywall."
 }
