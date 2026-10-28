@@ -4,7 +4,7 @@
 .v3-quick-reasons .small{flex-basis:100%;margin:0 0 4px}
 .v3-reason-choice{font:inherit;font-size:.82rem;padding:5px 9px;border:1px solid currentColor;border-radius:16px;background:transparent;color:inherit;cursor:pointer}
 .v3-reason-choice:hover,.v3-reason-choice:focus-visible{background:rgba(110,110,110,.12)}
-</style><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+</style><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' https://api.github.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; object-src 'none'; base-uri 'self'; form-action 'self'"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
 <title>Lern-Sonderausgabe · Persönliche Zeitung</title>
 <link rel="stylesheet" href="../style.css?v=20261028v3">
 <script src="../github.js" defer></script><script src="../direct-feedback.js" defer></script><script src="../app.js?v=20261028v3" defer></script><script src="../rating-reasons.js?v=20261028" defer></script><script src="../editorial-extras.js?v=20261028" defer></script>
@@ -19,7 +19,7 @@
 <h1 class="newspaper-name">Persönliche Zeitung<span>.</span></h1><p><strong>Neue Lern-Sonderausgabe</strong> · eigenständig zusammengestellte zusätzliche Beiträge. Deine reguläre Tagesausgabe bleibt bestehen. Artikel aus der letzten Woche und einzelne weiterhin relevante Hintergrundstücke sind enthalten.</p>
 <div class="editionline"><p id="edition-meta">Sonderausgabe · 28. Oktober 2026</p><label>Ausgabe <select id="date"><option>Noch keine Ausgabe</option></select></label></div></header>
 <p id="notice" class="notice" role="status">Lädt …</p><p id="publication-status" class="publication-status" role="status" aria-live="polite" hidden></p>
-<section id="login" hidden><h2>Zugang</h2><form id="login-form"><label>Schlüssel <input id="token" type="password" required></label><button type="submit">Öffnen</button></form></section>
+
 <div id="newspaper-view">
 <nav class="tabs" aria-label="Zeitungsbereiche"><button id="tab-headlines" aria-pressed="true">Heute wichtig <span id="headline-count">0</span></button><button id="tab-articles" aria-pressed="false">Vertiefungen <span id="article-count">0</span></button></nav>
 <section id="headlines" aria-label="Heute wichtig"></section><section id="articles" aria-label="Vertiefungen" hidden></section><section id="new-sources" hidden></section>
@@ -29,5 +29,5 @@
 <section id="feedback-settings"><section id="github-setup" hidden><h2>GitHub-Feedback verbinden</h2><p>Wie in deiner Persönlichen Zeitung: eingeschränkter Fine-grained-Token nur für das private Feedback-Repository.</p>
 <form id="github-setup-form"><label>GitHub-Token <input id="github-token" type="password" autocomplete="off" required></label><label><input id="remember-token" type="checkbox" required> Token auf diesem Gerät speichern</label><button type="submit">Verbinden</button><span id="github-setup-status"></span></form></section>
 <div id="github-connected" hidden><span>GitHub-Feedback verbunden.</span></div></section>
-<footer><p id="operating-state" class="small">Zusätzliche V3-Lernausgabe</p><button id="logout" hidden>Abmelden</button></footer>
+<footer><p id="operating-state" class="small">Zusätzliche V3-Lernausgabe</p></footer>
 </div></main></body></html>
