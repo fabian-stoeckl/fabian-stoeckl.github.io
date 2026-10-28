@@ -28,24 +28,7 @@ function registry(root) {
   const pages = ['index.md'];
   function walk(dir) { if (!fs.existsSync(path.join(root, dir))) return; for (const e of fs.readdirSync(path.join(root, dir), {withFileTypes:true})) { const p = dir + '/' + e.name; if(e.isDirectory()) walk(p); else if(e.name === 'index.html') pages.push(p); } }
   walk('Privat');
-  // Keep only explicit one-page redirects for real historic bookmarks.
-  // They are not a second registered newspaper or an editable website area.
-  const legacyRedirects = {
-    'Privat/Morgenzeitung-3/index.html': '/Privat/Persoenliche-Zeitung/',
-    'Privat/Morgenzeitung-3/praeferenzen.html': '/Privat/Persoenliche-Zeitung/praeferenzen.html',
-    'Privat/Morgenzeitung-3/lern-ausgabe-2026-10-28/index.html': '/Privat/Persoenliche-Zeitung/lern-ausgabe-2026-10-28/'
-  };
-  for (const p of pages) {
-    if ([...paths].some(s => s.endsWith('/') ? p.startsWith(s) : p === s)) continue;
-    const dest = legacyRedirects[p];
-    if (dest && paths.has('Privat/Persoenliche-Zeitung/')) {
-      const html = fs.readFileSync(path.join(root,p),'utf8');
-      assert.ok(html.includes('location.replace(') && html.includes(dest),
-        `Legacy bookmark must redirect to the registered newspaper: ${p}`);
-      continue;
-    }
-    assert.fail(`Unregistered website page: ${p}`);
-  }
+  for (const p of pages) assert.ok([...paths].some(s => s.endsWith('/') ? p.startsWith(s) : p === s), `Unregistered website page: ${p}`);
   assert.match(fs.readFileSync(path.join(root, '_config.yml'), 'utf8'), /^\s+- docs\s*$/m, 'docs must be excluded from Jekyll');
   assert.match(fs.readFileSync(path.join(root, 'AGENTS.md'), 'utf8'), /docs\/website-context\/README\.md/, 'AGENTS must link registry');
   return areas;

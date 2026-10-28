@@ -6,12 +6,32 @@
 <title>Seite nicht gefunden</title>
 <meta name="robots" content="noindex">
 <script>
+// GitHub Pages has no server-side route rules. Keep all retired aliases here
+// without recreating old GitHub directories or duplicating publication data.
+// This runs only when GitHub Pages serves its custom 404 for an old URL.
 const path = window.location.pathname.toLowerCase().replace(/\/+$/, "");
-const target = {"/privat": "/Privat/", "/privat/etfs": "/Privat/ETFs/", "/privat/pressespiegel": "/Privat/Morgenzeitung-3/", "/privat/morgenzeitung-neu": "/Privat/Morgenzeitung-3/", "/privat/persoenliche-zeitung": "/Privat/Morgenzeitung-3/"}[path];
+const routes = {
+  "/privat": "/Privat/",
+  "/privat/etfs": "/Privat/ETFs/",
+  "/privat/persoenliche-zeitung": "/Privat/Persoenliche-Zeitung/",
+  "/privat/pressespiegel": "/Privat/Persoenliche-Zeitung/",
+  "/privat/pressespiegel/index.html": "/Privat/Persoenliche-Zeitung/",
+  "/privat/morgenzeitung-neu": "/Privat/Persoenliche-Zeitung/",
+  "/privat/morgenzeitung-neu/index.html": "/Privat/Persoenliche-Zeitung/",
+  "/privat/morgenzeitung-3": "/Privat/Persoenliche-Zeitung/",
+  "/privat/morgenzeitung-3/index.html": "/Privat/Persoenliche-Zeitung/",
+  "/privat/morgenzeitung-3/praeferenzen.html": "/Privat/Persoenliche-Zeitung/praeferenzen.html",
+  "/privat/morgenzeitung-3/lern-ausgabe-2026-10-28": "/Privat/Persoenliche-Zeitung/lern-ausgabe-2026-10-28/",
+  "/privat/morgenzeitung-3/lern-ausgabe-2026-10-28/index.html": "/Privat/Persoenliche-Zeitung/lern-ausgabe-2026-10-28/"
+};
+const target = routes[path];
 if (target && window.location.pathname !== target) {
   window.location.replace(target + window.location.search + window.location.hash);
 }
 </script>
 </head>
-<body><h1>Seite nicht gefunden</h1><p><a href="/">Zur Startseite</a> · <a href="/Privat/">Zur Privat-Übersicht</a></p></body>
+<body>
+<h1>Seite nicht gefunden</h1>
+<p><a href="/">Zur Startseite</a> · <a href="/Privat/">Zur Privat-Übersicht</a> · <a href="/Privat/Persoenliche-Zeitung/">Persönliche Zeitung</a></p>
+</body>
 </html>

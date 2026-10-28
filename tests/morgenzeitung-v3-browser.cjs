@@ -36,9 +36,16 @@ const {chromium}=require('playwright');
      return new Response(JSON.stringify(result),{status:200,headers:{'Content-Type':'application/json'}});
    };
  });
- // Old main-page bookmark redirects to the renamed folder without losing query/hash.
+ // GitHub Pages serves the root 404 file for old missing routes. The local
+ // Python preview doesn't, so fulfill that one old-URL request with the 404
+ // to test the real client-side redirect without keeping any old folder.
+ await page.route('**/Privat/Morgenzeitung-3/**', async route=>{
+   await route.fulfill({status:404,contentType:'text/html',
+     body:fs.readFileSync('404.html','utf8')});
+ });
  await page.goto('http://127.0.0.1:8766/Privat/Morgenzeitung-3/?from=old#headlines');
  await page.waitForURL('**/Privat/Persoenliche-Zeitung/?from=old#headlines');
+ await page.unroute('**/Privat/Morgenzeitung-3/**');
  await page.goto('http://127.0.0.1:8766/Privat/Persoenliche-Zeitung/');
  await page.waitForSelector('#headlines .news-item .rating-dots input');
  assert.match(await page.locator('h1').first().innerText(),/Persönliche Zeitung/);
