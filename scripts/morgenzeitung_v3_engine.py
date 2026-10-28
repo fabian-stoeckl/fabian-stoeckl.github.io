@@ -12,6 +12,8 @@ from scripts.morgenzeitung_v3_editorial import (
     calibration_review, edition_feedback_review, edition_series_review
 )
 
+from scripts.morgenzeitung_v3_schema import validate_article_metadata
+
 from scripts.morgenzeitung_v3_quality import (
     v1_comparison, calibration_review_from_feedback, reader_comparison_candidates
 )
@@ -76,8 +78,7 @@ def article_penalty(item, profile):
     penalty= -13 if rating=="Nicht relevant" else 0
     reason=feedback.get("reason","").lower()
     if "schon bekannt" in reason: penalty-=7
-    # Known article replay from recent issues, unless it documents a material update.
-    if item.get("seen_recently") and not item.get("material_update"): penalty-=12
+    # Seen-recently costs 12 points once in score(), equally in both sections.
     return penalty
 
 
@@ -89,12 +90,15 @@ def score(item, profile, section="Vertiefungen"):
     """
     if section not in ("Vertiefungen", "Heute wichtig"):
         raise ValueError("unknown editorial section")
+    if item.get("novelty_score") is not None and item.get("novelty") is not None:
+        if item["novelty_score"] != item["novelty"]:
+            raise ValueError("novelty_score conflicts with legacy novelty")
     weights=(("fit",4),("novelty",3),("impact",2),("perspective",1))
     if section=="Heute wichtig":
         weights=(("fit",0),("novelty",3),("impact",5),("perspective",2))
     value=0
     for key,weight in weights:
-        x=item.get(key,0)
+        x=item.get("novelty_score",item.get("novelty",0)) if key=="novelty" else item.get(key,0)
         if isinstance(x,bool) or not isinstance(x,(int,float)) or not 0<=x<=5:
             raise ValueError(key+" must be 0..5")
         value+=x*weight
@@ -115,7 +119,7 @@ def score(item, profile, section="Vertiefungen"):
     novelty_demand=style.get("novelty",0)
     if isinstance(novelty_demand,bool) or not isinstance(novelty_demand,(int,float)):
         novelty_demand=0
-    novelty_adjustment=min(2,max(0,novelty_demand))*(item.get("novelty",0)-2.5)
+    novelty_adjustment=min(2,max(0,novelty_demand))*(item.get("novelty_score",item.get("novelty",0))-2.5)
     # Only genuine, pre-selection editorial assessments based on comparable
     # headline/teaser metadata can be used. Missing values are neutral.
     # Accessible full-text volume is NEVER a quality assessment or proxy.
@@ -550,6 +554,7 @@ def validate_edition(ed,dossier=None,require_dossier=False):
                 errors.append("invalid identity");continue
             if row["id"] in ids or row["url"] in urls:errors.append("duplicate")
             ids.add(row["id"]);urls.add(row["url"])
+            errors.extend(validate_article_metadata(row))
             if section=="articles" and not row.get("topic"):errors.append("missing topic")
             if section=="headlines" and row.get("region") not in ("Österreich","International"):
                 errors.append("missing region")
