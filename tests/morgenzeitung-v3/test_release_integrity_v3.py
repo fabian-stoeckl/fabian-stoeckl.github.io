@@ -51,6 +51,21 @@ class PublicReceiptCoverageTests(unittest.TestCase):
         edition["fact_audit"]["edition_sha256"]=edition_hash(edition,LEGACY_RECEIPT_VERSION)
         self.assertIn("Wrong fact audit version",check_public_receipt(edition))
 
+    def test_two_urls_differing_only_by_tracking_are_duplicate(self):
+        from scripts.morgenzeitung_v3_engine import validate_edition
+        row={"id":"a"*16,"source":"Journal","title":"Original","summary":"Belegte Aussage",
+             "url":"https://example.org/news?utm_source=alpha&x=1",
+             "published_at":"2026-10-29T06:10:00Z","topic":"Politik"}
+        same={"id":"b"*16,"source":"Journal","title":"Alias",
+              "summary":"Belegte Zusammenfassung",
+              "url":"https://example.org/news?x=1&UTM_source=beta",
+              "published_at":"2026-10-29T06:10:00Z","region":"International"}
+        edition={"date":"2026-10-29","preview":True,
+                 "researched_at":"2026-10-29T06:15:00Z",
+                 "available_at":"2026-10-29T06:20:00Z",
+                 "articles":[row],"headlines":[same]}
+        self.assertIn("duplicate",validate_edition(edition))
+
     def test_none_novelty_score_falls_back_to_legacy_number(self):
         self.assertEqual(validate_article_metadata({"novelty":7,"novelty_score":None}),
                          ["novelty score must be a number from 0 to 5"])

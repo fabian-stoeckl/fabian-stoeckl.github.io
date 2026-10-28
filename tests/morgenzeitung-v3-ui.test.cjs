@@ -63,6 +63,9 @@ const news=[
 const dedup=GitHubPaper.partition({articles:[baseStory],headlines:news});
 assert.deepEqual(dedup.headlines.map(x=>x.id),[news[0].id,news[2].id]);
 assert.equal(dedup.duplicatesRemoved,1);
+assert.equal(GitHubPaper.canonical('https://example.org/a?UTM_source=mobile&x=1'),
+             GitHubPaper.canonical('https://example.org/a?x=1'));
+
 console.log('PASS: single reader, metadata, explicit enhancements and strict script policy');
 
 // All user entry points use only the actual single newspaper folder.

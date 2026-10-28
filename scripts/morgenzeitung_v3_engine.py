@@ -552,8 +552,9 @@ def validate_edition(ed,dossier=None,require_dossier=False):
                 or not all(row.get(k) for k in ("title","url","source","summary","published_at"))
                 or not valid_url(row.get("url"))):
                 errors.append("invalid identity");continue
-            if row["id"] in ids or row["url"] in urls:errors.append("duplicate")
-            ids.add(row["id"]);urls.add(row["url"])
+            canonical_url=normalized_url(row["url"])
+            if row["id"] in ids or canonical_url in urls:errors.append("duplicate")
+            ids.add(row["id"]);urls.add(canonical_url)
             errors.extend(validate_article_metadata(row))
             if section=="articles" and not row.get("topic"):errors.append("missing topic")
             if section=="headlines" and row.get("region") not in ("Österreich","International"):

@@ -4,7 +4,7 @@ const GitHubPaper = {
   canonical(url) {
     const u=new URL(url);
     if(u.protocol!=='https:'||u.username||u.password)throw Error('Ungültige Artikeladresse');
-    const query=[...u.searchParams.entries()].filter(([key])=>!key.startsWith('utm_')&&!['fbclid','gclid'].includes(key)).sort(([a,av],[b,bv])=>a.localeCompare(b)||av.localeCompare(bv));
+    const query=[...u.searchParams.entries()].filter(([key])=>!key.toLowerCase().startsWith('utm_')&&!['fbclid','gclid'].includes(key.toLowerCase())).sort(([a,av],[b,bv])=>a.localeCompare(b)||av.localeCompare(bv));
     const tail=query.length?'?'+new URLSearchParams(query):'';
     return 'https://'+u.host.toLowerCase()+u.pathname.replace(/\/+$/,'')+tail;
   },
