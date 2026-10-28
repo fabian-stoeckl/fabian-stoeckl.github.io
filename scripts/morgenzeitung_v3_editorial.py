@@ -161,3 +161,133 @@ def editorial_mix_report(candidates, selected, section="Vertiefungen"):
         "release_blocked":False,
         "note":"Editorial warnings only; do not reward or penalize paywalls, publisher accessibility, or URL response codes.",
     }
+
+
+# Stable anchors for human editorial assessments. They are intentionally
+# qualitative: code cannot infer analysis quality from the amount of full text.
+EDITORIAL_ANCHORS = {
+    "fit": "0 no useful new insight; 2 peripheral; 3 concrete useful fact; 4 explains relevant mechanisms or trade-offs; 5 exceptional incremental insight",
+    "novelty": "0 repeated without update; 2 familiar angle; 3 fresh factual development; 4 new interpretation or substantive update; 5 major genuinely new finding",
+    "impact": "0 negligible; 2 limited sector effect; 3 material consequence; 4 broad consequences; 5 systemic or exceptionally consequential",
+    "perspective": "0 no useful angle; 2 ordinary framing; 3 independent useful view; 4 substantive additional context; 5 rare well-grounded perspective",
+    "analysis_value": "0 unsupported/none; 2 descriptive; 3 explains a mechanism; 4 substantial evidence-based analysis; 5 unusually strong mechanism and alternatives",
+    "context_value": "0 isolated detail; 2 limited context; 3 explains relevance; 4 connects to broader implications; 5 exceptional structural context",
+}
+
+
+def calibration_review(candidates, section="Vertiefungen"):
+    """Private, non-blocking consistency questions for HUMAN scores.
+
+    Never derives scoring from HTTP access, paywall, length or publisher brand.
+    Source averages are review hints, not a source bonus or penalty.
+    """
+    if section not in ("Vertiefungen", "Heute wichtig"):
+        raise ValueError("unknown section")
+    mandatory=("novelty","impact","perspective") if section=="Heute wichtig" else (
+        "fit","novelty","impact","perspective")
+    per_source={}
+    absent=Counter()
+    invalid=Counter()
+    valid=Counter()
+    for row in candidates:
+        if not isinstance(row,dict):continue
+        source=row.get("source")
+        for key in mandatory:
+            value=row.get(key)
+            if value is None:
+                absent[key]+=1
+            elif type(value) not in (int,float) or not 0<=value<=5:
+                invalid[key]+=1
+            else:
+                valid[key]+=1
+        if isinstance(source,str) and source and type(row.get("fit")) in (int,float):
+            if 0<=row["fit"]<=5:
+                per_source.setdefault(source,[]).append(row["fit"])
+    sufficient={k:round(sum(v)/len(v),2) for k,v in per_source.items() if len(v)>=3}
+    potential=[]
+    if len(sufficient)>=2 and max(sufficient.values())-min(sufficient.values())>=2:
+        potential.append("Check consistent use of incremental-insight anchors across publishers, without adjusting scores by source.")
+    if any(absent.values()) or any(invalid.values()):
+        potential.append("Assess missing or invalid scoring fields from comparable publisher titles and teasers; never fabricate a value to fill a quota.")
+    return {"section":section,"candidate_count":len(candidates),
+            "rubric":{key:EDITORIAL_ANCHORS[key] for key in mandatory},
+            "optional_rubric":{key:EDITORIAL_ANCHORS[key] for key in ("analysis_value","context_value")},
+            "present":dict(valid),"missing":dict(absent),"invalid":dict(invalid),
+            "source_fit_means_for_review_only":sufficient,
+            "review_notes":potential,"release_blocked":False,
+            "no_access_based_adjustments":True}
+
+
+def edition_feedback_review(edition,profile,min_votes=5):
+    """Actual ratings for ONE published V3 edition, not delivery or click metrics.
+
+    Aggregate an entire newspaper's reader response, not only isolated stories.
+    Do not confuse non-response with dislike, or statistical trend with causality.
+    """
+    if not isinstance(edition,dict) or not isinstance(profile,dict):
+        raise ValueError("edition and profile required")
+    date=edition.get("date")
+    items=[x for section in ("articles","headlines") for x in edition.get(section,[])
+           if isinstance(x,dict) and isinstance(x.get("id"),str)]
+    by_id={x["id"]:x for x in items}
+    current={}
+    for issue_id,record in (profile.get("feedback_by_issue") or {}).items():
+        if not isinstance(record,dict) or record.get("date")!=date:continue
+        updated=record.get("updated_at") or ""
+        for vote in record.get("ratings",[]):
+            if not isinstance(vote,dict) or vote.get("rating") not in RATINGS:continue
+            aid=vote.get("id")
+            if aid not in by_id:continue
+            key=(str(updated),str(issue_id))
+            if aid not in current or key>=current[aid][0]:
+                current[aid]=(key,vote)
+    ratings=Counter(v["rating"] for _,v in current.values())
+    topic_counts=Counter(by_id[aid].get("topic") for aid in current
+                         if by_id[aid].get("topic"))
+    all_topics=Counter(x.get("topic") for x in items if x.get("topic"))
+    source_counts=Counter(x.get("source") for x in items if x.get("source"))
+    n=len(current)
+    enough=(edition.get("preview") is False and
+            n>=min_votes and n>=max(1,int(len(by_id)*.25)))
+    review_hints=[]
+    if enough:
+        for topic,count in topic_counts.items():
+            if count>=3:
+                misses=sum(1 for aid,(_,v) in current.items()
+                           if by_id[aid].get("topic")==topic and
+                           v["rating"]==NEGATIVE)
+                if misses>=2:
+                    review_hints.append("Review story choice, novelty and depth within topic: "+str(topic))
+    return {
+        "date":date,"preview":edition.get("preview"),
+        "published":len(by_id),"rated":n,"unrated":max(0,len(by_id)-n),
+        "ratings":{key:ratings[key] for key in (POSITIVE,NEUTRAL,NEGATIVE)},
+        "very_relevant_share_of_rated":round(ratings[POSITIVE]/n,4) if n else None,
+        "rated_fraction":round(n/max(1,len(by_id)),4),
+        "topics_published":dict(all_topics),
+        "publishers_published":dict(source_counts),
+        "topics_with_explicit_feedback":dict(topic_counts),
+        "assessment":"descriptive" if enough else "insufficient_real_feedback",
+        "editorial_hints":review_hints,
+        "learning_applied":False,
+        "causal_improvement_proven":False,
+        "note":"Only rated published articles count. Unrated, unselected, unread and preview records are not negative signals.",
+    }
+
+
+def edition_series_review(editions,profile):
+    """Compare whole-edition feedback cautiously, never auto-edit user interests."""
+    reports=[edition_feedback_review(e,profile) for e in editions
+             if isinstance(e,dict) and e.get("preview") is False]
+    reports.sort(key=lambda r:r.get("date") or "")
+    comparable=[x for x in reports if x["assessment"]=="descriptive"]
+    change=None
+    if len(comparable)>=2:
+        change=round(comparable[-1]["very_relevant_share_of_rated"]-
+                     comparable[-2]["very_relevant_share_of_rated"],4)
+    return {"editions":reports[-14:],
+            "comparable_edition_dates":[x["date"] for x in comparable[-2:]],
+            "change_in_positive_share_among_rated":change,
+            "trend":"descriptive_only" if change is not None else "insufficient_real_feedback",
+            "causal_improvement_proven":False,
+            "learning_applied":False}
