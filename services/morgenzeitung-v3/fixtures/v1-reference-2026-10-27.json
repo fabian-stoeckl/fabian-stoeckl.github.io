@@ -1,0 +1,533 @@
+{
+  "date": "2026-10-27",
+  "window_start": "2026-10-26T12:10:00Z",
+  "window_end": "2026-10-27T16:18:12Z",
+  "available_at": "2026-10-27T16:18:12Z",
+  "researched_at": "2026-10-27T16:18:12Z",
+  "preview": false,
+  "snapshot_version": "v4",
+  "limitations": [
+    "Vollständiger erneuter 22-Pflichtverlage-Rechercheabgleich einschließlich neuer internationaler Originalberichte. Technische Zugriffshürden, Paywalls und Volltextverfügbarkeit sind keine redaktionellen Ausschluss- oder Rankingkriterien.",
+    "Eine neue Washington-Post-Analyse wurde mit Originaltitel, Autor, Datum und Inhalt direkt recherchiert und in die 15 Vertiefungen aufgenommen; der zuvor enthaltene Beitrag zum Dax-Handel wurde wegen des begrenzten Platzes zurückgestellt, nicht wegen technischer Zugriffshürden.",
+    "Die bisher bewertbaren Artikel behalten ihre unveränderten IDs. Alle 19 Nachrichten bleiben erhalten.",
+    "Weitere aktuelle Originaltitel der Financial Times wurden recherchiert; wegen fehlender genauer Publikationszeit wird keine minutengenaue Zeit behauptet. Diese Recherchehinweise sind privat archiviert.",
+    "Quellen- und Feedbacknachweise sind privat archiviert; ein GitHub-CI-Prepublication-Gate prüft die unabhängige Auswahlreproduktion.",
+    "Die Drei-Tage-Quellenzugangsbeurteilung bleibt AUDIT_GAP, solange die vollständigen redaktionellen Protokolle vom 25. und 26. Oktober fehlen. Das ist kein bestätigter Verlagsausfall."
+  ],
+  "headlines": [
+    {
+      "id": "27b0000000000001",
+      "title": "Schicksalswahl in Israel",
+      "url": "https://orf.at/stories/3445760/",
+      "source": "ORF",
+      "published_at": "2026-10-27T05:04:00Z",
+      "region": "International",
+      "summary": "Israel wählt ein neues Parlament. Die Abstimmung ist von der Sicherheitslage, der Auseinandersetzung um Ministerpräsident Netanjahu und einer tief gespaltenen Gesellschaft geprägt.",
+      "event": "20261027-headline-27b0000000000001"
+    },
+    {
+      "id": "27b0000000000002",
+      "title": "Bolsonaro darf Brasilien nach Wahlniederlage nicht verlassen",
+      "url": "https://orf.at/stories/3446255/",
+      "source": "ORF",
+      "published_at": "2026-10-27T07:46:00Z",
+      "region": "International",
+      "summary": "Nach der verlorenen Präsidentschaftswahl in Brasilien darf Flavio Bolsonaro wegen eines Geldwäscheermittlungsverfahrens das Land vorerst nicht verlassen. Seine Partei erkennt das Ergebnis unter Vorbehalt an.",
+      "event": "20261027-headline-27b0000000000002"
+    },
+    {
+      "id": "27b0000000000003",
+      "title": "Mehr als 20 Tote bei Drohnenangriff auf Markt im Sudan",
+      "url": "https://orf.at/stories/3446256/",
+      "source": "ORF",
+      "published_at": "2026-10-27T07:03:00Z",
+      "region": "International",
+      "summary": "Bei einem Drohnenangriff auf einen Markt in der sudanesischen Stadt Nyala wurden nach Angaben von Rettungskräften mindestens 21 Menschen getötet und zahlreiche weitere verletzt.",
+      "event": "20261027-headline-27b0000000000003"
+    },
+    {
+      "id": "27b0000000000004",
+      "title": "Rumänien deckt laut Geheimdienst von Moskau gesteuerte Spionage auf",
+      "url": "https://orf.at/stories/3446239/",
+      "source": "ORF",
+      "published_at": "2026-10-26T19:42:00Z",
+      "region": "International",
+      "summary": "Rumäniens Geheimdienst meldet ein mutmaßlich von Russland koordiniertes Spionagenetz gegen militärische und industrielle Ziele. Die Behörden untersuchen auch einen Brand auf einer Industrieplattform.",
+      "event": "20261027-headline-27b0000000000004"
+    },
+    {
+      "id": "27b0000000000006",
+      "title": "Hilfsaktion für Frontstadt Oleschky läuft an",
+      "url": "https://orf.at/stories/3446245/",
+      "source": "ORF",
+      "published_at": "2026-10-26T22:13:00Z",
+      "region": "International",
+      "summary": "Russland und die Ukraine vereinbarten eine zeitlich begrenzte Feuerpause für eine Hilfsaktion in der verminten Frontstadt Oleschky. Ob Bewohner die Stadt verlassen können, bleibt unklar.",
+      "event": "20261027-headline-27b0000000000006"
+    },
+    {
+      "id": "27b0000000000007",
+      "title": "Zahl der an Hochschulen studierenden Schüler steigt",
+      "url": "https://orf.at/stories/3446254/",
+      "source": "ORF",
+      "published_at": "2026-10-27T05:51:00Z",
+      "region": "Österreich",
+      "summary": "In Österreich studieren immer mehr besonders begabte Schüler bereits vor der Matura an Hochschulen. Im Wintersemester 2025/26 waren es 170 Teilnehmende an 38 Institutionen.",
+      "event": "20261027-headline-27b0000000000007"
+    },
+    {
+      "id": "27b0000000000008",
+      "title": "Syrien schließt nach Luftangriffen Grenze zu Jordanien",
+      "url": "https://orf.at/stories/3446249/",
+      "source": "ORF",
+      "published_at": "2026-10-27T05:17:00Z",
+      "region": "International",
+      "summary": "Syrien hat nach jordanischen Luftangriffen einen wichtigen Grenzübergang geschlossen. Vorausgegangen war ein tödlicher Anschlag auf eine Kirche in Jordanien.",
+      "event": "20261027-headline-27b0000000000008"
+    },
+    {
+      "id": "27b0000000000009",
+      "title": "EU-Agrarminister einigen sich auf Teilposition zur Agrarreform",
+      "url": "https://orf.at/stories/3446243/",
+      "source": "ORF",
+      "published_at": "2026-10-26T21:45:00Z",
+      "region": "International",
+      "summary": "Die EU-Agrarminister einigten sich auf eine Teilposition zur Reform der Gemeinsamen Agrarpolitik. Finanzierungsfragen für den EU-Haushalt ab 2028 bleiben ausgeklammert.",
+      "event": "20261027-headline-27b0000000000009"
+    },
+    {
+      "id": "27b000000000000a",
+      "title": "Indonesien will mit künstlichem Regen Waldbrände bekämpfen",
+      "url": "https://orf.at/stories/3446257/",
+      "source": "ORF",
+      "published_at": "2026-10-27T07:06:00Z",
+      "region": "International",
+      "summary": "Indonesien versucht, die schweren Wald- und Landbrände auf Sumatra und Borneo durch künstlich ausgelösten Regen einzudämmen. Dafür werden Flugzeuge zur Wolkenbeimpfung eingesetzt.",
+      "event": "20261027-headline-27b000000000000a"
+    },
+    {
+      "id": "27b000000000000b",
+      "title": "Pilotengewerkschaft warnt vor Sekundenschlaf bei drei von vier Piloten",
+      "url": "https://orf.at/stories/3446222/",
+      "source": "ORF",
+      "published_at": "2026-10-26T14:03:00Z",
+      "region": "International",
+      "summary": "Laut einer Befragung der Pilotengewerkschaften erlebten 76,8 Prozent der teilnehmenden Piloten zuletzt mindestens einen Sekundenschlaf im Flug. Die Gewerkschaft fordert Verbesserungen.",
+      "event": "20261027-headline-27b000000000000b"
+    },
+    {
+      "id": "27b000000000000c",
+      "title": "Oxfam-Analyse: Privatjets verschärfen die Klimakrise",
+      "url": "https://orf.at/stories/3446251/",
+      "source": "ORF",
+      "published_at": "2026-10-27T05:35:00Z",
+      "region": "International",
+      "summary": "Oxfam kritisiert die Emissionen von Privatjets und die Investitionen sehr vermögender Menschen in emissionsintensive Branchen. Die Organisation fordert stärkere klimapolitische Verantwortung.",
+      "event": "20261027-headline-27b000000000000c"
+    },
+    {
+      "id": "27b000000000000d",
+      "title": "Südtiroler Schützen hissen Österreichs Flagge: Streit in Bozen",
+      "url": "https://www.diepresse.com/41393027/suedtiroler-schuetzen-hissen-oesterreichs-flagge-streit-in-bozen",
+      "source": "Die Presse",
+      "published_at": "2026-10-26T15:59:00Z",
+      "region": "International",
+      "summary": "Das Hissen österreichischer Flaggen durch Südtiroler Schützen bei einer Veranstaltung in Bozen hat politische Kritik ausgelöst. Rund tausend Schützen nahmen teil.",
+      "event": "20261027-headline-27b000000000000d"
+    },
+    {
+      "id": "27b000000000000e",
+      "title": "Grenzpolizei entdeckt bei Passau acht Kilogramm Gold in Mittelkonsole",
+      "url": "https://www.diepresse.com/41392597/grenzpolizei-entdeckt-bei-passau-acht-kilogramm-gold-in-mittelkonsole",
+      "source": "Die Presse",
+      "published_at": "2026-10-26T13:16:00Z",
+      "region": "International",
+      "summary": "Bei Passau fanden Grenzpolizisten rund acht Kilogramm Gold in einem professionellen Autoversteck. Wegen ungeklärter Herkunft laufen Ermittlungen wegen möglicher Geldwäsche.",
+      "event": "20261027-headline-27b000000000000e"
+    },
+    {
+      "id": "27b000000000000f",
+      "title": "Staatsspitze begeht Nationalfeiertag: Neutralität und Sicherheit",
+      "url": "https://www.diepresse.com/41392498/staatsspitze-begeht-nationalfeiertag-neutralitaet-hat-nie-bedeutet-dass",
+      "source": "Die Presse",
+      "published_at": "2026-10-26T12:21:00Z",
+      "region": "International",
+      "summary": "Österreichs Staatsspitze betonte zum Nationalfeiertag, dass Neutralität eine eigenständige Verteidigungsfähigkeit voraussetzt. Im Mittelpunkt stand die Modernisierung des Bundesheeres.",
+      "event": "20261027-headline-27b000000000000f"
+    },
+    {
+      "id": "27b0000000000010",
+      "title": "Kospi und Nikkei springen hoch – KI-Pläne stärken Asiens Börsen",
+      "url": "https://www.handelsblatt.com/finanzen/maerkte/marktberichte/aktien-kospi-und-nikkei-springen-hoch-ki-plaene-staerken-asiens-boersen/100265142.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-27T04:52:00Z",
+      "region": "International",
+      "summary": "Die Börsen in Südkorea und Japan profitierten von neuen KI-Investitionsplänen und der Aussicht auf einen Anthropic-Börsengang. Auch Metas Finanzierungspläne beeinflussen die Stimmung.",
+      "event": "20261027-headline-27b0000000000010"
+    },
+    {
+      "id": "27b0000000000013",
+      "title": "Diese neuen Zahlen verrät der Börsenprospekt von Anthropic",
+      "url": "https://www.handelsblatt.com/technik/ki/ki-diese-neuen-zahlen-verraet-der-boersenprospekt-von-anthropic/100264987.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-26T13:14:00Z",
+      "region": "International",
+      "summary": "Der Börsenprospekt von Anthropic gibt neue Einblicke in Wachstum, Verluste und Risiken des KI-Unternehmens. Der geplante Börsengang gilt als wichtiger Test für die Finanzierung des KI-Booms.",
+      "event": "20261027-headline-27b0000000000013"
+    },
+    {
+      "id": "27b0000000000014",
+      "title": "UK officials discussing options including free movement with EU ahead of summit",
+      "url": "https://www.theguardian.com/politics/2026/oct/27/uk-eu-relationship-talks-summit-free-movement-jonathan-reynolds",
+      "source": "The Guardian",
+      "published_at": "2026-10-27T09:41:00Z",
+      "region": "International",
+      "summary": "Britische Regierungsvertreter diskutieren vor dem Novembergipfel längerfristige EU-Beziehungen. Zunächst geht es um Handelshemmnisse, Emissionshandel und Jugendmobilität; eine Rückkehr zur Freizügigkeit ist nur eine diskutierte Option.",
+      "event": "20261027-v2-headline-27b0000000000014"
+    },
+    {
+      "id": "27b0000000000015",
+      "title": "Number of UK businesses in financial distress ‘at two-decade high’",
+      "url": "https://www.theguardian.com/business/2026/oct/27/number-of-uk-businesses-in-financial-distress-at-two-decade-high-budget",
+      "source": "The Guardian",
+      "published_at": "2026-10-27T09:01:00Z",
+      "region": "International",
+      "summary": "BTG meldet 738.144 britische Unternehmen mit erheblichen finanziellen Schwierigkeiten im dritten Quartal. Höhere Energie-, Beschäftigungs- und Finanzierungskosten erhöhen den Druck vor dem Budget.",
+      "event": "20261027-v2-headline-27b0000000000015"
+    },
+    {
+      "id": "27b0000000000016",
+      "title": "UK shop price inflation ‘highest since 2024’ as retailers struggle to limit price rises",
+      "url": "https://www.theguardian.com/business/2026/oct/27/uk-shop-price-inflation-highest-since-2024-as-retailers-struggle-to-limit-price-rises",
+      "source": "The Guardian",
+      "published_at": "2026-10-27T00:01:00Z",
+      "region": "International",
+      "summary": "Die britische Ladenpreisinflation steigt von 1,4 auf 2,1 Prozent. Der Einzelhandel gibt Energie- und Lebensmittelkosten zunehmend an Kunden weiter; Lebensmittel verteuerten sich um 2,9 Prozent.",
+      "event": "20261027-v2-headline-27b0000000000016"
+    }
+  ],
+  "articles": [
+    {
+      "id": "27a0000000000003",
+      "title": "Der Kanzler besucht die Gewinner des KI-Booms",
+      "url": "https://www.handelsblatt.com/politik/international/diese-zwei-ki-profiteure-gewinnen-fuer-deutschlands-wirtschaft-an-gewicht/100264412.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-26T18:14:00Z",
+      "topic": "Industrie & Innovation",
+      "kind": "Industrie- und Standortanalyse",
+      "region": "International",
+      "summary": "Japan und Südkorea profitieren vom KI-Boom nicht primär durch eigene große KI-Modelle, sondern durch Speicherchips, Fertigungsanlagen und Spezialchemikalien. Die Asienreise von Bundeskanzler Merz verdeutlicht die industrielle Bedeutung dieser Lieferketten für Deutschland.",
+      "event": "20261027-feature-27a0000000000003",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "facts": [
+        "Japan und Südkorea liefern wesentliche Vorprodukte und Ausrüstung für KI-Rechenzentren.",
+        "Der Bundeskanzler besucht beide Länder auf seiner Asienreise, um wirtschaftliche Beziehungen zu vertiefen."
+      ],
+      "research_checked_at": "2026-10-27T08:00:31.659Z"
+    },
+    {
+      "id": "27a000000000000d",
+      "title": "Infineon investiert 1,1 Mrd. in Chipfabrik in Villach",
+      "url": "https://orf.at/stories/3446263/",
+      "source": "ORF",
+      "published_at": "2026-10-27T07:22:00Z",
+      "topic": "Industrie & Innovation",
+      "kind": "Industrie- und Förderanalyse",
+      "region": "Österreich",
+      "summary": "Infineon plant am Standort Villach bis 2034 Investitionen von rund 1,1 Milliarden Euro in eine neue Fertigung für Galliumnitrid-Halbleiter. Österreich unterstützt das Vorhaben mit 319 Millionen Euro; die Chips sollen unter anderem Rechenzentren, Elektromobilität und Energieinfrastruktur effizienter machen.",
+      "event": "20261027-feature-27a000000000000d",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "facts": [
+        "Geplant ist eine Hochvolumenfertigung für GaN-Halbleiter auf 300-Millimeter-Wafern.",
+        "Die EU-Kommission genehmigte 319 Millionen Euro staatliche Unterstützung; der Produktionsstart ist für Ende 2027 vorgesehen."
+      ],
+      "research_checked_at": "2026-10-27T08:00:31.659Z"
+    },
+    {
+      "id": "27d0000000000001",
+      "title": "There’s not enough money in the world to pay for the AI boom",
+      "url": "https://www.washingtonpost.com/technology/2026/10/27/ai-companies-are-desperate-cash-dont-know-where-it-will-come/",
+      "source": "The Washington Post",
+      "published_at": "2026-10-27T09:00:00Z",
+      "topic": "KI & Finanzierung",
+      "kind": "Wirtschafts- und Finanzierungsanalyse",
+      "region": "International",
+      "summary": "Die Washington Post analysiert, wie der Ausbau künstlicher Intelligenz immer größere Summen für Rechenzentren, Chips und Energie verschlingt. Unternehmen wie Meta und Anthropic suchen deshalb neue Wege zur Kapitalbeschaffung; hohe Vorleistungen und unsichere künftige Erträge erhöhen die Risiken für Investoren.",
+      "facts": [
+        "Die Washington Post berichtet über neue Eigenkapital- und Kreditfinanzierungen für den KI-Infrastrukturausbau.",
+        "Der Artikel beschreibt den hohen Kapitalbedarf und die Unsicherheit, wann die Investitionen entsprechende Erträge liefern."
+      ],
+      "event": "20261027-feature-27d0000000000001",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "research_checked_at": "2026-10-27T16:17:00Z"
+    },
+    {
+      "id": "27a0000000000002",
+      "title": "Meta sammelt bis zu 95 Milliarden für KI-Entwicklung ein",
+      "url": "https://www.handelsblatt.com/technik/ki/ki-meta-sammelt-bis-zu-95-milliarden-fuer-ki-entwicklung-ein/100264973.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-26T12:14:00Z",
+      "topic": "KI & Finanzierung",
+      "kind": "KI-Finanzierungsanalyse",
+      "region": "International",
+      "summary": "Meta will seinen Ausbau der KI-Infrastruktur mit einer umfangreichen Eigenkapitalfinanzierung absichern. Vorgesehen sind zunächst Aktienangebote von rund 35 Milliarden Dollar und später ein Programm von bis zu 60 Milliarden Dollar, darunter eine neue stimmrechtslose Aktienklasse.",
+      "event": "20261027-feature-27a0000000000002",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "facts": [
+        "Meta kündigte Aktienemissionen im Umfang von rund 35 Milliarden US-Dollar an.",
+        "Ein späteres At-the-Market-Programm könnte bis zu 60 Milliarden Dollar zusätzlich einbringen, auch mit Aktien der Klasse C."
+      ],
+      "research_checked_at": "2026-10-27T08:00:31.659Z"
+    },
+    {
+      "id": "27a0000000000005",
+      "title": "Microsoft bietet rund 60.000 Mitarbeitern Abfindungen an",
+      "url": "https://www.handelsblatt.com/unternehmen/dienstleister/software-microsoft-bietet-rund-60-000-mitarbeitern-abfindungen-an/100265086.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-26T20:30:00Z",
+      "topic": "KI & Arbeit",
+      "kind": "Arbeitsmarkt- und KI-Analyse",
+      "region": "International",
+      "summary": "Microsoft bietet bestimmten Beschäftigten in vier Ländern freiwillige Abfindungen an und begründet den Umbau mit neuen Anforderungen durch KI. Das Angebot richtet sich theoretisch an rund 60.000 der etwa 223.000 Beschäftigten; das Unternehmen rechnet allerdings mit einer deutlich geringeren tatsächlichen Annahme.",
+      "event": "20261027-feature-27a0000000000005",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "facts": [
+        "Das freiwillige Abfindungsangebot betrifft bestimmte Mitarbeitende in Kanada, Indien, Großbritannien und den USA.",
+        "Microsoft beschäftigte Ende Juni rund 223.000 Menschen; die 60.000 adressierten Stellen entsprechen rechnerisch mehr als einem Viertel."
+      ],
+      "research_checked_at": "2026-10-27T08:00:31.659Z"
+    },
+    {
+      "id": "27a0000000000007",
+      "title": "Digital hostile environment: AI secretly embedded across Home Office",
+      "url": "https://www.theguardian.com/politics/2026/oct/27/digital-hostile-environment-ai-secretly-embedded-home-office-report",
+      "source": "The Guardian",
+      "published_at": "2026-10-27T00:01:00Z",
+      "topic": "KI & Verwaltung",
+      "kind": "Digitalisierungs- und Governance-Analyse",
+      "region": "International",
+      "summary": "Die britische Bürgerrechtsorganisation Open Rights Group kritisiert den aus ihrer Sicht intransparenten KI-Einsatz im Innenministerium. Laut ihrem Bericht wird KI unter anderem bei Altersfeststellungen im Asylverfahren, der Überwachung von Grenzen und der Auswertung von Mobiltelefonen eingesetzt.",
+      "event": "20261027-feature-27a0000000000007",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "facts": [
+        "Der Bericht der Open Rights Group beschreibt KI-Einsatz in mehreren Aufgaben des britischen Home Office.",
+        "Genannt werden unter anderem die Altersfeststellung von Asylsuchenden und die Kontrolle von Geräten neu eingereister Menschen."
+      ],
+      "research_checked_at": "2026-10-27T08:00:31.659Z"
+    },
+    {
+      "id": "27a0000000000008",
+      "title": "UK government met 137 businesses over AI datacentres – but no environmental groups",
+      "url": "https://www.theguardian.com/uk-news/2026/oct/27/uk-government-environmental-groups-ai-datacentres-expansion-plans-investigation",
+      "source": "The Guardian",
+      "published_at": "2026-10-27T07:00:00Z",
+      "topic": "KI & Infrastruktur",
+      "kind": "Infrastruktur- und Governance-Recherche",
+      "region": "International",
+      "summary": "Eine Guardian-Recherche untersucht die politische Vorbereitung des britischen Ausbaus von KI-Rechenzentren. Demnach gab es Kontakte zu 137 Unternehmen, jedoch keine vergleichbaren Treffen mit Umweltorganisationen; das wirft Fragen zur Einbindung ökologischer Interessen bei der Infrastrukturplanung auf.",
+      "event": "20261027-feature-27a0000000000008",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "facts": [
+        "Die Recherche dokumentiert Treffen der Regierung mit 137 Unternehmen im Zusammenhang mit KI-Rechenzentren.",
+        "In der untersuchten Kontaktliste fanden sich keine Treffen mit Umweltorganisationen."
+      ],
+      "research_checked_at": "2026-10-27T08:00:31.659Z"
+    },
+    {
+      "id": "27a000000000000a",
+      "title": "Chinese markets lose trillions as race for AI supremacy with US takes its toll",
+      "url": "https://www.theguardian.com/world/2026/oct/27/chinese-markets-lose-trillions-ai-race-beijing",
+      "source": "The Guardian",
+      "published_at": "2026-10-27T04:42:00Z",
+      "topic": "KI & Finanzmärkte",
+      "kind": "Kapitalmarkt- und Technologieanalyse",
+      "region": "International",
+      "summary": "Chinesische Technologieaktien stehen trotz massiver staatlicher Förderung unter Druck, weil hohe KI-Investitionen nicht überall zu ausreichenden Gewinnen führen. Der Guardian berichtet über einen Verlust von rund 2,4 Billionen Dollar an chinesischem Börsenwert seit Mai und deutliche Rückgänge bei Technologieindizes.",
+      "event": "20261027-feature-27a000000000000a",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "facts": [
+        "Der STAR-50-Technologieindex verlor seit Juni laut Bericht rund 40 Prozent.",
+        "KI-Aktien machen laut Goldman Sachs mehr als 40 Prozent des Börsenwerts in China und Hongkong aus."
+      ],
+      "research_checked_at": "2026-10-27T08:00:31.659Z"
+    },
+    {
+      "id": "27c0000000000007",
+      "title": "Des « petites mains » de l’IA portent plainte pour infraction aux règles de protection des données",
+      "url": "https://www.lemonde.fr/economie/article/2026/10/27/des-petites-mains-de-l-ia-portent-plainte-pour-infraction-aux-regles-de-protection-des-donnees_6801142_3234.html",
+      "source": "Le Monde",
+      "published_at": "2026-10-27T06:00:00Z",
+      "topic": "KI & Arbeit",
+      "kind": "Analyse zu KI-Arbeit und Datenschutz",
+      "region": "International",
+      "summary": "Die Datenschutzorganisation Noyb und fünf freiberufliche KI-Trainingskräfte werfen der Plattform Outlier von Scale AI Verstöße gegen europäische Datenschutzregeln vor. Kritisiert werden Datensammlung und Überwachung bei der Arbeit; das Unternehmen bestreitet Rechtsverstöße und verweist auf Einwilligung und Sicherheitsmaßnahmen.",
+      "facts": [
+        "Noyb und fünf Freelancer haben Beschwerden über den Umgang mit persönlichen Daten eingereicht.",
+        "Scale AI weist die Vorwürfe zurück und erklärt, Datenschutzvorschriften einzuhalten."
+      ],
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "event": "20261027-v2-feature-27c0000000000007",
+      "research_checked_at": "2026-10-27T12:20:16Z"
+    },
+    {
+      "id": "27c0000000000001",
+      "title": "Steinmeier in China: Kooperation und neues Selbstbewusstsein",
+      "url": "https://www.handelsblatt.com/politik/international/handel-steinmeier-in-china-unser-licht-nicht-unter-den-scheffel-stellen/100262414.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-27T09:47:00Z",
+      "topic": "Industrie & Welthandel",
+      "kind": "Industrie- und Handelspolitikanalyse",
+      "region": "International",
+      "summary": "Bundespräsident Steinmeier wirbt bei seinem China-Besuch für eine selbstbewusste deutsche Wirtschaft und die Fortsetzung technologischer Zusammenarbeit. Gleichzeitig verweist er auf das Handelsungleichgewicht zwischen China und Europa. Am VW-Entwicklungsstandort Hefei steht die schnellere Entwicklung vernetzter Elektroautos für den chinesischen Markt im Mittelpunkt.",
+      "facts": [
+        "Steinmeier besuchte das VW-Entwicklungszentrum in Hefei und sprach über Kooperation.",
+        "Er kritisierte den wachsenden chinesischen Handelsüberschuss gegenüber Europa."
+      ],
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "event": "20261027-v2-feature-27c0000000000001",
+      "research_checked_at": "2026-10-27T12:20:16Z"
+    },
+    {
+      "id": "27c0000000000006",
+      "title": "Mercedes bietet bis zu 330.000 Euro Abfindung in der Produktion",
+      "url": "https://www.handelsblatt.com/unternehmen/industrie/autobauer-mercedes-bietet-bis-zu-330000-euro-abfindung-in-der-produktion/100263206.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-27T03:00:00Z",
+      "topic": "Industrie & Arbeit",
+      "kind": "Industrie- und Arbeitsmarktanalyse",
+      "region": "International",
+      "summary": "Mercedes erweitert freiwillige Personalabbauprogramme auf Produktionsstandorte und bietet einzelnen Beschäftigten hohe Abfindungen. Laut dem zugänglichen Bericht sind auch Komponentenwerke in Untertürkheim und Berlin betroffen. Die Zahl von bis zu 330.000 Euro beschreibt eine mögliche individuelle Abfindung, nicht den Regelfall für alle Beschäftigten.",
+      "facts": [
+        "Die freiwilligen Abfindungsprogramme betreffen auch Komponentenwerke in Untertürkheim und Berlin.",
+        "Der Bericht nennt Abfindungsangebote von bis zu 330.000 Euro."
+      ],
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "event": "20261027-v2-feature-27c0000000000006",
+      "research_checked_at": "2026-10-27T12:20:16Z"
+    },
+    {
+      "id": "27a0000000000001",
+      "title": "Gaspreis-Schock – Industriestrompreis wird zum Milliardenrisiko",
+      "url": "https://www.handelsblatt.com/unternehmen/energie/energie-gaspreis-schock-industriestrompreis-wird-zum-milliardenrisiko/100263344.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-10-26T12:18:00Z",
+      "topic": "Energie & Industrie",
+      "kind": "Energie- und Fiskalanalyse",
+      "region": "International",
+      "summary": "Der Anstieg der Gas- und Strompreise könnte die deutsche Subvention für energieintensive Industrie deutlich verteuern. Eine Handelsblatt-Berechnung auf Basis von Aurora-Energy-Research-Daten zeigt, dass die staatlichen Kosten für den Industriestrompreis 2027 um rund eine Milliarde Euro höher ausfallen könnten als im laufenden Jahr.",
+      "event": "20261027-feature-27a0000000000001",
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "facts": [
+        "Die Bundesregierung hat sich zu einer dreijährigen Strompreisunterstützung für die Industrie verpflichtet.",
+        "Das Handelsblatt beziffert mögliche zusätzliche Staatsausgaben im kommenden Jahr auf rund eine Milliarde Euro."
+      ],
+      "research_checked_at": "2026-10-27T08:00:31.659Z"
+    },
+    {
+      "id": "27a000000000000b",
+      "title": "Kommt Deutschlands Wirtschaft wieder in die Gänge?",
+      "url": "https://www.diepresse.com/41392670/kommt-deutschlands-wirtschaft-wieder-in-die-gaenge",
+      "source": "Die Presse",
+      "published_at": "2026-10-26T15:30:00Z",
+      "topic": "Konjunktur",
+      "kind": "Konjunkturanalyse",
+      "region": "International",
+      "summary": "Das deutsche Ifo-Geschäftsklima hat sich im Oktober zum sechsten Mal hintereinander verbessert, obwohl die Unternehmen ihre aktuelle Lage skeptischer einschätzen. Der Index stieg von 89,9 auf 90,2 Punkte; bessere Erwartungen werden unter anderem mit staatlichen Infrastruktur- und Verteidigungsausgaben in Verbindung gebracht.",
+      "event": "20261027-feature-27a000000000000b",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "facts": [
+        "Der Ifo-Geschäftsklimaindex stieg im Oktober auf 90,2 nach 89,9 Punkten im September.",
+        "Die befragten Unternehmen beurteilten die aktuelle Lage schwächer, die Erwartungen aber günstiger."
+      ],
+      "research_checked_at": "2026-10-27T08:00:31.659Z"
+    },
+    {
+      "id": "27a000000000000f",
+      "title": "EU droht Meeresschutzziel für 2030 zu verfehlen",
+      "url": "https://orf.at/stories/3446246/",
+      "source": "ORF",
+      "published_at": "2026-10-26T22:17:00Z",
+      "topic": "Klima & Biodiversität",
+      "kind": "Klima- und EU-Politikanalyse",
+      "region": "International",
+      "summary": "Der Europäische Rechnungshof warnt, dass die EU ihre Meeresschutzziele für 2030 mit dem bisherigen Tempo verfehlen dürfte. Nicht nur die ausgewiesene Schutzfläche ist zu klein; häufig fehlen wirksame Nutzungsbeschränkungen und Managementpläne, sodass nomineller Schutz wenig Wirkung entfaltet.",
+      "event": "20261027-feature-27a000000000000f",
+      "paywall": false,
+      "access": "full",
+      "research_access": "original_full",
+      "facts": [
+        "Rund 14 Prozent der EU-Meeresgewässer sind laut Rechnungshof geschützt, Ziel sind 30 Prozent bis 2030.",
+        "Weniger als ein Prozent ist streng geschützt, während die EU zehn Prozent anstrebt."
+      ],
+      "research_checked_at": "2026-10-27T08:00:31.659Z"
+    },
+    {
+      "id": "27c0000000000008",
+      "title": "« L’IA ne va pas aller sous les maisons pour installer des tuyaux » : aux Etats-Unis, le nouvel attrait pour les formations aux métiers manuels",
+      "url": "https://www.lemonde.fr/campus/article/2026/10/27/l-ia-ne-va-pas-aller-sous-les-maisons-pour-installer-des-tuyaux-aux-etats-unis-le-nouvel-attrait-pour-les-formations-aux-metiers-manuels_6801213_4401467.html",
+      "source": "Le Monde",
+      "published_at": "2026-10-27T08:00:00Z",
+      "topic": "Bildung & Arbeitsmarkt",
+      "kind": "Reportage zu Bildung und Arbeitsmarkt",
+      "region": "International",
+      "summary": "In den USA interessieren sich mehr junge Menschen für handwerkliche Ausbildungswege, auch aus Sorge um die Auswirkungen von KI auf Bürojobs. Le Monde beschreibt steigende Anmeldungen für technische Berufe und Zweifel an den hohen Kosten eines Universitätsstudiums. Der Bericht ordnet ein, dass Hochschulabschlüsse über das gesamte Berufsleben weiterhin wirtschaftliche Vorteile haben können.",
+      "facts": [
+        "Berufliche Ausbildungsprogramme in Bau- und Technikberufen verzeichnen steigende Nachfrage.",
+        "Die Reportage stellt Ausbildungskosten und langfristige Beschäftigungschancen von Handwerk und Studium gegenüber."
+      ],
+      "paywall": true,
+      "access": "teaser",
+      "research_access": "original_teaser",
+      "event": "20261027-v2-feature-27c0000000000008",
+      "research_checked_at": "2026-10-27T12:20:16Z"
+    }
+  ],
+  "selection_note": "Produktiver v4-Rerun vom 27.10.2026: alle 22 Pflichtverlage erneut über datumsbezogene Verlags- und Indexsuche abgeglichen; 24 Originalkandidaten im neuen privaten unveränderlichen S4-Snapshot (23 aus v3 plus neuer Washington-Post-Originalbericht). Aktuelles echtes Feedbackprofil aus Issues 3–8; 15 Vertiefungen unabhängig deterministisch neu gerankt. Keine Live-Linkexistenzkontrollen und kein Volltext-Bonus. Private S3/S4/S5-Belege und 22-Quellen-Tagebuch dokumentiert.",
+  "new_sources": [
+    {
+      "name": "Le Monde",
+      "why": "Zwei aktuelle Originalberichte zu KI-Arbeit, europäischem Datenschutz und Ausbildung. Zunächst Testquelle; dauerhafte Aufnahme erst nach wiederholtem Nutzwert und deinem Feedback.",
+      "example_url": "https://www.lemonde.fr/economie/article/2026/10/27/des-petites-mains-de-l-ia-portent-plainte-pour-infraction-aux-regles-de-protection-des-donnees_6801142_3234.html"
+    }
+  ],
+  "editorial_audit": {
+    "date": "2026-10-27",
+    "mandatory_publishers_researched": 22,
+    "original_identity_evidence_publishers": 19,
+    "verified_but_not_suitable_publishers": 1,
+    "unverified_original_publishers": [
+      "Bloomberg",
+      "POLITICO Europe"
+    ],
+    "full_22_publisher_ledger_private_readback": true,
+    "three_day_access_assessment": "AUDIT_GAP",
+    "new_raw_leads_pending_preflight": 6,
+    "explanation": "Recherchen und belegte Originale sind dokumentiert; technische Zugriffslücken führen nicht zu Quellenausschlüssen. Eine echte Publikationszeit wird nur bei entsprechender Quelle angegeben."
+  }
+}

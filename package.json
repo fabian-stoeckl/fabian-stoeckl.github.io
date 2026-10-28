@@ -10,7 +10,7 @@
     "check:data": ".venv/bin/python -m unittest discover -s tests -p \"test_etf_update.py\"",
     "check:context": "node tests/website-context.test.cjs",
     "context:update": "node scripts/website-context.cjs --write",
-    "check:pressespiegel": "python3 -m unittest discover -s tests/pressespiegel -v"
+    "check:morgenzeitung": "node tests/morgenzeitung-v3-ui.test.cjs && node tests/morgenzeitung-v3-feedback.test.cjs && node --test tests/test_preference_timeline.cjs && python3 -m unittest discover -s tests/morgenzeitung-v3 -v"
   },
   "devDependencies": {
     "chart.js": "4.4.7",

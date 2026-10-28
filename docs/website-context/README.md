@@ -12,8 +12,6 @@ Verbindliche Bereichshistorie für `fabian-stoeckl/fabian-stoeckl.github.io`. De
 | ETF | [ETF.md](ETF.md) | `Privat/ETFs/`, `Privat/etfs/` |
 | Hochzeit | [Hochzeit.md](Hochzeit.md) | `Hochzeit/`, `hochzeit/` |
 | Morgenzeitung 3 | [Morgenzeitung-3.md](Morgenzeitung-3.md) | `Privat/Morgenzeitung-3/` |
-| Morgenzeitung neu | [Morgenzeitung-neu.md](Morgenzeitung-neu.md) | `Privat/Morgenzeitung-neu/` |
-| Pressespiegel | [Pressespiegel.md](Pressespiegel.md) | `Privat/Pressespiegel/` |
 
 „Neuer Bereich“ wird im Skill zusätzlich angeboten. Neues Protokoll mit Metadaten anlegen, dann `npm run context:update` und `npm run check:context` ausführen. Die Auswahl ergibt sich aus dieser Tabelle; keine feste Bereichsliste im Skill oder Test.
 

@@ -208,7 +208,7 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
     }
   }finally{b.disabled=false;}
 };
-(async()=>{try{const oldTokenCleared=DirectFeedback.resetOldTokenOnce();config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode!=='github')throw Error('Ungültiger V3-Modus'); {
+(async()=>{try{const oldTokenCleared=DirectFeedback.resetOldTokenOnce();config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode!=='github')throw Error('Ungültiger V3-Modus');
 $('login').hidden=true;$('logout').hidden=true;$('feedback').maxLength=4000;
 $('feedback-form').querySelector('button').textContent='Feedback speichern';
 refreshGitHubConnection();if(oldTokenCleared)$('github-setup-status').textContent='Alter lokal gespeicherter Token gelöscht. Bitte neuen Token verbinden und den alten auf GitHub widerrufen.';$('feedback').required=false;
