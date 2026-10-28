@@ -68,7 +68,7 @@ def article_penalty(item, profile):
     """Direct reader feedback affects *that article*, not the whole subject."""
     feedback=profile.get("article_feedback",{}).get(item.get("id"),{})
     rating=feedback.get("rating")
-    penalty= -13 if rating=="Nicht relevant" else (-3 if rating=="Teilweise relevant" else 0)
+    penalty= -13 if rating=="Nicht relevant" else 0
     reason=feedback.get("reason","").lower()
     if "schon bekannt" in reason: penalty-=7
     # Known article replay from recent issues, unless it documents a material update.
