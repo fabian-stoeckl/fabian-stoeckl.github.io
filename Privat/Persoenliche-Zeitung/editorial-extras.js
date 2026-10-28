@@ -1,9 +1,9 @@
-/* Additional editorial context ONLY for Morgenzeitung 3.
- * Never uses a publisher's technical access or full-text status as a
- * ranking signal. Does not alter the shared V1/V2 reader application.
+/* Optional editorial context for the only Persönliche Zeitung reader.
+ * No publisher-access ranking signals. All DOM enrichment is explicitly
+ * scheduled by app.js and mapped by stable article ID, never card order.
  */
 'use strict';
-(function(){
+const EditorialExtras=(()=>{
   const safeLink=(label,url)=>{
     try{
       const u=new URL(url);
@@ -12,11 +12,12 @@
       a.target='_blank';a.rel='noopener noreferrer';return a;
     }catch(_){return null}
   };
-  function articleContext(){
-    if(typeof edition==='undefined'||!edition||!Array.isArray(edition.articles))return;
-    const cards=document.querySelectorAll('#articles article');
+  function articleContext(edition){
+    if(!edition||!Array.isArray(edition.articles))return;
+    const byId=new Map([...document.querySelectorAll('#articles article[data-article-id]')]
+      .map(node=>[node.dataset.articleId,node]));
     edition.articles.forEach((story,i)=>{
-      const node=cards[i];
+      const node=byId.get(String(story.id));
       if(!node||node.dataset.v3Context===story.id)return;
       node.dataset.v3Context=story.id;
       const body=node.querySelector('.body');
@@ -44,8 +45,8 @@
       }
     });
   }
-  function comparisons(){
-    if(typeof edition==='undefined'||!edition)return;
+  function comparisons(edition){
+    if(!edition)return;
     const root=document.getElementById('feedback-section');
     if(!root)return;
     const rows=Array.isArray(edition.editorial_comparisons)?
@@ -90,30 +91,24 @@
     const form=root.querySelector('form');
     root.insertBefore(section,form);
   }
-  function enhance(){articleContext();comparisons();}
-  document.addEventListener('DOMContentLoaded',()=>{
-    const container=document.getElementById('newspaper-view');
-    if(container){
-      const mo=new MutationObserver(enhance);
-      mo.observe(container,{childList:true,subtree:true});
+  function render(edition){
+    articleContext(edition);
+    comparisons(edition);
+  }
+
+  function enrichFeedback(edition,rawText){
+    const previous=String(rawText||'').replace(/(?:^|\n)\[V3-Vergleich [^\n]*\]/g,'').trim();
+    if(!edition)return previous;
+    const notes=[];
+    for(const field of document.querySelectorAll('#v3-comparisons fieldset')){
+      const checked=field.querySelector('input[type=radio]:checked');
+      if(!checked)continue;
+      notes.push('[V3-Vergleich '+edition.date+' '+field.dataset.comparisonId+': '+checked.value+']');
     }
-    enhance();
-    // Use existing V3 issue/comment persistence and preserve all older ratings.
-    const form=document.getElementById('feedback-form');
-    if(form)form.addEventListener('submit',()=>{
-      if(typeof edition==='undefined'||!edition)return;
-      const textarea=document.getElementById('feedback');
-      if(!textarea)return;
-      const notes=[];
-      for(const field of document.querySelectorAll('#v3-comparisons fieldset')){
-        const checked=field.querySelector('input[type=radio]:checked');
-        if(!checked)continue;
-        notes.push('[V3-Vergleich '+edition.date+' '+field.dataset.comparisonId+': '+checked.value+']');
-      }
-      if(!notes.length)return;
-      const previous=textarea.value.replace(/(?:^|\n)\[V3-Vergleich [^\n]*\]/g,'').trim();
-      const next=[previous,...notes].filter(Boolean).join('\n');
-      if(next.length<=4000)textarea.value=next;
-    },true);
-  });
+    const next=[previous,...notes].filter(Boolean).join('\n');
+    if(next.length>4000)throw Error('Die Rückmeldung ist zu lang. Bitte etwas kürzen.');
+    return next;
+  }
+
+  return {render,enrichFeedback};
 })();
