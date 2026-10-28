@@ -11,6 +11,7 @@ Verbindliche Bereichshistorie für `fabian-stoeckl/fabian-stoeckl.github.io`. De
 | Allgemeine Website | [Allgemeine-Website.md](Allgemeine-Website.md) | `index.md`, `Privat/index.html` |
 | ETF | [ETF.md](ETF.md) | `Privat/ETFs/`, `Privat/etfs/` |
 | Hochzeit | [Hochzeit.md](Hochzeit.md) | `Hochzeit/`, `hochzeit/` |
+| Morgenzeitung Neu | [Morgenzeitung-Neu.md](Morgenzeitung-Neu.md) | `Privat/Morgenzeitung-Neu/` |
 | Persönliche Zeitung | [Persoenliche-Zeitung.md](Persoenliche-Zeitung.md) | `Privat/Persoenliche-Zeitung/` |
 | Pressespiegel | [Pressespiegel.md](Pressespiegel.md) | `Privat/Pressespiegel/` |
 

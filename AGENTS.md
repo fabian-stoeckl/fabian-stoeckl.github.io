@@ -13,7 +13,11 @@
 - Run `npm run context:update` after adding or renaming a protocol, then `npm run check:context`. Registry generation and validation discover areas dynamically from protocol metadata.
 - `docs/` is excluded from Jekyll output. This repository is public: exclusions do not make repository documentation confidential. Do not commit secrets or private chat transcripts.
 
-## Pressespiegel – current newspaper
+## Morgenzeitung Neu – current newspaper
+
+The user-requested current paper is `Privat/Morgenzeitung-Neu/`. It preserves the classic newspaper interface and separates the editorial process into `services/morgenzeitung-neu/INTERESSEN.md` (qualitative interest-description learning) then `RECHERCHE.md` (long, high-quality independent journalism). Its only private feedback profile is `morgenzeitung-neu/` in `fabian-stoeckl/morgenzeitung-feedback`. Ratings have distinct issue prefixes, no numerical selection weights. Reuse the GitHub browser permission for issues and obtain separate Contents: Read permission for the private preferences display. `Privat/Pressespiegel/` and `Privat/Persoenliche-Zeitung/` remain readable archives. Never edit the ETF files or workflows for newspaper tasks. Current startup edition is explicitly preview/imported; do not pass it off as newly researched.
+
+## Pressespiegel – historical predecessor
 
 The current user-requested rebuild is `Privat/Pressespiegel/`, with exactly two editorial prompts in `services/pressespiegel/`: update a short natural-language interest description, then research and publish using it. Run them sequentially in one automatic daily task. There is no numerical ranking/learning engine in this product. `scripts/pressespiegel.py` only checks structure and prepares changed feedback for reading. Private description, change notes and feedback state live under `pressespiegel/` in `fabian-stoeckl/morgenzeitung-feedback`.
 

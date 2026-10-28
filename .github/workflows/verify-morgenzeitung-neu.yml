@@ -1,0 +1,33 @@
+name: Verify Morgenzeitung Neu
+on:
+  pull_request:
+    paths: ['Privat/Morgenzeitung-Neu/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
+  push:
+    branches: [main]
+    paths: ['Privat/Morgenzeitung-Neu/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
+permissions: {contents: read}
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python3 scripts/morgenzeitung_neu.py verify
+      - run: node tests/morgenzeitung-neu.test.cjs
+      - run: node tests/morgenzeitung-v3-ui.test.cjs
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Classic reader and independent preference page on mobile and desktop
+        run: |
+          python3 -m http.server 8766 --bind 127.0.0.1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          for attempt in {1..20}; do
+            curl --silent --fail http://127.0.0.1:8766/Privat/Morgenzeitung-Neu/ >/dev/null && break
+            sleep 1
+          done
+          node tests/morgenzeitung-neu-browser.cjs

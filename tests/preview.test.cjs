@@ -10,6 +10,8 @@ const pages = [
   { name: 'etf-dashboard', path: '/Privat/ETFs/', ready: '.year-key' },
   { name: 'morgenzeitung', path: '/Privat/Persoenliche-Zeitung/', ready: 'h1' },
   { name: 'pressespiegel', path: '/Privat/Pressespiegel/', ready: 'h1' },
+  { name: 'morgenzeitung-neu', path: '/Privat/Morgenzeitung-Neu/', ready: 'h1' },
+  { name: 'morgenzeitung-neu-prefs', path: '/Privat/Morgenzeitung-Neu/praeferenzen.html', ready: 'h1' },
 ];
 const viewports = [
   { name: 'desktop', width: 1440, height: 1000 },
@@ -38,8 +40,8 @@ const viewports = [
         fullPage: true,
       });
       if (target.name === 'dashboard') {
-        if (await page.getByRole('link', { name: 'Pressespiegel öffnen' }).count() !== 1) {
-          throw new Error('Pressespiegel tile missing in private dashboard');
+        if (await page.getByRole('link', { name: 'Morgenzeitung öffnen' }).count() !== 1) {
+          throw new Error('Morgenzeitung tile missing in private dashboard');
         }
         if (await page.getByRole('link', { name: 'Website ändern – ChatGPT-Skill öffnen' }).count() !== 1) {
           throw new Error('Existing Website ändern skill link missing');
