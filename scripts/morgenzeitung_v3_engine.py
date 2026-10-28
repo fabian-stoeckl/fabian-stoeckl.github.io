@@ -3,9 +3,10 @@ No network requests, no article URL status checks. Semantic review is still requ
 """
 import argparse, hashlib, json, re
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timedelta
+from pathlib import Path
 from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
-from scripts.morgenzeitung_v3_editorial import reason_labels, style_signals, editorial_feedback_metrics
+from scripts.morgenzeitung_v3_editorial import reason_labels, style_signals, editorial_feedback_metrics, editorial_mix_report
 
 PREFIX="[Morgenzeitung 3] Feedback "
 MARKER="MORGENZEITUNG_V3_FEEDBACK_V1\n"
@@ -103,7 +104,22 @@ def score(item, profile, section="Vertiefungen"):
     if isinstance(novelty_demand,bool) or not isinstance(novelty_demand,(int,float)):
         novelty_demand=0
     novelty_adjustment=min(2,max(0,novelty_demand))*(item.get("novelty",0)-2.5)
-    return value+1.25*(base+max(-2,min(2,delta))-3)+article_penalty(item,profile)+novelty_adjustment
+    # Only genuine, pre-selection editorial assessments based on comparable
+    # headline/teaser metadata can be used. Missing values are neutral.
+    # Accessible full-text volume is NEVER a quality assessment or proxy.
+    def quality_adjustment(signal,key):
+        intensity=style.get(signal,0)
+        if not isinstance(intensity,(int,float)) or isinstance(intensity,bool):return 0
+        quality=item.get(key)
+        if quality is None:return 0
+        if not isinstance(quality,(int,float)) or isinstance(quality,bool) or not 0<=quality<=5:
+            raise ValueError(key+" must be 0..5")
+        return min(2,max(0,intensity))*(quality-2.5)
+    style_adjustment=(quality_adjustment("analysis","analysis_value")
+                      +quality_adjustment("broader_context","context_value")
+                      +quality_adjustment("perspectives","perspective"))
+    return (value+1.25*(base+max(-2,min(2,delta))-3)
+            +article_penalty(item,profile)+novelty_adjustment+style_adjustment)
 
 def normalized_url(value):
     u=urlsplit(value)
@@ -112,9 +128,20 @@ def normalized_url(value):
     return urlunsplit((u.scheme,u.netloc.lower(),u.path.rstrip("/"),query,""))
 
 
+def distinct_perspective(a,b):
+    """Two separately attributed analytical views can address the same event."""
+    return bool(a.get("debate_id") and a.get("debate_id")==b.get("debate_id")
+                and a.get("viewpoint") in ("support","oppose")
+                and b.get("viewpoint") in ("support","oppose")
+                and a["viewpoint"]!=b["viewpoint"]
+                and a.get("source")!=b.get("source")
+                and a.get("article_type") in ("analysis","opinion","investigation")
+                and b.get("article_type") in ("analysis","opinion","investigation"))
+
+
 def duplicate_story(item, chosen):
     """Conservative cross-publisher detection; uncertain reports remain eligible."""
-    if any((x.get("event") and item.get("event") and x["event"]==item["event"])
+    if any((x.get("event") and item.get("event") and (x["event"]==item["event"] and not distinct_perspective(item,x)))
            or normalized_url(x["url"])==normalized_url(item["url"])
            for _,x in chosen):
         return True
@@ -125,27 +152,113 @@ def duplicate_story(item, chosen):
     t=words(item.get("title",""))
     for _,x in chosen:
         u=words(x.get("title",""))
-        if len(t)>=5 and len(u)>=5 and len(t&u)/len(t|u)>=.85:
+        if len(t)>=5 and len(u)>=5 and len(t&u)/len(t|u)>=.85 and not distinct_perspective(item,x):
             return True
     return False
 
 
-def select(candidates, profile, limit=15, discovery_slots=2, section="Vertiefungen"):
-    if not isinstance(limit,int) or not 1<=limit<=15: raise ValueError("limit")
+def mark_recent_stories(candidates, previous_editions, edition_date, max_age_days=14):
+    """Automatically mark already-covered articles/events from recent V3 editions.
+
+    The history must consist of actual saved edition JSONs; no publisher network
+    requests or assumptions about article reads. A material update must be
+    documented separately, not asserted by a bare boolean.
+    """
+    if not previous_editions:
+        return list(candidates)
+    if not isinstance(edition_date,str) or not DATE.fullmatch(edition_date):
+        raise ValueError("edition_date required with previous editions")
+    current=datetime.strptime(edition_date,"%Y-%m-%d").date()
+    recent=[]
+    for old in previous_editions:
+        if not isinstance(old,dict) or not DATE.fullmatch(str(old.get("date",""))):
+            raise ValueError("invalid previous edition")
+        day=datetime.strptime(old["date"],"%Y-%m-%d").date()
+        if not (0<(current-day).days<=max_age_days):
+            continue
+        for section in ("articles","headlines"):
+            for row in old.get(section,[]):
+                if isinstance(row,dict) and isinstance(row.get("url"),str) and row.get("url"):
+                    recent.append((0,row))
+    enriched=[]
+    for item in candidates:
+        entry=dict(item)
+        if recent and duplicate_story(entry,recent):
+            entry["seen_recently"]=True
+            entry["material_update"]=bool(
+                entry.get("material_update") and
+                isinstance(entry.get("update_evidence"),str) and
+                len(entry["update_evidence"].strip())>=15)
+        enriched.append(entry)
+    return enriched
+
+
+def load_edition_history(directory):
+    """Read local V3 edition index only; no link testing or HTTP requests."""
+    folder=Path(directory)
+    idx=folder/"index.json"
+    if not idx.is_file():
+        raise ValueError("missing V3 history index")
+    index=json.loads(idx.read_text(encoding="utf-8"))
+    editions=[]
+    for day in index.get("dates",[]):
+        if not DATE.fullmatch(str(day)):
+            raise ValueError("invalid V3 history date")
+        file=folder/(day+".json")
+        if not file.is_file():
+            raise ValueError("missing V3 history edition "+day)
+        editions.append(json.loads(file.read_text(encoding="utf-8")))
+    return editions
+
+
+def mix_adjustment(item, chosen, section):
+    """Small soft diversity preference, never a mandatory publisher quota."""
+    prior=[row for _,row in chosen]
+    source=item.get("source","").casefold()
+    same_source=sum(row.get("source","").casefold()==source for row in prior)
+    score_delta=-1.5*max(0,same_source-1)
+    if section=="Vertiefungen":
+        genre=str(item.get("article_type") or item.get("kind") or "").casefold()
+        if genre:
+            n=sum(str(row.get("article_type") or row.get("kind") or "").casefold()==genre
+                  for row in prior)
+            score_delta-=1.2*max(0,n-2)
+        topic=item.get("topic")
+        if topic:
+            n=sum(row.get("topic")==topic for row in prior)
+            score_delta-=1.2*max(0,n-2)
+    if section=="Vertiefungen" and any(distinct_perspective(item,row) for row in prior):
+        score_delta+=1.5
+    return max(-6.0,min(2.0,score_delta))
+
+
+def select(candidates, profile, limit=None, discovery_slots=2,
+           section="Vertiefungen", previous_editions=(), edition_date=None):
     if section not in ("Vertiefungen","Heute wichtig"):
         raise ValueError("unknown editorial section")
+    if limit is None:
+        limit=20 if section=="Heute wichtig" else 15
+    if type(limit) is not int or not 1<=limit<=(20 if section=="Heute wichtig" else 15):
+        raise ValueError("limit")
     pool=[]
     required=("id","title","source","url") if section=="Heute wichtig" else ("id","title","source","url","topic")
-    for i,item in enumerate(candidates):
+    for i,item in enumerate(mark_recent_stories(candidates,previous_editions,edition_date)):
         if not all(item.get(k) for k in required): continue
         if not ID.fullmatch(item["id"]) or not valid_url(item["url"]): continue
         pool.append((score(item,profile,section=section),i,item))
     pool.sort(key=lambda x:(-x[0],x[1]))
     chosen=[]
-    for s,_,item in pool:
-        if duplicate_story(item,chosen): continue
-        chosen.append((s,item))
-        if len(chosen)==limit: break
+    remaining=list(pool)
+    while remaining and len(chosen)<limit:
+        available=[x for x in remaining if not duplicate_story(x[2],chosen)]
+        if not available:break
+        best=available[0][0]
+        # Among candidates within six points, prefer editorial variety gently.
+        # A weaker report must never displace a much stronger one.
+        comparable=[x for x in available if x[0]>=best-6]
+        winner=max(comparable,key=lambda x:(x[0]+mix_adjustment(x[2],chosen,section),-x[1]))
+        chosen.append((winner[0],winner[2]))
+        remaining=[x for x in remaining if x[1]!=winner[1]]
     discoveries=sum(bool(x.get("discovery")) for _,x in chosen)
     # No artificial discovery quota for the public-interest news section.
     if section=="Heute wichtig":
@@ -162,9 +275,12 @@ def select(candidates, profile, limit=15, discovery_slots=2, section="Vertiefung
         chosen.sort(key=lambda x:-x[0])
     return [x for _,x in chosen]
 
-def compare_learning(pool,before,after,new_feedback=False,limit=15,section="Vertiefungen"):
-    old=[x["id"] for x in select(pool,before,limit,section=section)]
-    new=[x["id"] for x in select(pool,after,limit,section=section)]
+def compare_learning(pool,before,after,new_feedback=False,limit=None,
+                     section="Vertiefungen",previous_editions=(),edition_date=None):
+    old=[x["id"] for x in select(pool,before,limit,section=section,
+                                 previous_editions=previous_editions,edition_date=edition_date)]
+    new=[x["id"] for x in select(pool,after,limit,section=section,
+                                 previous_editions=previous_editions,edition_date=edition_date)]
     return {"feedback_applied":bool(new_feedback and old!=new),
             "feedback_received":bool(new_feedback),"selection_changed":old!=new,
             "before_ids":old,"after_ids":new,
@@ -295,10 +411,13 @@ def validate_edition(ed,dossier=None,require_dossier=False):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument("action",choices=["verify","rank","facts","compare","learn"])
+    p.add_argument("action",choices=["verify","rank","facts","compare","learn","quality"])
     for a in ("edition","dossier","candidates","profile","before","issues","topic-map"):p.add_argument("--"+a)
     p.add_argument("--new-feedback",action="store_true")
     p.add_argument("--section",choices=["Vertiefungen","Heute wichtig"],default="Vertiefungen")
+    p.add_argument("--limit",type=int)
+    p.add_argument("--history-dir",help="V3 data directory with index and historical editions")
+    p.add_argument("--as-of-date",help="YYYY-MM-DD; required if --history-dir used")
     p.add_argument("--require-dossier",action="store_true",
                    help="Require actual private evidence before approving release")
     a=p.parse_args()
@@ -308,9 +427,25 @@ def main():
     if a.action=="verify":
         out={"errors":validate_edition(read(a.edition),
             read(a.dossier) if a.dossier else None,a.require_dossier)}
-    elif a.action=="rank":out=select(read(a.candidates),read(a.profile),section=a.section)
+    elif a.action=="rank":
+        if a.history_dir and not a.as_of_date: p.error("--as-of-date required with --history-dir")
+        out=select(read(a.candidates),read(a.profile),limit=a.limit,section=a.section,
+                   previous_editions=load_edition_history(a.history_dir) if a.history_dir else (),
+                   edition_date=a.as_of_date)
+    elif a.action=="quality":
+        if a.history_dir and not a.as_of_date: p.error("--as-of-date required with --history-dir")
+        pool=read(a.candidates)
+        selected=select(pool,read(a.profile),limit=a.limit,section=a.section,
+                        previous_editions=load_edition_history(a.history_dir) if a.history_dir else (),
+                        edition_date=a.as_of_date)
+        out=editorial_mix_report(pool,selected,section=a.section)
     elif a.action=="facts":out=evidence_guard(read(a.edition),read(a.dossier))
-    elif a.action=="compare":out=compare_learning(read(a.candidates),read(a.before),read(a.profile),a.new_feedback,section=a.section)
+    elif a.action=="compare":
+        if a.history_dir and not a.as_of_date: p.error("--as-of-date required with --history-dir")
+        out=compare_learning(read(a.candidates),read(a.before),read(a.profile),
+                             a.new_feedback,limit=a.limit,section=a.section,
+                             previous_editions=load_edition_history(a.history_dir) if a.history_dir else (),
+                             edition_date=a.as_of_date)
     else:
         out,changed=ingest_feedback(read(a.profile),read(a.issues),read(a.topic_map))
         out["_changed_issue_ids"]=changed
