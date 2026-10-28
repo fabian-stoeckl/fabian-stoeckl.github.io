@@ -30,6 +30,20 @@ async function transport(url,options){
  store.setItem(D.TOKEN_KEY,'existing-restricted-token');
  assert.equal(D.resetOldTokenOnce(store),false);
  assert.equal(store.getItem(D.TOKEN_KEY),'existing-restricted-token','V3 must not wipe an existing private reader token');
+ // A stale issues-list response must never erase a newer rating saved elsewhere.
+ const stale=JSON.parse(JSON.stringify(issues[0]));
+ const data=JSON.parse(stale.body.slice('MORGENZEITUNG_V3_FEEDBACK_V1\n'.length));
+ data.ratings=data.ratings.slice(0,1);
+ stale.body='MORGENZEITUNG_V3_FEEDBACK_V1\n'+JSON.stringify(data);
+ const staleList=async(url,opts)=>{
+   if((opts.method||'GET')==='GET'&&String(url).includes('/issues?'))return response([stale,issues[1]]);
+   return transport(url,opts);
+ };
+ await D.submit(date,[{id:'c'.repeat(16),value:'Sehr relevant',reason:'Frische Bewertung',section:'Vertiefungen'}],
+   '', 'token',store,staleList);
+ const consolidated=await D.feedbackHistory('token',transport);
+ assert.equal(consolidated[0].ratings.length,3,'Fresh issue body must preserve ratings added on another device');
+ assert.equal(consolidated[0].ratings.find(x=>x.id===b).value,'Nicht relevant');
  assert.equal(D.TOKEN_KEY,'morgenzeitung:github-token:v1');
  assert.equal(D.RECEIPTS_KEY,'morgenzeitung-v3:github-receipts:v1');
  console.log('PASS: V3 feedback isolated, issue updated, old/v2 filtered');
