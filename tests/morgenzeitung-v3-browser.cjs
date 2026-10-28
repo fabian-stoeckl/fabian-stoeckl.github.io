@@ -68,6 +68,25 @@ const {chromium}=require('playwright');
  const payload=JSON.parse(saved.body.split('\n').slice(1).join('\n'));
  assert.equal(payload.ratings.length,2);
  assert.deepEqual(payload.ratings.map(r=>r.rating).sort(),['Nicht relevant','Sehr relevant']);
+ // Simulate a second device adding a comment AFTER the first page loaded.
+ // Merely saving another rating on this stale page must preserve that text.
+ await page.evaluate(()=>{
+   const current=JSON.parse(sessionStorage.getItem('v3-mock-issue'));
+   const x=JSON.parse(current.body.split('\\n').slice(1).join('\\n'));
+   x.comment='Neuer privater Kommentar vom zweiten Gerät';
+   current.body='MORGENZEITUNG_V3_FEEDBACK_V1\\n'+JSON.stringify(x);
+   sessionStorage.setItem('v3-mock-issue',JSON.stringify(current));
+ });
+ await page.locator('#headlines .news-item').first()
+   .getByLabel('Teilweise relevant',{exact:true}).check();
+ await page.locator('#feedback-form button[type=submit]').click();
+ await page.waitForFunction(()=>document.querySelector('#feedback-status')?.textContent.includes('aktualisiert'));
+ const remoteAfter=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('v3-mock-issue')));
+ assert.match(JSON.parse(remoteAfter.body.split('\\n').slice(1).join('\\n')).comment,
+   /Neuer privater Kommentar vom zweiten Gerät/);
+ assert.equal(await page.locator('#feedback').inputValue(),
+   'Neuer privater Kommentar vom zweiten Gerät');
+
  // The old access="full" flag never proves the editorial team read that text.
  await page.evaluate(()=>{
    edition.articles[0].access='full';
