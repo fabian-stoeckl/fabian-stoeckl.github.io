@@ -200,6 +200,25 @@ def load_edition_history(directory):
     return editions
 
 
+def mix_adjustment(item, chosen, section):
+    """Small soft diversity preference, never a mandatory publisher quota."""
+    prior=[row for _,row in chosen]
+    source=item.get("source","").casefold()
+    same_source=sum(row.get("source","").casefold()==source for row in prior)
+    score_delta=-1.5*max(0,same_source-1)
+    if section=="Vertiefungen":
+        genre=str(item.get("article_type") or item.get("kind") or "").casefold()
+        if genre:
+            n=sum(str(row.get("article_type") or row.get("kind") or "").casefold()==genre
+                  for row in prior)
+            score_delta-=1.2*max(0,n-2)
+        topic=item.get("topic")
+        if topic:
+            n=sum(row.get("topic")==topic for row in prior)
+            score_delta-=1.2*max(0,n-2)
+    return max(-6.0,score_delta)
+
+
 def select(candidates, profile, limit=None, discovery_slots=2,
            section="Vertiefungen", previous_editions=(), edition_date=None):
     if section not in ("Vertiefungen","Heute wichtig"):
