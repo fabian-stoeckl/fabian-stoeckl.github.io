@@ -1,14 +1,14 @@
 name: Verify Morgenzeitung 3
 on:
   pull_request:
-    paths: ['Privat/Morgenzeitung-3/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_release.py','Privat/Pressespiegel/app.js','Privat/Pressespiegel/github.js','Privat/Pressespiegel/preferences.js','Privat/Pressespiegel/preference-timeline.js','Privat/Pressespiegel/style.css','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
+    paths: ['Privat/Morgenzeitung-3/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_release.py','Privat/Pressespiegel/app.js','Privat/Pressespiegel/github.js','Privat/Pressespiegel/preferences.js','Privat/Pressespiegel/preference-timeline.js','Privat/Pressespiegel/style.css','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','tests/morgenzeitung-v3-browser.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
   push:
     paths: ['Privat/Morgenzeitung-3/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_release.py','Privat/Pressespiegel/app.js','Privat/Pressespiegel/github.js','Privat/Pressespiegel/preferences.js','Privat/Pressespiegel/preference-timeline.js','Privat/Pressespiegel/style.css','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
 permissions: {contents: read}
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -17,6 +17,20 @@ jobs:
         with: {python-version: '3.12'}
       - run: node tests/morgenzeitung-v3-ui.test.cjs
       - run: node tests/morgenzeitung-v3-feedback.test.cjs
+      - name: Install browser test dependencies
+        run: |
+          npm ci
+          npx playwright install chromium
+      - name: Test private feedback round trip in actual mobile reader
+        run: |
+          python3 -m http.server 8766 --bind 127.0.0.1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          for attempt in {1..20}; do
+            curl --silent --fail http://127.0.0.1:8766/Privat/Morgenzeitung-3/config.json >/dev/null && break
+            sleep 1
+          done
+          node tests/morgenzeitung-v3-browser.cjs
       - run: python3 -m unittest discover -s tests/morgenzeitung-v3 -v
       - name: Verify every V3 edition and daily index (without requests to article URLs)
         run: |
