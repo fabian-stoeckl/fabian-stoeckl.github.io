@@ -1,7 +1,7 @@
 <!-- website-area: {"name":"Pressespiegel","paths":["Privat/Pressespiegel/"]} -->
 # Bereichsprotokoll: Pressespiegel
 
-**Stand:** 28.10.2026. **Status:** Neubau, getesteter Entwurf; Veröffentlichung und automatische Umstellung ausstehend.
+**Stand:** 28.10.2026. **Status:** Neuer Pressespiegel veröffentlicht; automatischer täglicher Concierge-Ablauf aktiv.
 
 ## Auftrag und Konzept
 
@@ -28,3 +28,16 @@ PR/CI, private Startbeschreibung, Deployment/Live-Abnahme und tatsächliche Umst
 ### Geprüfter Entwurfsstand
 
 Fünf neue Python-Tests und mobile/Desktop-Tests bei 390/1440 Pixeln bestanden, einschließlich Lesen der Beschreibung, Bewertungen/Freitext und Retry nach verloren gegangener Speicherbestätigung ohne doppeltes Issue. Alte 96 Python-Regressionen, JS-Tests und Kontextprüfung weiterhin erfolgreich. Private Startbeschreibung mit Herkunftsnotiz und Issue-Version über privaten PR #11 zusammengeführt; ursprüngliche Daten unverändert. Kein autonomer neuer Recherchelauf vorgetäuscht. Erst nach Bereitstellung wird der vorhandene Tageslauf umgestellt.
+
+
+## Abschluss 28.10.2026 – live und automatisch eingerichtet
+
+Public PR [#241](https://github.com/fabian-stoeckl/fabian-stoeckl.github.io/pull/241) nach allen erfolgreichen PR-Prüfungen zusammengeführt: geprüfter Head `85e52b7ee80c0b01eb45e0d70469ba3dbab45cd3`, Merge `967eb87c3a3fc360e5f352dfacdd32d6a885a802`. Pages-Bereitstellung [40722073337](https://github.com/fabian-stoeckl/fabian-stoeckl.github.io/actions/runs/40722073337) erfolgreich. Sieben produktive Dateien (Reader, drei lokale Assets, Index, Startausgabe, Privat-Einstieg) per HTTPS 200 bytegleich zum getesteten Stand gelesen. Mobile/Desktop-Darstellung lokal visuell und im Browser geprüft; dies ist keine separate visuelle Live-Browserprüfung.
+
+Private Startbeschreibung, Änderungsnotiz und Zustand über privaten PR #11 zusammengeführt, alle drei Dateien identisch zurückgelesen. Alte Profile, Rückmeldungen, Artikel-IDs und Belegdossiers unverändert. Keine numerischen Gewichte in den neuen Beschreibungstext übernommen.
+
+Bestehende Automation `6ae148b170108191a9414da73668e09a` heißt jetzt **Persönlicher Pressespiegel** und ist aktiv. Zeitplan unverändert täglich 06:45 Europe/Vienna; Ziel Veröffentlichung bis 07:45. Neuer Auftrag vollständig gespeichert und zurückgelesen: Originalrückmeldungen auf GitHub lesen → Beschreibung bei Bedarf verbessern und speichern → gespeicherte Beschreibung frisch lesen → recherchieren/auswählen → per PR/CI auf der Website veröffentlichen. Kein manuelles Starten, Kopieren von Prompts oder tägliches Freigeben nötig. Explizite Nutzerbestätigung dieses Kreislaufs und des Concierge-Betriebs liegt vor. Alte separate V3-Störungswache `6ae0b7da23cc81919d2ecd1546bdc081` pausiert und zurückgelesen; keine neue oder parallele Automation erstellt.
+
+Frühere Angaben „ausstehend/Entwurf“ oben dokumentieren den Vorbereitungsstand. Offen bleibt der erste echte autonome Morgenlauf und die tatsächliche Wirkung späterer Rückmeldungen. Startausgabe enthält sichtbar gekennzeichnete übernommene Artikel; keine neue Recherche behauptet. Dieser Abschluss ist reine Protokollpflege; sein Merge-/Checkstatus steht im zugehörigen PR. Rücknahme nur eigener Änderungen, unabhängige spätere Commits erhalten.
+
+Die neue Quellenliste wurde beim Abschluss auf reine unverbindliche Beispiele reduziert; historische Fixstarter-, Bewährungs- und Beförderungsregeln aus V3 gelten nicht. Keine Änderung der alten Quellenliste oder der Website-Inhalte.
