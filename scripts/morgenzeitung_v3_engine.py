@@ -152,7 +152,7 @@ def duplicate_story(item, chosen):
     t=words(item.get("title",""))
     for _,x in chosen:
         u=words(x.get("title",""))
-        if len(t)>=5 and len(u)>=5 and len(t&u)/len(t|u)>=.85:
+        if len(t)>=5 and len(u)>=5 and len(t&u)/len(t|u)>=.85 and not distinct_perspective(item,x):
             return True
     return False
 
