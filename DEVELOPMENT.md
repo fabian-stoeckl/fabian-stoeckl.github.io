@@ -47,3 +47,8 @@ The context test also exercises temporary fixtures for a fourth area, missing pr
 ## Persönliche Zeitung
 
 Run `npm run check:morgenzeitung` for the isolated newspaper tests. Run `python3 -m http.server 8766 --bind 127.0.0.1` and `node tests/morgenzeitung-v3-browser.cjs` for mocked mobile feedback journeys; no publisher or real feedback writes are performed. Registry `services/morgenzeitung-v3/editions.json` covers regular and special editions. Both existing CI workflows verify all registered public receipts; changed editions additionally require their mapped private evidence dossier. Production selection and private snapshots must share the same `--selection` settings file; see the current editorial contract.
+
+
+## Pressespiegel (aktueller Neubau)
+
+`python3 scripts/pressespiegel.py verify` prüft Index, Schema und Duplikate, keine inhaltliche Wahrheit. `python3 -m unittest discover -s tests/pressespiegel -v` prüft Ausgabe-/Feedbacklogik. Mit lokalem HTTP-Server auf Port 8766 `node tests/pressespiegel-browser.cjs` für mobile/Desktop-Anzeige und private API-Mocks ausführen. Die zwei redaktionellen Prompts stehen in `services/pressespiegel/`; keine V3-Rankingengine auf neue Ausgaben anwenden. Alte Zeitung bleibt Archiv.

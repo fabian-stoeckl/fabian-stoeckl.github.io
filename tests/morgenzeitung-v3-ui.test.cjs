@@ -5,14 +5,14 @@ const base='Privat/Persoenliche-Zeitung/';
 const html=fs.readFileSync(base+'index.html','utf8'),home=fs.readFileSync('Privat/index.html','utf8');
 const pref=fs.readFileSync(base+'praeferenzen.html','utf8');
 const js=fs.readFileSync(base+'direct-feedback.js','utf8');
-assert.equal((home.match(/href="\.\/Persoenliche-Zeitung\/"/g)||[]).length,1);
-assert.match(home,/Persönliche<br>Zeitung/);
+assert.equal((home.match(/href="\.\/Pressespiegel\/"/g)||[]).length,1);
+assert.match(home,/Pressespiegel/);
 assert.match(html,/<title>Persönliche Zeitung<\/title>/);
 assert.match(pref,/<title>Meine Präferenzen · Persönliche Zeitung<\/title>/);
-assert.equal((home.match(/<a class="tile/g)||[]).length,3,'Must retain ETF, Persönliche Zeitung and Website ändern tiles');
+assert.equal((home.match(/<a class="tile/g)||[]).length,3,'Must retain ETF, Pressespiegel and Website ändern tiles');
 assert.ok(home.includes('aria-label="Website ändern – ChatGPT-Skill öffnen"'),'Website ändern must remain');
 
-assert.ok(!home.includes('href="./Pressespiegel/"')&&!home.includes('href="./Morgenzeitung-neu/"'));
+assert.ok(!home.includes('href="./Morgenzeitung-neu/"'));
 for(const id of ['date','headlines','articles','feedback-section','github-setup','tab-headlines','tab-articles','profile-toggle'])assert.ok(html.includes('id="'+id+'"'));
 for(const src of ['./style.css','./app.js','./github.js','./direct-feedback.js'])assert.ok(html.includes(src));
 for(const src of ['./preferences.js','./preference-timeline.js'])assert.ok(pref.includes(src));
@@ -76,6 +76,6 @@ for(const retired of ['/privat/pressespiegel','/privat/morgenzeitung-neu',
  assert.ok(!errorPage.includes('"'+retired+'"'),
   'Legacy newspaper redirects must not remain: '+retired);
 }
-assert.ok(home.includes('href="./Persoenliche-Zeitung/"'),
+assert.ok(home.includes('href="./Pressespiegel/"'),
  'Dashboard must enter the newspaper directly');
 console.log('PASS: direct single newspaper, without 404 redirect dependency');

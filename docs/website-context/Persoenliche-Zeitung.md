@@ -1,7 +1,7 @@
 <!-- website-area: {"name": "Persönliche Zeitung", "paths": ["Privat/Persoenliche-Zeitung/"]} -->
 # Bereichsprotokoll: Persönliche Zeitung
 
-**Stand:** 28.10.2026. **Status:** Die einzige produktive Persönliche Zeitung liegt direkt unter `Privat/Persoenliche-Zeitung/`. Frühere Zeitungsordner und ihre Weiterleitungsregeln sind gelöscht. Redaktionswissen, Präferenzen und private Feedback-IDs wurden in aktuelle Dateien übernommen; keine historischen Bewertungen doppelt gezählt.
+**Stand:** 28.10.2026. **Status:** Historischer Stand; ab dem unten dokumentierten Neubau als Archiv erhalten. Die Persönliche Zeitung liegt direkt unter `Privat/Persoenliche-Zeitung/`. Frühere Zeitungsordner und ihre Weiterleitungsregeln sind gelöscht. Redaktionswissen, Präferenzen und private Feedback-IDs wurden in aktuelle Dateien übernommen; keine historischen Bewertungen doppelt gezählt.
 
 ## Geltungsbereich
 - Auf `Privat/index.html` bleiben **drei Kacheln**: ETF, Persönliche Zeitung, Website ändern. Die Kachel „Website ändern“ sowie ihr Skill-Link und Layout sind ausdrücklich unverändert zu erhalten.
@@ -84,3 +84,8 @@ PR [#239](https://github.com/fabian-stoeckl/fabian-stoeckl.github.io/pull/239) m
 Bestehende tägliche Zeitungsautomation auf einen konsolidierten V3.7-Auftrag umgestellt: Originalfeedback vor jeder Recherche lesen, Recherchehinweise und Umsetzung belegen, Scores unterstützend. Bestehende Störungswache entsprechend ergänzt. Beide Einstellungen zurückgelesen, Aufgaben aktiv und Zeitpläne unverändert; keine neuen Automationen. Auf Nachfrage präzisiert: bestehende Recherche mit Quellen/Suchwegen bleibt erhalten, ergänzt um verbindliche inhaltliche Feedbackauswertung und deren Dokumentation. Keine Ersetzung durch einen zweiten Recherchealgorithmus.
 
 Offen bleibt allein der tatsächliche redaktionelle Nutzen kommender Recherchen und späterer Leserbewertungen; dieser technische Abschluss beweist keinen Qualitätsgewinn. Dieser Dokumentationsnachtrag ändert keine Website-Inhalte. Sein eigener Merge-Status ist den GitHub-PR-Metadaten zu entnehmen. Rücknahme nur der eigenen Änderungen, unabhängige spätere Commits erhalten.
+
+
+## 28.10.2026 – Nachfolger Pressespiegel
+
+Neuer ausdrücklicher Nutzerauftrag: vollständiger Neubau in einem neuen Ordner, mit einem täglich automatisch ausgeführten Ablauf aus Interessenbeschreibung aktualisieren/speichern und anschließender Recherche/Veröffentlichung. Der Nachfolger liegt unter `Privat/Pressespiegel/`; aktueller Vertrag in zwei kurzen Prompts unter `services/pressespiegel/`, Protokoll `Pressespiegel.md`. Die oben beschriebenen V3.7-Ranking-, Rechercheplan- und Lernmessregeln gelten nur für das alte Archiv und werden nicht in den Neubau übernommen. Originaldateien und Rückmeldungen bleiben erhalten. Bestehenden Tageslauf nach erfolgreicher Bereitstellung umstellen; alte Störungswache pausieren. Noch ausstehende Aktivierung siehe aktuelles Nachfolgerprotokoll.

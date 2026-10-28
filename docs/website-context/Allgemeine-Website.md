@@ -78,3 +78,8 @@ Auf `/Privat/` bleiben genau drei Kacheln: ETF (Terrakotta), Persönliche Zeitun
 ## 28.10.2026 – keine alten Zeitungsordner mehr
 
 Der alte Zeitungsordner und seine Redirect-Einträge sind entfernt. Nur die direkte aktuelle Zeitung unter `Privat/Persoenliche-Zeitung/` bleibt. Die drei Kacheln und ihre Farben sowie der bestehende Website-ändern-Link bleiben unverändert.
+
+
+## 28.10.2026 – neuer Pressespiegel-Einstieg
+
+Auf ausdrücklichen Auftrag zum vollständigen Neubau führt die mittlere Privat-Kachel jetzt zu `Privat/Pressespiegel/` und heißt Pressespiegel. Weiterhin genau drei Kacheln; ETF und Website-ändern-Skill unverändert. Bisherige Zeitung bleibt über den neuen Reader als Archiv erreichbar. Maßgeblicher neuer Ablauf und Veröffentlichungsstand: `Pressespiegel.md`. Historische Aussagen zur einzigen aktiven V3-Zeitung sind damit überholt.
