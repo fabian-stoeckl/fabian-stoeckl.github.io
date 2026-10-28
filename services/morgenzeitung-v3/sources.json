@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "updated_at": "2026-10-28",
+  "policy": "Fixstarter sind tägliche Recherche-Einstiege, keine Erscheinungsquote. Technische Sperren sind kein Grund für Entfernung. Änderungen nur mit Begründung und Datum.",
+  "starter": {
+    "Austria": [
+      "ORF",
+      "Der Standard",
+      "Die Presse",
+      "Kronen Zeitung"
+    ],
+    "Germany": [
+      "Handelsblatt",
+      "Frankfurter Allgemeine Zeitung",
+      "Süddeutsche Zeitung",
+      "DIE ZEIT",
+      "DER SPIEGEL",
+      "BILD",
+      "WirtschaftsWoche"
+    ],
+    "International": [
+      "Financial Times",
+      "The New York Times",
+      "The Washington Post",
+      "The Guardian",
+      "Neue Zürcher Zeitung",
+      "Reuters",
+      "Associated Press",
+      "Bloomberg",
+      "Euronews",
+      "POLITICO Europe",
+      "BBC News"
+    ]
+  },
+  "exploration_targets": [
+    "The Economist",
+    "Nikkei Asia",
+    "Rest of World",
+    "Carbon Brief",
+    "EUobserver",
+    "Nature",
+    "Science",
+    "IEA",
+    "OECD",
+    "Eurostat",
+    "The Conversation",
+    "ProPublica"
+  ],
+  "dynamic_additions": [],
+  "change_log": [
+    {
+      "date": "2026-10-28",
+      "change": "Startbestand aus bisheriger Fixstarterliste plus bestätigte Erweiterungen POLITICO Europe und BBC News",
+      "reason": "Breite ökonomische, politische und wissenschaftliche Recherche, ohne technischen Zugang als Relevanzsignal"
+    }
+  ]
+}

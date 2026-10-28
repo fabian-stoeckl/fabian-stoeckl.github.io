@@ -1,0 +1,21 @@
+name: Verify Morgenzeitung 3
+on:
+  pull_request:
+    paths: ['Privat/Morgenzeitung-3/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
+  push:
+    paths: ['Privat/Morgenzeitung-3/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
+permissions: {contents: read}
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: node tests/morgenzeitung-v3-ui.test.cjs
+      - run: node tests/morgenzeitung-v3-feedback.test.cjs
+      - run: python3 -m unittest discover -s tests/morgenzeitung-v3 -v
+      - run: python3 -m scripts.morgenzeitung_v3_engine verify --edition Privat/Morgenzeitung-3/data/2026-10-27.json
