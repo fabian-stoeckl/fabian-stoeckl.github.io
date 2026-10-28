@@ -211,7 +211,7 @@ def evidence_guard(edition,dossier):
             "claims_checked":checked,"warnings":warnings,
             "note":"Mechanical guard only; editorial semantic check remains obligatory"}
 
-def validate_edition(ed):
+def validate_edition(ed,dossier=None,require_dossier=False):
     errors=[]; date=ed.get("date")
     if not isinstance(date,str) or not DATE.fullmatch(date):errors.append("invalid date")
     for key in ("researched_at","available_at"):
@@ -235,8 +235,11 @@ def validate_edition(ed):
                 errors.append("missing region")
     if ed.get("preview") is False:
         facts=ed.get("fact_audit",{})
-        if not isinstance(facts,dict) or facts.get("status")!="pass" or facts.get("warning_count")!=0 or facts.get("claims_checked",0)<len(ids):
-            errors.append("fact audit not passed")
+        from scripts.morgenzeitung_v3_release import check_public_receipt, check_private_receipt
+        errors.extend(check_private_receipt(ed,dossier) if dossier is not None
+                      else check_public_receipt(ed))
+        if require_dossier and dossier is None:
+            errors.append("private dossier required for release")
         if not isinstance(ed.get("selection_audit",{}).get("feedback_applied"),bool):
             errors.append("missing selection audit")
     return errors
@@ -246,11 +249,15 @@ def main():
     p.add_argument("action",choices=["verify","rank","facts","compare","learn"])
     for a in ("edition","dossier","candidates","profile","before","issues","topic-map"):p.add_argument("--"+a)
     p.add_argument("--new-feedback",action="store_true")
+    p.add_argument("--require-dossier",action="store_true",
+                   help="Require actual private evidence before approving release")
     a=p.parse_args()
     def read(path):
         if not path:raise ValueError("required path missing")
         with open(path,encoding="utf-8") as f:return json.load(f)
-    if a.action=="verify":out={"errors":validate_edition(read(a.edition))}
+    if a.action=="verify":
+        out={"errors":validate_edition(read(a.edition),
+            read(a.dossier) if a.dossier else None,a.require_dossier)}
     elif a.action=="rank":out=select(read(a.candidates),read(a.profile))
     elif a.action=="facts":out=evidence_guard(read(a.edition),read(a.dossier))
     elif a.action=="compare":out=compare_learning(read(a.candidates),read(a.before),read(a.profile),a.new_feedback)
