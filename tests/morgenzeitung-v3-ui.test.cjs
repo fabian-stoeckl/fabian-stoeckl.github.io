@@ -19,6 +19,10 @@ for(const src of ['./preferences.js','./preference-timeline.js'])assert.ok(pref.
 for(const path of ['app.js','github.js','style.css','preferences.js','preference-timeline.js'])assert.ok(fs.existsSync(base+path));
 assert.ok(!html.includes('Pressespiegel/')&&!pref.includes('Pressespiegel/'));
 assert.ok(js.includes('MORGENZEITUNG_V3_FEEDBACK_V1'));
+for(const name of ['app.js','preferences.js','rating-reasons.js','editorial-extras.js']) {
+ assert.doesNotMatch(fs.readFileSync(base+name,'utf8'),/resetOldTokenOnce|MutationObserver/,
+   'No stale token reset or permanent DOM observers: '+name);
+}
 assert.ok(!js.includes('MORGENZEITUNG_NEU_FEEDBACK_V1'));
 const index=JSON.parse(fs.readFileSync(base+'data/index.json','utf8'));
 for(const date of index.dates){
