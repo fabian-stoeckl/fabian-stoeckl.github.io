@@ -47,7 +47,7 @@ class OriginalCoreTransferTests(unittest.TestCase):
         self.assertIn("already_known",labels)
         self.assertIn("too_shallow",labels)
         self.assertNotIn("topic_dislike",labels)
-        self.assertEqual(reason_labels("Schon bekannt","Sehr relevant"),())
+        self.assertIn("already_known",reason_labels("Schon bekannt","Sehr relevant"))  # explicit quality remark at any rating
         first=issue(11,"2026-10-26",[{"id":"a"*16,"rating":"Nicht relevant","reason":"Schon bekannt"}])
         second=issue(12,"2026-10-27",[{"id":"b"*16,"rating":"Nicht relevant","reason":"Schon bekannt"}])
         profile,_=ingest_feedback({},[first,second],{"a"*16:"Industrie","b"*16:"Industrie"})
