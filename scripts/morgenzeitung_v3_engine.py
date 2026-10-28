@@ -235,10 +235,17 @@ def select(candidates, profile, limit=None, discovery_slots=2,
         pool.append((score(item,profile,section=section),i,item))
     pool.sort(key=lambda x:(-x[0],x[1]))
     chosen=[]
-    for s,_,item in pool:
-        if duplicate_story(item,chosen): continue
-        chosen.append((s,item))
-        if len(chosen)==limit: break
+    remaining=list(pool)
+    while remaining and len(chosen)<limit:
+        available=[x for x in remaining if not duplicate_story(x[2],chosen)]
+        if not available:break
+        best=available[0][0]
+        # Among candidates within six points, prefer editorial variety gently.
+        # A weaker report must never displace a much stronger one.
+        comparable=[x for x in available if x[0]>=best-6]
+        winner=max(comparable,key=lambda x:(x[0]+mix_adjustment(x[2],chosen,section),-x[1]))
+        chosen.append((winner[0],winner[2]))
+        remaining=[x for x in remaining if x[1]!=winner[1]]
     discoveries=sum(bool(x.get("discovery")) for _,x in chosen)
     # No artificial discovery quota for the public-interest news section.
     if section=="Heute wichtig":
