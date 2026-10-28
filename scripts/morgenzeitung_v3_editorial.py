@@ -18,6 +18,7 @@ REASON_PATTERNS = {
     "too_shallow": ("zu oberflächlich", "wenig tiefgang", "mehr analyse", "zu wenig analyse"),
     "too_niche": ("zu speziell", "randbereich", "randthema", "juristische details"),
     "one_sided": ("einseitig", "gegenposition", "andere perspektiv"),
+    "more_of_this": ("mehr davon", "mehr von solchen", "mehr zu diesem thema"),
     "topic_dislike": ("thema interessiert mich nicht", "thema nicht interessant",
                       "weniger über", "grundsätzlich uninteressant"),
 }
@@ -42,7 +43,7 @@ def style_signals(article_feedback):
             continue
         labels = reason_labels(row.get("reason"), row.get("rating"))
         for label in labels:
-            if label != "topic_dislike":
+            if label not in ("topic_dislike", "more_of_this"):
                 counts[label] += 1
     return {
         "novelty": min(2, counts["already_known"] // 2),
