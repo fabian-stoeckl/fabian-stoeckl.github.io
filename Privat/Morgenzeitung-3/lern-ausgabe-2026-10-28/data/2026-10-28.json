@@ -118,12 +118,12 @@
     },
     {
       "id": "28c000000000000c",
-      "title": "Deutschland: Chancenland – Eine Strategie für den wirtschaftlichen Wiederaufstieg",
-      "source": "Handelsblatt Research Institute",
-      "url": "https://research.handelsblatt.com/sliderel/deutschland-chancenland-eine-strategie-fuer-den-wirtschaftlichen-wiederaufstieg/",
+      "title": "Banken: EZB gibt Intesa Sanpaolo grünes Licht für MPS-Übernahme",
+      "source": "Handelsblatt",
+      "url": "https://www.handelsblatt.com/finanzen/banken-versicherungen/banken-ezb-gibt-intesa-sanpaolo-gruenes-licht-fuer-mps-uebernahme/100265409.html",
       "published_at": "2026-10-28",
-      "summary": "Eine Studie des Handelsblatt Research Institute und Oliver Wyman beschreibt Deutschlands „Middle Technology Trap“: industrielle Stärke in etablierten Technologien, aber zu wenig neue Führungspositionen.",
-      "topic": "Produktivität & Wettbewerbsfähigkeit",
+      "summary": "Die EZB hat den geplanten Kauf der italienischen Bank MPS durch Intesa Sanpaolo gebilligt. Kartellrechtliche und börsenaufsichtliche Entscheidungen stehen noch aus.",
+      "topic": "Wirtschaft & Fiskalpolitik",
       "access": "teaser"
     }
   ],
@@ -190,12 +190,13 @@
     }
   ],
   "selection_audit": {
-    "feedback_applied": true,
+    "feedback_applied": false,
     "feedback_received": true,
-    "selection_changed": true,
+    "selection_changed": false,
     "independent_research": true,
     "source": "followup_learning_probe",
-    "regular_edition_unchanged": true
+    "regular_edition_unchanged": true,
+    "note": "Additional editorially researched feedback sample. No causally attributable selection effect certified for this independent supplementary issue."
   },
   "fact_audit": {
     "status": "not_formally_run",
