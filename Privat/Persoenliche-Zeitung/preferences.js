@@ -111,8 +111,8 @@ async function showPreferenceSummary() {
     const recentNegative=items.filter(r=>r.value==='Nicht relevant');
     const recentPositive=items.filter(r=>r.value==='Sehr relevant');
     const signals=[];
-    if(recentPositive.length)signals.push('Mehr Gewicht für Inhalte, die du ausdrücklich als sehr relevant markiert hast.');
-    if(recentNegative.length)signals.push('Weniger Gewicht für ähnliche Beiträge, die du als nicht relevant markiert hast.');
+    if(recentPositive.length)signals.push('Deine positiven Bewertungen helfen, künftig passende und gehaltvolle Beiträge zu erkennen.');
+    if(recentNegative.length)signals.push('Negative Artikelbewertungen werden zunächst auf Themenfit, Tiefe und Neuigkeitswert geprüft; ohne ausdrückliche Themenkritik wird daraus keine generelle Themenabwertung.');
     if(!signals.length)signals.push('Deine Rückmeldungen sind noch kein eindeutiges positives oder negatives Themen-Signal.');
     $('preference-learning-status').textContent='Bisheriges Feedback als Auswahlhinweis: '+signals.join(' ')+' Die tatsächliche Umsetzung in späteren, neu zusammengestellten Ausgaben ist noch nicht verlässlich nachgewiesen; daher wird hier keine bereits erfolgte Änderung behauptet.';
   }catch(error){
