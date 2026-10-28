@@ -117,6 +117,16 @@ const {chromium}=require('playwright');
  const comparisonData=JSON.parse(comparisonIssue.body.split('\n').slice(1).join('\n'));
  assert.match(comparisonData.comment,/V3-Vergleich.*alternative/);
  assert.equal(comparisonData.ratings.length,2,'Comparisons never create fabricated article ratings');
+ // Later general feedback must not erase previously recorded comparisons.
+ await page.evaluate(()=>{delete edition.editorial_comparisons;render();});
+ await page.locator('#feedback').fill('Weitere eigene Gedanken');
+ await page.locator('#feedback-form button[type=submit]').click();
+ await page.waitForFunction(()=>document.querySelector('#feedback-status')?.textContent.includes('aktualisiert'));
+ const followUp=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('v3-mock-issue')));
+ const notes=JSON.parse(followUp.body.split('\n').slice(1).join('\n')).comment;
+ assert.match(notes,/Weitere eigene Gedanken/);
+ assert.match(notes,/V3-Vergleich.*alternative/);
+
  await page.goto('http://127.0.0.1:8766/Privat/Persoenliche-Zeitung/praeferenzen.html');
  await page.waitForFunction(()=>document.querySelector('#preference-feedback')?.textContent.includes('Artikelbewertungen'));
  assert.match(await page.locator('#preference-feedback').innerText(),/2 Artikelbewertungen/);

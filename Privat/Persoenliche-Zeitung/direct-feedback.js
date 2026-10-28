@@ -75,7 +75,34 @@ const DirectFeedback=(()=>{
     const items=await feedbackHistory(token,transport);
     return items.find(x=>x.date===date)||null;
   }
-  async function submit(date,ratings,feedback,token,store=localStorage,transport=fetch){
+  const COMPARISON_NOTE=/^\[V3-Vergleich (\d{4}-\d{2}-\d{2} [a-zA-Z0-9_-]{1,90}): (?:published|alternative|equal)\]$/;
+  function preserveComparisonNotes(previous,incoming){
+    // An old comparison remains valid even when that optional UI is absent
+    // later. Explicitly selected answers replace only the same pair.
+    const text=String(incoming||'').trim(), base=String(previous||'').trim();
+    const chosen=new Set();
+    for(const line of text.split('\n')){
+      const match=line.trim().match(COMPARISON_NOTE);
+      if(match)chosen.add(match[1]);
+    }
+    const missing=base.split('\n').filter(line=>{
+      const match=line.trim().match(COMPARISON_NOTE);
+      return match&&!chosen.has(match[1]);
+    });
+    // Deduplicate old notes and preserve the reader's authored text unchanged.
+    return [text,...new Set(missing)].filter(Boolean).join('\n').trim();
+  }
+  function appendOnce(previous,fragment){
+    const base=String(previous||'').trim(), fresh=String(fragment||'').trim();
+    if(!fresh)return base;
+    // A retry after a saved but unacknowledged write is idempotent.
+    const at=base.indexOf(fresh);
+    if(at>=0&&(at===0||base.slice(at-2,at)==='\n\n')&&
+       (at+fresh.length===base.length||base.slice(at+fresh.length,at+fresh.length+2)==='\n\n'))
+      return base;
+    return [base,fresh].filter(Boolean).join('\n\n');
+  }
+  async function submit(date,ratings,feedback,token,store=localStorage,transport=fetch,options={}){
     if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Array.isArray(ratings)||
        ratings.length>100||typeof feedback!=='string'||feedback.length>4000)
       throw Error('Ungültige Feedbackdaten');
@@ -88,6 +115,9 @@ const DirectFeedback=(()=>{
                          section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen'});
     }
     const comment=feedback.trim();
+    const appendText=options?.appendComment===undefined?'':String(options.appendComment).trim();
+    if(appendText.length>4000||appendText&&comment)
+      throw Error('Kommentar bitte entweder anhängen oder ausdrücklich ersetzen.');
     let previousIssue=null;
     // Optimistic retries: read the canonical issue, merge intended changes,
     // write, then verify that the submitted ratings survived. GitHub Issues
@@ -102,7 +132,9 @@ const DirectFeedback=(()=>{
       const base=fresh||latest;
       const byId=new Map((base?.ratings||[]).map(r=>[r.id,r]));
       for(const [id,row] of intended)byId.set(id,row);
-      const mergedComment=comment||base?.feedback||'';
+      const mergedComment=appendText?appendOnce(base?.feedback,appendText):
+        comment?preserveComparisonNotes(base?.feedback,comment):(base?.feedback||'');
+      if(mergedComment.length>4000)throw Error('Der gespeicherte Kommentar überschreitet 4000 Zeichen. Bitte kürzen.');
       if(!byId.size&&!mergedComment)throw Error('Bitte mindestens eine Bewertung oder Feedback eingeben.');
       const title=PREFIX+date;
       const payload={version:1,date,
@@ -127,13 +159,16 @@ const DirectFeedback=(()=>{
       const preserved=[...intended].every(([id,row])=>
         found.has(id)&&found.get(id).value===row.value&&
         found.get(id).reason===row.reason&&found.get(id).section===row.section);
-      if(preserved&&(!comment||verified.feedback===comment))
+      if(preserved&&verified.feedback===mergedComment)
         return {ok:true,updated:!!existing,html_url:result.html_url};
       // A competing edit has won at least one write; merge it on the next read.
       previousIssue=verified;
     }
     throw Error('Gleichzeitige Änderungen konnten nicht sicher zusammengeführt werden. Bitte erneut speichern.');
   }
-  return {REPO,TOKEN_KEY,RECEIPTS_KEY,readToken,clearToken,saveToken,verify,feedbackHistory,readReceipts,savedFeedback,submit};
+  async function appendComment(date,text,token,store=localStorage,transport=fetch){
+    return submit(date,[],'',token,store,transport,{appendComment:text});
+  }
+  return {REPO,TOKEN_KEY,RECEIPTS_KEY,readToken,clearToken,saveToken,verify,feedbackHistory,readReceipts,savedFeedback,submit,appendComment,preserveComparisonNotes};
 })();
 if(typeof module!=='undefined')module.exports=DirectFeedback;

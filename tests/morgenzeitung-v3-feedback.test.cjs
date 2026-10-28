@@ -89,5 +89,33 @@ async function transport(url,options){
  assert.equal(afterRace.ratings.find(r=>r.id==='d'.repeat(16)).value,'Teilweise relevant');
  assert.equal(afterRace.ratings.find(r=>r.id==='e'.repeat(16)).value,'Sehr relevant');
  assert.equal(patches,2,'Lost user update must trigger bounded optimistic retry');
- console.log('PASS: V3 feedback isolated, issue updated, old/v2 filtered');
+ // Previously recorded optional comparison votes must survive later ratings
+ // and a newly authored general comment, even when the comparison UI is gone.
+ const tag='[V3-Vergleich '+date+' fedcba9876543210: alternative]';
+ await D.submit(date,[], 'Erste Meinung\n'+tag, 'token',store,transport);
+ await D.submit(date,[{id:'f'.repeat(16),value:'Sehr relevant',reason:'Neuer Beitrag',section:'Vertiefungen'}],
+                'Zweite Meinung','token',store,transport);
+ let current=(await D.savedFeedback(date,'token',store,transport));
+ assert.match(current.feedback,/Zweite Meinung/);
+ assert.ok(current.feedback.includes(tag),'Historic comparison was lost on an unrelated comment edit');
+ // A later explicit answer to the SAME comparison pair replaces only that
+ // pair; unrelated past comparisons and normal text must remain.
+ const tagTwo='[V3-Vergleich '+date+' 1234567890abcdef: published]';
+ await D.submit(date,[],current.feedback+'\n'+tagTwo,'token',store,transport);
+ await D.submit(date,[],'Dritte Meinung\n[V3-Vergleich '+date+' fedcba9876543210: equal]',
+                'token',store,transport);
+ current=await D.savedFeedback(date,'token',store,transport);
+ assert.match(current.feedback,/fedcba9876543210: equal/);
+ assert.doesNotMatch(current.feedback,/fedcba9876543210: alternative/);
+ assert.ok(current.feedback.includes(tagTwo),'Another comparison answer must stay unchanged');
+ // Preferences comments are appended on the freshly fetched canonical issue,
+ // not based on a potentially stale text concatenation.
+ await D.appendComment(date,'Ein präziser neuer Hinweis','token',store,transport);
+ await D.appendComment(date,'Ein präziser neuer Hinweis','token',store,transport);
+ current=await D.savedFeedback(date,'token',store,transport);
+ assert.equal(current.feedback.split('Ein präziser neuer Hinweis').length-1,1,
+              'Network retry must not duplicate a successfully saved comment');
+ assert.ok(current.feedback.includes(tagTwo));
+ assert.equal(current.ratings.find(r=>r.id==='f'.repeat(16)).value,'Sehr relevant');
+ console.log('PASS: V3 feedback isolated, issue updated, past comparisons and appended comments retained');
 })().catch(e=>{console.error(e);process.exitCode=1});
