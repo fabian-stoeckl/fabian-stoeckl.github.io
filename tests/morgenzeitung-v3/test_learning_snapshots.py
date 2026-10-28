@@ -1,10 +1,14 @@
 """Private snapshot: replay actual selection, never fabricate quality outcomes."""
 import copy
 import json
+import io
+import sys
 import tempfile
 import unittest
 from pathlib import Path
-from scripts.morgenzeitung_v3_audit import before_snapshot, learning_result, private_target
+from contextlib import redirect_stdout
+from unittest.mock import patch
+from scripts.morgenzeitung_v3_audit import before_snapshot, learning_result, private_target, main
 
 
 def candidate(n, topic):
@@ -28,6 +32,32 @@ class LearningSnapshotTests(unittest.TestCase):
         changed["original_candidates"]["articles"][0]["fit"]=0
         with self.assertRaisesRegex(ValueError,"snapshot has changed"):
             learning_result(changed,after)
+
+    def test_immutable_cli_snapshot_cannot_overwrite_a_previous_run(self):
+        # Also covers competing runs: exclusive open is the final atomic guard
+        # even if both runs saw a missing file in the earlier exists check.
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            (root/".git").mkdir()
+            (root/".git/config").write_text(
+                '[remote "origin"]\n url = https://github.com/fabian-stoeckl/morgenzeitung-feedback.git\n')
+            candidates=root/"candidates.json"
+            profile=root/"profile.json"
+            candidates.write_text(json.dumps({"articles":[candidate(1,"Industrie")],"headlines":[]}))
+            profile.write_text(json.dumps({"topic_priorities":{"Industrie":4}}))
+            relative="morgenzeitung-v3/snapshots/2026-10-28-before.json"
+            args=["audit","before","--private-root",str(root),
+                  "--output",relative,"--profile",str(profile),
+                  "--candidates",str(candidates),"--date","2026-10-28"]
+            with patch.object(sys,"argv",args),redirect_stdout(io.StringIO()):
+                main()
+            original=(root/relative).read_bytes()
+            self.assertIn(b"snapshot_sha256",original)
+            # Repeat must fail without changing ANY byte of the first run.
+            with patch.object(sys,"argv",args),redirect_stdout(io.StringIO()):
+                with self.assertRaisesRegex(ValueError,"already exists"):
+                    main()
+            self.assertEqual((root/relative).read_bytes(),original)
 
     def test_private_repo_directory_is_required(self):
         with tempfile.TemporaryDirectory() as tmp:

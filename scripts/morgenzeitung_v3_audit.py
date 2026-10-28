@@ -6,7 +6,6 @@ Pages repository. Does not access publishers, infer ratings or mutate profiles.
 import argparse
 import hashlib
 import json
-from datetime import datetime, timezone
 from pathlib import Path
 
 from scripts.morgenzeitung_v3_engine import compare_learning, load_edition_history
@@ -107,7 +106,14 @@ def main():
             raise ValueError("Read frozen before snapshot from the private repository")
         result=learning_result(read(source),read(args.profile))
     dest.parent.mkdir(parents=True,exist_ok=True)
-    dest.write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    # Exclusive create is atomic: a competing run must NEVER truncate an
+    # earlier immutable private audit, even between exists() and write().
+    try:
+        with dest.open("x",encoding="utf-8") as stream:
+            json.dump(result,stream,ensure_ascii=False,indent=2)
+            stream.write("\n")
+    except FileExistsError as exc:
+        raise ValueError("Immutable snapshot/report already exists: "+str(dest)) from exc
     print(json.dumps({"ok":True,"private_path":str(dest),"snapshot_sha256":result["snapshot_sha256"],
                       "quality_proven":result.get("feedback_quality_improvement_proven",False)},ensure_ascii=False))
 
