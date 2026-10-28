@@ -98,7 +98,7 @@ def score(item, profile, section="Vertiefungen"):
         weights=(("fit",0),("novelty",3),("impact",5),("perspective",2))
     value=0
     for key,weight in weights:
-        x=item.get("novelty_score",item.get("novelty",0)) if key=="novelty" else item.get(key,0)
+        x=(item.get("novelty_score") if item.get("novelty_score") is not None else item.get("novelty",0)) if key=="novelty" else item.get(key,0)
         if isinstance(x,bool) or not isinstance(x,(int,float)) or not 0<=x<=5:
             raise ValueError(key+" must be 0..5")
         value+=x*weight
@@ -119,7 +119,7 @@ def score(item, profile, section="Vertiefungen"):
     novelty_demand=style.get("novelty",0)
     if isinstance(novelty_demand,bool) or not isinstance(novelty_demand,(int,float)):
         novelty_demand=0
-    novelty_adjustment=min(2,max(0,novelty_demand))*(item.get("novelty_score",item.get("novelty",0))-2.5)
+    novelty_adjustment=min(2,max(0,novelty_demand))*((item.get("novelty_score") if item.get("novelty_score") is not None else item.get("novelty",0))-2.5)
     # Only genuine, pre-selection editorial assessments based on comparable
     # headline/teaser metadata can be used. Missing values are neutral.
     # Accessible full-text volume is NEVER a quality assessment or proxy.
