@@ -53,7 +53,7 @@ const {chromium}=require('playwright');
    await page.waitForURL(/praeferenzen.html/);
    await page.waitForSelector('#profile-text:not([hidden])');
    assert.match(await page.locator('#profile-text').innerText(),/wirtschaftliche Erkenntnisse/);
-   assert.ok(await page.locator('#profile-changes').innerText().includes('Startbeschreibung'));
+   assert.ok((await page.locator('#profile-changes').innerText()).includes('Startbeschreibung'));
    assert.equal(await page.locator('#preference-comment').isVisible(),true);
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'No horizontal overflow');
    assert.deepEqual(errors,[],'No JS page errors');
