@@ -20,9 +20,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
-      - name: Validate sole remaining Morgenzeitung 3 release contract
+      - name: Verify released Persönliche Zeitung edition receipts (full tests run in V3 workflow)
         run: |
-          python3 -m unittest discover -s tests/morgenzeitung-v3 -v
           python3 - <<'PY'
           import json, pathlib, subprocess, sys
           root=pathlib.Path("Privat/Persoenliche-Zeitung/data")

@@ -73,55 +73,23 @@ def fetch_private_dossier(date, token, opener=urlopen):
     return value
 
 
-def unchanged_migration(root, day, base_sha):
-    """Only bypass a new-release fetch for the byte-identical ONE-TIME folder move.
-
-    Never exempt edited articles, new dates, changed index or missing baseline.
-    The recorded original must be a real already-published V3 edition.
-    """
-    if day != "2026-10-28" or not COMMIT.fullmatch(str(base_sha)):
-        return False
-    current = Path(root) / "Privat/Persoenliche-Zeitung/data"
-    old_path = "Privat/Morgenzeitung-3/data/" + day + ".json"
-    old_index = "Privat/Morgenzeitung-3/data/index.json"
-    try:
-        old_edition = subprocess.run(
-            ["git", "show", base_sha + ":" + old_path],
-            cwd=root, check=True, capture_output=True).stdout
-        old_dates = subprocess.run(
-            ["git", "show", base_sha + ":" + old_index],
-            cwd=root, check=True, capture_output=True).stdout
-        return (old_edition == (current / (day + ".json")).read_bytes()
-                and old_dates == (current / "index.json").read_bytes())
-    except (OSError, subprocess.CalledProcessError):
-        return False
-
-
-def verify_changed(root, files, token, fetcher=fetch_private_dossier, migration_base=None):
+def verify_changed(root, files, token, fetcher=fetch_private_dossier):
     days = changed_dates(files)
     if not days:
         return {"checked": [], "preview_skipped": []}
     data_dir = Path(root) / "Privat/Persoenliche-Zeitung/data"
     index = json.loads((data_dir / "index.json").read_text(encoding="utf-8"))
     listed = index.get("dates", [])
-    checked, retired, migrated = [], [], []
+    checked = []
     for day in days:
         path = data_dir / (day + ".json")
         if day not in listed:
-            # One-time retirement of the non-independent V1-copy preview.
-            # No new/real daily edition can be silently removed this way.
-            if day == "2026-10-27" and not path.exists():
-                retired.append(day)
-                continue
             raise ValueError("V3 dated edition is missing from index: " + day)
         edition = json.loads(path.read_text(encoding="utf-8"))
         if edition.get("date") != day:
             raise ValueError("V3 edition/index date mismatch")
         if edition.get("preview") is True:
             raise ValueError("New V3 editions cannot be previews")
-        if unchanged_migration(root, day, migration_base):
-            migrated.append(day)
-            continue
         # A new real edition MUST have its private original-source dossier in
         # the feedback repo and must pass the actual private review, not just a
         # self-declared public receipt.
@@ -131,7 +99,7 @@ def verify_changed(root, files, token, fetcher=fetch_private_dossier, migration_
             raise ValueError("V3 private factual review failed for " + day
                              + ": " + ", ".join(errors[:8]))
         checked.append(day)
-    return {"checked": checked, "preview_skipped": [], "retired_preview": retired, "migrated_unchanged": migrated}
+    return {"checked": checked}
 
 
 def main():
@@ -140,7 +108,7 @@ def main():
     parser.add_argument("--root", default=".")
     args = parser.parse_args()
     report = verify_changed(args.root, files_since(args.base),
-                            os.getenv("MORGENZEITUNG_FEEDBACK_TOKEN", ""), migration_base=args.base)
+                            os.getenv("MORGENZEITUNG_FEEDBACK_TOKEN", ""))
     print("V3 private dossier check: " + json.dumps(report, ensure_ascii=False))
 
 
