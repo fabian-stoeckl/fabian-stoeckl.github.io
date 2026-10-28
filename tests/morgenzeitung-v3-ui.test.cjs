@@ -9,7 +9,7 @@ assert.equal((home.match(/href="\.\/Morgenzeitung-3\/"/g)||[]).length,1);
 assert.match(home,/Persönliche<br>Zeitung/);
 assert.match(html,/<title>Persönliche Zeitung<\/title>/);
 assert.match(pref,/<title>Meine Präferenzen · Persönliche Zeitung<\/title>/);
-assert.equal((home.match(/<a class="tile(?:\\s|")/g)||[]).length,3,'Must retain ETF, Persönliche Zeitung and Website ändern tiles');
+assert.equal((home.match(/<a class="tile/g)||[]).length,3,'Must retain ETF, Persönliche Zeitung and Website ändern tiles');
 assert.ok(home.includes('aria-label="Website ändern – ChatGPT-Skill öffnen"'),'Website ändern must remain');
 
 assert.ok(!home.includes('href="./Pressespiegel/"')&&!home.includes('href="./Morgenzeitung-neu/"'));
