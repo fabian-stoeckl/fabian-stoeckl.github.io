@@ -70,21 +70,26 @@ const DirectFeedback=(()=>{
   async function submit(date,ratings,feedback,token,store=localStorage,transport=fetch){
     if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Array.isArray(ratings)||ratings.length>40||typeof feedback!=='string'||feedback.length>4000)throw Error('Ungültige Feedbackdaten');
     const latest=await savedFeedback(date,token,store,transport);
-    const byId=new Map((latest?.ratings||[]).map(r=>[r.id,r]));
+    const existing=latest?.number;
+    // Cross-device safety: the listing may lag behind a newer edit. Always use
+    // the canonical issue's current body as the merge base, not a stale list.
+    const record=existing?await request(token,'/issues/'+existing,'GET',undefined,transport):null;
+    const fresh=record?parse(record):null;
+    if(existing&&!fresh)throw Error('Aktuelle GitHub-Bewertungen konnten nicht sicher gelesen werden. Bitte erneut versuchen.');
+    const current=fresh||latest;
+    const byId=new Map((current?.ratings||[]).map(r=>[r.id,r]));
     for(const r of ratings){
       if(!r||!((typeof r.id==='string')&&/^[a-f0-9]{16}$/.test(r.id))||!VALID.includes(r.value||'')||typeof r.reason!=='string'||r.reason.length>600)throw Error('Ungültige Artikelbewertung');
       byId.set(r.id,{id:r.id,value:r.value||'',reason:r.reason,section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen'});
     }
     const combined=[...byId.values()];
-    const comment=feedback.trim()||latest?.feedback||'';
+    const comment=feedback.trim()||current?.feedback||'';
     if(!combined.length&&!comment)throw Error('Bitte mindestens eine Bewertung oder Feedback eingeben.');
     const title=PREFIX+date;
     const payload={version:1,date,ratings:combined.map(r=>({id:r.id,section:r.section,rating:r.value,reason:r.reason})),
       comment,origin:'website-explicit'};
     const body=MARKER+JSON.stringify(payload,null,2);
-    const existing=latest?.number;
-    // Avoid a useless GitHub PATCH on repeated clicks; always keep cross-device canonical state.
-    const record=existing?await request(token,'/issues/'+existing,'GET',undefined,transport):null;
+    // Avoid a useless PATCH on repeated clicks; the canonical record was read above.
     if(record?.body===body)return {ok:true,existing:true,html_url:record.html_url};
     const result=await request(token,existing?'/issues/'+existing:'/issues',existing?'PATCH':'POST',{title,body},transport);
     if(!Number.isSafeInteger(result.number)||!result.html_url?.startsWith('https://github.com/'+REPO+'/issues/'))throw Error('GitHub hat das Speichern nicht bestätigt.');
