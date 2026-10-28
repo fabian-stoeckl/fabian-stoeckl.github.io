@@ -50,6 +50,19 @@ for(const ref of ['../app.js','../direct-feedback.js','../rating-reasons.js','..
 assert.ok(!html.includes('id="login-form"')&&!html.includes('id="logout"'));
 assert.match(fs.readFileSync(base+'app.js','utf8'),/saving:false/);
 assert.match(fs.readFileSync(base+'app.js','utf8'),/if\(readerState\.saving\)return/);
+// Browser must not hide independent editorial choices merely because their
+// titles or event IDs resemble another publisher's story.
+const GitHubPaper=require('../Privat/Persoenliche-Zeitung/github.js');
+const baseStory={id:'a'.repeat(16),url:'https://example.org/a',
+  event:'one-event',title:'Neuer Industrieplan Europa',summary:'A'};
+const news=[
+ {id:'b'.repeat(16),url:'https://different.org/b',event:'one-event',title:'Neuer Industrieplan Europa',summary:'B'},
+ {id:'c'.repeat(16),url:'https://example.org/a',event:'another-event',title:'Duplizierte Adresse'},
+ {id:'d'.repeat(16),url:'https://third.org/c',event:'third',title:'Neuer Industrieplan Europa',summary:'C'}
+];
+const dedup=GitHubPaper.partition({articles:[baseStory],headlines:news});
+assert.deepEqual(dedup.headlines.map(x=>x.id),[news[0].id,news[2].id]);
+assert.equal(dedup.duplicatesRemoved,1);
 console.log('PASS: single reader, metadata, explicit enhancements and strict script policy');
 
 // All user entry points use only the actual single newspaper folder.
