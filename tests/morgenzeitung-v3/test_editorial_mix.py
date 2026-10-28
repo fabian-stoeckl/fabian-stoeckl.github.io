@@ -69,5 +69,22 @@ class EditorialMixTests(unittest.TestCase):
         self.assertFalse(any("counter-perspectives" in x for x in report2["recommendations"]))
 
 
+    def test_two_independent_views_can_share_a_debate(self):
+        a=item(1,publisher="Journal A",genre="analysis")
+        b=item(2,publisher="Journal B",genre="opinion")
+        c=item(3,publisher="Journal C",genre="report")
+        for row in (a,b,c):
+            row["event"]="same-real-world-policy"
+            row["debate_id"]="specific-policy-debate"
+        a["viewpoint"]="support"
+        b["viewpoint"]="oppose"
+        chosen=select([a,b,c],{},limit=3,discovery_slots=0)
+        self.assertEqual([x["id"] for x in chosen],[a["id"],b["id"]])
+        duplicate=copy.deepcopy(b)
+        duplicate["id"]="f"*16
+        duplicate["url"]=a["url"]
+        self.assertEqual(len(select([a,duplicate],{},limit=3,discovery_slots=0)),1)
+
+
 if __name__=="__main__":
     unittest.main()
