@@ -38,13 +38,14 @@ for(const path of ['app.js','github.js','direct-feedback.js','preferences.js','p
  execFileSync(process.execPath,['--check',base+path]);
 console.log('PASS: only V3 dashboard, independent local reader and feedback, valid editions');
 
-// Legacy directory is removed. Old bookmarks map via the single root 404.
-assert.equal(fs.existsSync('Privat/Morgenzeitung-3'),false,'No retired GitHub folder remains');
-const notFound=fs.readFileSync('404.html','utf8');
-for(const oldRoute of ['/privat/pressespiegel','/privat/morgenzeitung-neu',
- '/privat/morgenzeitung-3','/privat/morgenzeitung-3/praeferenzen.html',
- '/privat/morgenzeitung-3/lern-ausgabe-2026-10-28']) {
- assert.ok(notFound.includes('"'+oldRoute+'"'),'Missing old-bookmark mapping: '+oldRoute);
+// All user entry points use only the actual single newspaper folder.
+assert.equal(fs.existsSync('Privat/Morgenzeitung-3'),false,'Legacy folder must not exist');
+const errorPage=fs.readFileSync('404.html','utf8');
+for(const retired of ['/privat/pressespiegel','/privat/morgenzeitung-neu',
+ '/privat/morgenzeitung-3','/privat/persoenliche-zeitung']) {
+ assert.ok(!errorPage.includes('"'+retired+'"'),
+  'Legacy newspaper redirects must not remain: '+retired);
 }
-assert.ok(notFound.includes('window.location.search + window.location.hash'),'Keep query and hash in redirect');
-console.log('PASS: old directory removed, legacy route data integrated into 404.html');
+assert.ok(home.includes('href="./Persoenliche-Zeitung/"'),
+ 'Dashboard must enter the newspaper directly');
+console.log('PASS: direct single newspaper, without 404 redirect dependency');

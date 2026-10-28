@@ -36,17 +36,11 @@ const {chromium}=require('playwright');
      return new Response(JSON.stringify(result),{status:200,headers:{'Content-Type':'application/json'}});
    };
  });
- // GitHub Pages serves the root 404 file for old missing routes. The local
- // Python preview doesn't, so fulfill that one old-URL request with the 404
- // to test the real client-side redirect without keeping any old folder.
- await page.route('**/Privat/Morgenzeitung-3/**', async route=>{
-   await route.fulfill({status:404,contentType:'text/html',
-     body:fs.readFileSync('404.html','utf8')});
- });
- await page.goto('http://127.0.0.1:8766/Privat/Morgenzeitung-3/?from=old#headlines');
- await page.waitForURL('**/Privat/Persoenliche-Zeitung/?from=old#headlines');
- await page.unroute('**/Privat/Morgenzeitung-3/**');
- await page.goto('http://127.0.0.1:8766/Privat/Persoenliche-Zeitung/');
+ // The current newspaper must load directly, never through an old-URL
+ // 404 page or a client-side redirect.
+ const direct = await page.goto('http://127.0.0.1:8766/Privat/Persoenliche-Zeitung/');
+ assert.equal(direct.status(),200);
+ assert.equal(new URL(page.url()).pathname,'/Privat/Persoenliche-Zeitung/');
  await page.waitForSelector('#headlines .news-item .rating-dots input');
  assert.match(await page.locator('h1').first().innerText(),/Persönliche Zeitung/);
  const publicationStatus=await page.locator('#publication-status').innerText();

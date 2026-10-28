@@ -69,12 +69,12 @@ Quelle: am 17.10. recherchierte Skill-Notizen, damals mit PRs #2–#18 abgeglich
 ## 28.10.2026: Bereinigte Privat-Kacheln
 
 - Drei Kacheln beibehalten: ETF, **Persönliche Zeitung**, **Website ändern**. Die Website-ändern-Skill-Kachel ist ausdrücklich vom Nutzer zum Beibehalten bestimmt; ihr Link und ihr Design bleiben unverändert.
-- Alte Zeitungs-Versionen sind nicht mehr produktiv. Der Produktordner lautet jetzt `Privat/Persoenliche-Zeitung/`; die alte URL wird auf den neuen Pfad weitergeleitet; die aktuelle Produktgeschichte liegt im Bereichsprotokoll `Persoenliche-Zeitung.md`.
+- Frühere Zeitungen sind nicht mehr produktiv. Die einzige Zeitung liegt unter `Privat/Persoenliche-Zeitung/` und wird über diese Adresse direkt geöffnet; für frühere Zeitungs-URLs gibt es keine Umleitungen. Die Produktgeschichte steht im Bereichsprotokoll `Persoenliche-Zeitung.md`.
 
 ## Aktueller Farbstil und Ordner – 28.10.2026
 
-Auf `/Privat/` stehen weiterhin genau drei Kacheln: ETF (Terrakotta), Persönliche Zeitung (Blau), Website ändern (Violett). Der Skill-Link und die ETF-Funktionalität bleiben unverändert. Neue Zeitungsadresse: `/Privat/Persoenliche-Zeitung/`, frühere Leseadressen werden weitergeleitet.
+Auf `/Privat/` bleiben genau drei Kacheln: ETF (Terrakotta), Persönliche Zeitung (Blau), Website ändern (Violett). Der Skill-Link und die ETF-Funktionalität bleiben unverändert. Zeitungsadresse: `/Privat/Persoenliche-Zeitung/`, keine alten Zeitungsumleitungen.
 
 ## 28.10.2026 – keine alten Zeitungsordner mehr
 
-Der frühere `Privat/Morgenzeitung-3/`-Ordner ist vollständig gelöscht. Die bisherigen drei Lesezeichen-Adressen sind in der vorhandenen zentralen `404.html` als Browserweiterleitungen auf `Privat/Persoenliche-Zeitung/` integriert (JavaScript erforderlich, keine HTTP-301-Antwort). Die drei Kacheln ETF, Persönliche Zeitung und Website ändern, ihre neuen Farben und der bestehende Website-ändern-Link bleiben unverändert.
+Der alte Zeitungsordner und seine Redirect-Einträge sind entfernt. Nur die direkte aktuelle Zeitung unter `Privat/Persoenliche-Zeitung/` bleibt. Die drei Kacheln und ihre Farben sowie der bestehende Website-ändern-Link bleiben unverändert.

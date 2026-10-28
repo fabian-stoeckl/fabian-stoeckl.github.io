@@ -1,11 +1,11 @@
 <!-- website-area: {"name": "Persönliche Zeitung", "paths": ["Privat/Persoenliche-Zeitung/"]} -->
 # Bereichsprotokoll: Persönliche Zeitung
 
-**Stand:** 28.10.2026. **Status:** eine einzige produktive Persönliche Zeitung. Die früheren Versionen wurden aus Website und Prozessen entfernt; ihre wichtigen redaktionellen Erkenntnisse sind im aktuellen Vertrag zusammengeführt. Der produktive GitHub- und Website-Ordner heißt `Privat/Persoenliche-Zeitung/`. Die Weiterleitungsregeln für frühere Lesezeichen zu Hauptseite, Präferenzen und Lernausgabe sind in der zentralen `404.html` integriert. Der alte GitHub-Ordner ist vollständig gelöscht. Die privaten Feedback-IDs und Issue-Marker bleiben unverändert.
+**Stand:** 28.10.2026. **Status:** Die einzige produktive Persönliche Zeitung liegt direkt unter `Privat/Persoenliche-Zeitung/`. Frühere Zeitungsordner und ihre Weiterleitungsregeln sind gelöscht. Redaktionswissen, Präferenzen und private Feedback-IDs wurden in aktuelle Dateien übernommen; keine historischen Bewertungen doppelt gezählt.
 
 ## Geltungsbereich
 - Auf `Privat/index.html` bleiben **drei Kacheln**: ETF, Persönliche Zeitung, Website ändern. Die Kachel „Website ändern“ sowie ihr Skill-Link und Layout sind ausdrücklich unverändert zu erhalten.
-- Leseroberfläche, CSS, GitHub-Feedback und Präferenzanzeige eigenständig in `Privat/Persoenliche-Zeitung/`; die separat veröffentlichte Lernausgabe vom 28.10. liegt vollständig im aktuellen Ordner. Alte Lesezeichen werden über die zentrale `404.html` weitergeleitet (mit aktiviertem JavaScript).
+- Leseroberfläche, CSS, GitHub-Feedback, reguläre Ausgabe und Lernausgabe liegen ausschließlich unter `Privat/Persoenliche-Zeitung/`. Einstieg und Automationen verwenden diese Adresse direkt. Alte Lesezeichen müssen auf die aktuelle URL geändert werden.
 - Verbindliche redaktionelle Anweisung: `services/morgenzeitung-v3/REDAKTION.md`; Quellen: `services/morgenzeitung-v3/sources.json`; Tests und Redaktion ausschließlich V3. Eigenes privates Profil: `fabian-stoeckl/morgenzeitung-feedback:morgenzeitung-v3/profile.json`.
 - Bestehende Issue-Titel `[Morgenzeitung 3] Feedback YYYY-MM-DD`, Marker `MORGENZEITUNG_V3_FEEDBACK_V1` und lokale technische Token-/Feedback-IDs dürfen nicht umbenannt werden, damit alle Bewertungen erhalten bleiben.
 - Nur der tägliche V3-Lauf (06:45 Europe/Vienna) und die V3-Störungswache bleiben aktiviert; die ehemaligen V1/V2-Aufgaben sind deaktiviert.
@@ -28,8 +28,12 @@
 
 ## 28.10.2026 – Ordner und Kachelgestaltung
 
-Der produktive GitHub-Ordner wurde auf `Privat/Persoenliche-Zeitung/` umgestellt. Der alte Ordner wurde vollständig entfernt. Seine drei Weiterleitungsregeln sind jetzt Teil der zentralen `404.html`; es gibt keine doppelten Seiten, Datensätze oder Produktordner. Die drei Kacheln ETF, Persönliche Zeitung und Website ändern behalten ihre Form und Funktion und unterscheiden sich nun in Terrakotta, Blau und Violett. ETF-Finanzdaten, die Website-ändern-Skill-Adresse sowie private Feedback-Kennungen sind unverändert.
+Der einzige produktive GitHub-Ordner ist `Privat/Persoenliche-Zeitung/`, ohne parallele alte Produktordner oder Zeitungsweiterleitungen. Die Kacheln ETF (Terrakotta), Persönliche Zeitung (Blau) und Website ändern (Violett) bleiben einschließlich des Skill-Links unverändert.
 
 ## 28.10.2026 – vollständige Entfernung des alten Ordners
 
-Die drei alten HTML-Weiterleitungsseiten sind vollständig entfernt. Ihre festen früheren Adressen sowie V1/V2-Startseiten werden bei GitHub Pages durch die zentrale `404.html` zur aktuellen Persönlichen Zeitung weitergeleitet; Query-Parameter und Fragment bleiben erhalten. GitHub Pages liefert für diese fehlenden URLs zunächst einen HTTP-404-Status, die Browserweiterleitung erfolgt per JavaScript (kein serverseitiger HTTP-301-Redirect). Das aktuelle `Privat/Persoenliche-Zeitung/` ist der **einzige produktive Ordner**. Frühere redaktionelle Regeln und die sinnvolle V1-Lernhistorie sind im aktuellen Redaktionsvertrag beziehungsweise privaten V3-Profil integriert, ohne historische Bewertungen doppelt zu zählen.
+Frühere Zeitungsseiten, ihre Weiterleitungsdateien und die bisherige Sonderbehandlung in `404.html` wurden entfernt. Für die Zeitung gilt ausschließlich `Privat/Persoenliche-Zeitung/`. Vorhandene alte Lesezeichen funktionieren nicht mehr automatisch. Historische fachliche Erkenntnisse liegen weiterhin im aktuellen Redaktionsvertrag beziehungsweise privaten Profil.
+
+## 28.10.2026 – Vereinheitlichung der Website-Aufrufe
+
+Die aktuelle Zeitung, ihre Präferenzen und ihre Lernausgabe werden ausschließlich über URLs unter `/Privat/Persoenliche-Zeitung/` geöffnet. Die `404.html` enthält **keine Zeitungssonderregeln** mehr; sie ist nur die reguläre Fehlerseite und bewahrt unabhängig davon bisherige allgemeine Dashboard-/ETF-Groß-/Kleinschreibungs-Korrekturen. Alter Link zur Zeitung: nicht mehr gültig; direkt auf die aktuelle URL aktualisieren. Es gibt nur einen öffentlichen Zeitungsordner, ein Lernprofil und die beiden bestehenden produktiven Automationen.
