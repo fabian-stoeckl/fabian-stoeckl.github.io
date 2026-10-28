@@ -1,9 +1,9 @@
 name: Verify Morgenzeitung 3
 on:
   pull_request:
-    paths: ['Privat/Morgenzeitung-3/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_release.py','Privat/Pressespiegel/app.js','Privat/Pressespiegel/github.js','Privat/Pressespiegel/preferences.js','Privat/Pressespiegel/preference-timeline.js','Privat/Pressespiegel/style.css','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','tests/morgenzeitung-v3-browser.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
+    paths: ['Privat/Morgenzeitung-3/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_release.py','scripts/morgenzeitung_v3_private_ci.py','Privat/Pressespiegel/app.js','Privat/Pressespiegel/github.js','Privat/Pressespiegel/preferences.js','Privat/Pressespiegel/preference-timeline.js','Privat/Pressespiegel/style.css','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','tests/morgenzeitung-v3-browser.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
   push:
-    paths: ['Privat/Morgenzeitung-3/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_release.py','Privat/Pressespiegel/app.js','Privat/Pressespiegel/github.js','Privat/Pressespiegel/preferences.js','Privat/Pressespiegel/preference-timeline.js','Privat/Pressespiegel/style.css','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
+    paths: ['Privat/Morgenzeitung-3/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_release.py','scripts/morgenzeitung_v3_private_ci.py','Privat/Pressespiegel/app.js','Privat/Pressespiegel/github.js','Privat/Pressespiegel/preferences.js','Privat/Pressespiegel/preference-timeline.js','Privat/Pressespiegel/style.css','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
 permissions: {contents: read}
 jobs:
   verify:
@@ -11,6 +11,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
       - uses: actions/setup-python@v5
@@ -51,3 +53,9 @@ jobs:
               subprocess.run([sys.executable,'-m','scripts.morgenzeitung_v3_release',
                 'verify','--edition',str(path)],check=True)
           PY
+      - name: Require matching private evidence for changed real V3 editions
+        env:
+          MORGENZEITUNG_FEEDBACK_TOKEN: ${{ secrets.MORGENZEITUNG_FEEDBACK_TOKEN }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          python3 -m scripts.morgenzeitung_v3_private_ci --base "$BASE_SHA"
