@@ -48,11 +48,34 @@ class PrivateCITest(unittest.TestCase):
         self.assertEqual(changed_dates(["Privat/index.html", "scripts/update_etf_data.py"]), [])
         self.assertRaises(ValueError, changed_dates, ["Privat/Morgenzeitung-3/data/index.json"])
 
-    def test_preview_is_exempt_only_for_historical_date(self):
-        from scripts.morgenzeitung_v3_private_ci import verify_changed
-        result = verify_changed(".", ["Privat/Morgenzeitung-3/data/2026-10-27.json"],
-                                "", fetcher=lambda *_: self.fail("No private call for preview"))
-        self.assertEqual(result["preview_skipped"], ["2026-10-27"])
+    def test_removed_copy_preview_is_only_allowlisted_retirement(self):
+        # The 27 Oct article list was a copy, not an independent issue.
+        # Retirement must never consult GitHub's private feedback repository.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)/"Privat/Morgenzeitung-3/data"
+            root.mkdir(parents=True)
+            (root/"index.json").write_text(json.dumps({"dates":[DAY]}), encoding="utf-8")
+            result = verify_changed(tmp, ["Privat/Morgenzeitung-3/data/2026-10-27.json",
+                                          "Privat/Morgenzeitung-3/data/index.json"],
+                                    "", fetcher=lambda *_: self.fail("No private call for retired preview"))
+            self.assertEqual(result["retired_preview"], ["2026-10-27"])
+            with self.assertRaisesRegex(ValueError, "missing from index"):
+                verify_changed(tmp, ["Privat/Morgenzeitung-3/data/2026-10-26.json"],
+                               "", fetcher=lambda *_: self.fail("Unexpected evidence fetch"))
+            (root/"2026-10-27.json").write_text(json.dumps({"date":"2026-10-27","preview":True}), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "missing from index"):
+                verify_changed(tmp, ["Privat/Morgenzeitung-3/data/2026-10-27.json"],
+                               "", fetcher=lambda *_: self.fail("Unexpected evidence fetch"))
+
+    def test_new_previews_do_not_bypass_private_evidence_gate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)/"Privat/Morgenzeitung-3/data"
+            root.mkdir(parents=True)
+            (root/"index.json").write_text(json.dumps({"dates":[DAY]}), encoding="utf-8")
+            (root/(DAY+".json")).write_text(json.dumps({"date":DAY,"preview":True}), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "cannot be previews"):
+                verify_changed(tmp, [FILE], "",
+                               fetcher=lambda *_: self.fail("Unexpected private fetch"))
 
     def test_real_edition_must_match_private_evidence(self):
         edition, evidence = fixture()
