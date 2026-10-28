@@ -1,9 +1,9 @@
 name: Verify Morgenzeitung 3
 on:
   pull_request:
-    paths: ['Privat/Morgenzeitung-3/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_editorial.py','scripts/morgenzeitung_v3_release.py','scripts/morgenzeitung_v3_private_ci.py','scripts/morgenzeitung_v3_quality.py','tests/test_preference_timeline.cjs','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','tests/morgenzeitung-v3-browser.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
+    paths: ['Privat/Persoenliche-Zeitung/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_editorial.py','scripts/morgenzeitung_v3_release.py','scripts/morgenzeitung_v3_private_ci.py','scripts/morgenzeitung_v3_quality.py','tests/test_preference_timeline.cjs','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','tests/morgenzeitung-v3-browser.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
   push:
-    paths: ['Privat/Morgenzeitung-3/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_editorial.py','scripts/morgenzeitung_v3_release.py','scripts/morgenzeitung_v3_private_ci.py','scripts/morgenzeitung_v3_quality.py','tests/test_preference_timeline.cjs','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
+    paths: ['Privat/Persoenliche-Zeitung/**','Privat/index.html','services/morgenzeitung-v3/**','scripts/morgenzeitung_v3_engine.py','scripts/morgenzeitung_v3_editorial.py','scripts/morgenzeitung_v3_release.py','scripts/morgenzeitung_v3_private_ci.py','scripts/morgenzeitung_v3_quality.py','tests/test_preference_timeline.cjs','tests/morgenzeitung-v3/**','tests/morgenzeitung-v3-*.test.cjs','.github/workflows/verify-morgenzeitung-v3.yml']
 permissions: {contents: read}
 jobs:
   verify:
@@ -30,7 +30,7 @@ jobs:
           server_pid=$!
           trap 'kill "$server_pid"' EXIT
           for attempt in {1..20}; do
-            curl --silent --fail http://127.0.0.1:8766/Privat/Morgenzeitung-3/config.json >/dev/null && break
+            curl --silent --fail http://127.0.0.1:8766/Privat/Persoenliche-Zeitung/config.json >/dev/null && break
             sleep 1
           done
           node tests/morgenzeitung-v3-browser.cjs
@@ -39,7 +39,7 @@ jobs:
         run: |
           python3 - <<'PY'
           import json, pathlib, subprocess, sys
-          folder=pathlib.Path('Privat/Morgenzeitung-3/data')
+          folder=pathlib.Path('Privat/Persoenliche-Zeitung/data')
           index=json.loads((folder/'index.json').read_text(encoding='utf-8'))
           days=index.get('dates',[])
           assert days and days==sorted(set(days),reverse=True),"Invalid date index"
