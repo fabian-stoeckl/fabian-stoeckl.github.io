@@ -74,3 +74,7 @@ Quelle: am 17.10. recherchierte Skill-Notizen, damals mit PRs #2–#18 abgeglich
 ## Aktueller Farbstil und Ordner – 28.10.2026
 
 Auf `/Privat/` stehen weiterhin genau drei Kacheln: ETF (Terrakotta), Persönliche Zeitung (Blau), Website ändern (Violett). Der Skill-Link und die ETF-Funktionalität bleiben unverändert. Neue Zeitungsadresse: `/Privat/Persoenliche-Zeitung/`, frühere Leseadressen werden weitergeleitet.
+
+## 28.10.2026 – keine alten Zeitungsordner mehr
+
+Der frühere `Privat/Morgenzeitung-3/`-Ordner ist vollständig gelöscht. Die bisherigen drei Lesezeichen-Adressen sind in der vorhandenen zentralen `404.html` als Browserweiterleitungen auf `Privat/Persoenliche-Zeitung/` integriert (JavaScript erforderlich, keine HTTP-301-Antwort). Die drei Kacheln ETF, Persönliche Zeitung und Website ändern, ihre neuen Farben und der bestehende Website-ändern-Link bleiben unverändert.
