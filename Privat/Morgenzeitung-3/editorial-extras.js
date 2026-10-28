@@ -30,7 +30,6 @@
         'headline':'Quelle: Überschrift/Metadaten',
         'teaser':'Quelle: Vorspann',
         'read':'Quelle: gelesener Originaltext',
-        'full':'Quelle: gelesener Originaltext',
         'unknown':'Quellentiefe noch nicht dokumentiert'
       }[evidence]||'Quellentiefe noch nicht dokumentiert';
       meta.textContent=[genre,evidenceText].filter(Boolean).join(' · ');
