@@ -5,6 +5,7 @@ import argparse, hashlib, json, re
 from collections import Counter
 from datetime import datetime
 from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
+from scripts.morgenzeitung_v3_editorial import reason_labels, style_signals, editorial_feedback_metrics
 
 PREFIX="[Morgenzeitung 3] Feedback "
 MARKER="MORGENZEITUNG_V3_FEEDBACK_V1\n"
@@ -44,7 +45,7 @@ def topic_family(topic, profile):
     aliases=profile.get("topic_aliases",{})
     if topic in priorities: return topic
     if topic in aliases and aliases[topic] in priorities: return aliases[topic]
-    t=topic.lower()
+    t=(topic or "").lower()
     families=(
         (("ki", "künstliche intelligenz"), "KI"),
         (("industrie", "fertigung"), "Industrie & Innovation"),
@@ -71,21 +72,38 @@ def article_penalty(item, profile):
     return penalty
 
 
-def score(item, profile):
-    # Full text, paywalls, HTTP status, excerpt length are deliberately NOT read.
+def score(item, profile, section="Vertiefungen"):
+    """Different editorial standards for news and in-depth analysis.
+
+    Neither type uses full-text reachability, length, paywalls or HTTP status.
+    Breaking news is ranked by significance, not personal topic popularity.
+    """
+    if section not in ("Vertiefungen", "Heute wichtig"):
+        raise ValueError("unknown editorial section")
     weights=(("fit",4),("novelty",3),("impact",2),("perspective",1))
+    if section=="Heute wichtig":
+        weights=(("fit",0),("novelty",3),("impact",5),("perspective",2))
     value=0
     for key,weight in weights:
         x=item.get(key,0)
         if isinstance(x,bool) or not isinstance(x,(int,float)) or not 0<=x<=5:
             raise ValueError(key+" must be 0..5")
         value+=x*weight
+    # Repeats should not crowd out true updates in either section.
+    repeated=-12 if item.get("seen_recently") and not item.get("material_update") else 0
+    if section=="Heute wichtig":
+        return value+repeated
     topic=topic_family(item.get("topic",""), profile)
     base=profile.get("topic_priorities",{}).get(topic,3)
     delta=profile.get("feedback_topic_deltas",{}).get(topic,0)
     if isinstance(base,bool) or not isinstance(base,(int,float)) or not 0<=base<=5: base=3
     if isinstance(delta,bool) or not isinstance(delta,(int,float)): delta=0
-    return value+1.25*(base+max(-2,min(2,delta))-3)+article_penalty(item,profile)
+    style=profile.get("style_preference_signals") or {}
+    novelty_demand=style.get("novelty",0)
+    if isinstance(novelty_demand,bool) or not isinstance(novelty_demand,(int,float)):
+        novelty_demand=0
+    novelty_adjustment=min(2,max(0,novelty_demand))*(item.get("novelty",0)-2.5)
+    return value+1.25*(base+max(-2,min(2,delta))-3)+article_penalty(item,profile)+novelty_adjustment
 
 def normalized_url(value):
     u=urlsplit(value)
@@ -112,13 +130,13 @@ def duplicate_story(item, chosen):
     return False
 
 
-def select(candidates, profile, limit=15, discovery_slots=2):
+def select(candidates, profile, limit=15, discovery_slots=2, section="Vertiefungen"):
     if not isinstance(limit,int) or not 1<=limit<=15: raise ValueError("limit")
     pool=[]
     for i,item in enumerate(candidates):
         if not all(item.get(k) for k in ("id","title","source","url","topic")): continue
         if not ID.fullmatch(item["id"]) or not valid_url(item["url"]): continue
-        pool.append((score(item,profile),i,item))
+        pool.append((score(item,profile,section=section),i,item))
     pool.sort(key=lambda x:(-x[0],x[1]))
     chosen=[]
     for s,_,item in pool:
@@ -126,6 +144,9 @@ def select(candidates, profile, limit=15, discovery_slots=2):
         chosen.append((s,item))
         if len(chosen)==limit: break
     discoveries=sum(bool(x.get("discovery")) for _,x in chosen)
+    # No artificial discovery quota for the public-interest news section.
+    if section=="Heute wichtig":
+        discovery_slots=0
     if discovery_slots and len(chosen)>=discovery_slots:
         for s,_,item in pool:
             if discoveries>=discovery_slots:break
@@ -138,9 +159,9 @@ def select(candidates, profile, limit=15, discovery_slots=2):
         chosen.sort(key=lambda x:-x[0])
     return [x for _,x in chosen]
 
-def compare_learning(pool,before,after,new_feedback=False,limit=15):
-    old=[x["id"] for x in select(pool,before,limit)]
-    new=[x["id"] for x in select(pool,after,limit)]
+def compare_learning(pool,before,after,new_feedback=False,limit=15,section="Vertiefungen"):
+    old=[x["id"] for x in select(pool,before,limit,section=section)]
+    new=[x["id"] for x in select(pool,after,limit,section=section)]
     return {"feedback_applied":bool(new_feedback and old!=new),
             "feedback_received":bool(new_feedback),"selection_changed":old!=new,
             "before_ids":old,"after_ids":new,
@@ -193,6 +214,8 @@ def ingest_feedback(profile,issues,topics_by_id):
         if row["rating"]=="Nicht relevant" and any(x in reason for x in
             ("thema interessiert mich nicht","thema nicht interessant","weniger über","grundsätzlich uninteressant")):neg[topic]+=1
     out["feedback_topic_deltas"]={k:max(-2,min(2,pos[k]//2-neg[k]//2)) for k in set(pos)|set(neg)}
+    out["style_preference_signals"]=style_signals(articles)
+    out["feedback_metrics"]=editorial_feedback_metrics(out)
     return out,changed
 
 def evidence_guard(edition,dossier):
@@ -272,6 +295,7 @@ def main():
     p.add_argument("action",choices=["verify","rank","facts","compare","learn"])
     for a in ("edition","dossier","candidates","profile","before","issues","topic-map"):p.add_argument("--"+a)
     p.add_argument("--new-feedback",action="store_true")
+    p.add_argument("--section",choices=["Vertiefungen","Heute wichtig"],default="Vertiefungen")
     p.add_argument("--require-dossier",action="store_true",
                    help="Require actual private evidence before approving release")
     a=p.parse_args()
@@ -281,9 +305,9 @@ def main():
     if a.action=="verify":
         out={"errors":validate_edition(read(a.edition),
             read(a.dossier) if a.dossier else None,a.require_dossier)}
-    elif a.action=="rank":out=select(read(a.candidates),read(a.profile))
+    elif a.action=="rank":out=select(read(a.candidates),read(a.profile),section=a.section)
     elif a.action=="facts":out=evidence_guard(read(a.edition),read(a.dossier))
-    elif a.action=="compare":out=compare_learning(read(a.candidates),read(a.before),read(a.profile),a.new_feedback)
+    elif a.action=="compare":out=compare_learning(read(a.candidates),read(a.before),read(a.profile),a.new_feedback,section=a.section)
     else:
         out,changed=ingest_feedback(read(a.profile),read(a.issues),read(a.topic_map))
         out["_changed_issue_ids"]=changed
