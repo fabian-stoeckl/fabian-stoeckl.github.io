@@ -6,7 +6,7 @@ from collections import Counter
 from datetime import datetime, timedelta
 from pathlib import Path
 from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
-from scripts.morgenzeitung_v3_editorial import reason_labels, style_signals, editorial_feedback_metrics
+from scripts.morgenzeitung_v3_editorial import reason_labels, style_signals, editorial_feedback_metrics, editorial_mix_report
 
 PREFIX="[Morgenzeitung 3] Feedback "
 MARKER="MORGENZEITUNG_V3_FEEDBACK_V1\n"
