@@ -113,4 +113,4 @@ const {chromium}=require('playwright');
  assert.equal(errors.length,0,errors.join('\n'));
  await context.close();await browser.close();
  console.log('PASS V3 browser: mobile reader, both ratings, private API mock, preference history');
-})().catch(e=>{console.error(e);process.exitCode=1;});
+})().catch(e=>{console.error(e);process.exit(1);});
