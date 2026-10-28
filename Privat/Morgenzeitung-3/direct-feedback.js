@@ -68,7 +68,7 @@ const DirectFeedback=(()=>{
     return items.find(x=>x.date===date)||null;
   }
   async function submit(date,ratings,feedback,token,store=localStorage,transport=fetch){
-    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Array.isArray(ratings)||ratings.length>40||typeof feedback!=='string'||feedback.length>4000)throw Error('Ungültige Feedbackdaten');
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Array.isArray(ratings)||ratings.length>100||typeof feedback!=='string'||feedback.length>4000)throw Error('Ungültige Feedbackdaten');
     const latest=await savedFeedback(date,token,store,transport);
     const existing=latest?.number;
     // Cross-device safety: the listing may lag behind a newer edit. Always use
