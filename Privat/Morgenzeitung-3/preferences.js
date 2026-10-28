@@ -129,7 +129,7 @@ $('preference-comment-form').onsubmit=async event=>{
   if(!fresh){out.textContent='Bitte zuerst einen Kommentar eingeben.';return;}
   if(!currentDate){out.textContent='Keine aktuelle Ausgabe geladen. Bitte später erneut versuchen.';return;}
   const token=DirectFeedback.readToken();
-  if(!token){out.replaceChildren(el('span','Verbinde deinen GitHub-Zugang am Ende der Morgenzeitung, um Kommentare privat zu speichern.'));return;}
+  if(!token){out.replaceChildren(el('span','Verbinde deinen GitHub-Zugang am Ende der Persönlichen Zeitung, um Kommentare privat zu speichern.'));return;}
   const date=currentDate;
   button.disabled=true;
   out.textContent='Dein Kommentar wird privat zusammen mit bisherigen Bewertungen gespeichert …';
