@@ -29,6 +29,24 @@ class LedgerGateTests(unittest.TestCase):
         self.assertEqual(result["verdict"], "PASS_SOURCE_RESEARCH_COVERAGE")
         self.assertEqual(len(result["no_individual_original_confirmed"]), 22)
 
+    def test_no_link_policy_accepts_documented_independent_index(self):
+        ledger = complete()
+        ledger["research_policy"] = "no-link-tests"
+        for row in ledger["publishers"]:
+            row["attempted_methods"] = ["direct_original", "independent_index"]
+        result = verify_ledger("2026-10-27", {"date": "2026-10-27", "articles": []}, ledger)
+        self.assertEqual(result["mandatory_publishers_checked"], 22)
+        del ledger["research_policy"]
+        with self.assertRaises(ValueError):
+            verify_ledger("2026-10-27", {"date": "2026-10-27", "articles": []}, ledger)
+
+    def test_no_link_policy_does_not_waive_evidence(self):
+        ledger = complete()
+        ledger["research_policy"] = "no-link-tests"
+        ledger["publishers"][0]["attempted_methods"] = ["independent_index"]
+        with self.assertRaises(ValueError):
+            verify_ledger("2026-10-27", {"date": "2026-10-27", "articles": []}, ledger)
+
     def test_missing_publisher_fails(self):
         ledger = complete()
         ledger["publishers"].pop()
