@@ -208,6 +208,11 @@ function updatePublicationStatus(e) {
   const d=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Vienna',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
   const hhmm=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Vienna',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(now);
   const late=hhmm>='07:45';
+  if(e.date!==latestDate){
+    node.dataset.state='archive';node.hidden=false;
+    node.textContent='Archivansicht: '+e.date+'. Neueste verfügbare Ausgabe: '+latestDate+'.';
+    return;
+  }
   node.dataset.state=e.preview||e.date!==d&&late?'stale':e.date===d?'fresh':'pending';
   // No third repeated date/time block when today's regular edition is up.
   if(!e.preview&&e.date===d){node.hidden=true;node.textContent='';return;}

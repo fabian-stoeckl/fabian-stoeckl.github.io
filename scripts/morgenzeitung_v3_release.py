@@ -113,7 +113,27 @@ def check_private_receipt(edition,dossier):
 def prepare_edition(edition,candidates,dossier):
     """Export only public metadata, never profiles, scores or source excerpts."""
     import copy
-    out=copy.deepcopy(edition)
+    def fields(row, allowed):
+        if any(isinstance(v,(dict,list)) for k,v in row.items() if k in allowed):
+            raise ValueError("Public metadata fields must be scalar")
+        return {k:copy.deepcopy(v) for k,v in row.items() if k in allowed}
+    out=fields(edition,{"date","window_start","window_end","researched_at","available_at",
+        "preview","editorial_note","learning_note","corrected_at","correction_note"})
+    article_fields={"id","url","title","source","summary","published_at","topic","region",
+        "article_type","source_context","why_selected","novelty_explanation","event",
+        "update_evidence","evidence_level"}
+    for section in ("articles","headlines"):
+        out[section]=[fields(row,article_fields) for row in edition.get(section,[])]
+    nested={
+        "selection_audit":{"feedback_applied","feedback_received","selection_changed",
+            "independent_research","candidate_count","selected_count","source_count",
+            "history_used","method","quality_review_private","summary"},
+        "editorial_comparisons":{"id","selected_title","selected_url","alternative_title","alternative_url"},
+        "new_sources":{"name","why","example_url"}}
+    for key,allowed in nested.items():
+        if key in edition:
+            value=edition[key]
+            out[key]=[fields(row,allowed) for row in value] if isinstance(value,list) else fields(value,allowed)
     rows=candidates if isinstance(candidates,list) else [*candidates.get("articles",[]),*candidates.get("headlines",[])]
     by_id={x["id"]:x for x in rows}
     for item in [*out.get("articles",[]),*out.get("headlines",[])]:

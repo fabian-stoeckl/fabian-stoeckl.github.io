@@ -77,7 +77,7 @@ class EditorialQualityAndMemoryTests(unittest.TestCase):
         old["id"]="e"*16
         old["url"]="https://example.org/news/1?utm_source=old"
         old["event"]="industry-chip-factory-2026"
-        edition={"date":"2026-10-27","preview":True,
+        edition={"date":"2026-10-27","preview":False,
                  "articles":[old],"headlines":[]}
         repeated=item(1)
         repeated["url"]="https://example.org/news/1?utm_source=new"
@@ -95,7 +95,7 @@ class EditorialQualityAndMemoryTests(unittest.TestCase):
 
     def test_material_update_requires_a_real_explanation(self):
         previous=item(1)
-        edition={"date":"2026-10-27","articles":[previous],"headlines":[]}
+        edition={"date":"2026-10-27","preview":False,"articles":[previous],"headlines":[]}
         newer={**item(1),"material_update":True}
         marked=mark_recent_stories([newer],[edition],"2026-10-28")
         self.assertTrue(marked[0]["seen_recently"])
@@ -108,7 +108,7 @@ class EditorialQualityAndMemoryTests(unittest.TestCase):
         self.assertFalse(stale[0].get("seen_recently",False))
 
     def test_history_comparison_uses_same_records(self):
-        previous={"date":"2026-10-27","articles":[item(1)],"headlines":[]}
+        previous={"date":"2026-10-27","preview":False,"articles":[item(1)],"headlines":[]}
         pool=[item(1),item(2,topic="Klima")]
         before={"topic_priorities":{"Industrie":3,"Klima":3}}
         after={"topic_priorities":{"Industrie":3,"Klima":5}}
@@ -124,7 +124,7 @@ class EditorialQualityAndMemoryTests(unittest.TestCase):
             root=Path(temp)
             (root/"index.json").write_text(json.dumps({"dates":["2026-10-27"]}))
             (root/"2026-10-27.json").write_text(json.dumps({
-                "date":"2026-10-27","articles":[item(1)],"headlines":[]}))
+                "date":"2026-10-27","preview":False,"articles":[item(1)],"headlines":[]}))
             self.assertEqual(len(load_edition_history(root)),1)
             with self.assertRaises(ValueError):
                 mark_recent_stories([item(1)],load_edition_history(root),None)

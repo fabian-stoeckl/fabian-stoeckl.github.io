@@ -90,7 +90,7 @@ async function showPreferenceSummary() {
         const details=el('ul',undefined,'preference-list');
         for(const change of event.entries){
           const sign=change.delta>0?'+':'';
-          const movement=change.delta>0?'gestiegen':change.delta<0?'gesunken':'unverändert';
+          const movement='Summe der Artikelbewertungen';
           details.append(el('li',change.topic+': '+change.before+' → '+change.after+' ('+sign+change.delta+', '+movement+'; '+change.ratings+' Bewertung(en))'));
         }
         li.append(details);timelineList.append(li);
