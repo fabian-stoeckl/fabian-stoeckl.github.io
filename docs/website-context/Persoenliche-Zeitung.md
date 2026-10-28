@@ -44,7 +44,7 @@ Die Zeitung besteht aus der Python-Auswahl-/Lernlogik, einem optional typgeprüf
 
 Vorher-/Nachher-Vergleiche erfordern jetzt einen unveränderten Snapshot im **privaten Feedback-Repository** (siehe aktueller Redaktionsvertrag). Ohne echten Ausgangssnapshot wird keine Kausalität behauptet. GitHub-Issues-Schreibvorgänge werden kontrolliert und bei erkannten Überschneidungen nachgeführt; technisch vollständig atomare parallele Schreiboperationen benötigen langfristig einen getrennten Server. Die Content-Security-Policy begrenzt Skriptquellen, ersetzt aber keine sichere Server-Authentifizierung. GitHub-Branch-Schutz ist derzeit nicht aktiviert; falls gewünscht, in den Repository-Einstellungen verpflichtende V3- und Website-Checks einrichten, ohne die bestehenden ETF-Funktionen zu verändern.
 
-## 28.10.2026 – vollständige Auditkorrektur (Entwurf)
+## 28.10.2026 – vollständige Auditkorrektur (veröffentlicht)
 
 Auftrag: alle im redaktionellen/technischen Audit gefundenen Probleme beheben; freie Hand einschließlich Veröffentlichung nach erfolgreichen Tests. Ausgangs- und Rücknahmebasis: `4cec26df5135d6bdca5ad1da2fce51062165ca42`. Arbeitsbranch: `fix/newspaper-editorial-integrity`.
 
@@ -55,3 +55,13 @@ Historische Angaben oben, die Ausgabe und alle Inhalte blieben unverändert, bez
 Freigabe: Nutzerauftrag „Bessere alles aus – du hast freie Hand“. Lokale Regressionen, mobile/Desktop-Vorschau, private Rückleseprüfung, GitHub-CI, Merge und Live-Abnahme werden vor Abschluss dokumentiert; Stand dieses Eintrags: Entwurf, noch nicht veröffentlicht.
 
 Prüfung des Entwurfs: 90 Python-Regressionen, JavaScript-Feedback-/UI-Prüfungen und drei Timeline-Tests bestanden; mobiler Browserfall einschließlich Gerätewechsel, Konfliktmeldung und strukturierter Gründe bestanden. Beide Ausgaben bei 390 und 1440 Pixeln ohne Browserfehler/Überlauf geprüft. Private Korrekturdossiers über PR #10 im Feedback-Repository gesichert und identisch zurückgelesen; beide Ausgaben bestehen die echte lokale Dossierprüfung. Lokales Jekyll-Build nicht verfügbar (Ruby/Bundler fehlt); Produktionsbuild wird durch GitHub-CI geprüft. Veröffentlichung noch ausstehend.
+
+## 28.10.2026 – Abschluss und Live-Abnahme der Auditkorrektur
+
+PR [#237](https://github.com/fabian-stoeckl/fabian-stoeckl.github.io/pull/237) nach sämtlichen erfolgreichen PR-Checks zusammengeführt; Merge-Commit `798b3cb88b492b3e63a5c7d47ca8901568c420c8`. Auch die Main-Prüfungen und Pages-Bereitstellung [40683192577](https://github.com/fabian-stoeckl/fabian-stoeckl.github.io/actions/runs/40683192577) sind erfolgreich. Der vollständige Jekyll-Produktionsbuild ist damit durch GitHub-CI bestätigt. Die vorstehenden Angaben „Entwurf/ausstehend“ beschreiben nur den früheren Vorbereitungsstand.
+
+Live-Abnahme: elf produktive HTTPS-Dateien (Zeitungsstart, Präferenzseite, Tagesindex, reguläre Ausgabe, Lernausgabe sowie sechs geänderte Skript-/Stildateien) mit HTTP 200 abgerufen und bytegenau mit dem getesteten Stand verglichen. Die Handy-/Desktopdarstellung wurde vor Veröffentlichung bei 390/1440 Pixeln geprüft; ein zusätzlicher visueller Live-Browserstart nach Sitzungsfortsetzung war durch die Laufzeit blockiert. Diese Grenze wird nicht als erfolgreiche visuelle Live-Prüfung ausgegeben. Die Live-Dateiprüfung ist erfolgreich.
+
+Die bestehende tägliche Zeitungsautomation und Störungswache wurden am 28.10. auf V3.6, Feldbelege, sämtliche registrierten Ausgaben und dieselben tatsächlichen Auswahlparameter abgestimmt; Zeitpläne unverändert, keine neuen Automationen. Seit dem Merge ist lediglich ein unabhängiger ETF-Datencommit hinzugekommen; dieser bleibt erhalten.
+
+Privater Nachweis: zwei getrennte Korrekturdossiers über privaten PR #10 zusammengeführt, identisch zurückgelesen und gegen beide Ausgaben geprüft. Ursprüngliche Dossiers, Kandidaten, Artikel-IDs und Leserbewertungen erhalten. Kein rückwirkender Lernerfolg behauptet. Offen bleibt die journalistische Wirkung der verbesserten Recherche und Auswahl in künftigen tatsächlich bewerteten Ausgaben. Rücknahme nur der eigenen Änderungen, ohne nachfolgende unabhängige Commits zu überschreiben.
