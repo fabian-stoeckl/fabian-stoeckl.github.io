@@ -7,9 +7,9 @@
 ## Geltungsbereich und Dateien
 
 - Öffentliche Forschungswebsite (`/`): `index.md`, `_layouts/default.html`, `assets/css/style.scss`, `_config.yml`; Publikationen, Referenzen, Profil, Links und visuelles Design.
-- Privat-Einstieg (`/Privat/`): `Privat/index.html`. Links zu ETF, Pressespiegel und „Website ändern“.
+- Privat-Einstieg (`/Privat/`): `Privat/index.html`. Links zu ETF, **Persönliche Zeitung** und „Website ändern“.
 - Arbeits- und Testanweisungen: `AGENTS.md`, `DEVELOPMENT.md` und `.github/workflows/verify-etf-charts.yml`.
-- ETF-Funktionalität und Pressespiegel-Seite haben **eigene** Bereichsprotokolle.
+- ETF-Funktionalität und Persönliche Zeitung haben **eigene** Bereichsprotokolle.
 
 ## Bestätigte Gestaltungs- und Arbeitsentscheidungen
 
@@ -65,3 +65,8 @@ Quelle: am 17.10. recherchierte Skill-Notizen, damals mit PRs #2–#18 abgeglich
 - Nach Bereitstellung Homepage, Privat, ETF und Pressespiegel per HTTPS erreichbar (200). Die drei statischen Privat-Seiten sind bytegleich mit der bestehenden geprüften Quelle. Keine Website-Inhalte oder Finanzdaten geändert.
 - Offen bleibt nur der echte neue Chat über die angemeldete ChatGPT-Weboberfläche: hier war die Sitzung abgemeldet. Agententests bestätigen das Verhalten der Anweisungen, nicht den vollständigen UI-Aufruf. Der allgemeine Agententest wurde nach einer Nutzungslimit-Unterbrechung erfolgreich wiederholt.
 - Dieser Abschlussnachtrag betrifft ausschließlich interne Dokumentation; sein Merge-/Checkstatus ist direkt im zugehörigen Dokumentations-PR nachprüfbar.
+
+## 28.10.2026: Bereinigte Privat-Kacheln
+
+- Drei Kacheln beibehalten: ETF, **Persönliche Zeitung**, **Website ändern**. Die Website-ändern-Skill-Kachel ist ausdrücklich vom Nutzer zum Beibehalten bestimmt; ihr Link und ihr Design bleiben unverändert.
+- Alte Zeitungs-Versionen sind nicht mehr produktiv. Der technische Ordner `Privat/Morgenzeitung-3/` bleibt aus Gründen stabiler URLs und Feedbackkennungen; die aktuelle Produktgeschichte liegt im Bereichsprotokoll `Persoenliche-Zeitung.md`.

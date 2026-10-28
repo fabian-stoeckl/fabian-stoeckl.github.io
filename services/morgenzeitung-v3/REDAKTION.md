@@ -1,6 +1,6 @@
-# Morgenzeitung 3 – verbindlicher Redaktionsvertrag
+# Persönliche Zeitung – verbindlicher Redaktionsvertrag
 
-Stand 28. Oktober 2026, V3.5. Dieser kurze Vertrag gilt verbindlich für Morgenzeitung 3. Das vollständig bewahrte REDAKTION-ARCHIV.md ist historische Dokumentation, keine zweite Anweisung für den Tageslauf. Niemals V1, Morgenzeitung neu oder ETFs ändern.
+Stand 28. Oktober 2026, V3.5. Dieser Vertrag gilt für die einzige produktive Persönliche Zeitung. Wichtige früher vereinbarte Details sind unten integriert; ein zweiter paralleler Redaktionsvertrag entfällt. Niemals V1, Morgenzeitung neu oder ETFs ändern.
 
 ## 1. Journalistisches Produkt
 
@@ -35,7 +35,7 @@ Vor jedem Lauf das private V3-Profil sowie nur echte V3-Issues mit dem Marker MO
 5. Informationsstand: evidence_level bei belegbarem Stand aus dem Dossier übernehmen und auf der V3-Webseite entsprechend kennzeichnen, ohne den Zugang in das Ranking einzubeziehen.
 6. Leser-Vergleichsalternativen: aus realem privatem Pool nach Redaktionseinschätzung höchstens ein bis zwei echte vergleichbare Artikel als edition.editorial_comparisons anbieten mit id, selected_title, selected_url, alternative_title und alternative_url. Vergleich nur freiwillig auf der V3-Seite; Feedback in bestehendem privaten Kommentar speichern, nicht als Artikel-Rating, nicht aus einem Klick erschließen. Keine echten geeigneten Alternativen = keine Vergleichskachel.
 7. Auswahlbegründung: bei Top drei Vertiefungen sofern originalbelegt why_selected in einem knappen nicht übertreibenden Satz. Keine individuelle vertrauliche Präferenz offenbaren.
-8. Vereinfachung: dieser kurze Vertrag ersetzt die frühere 33.000-Zeichen-Fassung; historische Regeln bleiben als Archiv erhalten. Keine weiteren HTTP-Linktests, CI-Gates oder zusätzlichen parallelen Betriebsaufgaben.
+8. Vereinfachung: alle weiterhin gültigen älteren Redaktionsentscheidungen stehen im aktuellen Vertrag. Kein separates 33.000-Zeichen-Archiv mehr als parallele Anweisung. Keine weiteren HTTP-Linktests, CI-Gates oder zusätzlichen parallelen Betriebsaufgaben.
 
 Für den bestehenden privaten Qualitätsaufruf mit tatsächlichen Dateien die Erweiterungen nutzen: quality --candidates ORIGINAL.json --profile ACTUAL_PRIVATE_PROFILE.json --before FROZEN_BEFORE_PROFILE.json --edition V3_CURRENT.json --benchmark-edition services/morgenzeitung-v3/fixtures/v1-reference-2026-10-27.json --section Vertiefungen --history-dir Privat/Morgenzeitung-3/data --as-of-date YYYY-MM-DD. Die Zusatzfelder sind optional, wenn die echten Belege fehlen. Ergebnis ausschließlich privat; die redaktionelle Qualitätsprüfung blockiert niemals wegen fehlender Wortzahl, Genre oder Österreichanteil. Candidate-Vergleichsvorschläge nicht ungeprüft veröffentlichen.
 
@@ -46,3 +46,15 @@ Bestehende V3-Faktenprüfung, private Dossierfreigabe, PR, GitHub-Actions-CI, Me
 29.10.–11.11.2026: Jeden Tag (a) echte neue Ratings und korrekte Verarbeitung, (b) tatsächliche Änderung der Auswahl mit gleichem Pool in der originalen Python-Auswahlroutine, (c) späteren real bewerteten Qualitätsgewinn separat prüfen. Ein Rankingwechsel ist noch kein Qualitätsgewinn, steigende Quoten auf verschiedenem Material sind deskriptive Hinweise und keine Kausalitätsbeweise. Die zwei V3-Ausgaben vom 28.10. zählen nicht als zwei Lerntage. Zwischenbilanz 04.11., Abschluss 11.11., danach normale redaktionelle Arbeit. Jeden Tag einen kurzen Tipp zu Themenfit versus Tiefe/Neuigkeitswert.
 
 **Leitbild:** Mehr echte Erkenntnisse und reproduzierbar wirksames Lernen, weniger technische Prozesskomplexität.
+
+## 7. Aus früheren Fassungen übernommene Beleg- und Betriebsregeln
+
+Die frühere V3.1–V3.4-Redaktionsgeschichte ist hier für den produktiven Betrieb zusammengeführt. Ein echt produktiver Tagesbeleg liegt ausschließlich privat unter `morgenzeitung-v3/evidence/YYYY-MM-DD.json`. Er enthält `proofs[article_id]` mit `source_url`, `level: headline|teaser|read` sowie `claims` aus `text`, `source_excerpt`, `supported` und bei überprüfbaren Kausalbehauptungen ggf. `causality_verified`. Die dokumentierten kurzen Originalstellen müssen wirklich aus gelesenen Quellen stammen und den später veröffentlichten Aussagen entsprechen. Redaktionelle Freigabe `editorial_review.approved=true` und Zeitstempel `reviewed_at` erst nach tatsächlicher Prüfung setzen; mechanische CI ist keine Garantie für inhaltliche Wahrheit.
+
+Vor jedem neuen produktiven Veröffentlichungs-PR privat `python3 -m scripts.morgenzeitung_v3_release audit --edition AUSGABE.json --dossier DOSSIER.json` ausführen und die tatsächlich berechnete `fact_audit`-Information übernehmen; danach `python3 -m scripts.morgenzeitung_v3_engine verify --edition AUSGABE.json --dossier DOSSIER.json --require-dossier` und `python3 -m scripts.morgenzeitung_v3_release verify --edition AUSGABE.json --dossier DOSSIER.json --require-dossier`. Das private Dossier zurücklesen und sichern. Fehlt es oder die Freigabe, weder `preview:false` publizieren noch ein grünes CI als Freigabe ausgeben. Bei reinen Codeänderungen kein erneutes Volltext-Audit vortäuschen.
+
+Die Recherche bezieht alle Fixstarter und offene Suchpfade ein, bevorzugt belegte Mechanismen und neue Erkenntnisse. Vor der Auswahl Titel und Vorspänne auf vergleichbarer Basis beurteilen, danach je nach wirklich verfügbarer Belegtiefe zusammenfassen. `omitted_candidate_review` zeigt übersehene echte Alternativen, keine neuen Nutzerurteile. Doppelte Ereignisse und URLs erkennen; ein späterer Artikel über dasselbe Ereignis benötigt neue belegbare Inhalte. Den letzten wirklich erfolgreichen Recherchezeitpunkt berücksichtigen und Ausfälle begrenzt nachholen.
+
+Historische Kennzeichnung: V3-Eintrag vom 27.10. ist eine Vorschau `preview:true` und kein unabhängiger Rechercheerfolg. Die separat **öffentlich** lesbare Lern-Sonderausgabe vom 28.10. wurde zusätzlich bewertet, aber nicht durch die vollständige formelle Freigabe der regulären Tagesausgabe geführt. Zusammen mit der regulären Ausgabe ergeben sich 24 Stimmen, aber nur ein Bewertungstag.
+
+Der sichtbare Produktname lautet **Persönliche Zeitung**. Die vorhandenen technischen GitHub-Pfade, V3-Workflow-Namen, V3-Issue-Titel, Datenformate und Feedbackmarker müssen aus Kompatibilitäts- und Sicherheitsgründen unverändert bleiben. Auf der Privat-Startseite bleiben ausdrücklich die drei Kacheln ETF, Persönliche Zeitung und Website ändern erhalten.
