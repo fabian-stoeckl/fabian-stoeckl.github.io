@@ -1,8 +1,11 @@
 'use strict';
 // One offline browser journey. No requests to real GitHub or article publishers.
 const assert=require('node:assert/strict');
+const fs=require('node:fs');
 const {chromium}=require('playwright');
 (async()=>{
+ const latest=JSON.parse(fs.readFileSync('Privat/Morgenzeitung-3/data/index.json','utf8')).dates[0];
+ const edition=JSON.parse(fs.readFileSync('Privat/Morgenzeitung-3/data/'+latest+'.json','utf8'));
  const browser=await chromium.launch({headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
  const context=await browser.newContext({viewport:{width:390,height:800}});
  const page=await context.newPage(),errors=[];
@@ -36,7 +39,9 @@ const {chromium}=require('playwright');
  await page.goto('http://127.0.0.1:8766/Privat/Morgenzeitung-3/');
  await page.waitForSelector('#headlines .news-item .rating-dots input');
  assert.match(await page.locator('h1').first().innerText(),/Morgenzeitung/);
- assert.match(await page.locator('#publication-status').innerText(),/Beispielausgabe/);
+ const publicationStatus=await page.locator('#publication-status').innerText();
+ if(edition.preview)assert.match(publicationStatus,/Beispielausgabe/);
+ else assert.doesNotMatch(publicationStatus,/Beispielausgabe/);
  assert.equal(await page.locator('#github-connected').isHidden(),false);
  await page.locator('#headlines .news-item').first().getByLabel('Sehr relevant',{exact:true}).check();
  await page.locator('#tab-articles').click();
@@ -44,7 +49,7 @@ const {chromium}=require('playwright');
  await page.locator('#feedback-form button[type=submit]').click();
  await page.waitForFunction(()=>document.querySelector('#feedback-status')?.textContent.includes('erfolgreich'));
  const saved=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('v3-mock-issue')));
- assert.equal(saved.title,'[Morgenzeitung 3] Feedback 2026-10-27');
+ assert.equal(saved.title,'[Morgenzeitung 3] Feedback '+latest);
  assert.ok(saved.body.startsWith('MORGENZEITUNG_V3_FEEDBACK_V1\n'));
  const payload=JSON.parse(saved.body.split('\n').slice(1).join('\n'));
  assert.equal(payload.ratings.length,2);
