@@ -1,0 +1,204 @@
+{
+  "date": "2026-10-28",
+  "researched_at": "2026-10-28T04:23:58.909Z",
+  "available_at": "2026-10-28T04:23:58.909Z",
+  "preview": false,
+  "editorial_note": "Zusätzliche, eigenständig zusammengestellte Lern-Sonderausgabe vom 28.10.2026. Nicht die reguläre Tagesausgabe; diese bleibt unverändert. Eine bewusst breitere Mischung mit auch einigen Hintergrundtexten aus den vorigen 14 Tagen. Titel/Quellen und kurze verfügbare Ausschnitte als Basis; kein Anspruch, alle Volltexte gelesen zu haben.",
+  "learning_note": "Neue IDs, damit Bewertungen der bestehenden Tagesausgabe nicht verändert werden. Das Feedback wird unter dem regulären V3-Feedback-Issue für denselben Kalendertag zusammengeführt und bei der nächsten Lernverarbeitung gesondert zugeordnet.",
+  "articles": [
+    {
+      "id": "28c0000000000001",
+      "title": "The limits of hedging the AI boom",
+      "source": "Financial Times",
+      "url": "https://www.ft.com/content/0b0ae366-c1e0-4c35-8cad-c924a23d33e7",
+      "published_at": "2026-10-28",
+      "summary": "Der Beitrag untersucht, wie schwierig es ist, sich als Anleger gegen Risiken des KI-Investitionsbooms abzusichern.",
+      "topic": "KI & Finanzierung",
+      "access": "headline"
+    },
+    {
+      "id": "28c0000000000002",
+      "title": "OpenAI plans to buy Google's AI chips, The Information reports",
+      "source": "Reuters",
+      "url": "https://www.reuters.com/business/openai-plans-buy-googles-ai-chips-information-reports-2026-10-28/",
+      "published_at": "2026-10-28",
+      "summary": "Laut einem Medienbericht plant OpenAI den Kauf von Google-KI-Chips. Der mögliche Schritt würde Alternativen zu Nvidia stärken; Einzelheiten sind nicht bestätigt.",
+      "topic": "KI & Infrastruktur",
+      "access": "teaser"
+    },
+    {
+      "id": "28c0000000000003",
+      "title": "EU readying for major Australian resources investment, ambassador says",
+      "source": "Reuters",
+      "url": "https://www.reuters.com/world/eu-readying-major-australian-resources-investment-ambassador-says-2026-10-27/",
+      "published_at": "2026-10-27",
+      "summary": "Die EU prüft größere Investitionen in australische kritische Rohstoffe, um Lieferketten gegenüber China zu diversifizieren. Auch Verarbeitungskapazitäten stehen im Blick.",
+      "topic": "Industrie & Welthandel",
+      "access": "teaser"
+    },
+    {
+      "id": "28c0000000000004",
+      "title": "Britain and EU finding way through 'Made in Europe' concerns, UK minister says",
+      "source": "Reuters",
+      "url": "https://www.reuters.com/world/uk/britain-eu-finding-way-through-made-europe-concerns-uk-minister-says-2026-10-27/",
+      "published_at": "2026-10-27",
+      "summary": "Großbritannien und die EU suchen nach einer Lösung für Konflikte um geplante „Made in Europe“-Vergaberegeln. Diese würden europäische Produkte bei öffentlichen Aufträgen und Förderungen bevorzugen.",
+      "topic": "Industrie & Welthandel",
+      "access": "teaser"
+    },
+    {
+      "id": "28c0000000000005",
+      "title": "Cable capacity emerges as bottleneck for AI data centres, Nexans says",
+      "source": "Reuters",
+      "url": "https://www.reuters.com/technology/cable-capacity-emerges-bottleneck-ai-data-centres-nexans-says-2026-10-22/",
+      "published_at": "2026-10-22",
+      "summary": "Nicht nur Chips und Energie, auch Kabelkapazitäten werden laut Nexans zum Engpass beim Bau von KI-Rechenzentren. Neue Produktionslinien brauchen mehrere Jahre.",
+      "topic": "KI & Infrastruktur",
+      "access": "teaser"
+    },
+    {
+      "id": "28c0000000000006",
+      "title": "Neuer Anlauf für Europas Traum vom billigen Wüstenstrom",
+      "source": "Der Standard",
+      "url": "https://www.derstandard.at/story/3000000345380/neuer-anlauf-fuer-europas-traum-vom-billigen-wuestenstrom",
+      "published_at": "2026-10-27",
+      "summary": "Das Projekt Sila Atlantik plant, Solar- und Windstrom aus Marokko über ein rund 4800 Kilometer langes Unterseekabel nach Deutschland zu bringen. Finanzierung und Auslastung bleiben zentrale Fragen.",
+      "topic": "Energie & Industrie",
+      "access": "teaser"
+    },
+    {
+      "id": "28c0000000000007",
+      "title": "OeNB: Österreichs Banken erwarten weiteren Anstieg der Kreditnachfrage",
+      "source": "OeNB",
+      "url": "https://www.oenb.at/news-und-events/presse/presseaussendungen/2026/20261027.html",
+      "published_at": "2026-10-27",
+      "summary": "Österreichs Banken erwarten im vierten Quartal eine stärkere Nachfrage nach Unternehmens- und Wohnbaukrediten. Bislang sehen sie kaum Auswirkungen betrieblicher KI-Nutzung auf das Kreditgeschäft.",
+      "topic": "Wirtschaft & Fiskalpolitik",
+      "access": "teaser"
+    },
+    {
+      "id": "28c0000000000008",
+      "title": "70 Milliarden für \"Made in Europe\"? Warum die Rechnung nicht so einfach aufgeht",
+      "source": "Der Standard",
+      "url": "https://www.derstandard.at/story/3000000344202/70-milliarden-fuer-made-in-europe-warum-die-rechnung-nicht-so-einfach-aufgeht",
+      "published_at": "2026-10-14",
+      "summary": "Ein Bericht hinterfragt, wie viel öffentliches Beschaffungsvolumen in Österreich tatsächlich zu europäischen Lieferanten umgelenkt werden kann. Komplexe Lieferketten erschweren die Abgrenzung.",
+      "topic": "Industrie & Innovation",
+      "access": "teaser"
+    },
+    {
+      "id": "28c0000000000009",
+      "title": "Lars Felds Ordnungsruf: Eine KI-Steuer wäre eine schlechte Idee",
+      "source": "Handelsblatt",
+      "url": "https://www.handelsblatt.com/meinung/wirtschaftsforum/lars-felds-ordnungsruf-eine-ki-steuer-waere-eine-schlechte-idee/100262622.html",
+      "published_at": "2026-10-20",
+      "summary": "Der Ökonom Lars Feld warnt in einem Gastbeitrag davor, KI-Umsätze zusätzlich zu besteuern: Er befürchtet negative Investitionsanreize.",
+      "topic": "KI & Arbeit",
+      "access": "teaser"
+    },
+    {
+      "id": "28c000000000000a",
+      "title": "China: Neue Exportkontrollen für Schlüsseltechnologien geplant",
+      "source": "Handelsblatt",
+      "url": "https://www.handelsblatt.com/politik/international/china-neue-exportkontrollen-fuer-schluesseltechnologien-geplant/100263058.html",
+      "published_at": "2026-10-18",
+      "summary": "China plant strengere Regeln für die Weitergabe ausgewählter KI-, Solar- und Biotechnologien ins Ausland. Die vorgesehenen Verbote und Genehmigungen sind noch nicht beschlossen.",
+      "topic": "Industrie & Welthandel",
+      "access": "teaser"
+    },
+    {
+      "id": "28c000000000000b",
+      "title": "Growth in every postcode? What the UK economy really looks like",
+      "source": "Financial Times",
+      "url": "https://www.ft.com/content/703b7dc9-086f-4985-9afa-232afd94e087",
+      "published_at": "2026-10-28",
+      "summary": "Die Financial Times beleuchtet, wie unterschiedlich regionales Wirtschaftswachstum in Großbritannien ausfällt und was dahintersteckt.",
+      "topic": "Produktivität & Wettbewerbsfähigkeit",
+      "access": "headline"
+    },
+    {
+      "id": "28c000000000000c",
+      "title": "Deutschland: Chancenland – Eine Strategie für den wirtschaftlichen Wiederaufstieg",
+      "source": "Handelsblatt Research Institute",
+      "url": "https://research.handelsblatt.com/sliderel/deutschland-chancenland-eine-strategie-fuer-den-wirtschaftlichen-wiederaufstieg/",
+      "published_at": "2026-10-28",
+      "summary": "Eine Studie des Handelsblatt Research Institute und Oliver Wyman beschreibt Deutschlands „Middle Technology Trap“: industrielle Stärke in etablierten Technologien, aber zu wenig neue Führungspositionen.",
+      "topic": "Produktivität & Wettbewerbsfähigkeit",
+      "access": "teaser"
+    }
+  ],
+  "headlines": [
+    {
+      "id": "28d0000000000001",
+      "title": "Asian stocks rise after a rally on Wall Street, while oil prices edge higher",
+      "source": "Associated Press",
+      "url": "https://apnews.com/article/stock-markets-ai-earnings-oil-b07c5abe1fbaacc7618aeb610eaa91e0",
+      "published_at": "2026-10-28",
+      "summary": "Asiens Börsen legten überwiegend zu; besonders südkoreanische Chipwerte profitierten von starken KI-Geschäftszahlen.",
+      "region": "International",
+      "access": "teaser"
+    },
+    {
+      "id": "28d0000000000002",
+      "title": "European shares shrug off HSBC miss as other earnings, oil relief lift sentiment",
+      "source": "Reuters",
+      "url": "https://www.reuters.com/business/europe-shares-fall-hsbc-weighs-france-protests-keep-investors-wary-2026-10-27/",
+      "published_at": "2026-10-27",
+      "summary": "Der europäische STOXX 600 schloss trotz schwacher HSBC-Zahlen im Plus; der österreichische Technologiewert AT&S gehörte zu den stärksten Gewinnern.",
+      "region": "International",
+      "access": "teaser"
+    },
+    {
+      "id": "28d0000000000003",
+      "title": "France minerals envoy says rare earths diversification from China possible within 3-5 years",
+      "source": "Reuters",
+      "url": "https://www.reuters.com/world/china/france-minerals-envoy-says-rare-earths-diversification-china-possible-within-3-5-2026-10-28/",
+      "published_at": "2026-10-28",
+      "summary": "Frankreichs Beauftragter für strategische Metalle hält eine breitere Versorgung mit Seltenen Erden außerhalb Chinas innerhalb von drei bis fünf Jahren für möglich.",
+      "region": "International",
+      "access": "teaser"
+    },
+    {
+      "id": "28d0000000000004",
+      "title": "Boeing shares sell off on slower-than-expected 737 production, weaker free cash flow outlook",
+      "source": "Reuters",
+      "url": "https://www.reuters.com/business/aerospace-defense/boeing-jetliner-production-challenges-weigh-third-quarter-results-2026-10-27/",
+      "published_at": "2026-10-27",
+      "summary": "Boeings Aktie geriet nach Hinweisen auf langsamer als erwartete 737-Produktion und schwächeren freien Cashflow unter Druck.",
+      "region": "International",
+      "access": "teaser"
+    },
+    {
+      "id": "28d0000000000005",
+      "title": "SK Hynix unveils $75 billion shareholder return plan after posting record profit",
+      "source": "Reuters",
+      "url": "https://www.reuters.com/world/asia-pacific/sk-hynix-q3-profit-jumps-more-than-7-fold-beats-forecasts-2026-10-27/",
+      "published_at": "2026-10-27",
+      "summary": "Der südkoreanische Speicherchiphersteller SK Hynix meldete einen Rekordgewinn und kündigte Pläne für Kapitalrückführungen an Aktionäre an.",
+      "region": "International",
+      "access": "teaser"
+    },
+    {
+      "id": "28d0000000000006",
+      "title": "Morning Bid: All eyes on AI",
+      "source": "Reuters",
+      "url": "https://www.reuters.com/business/media-telecom/global-markets-view-europe-2026-10-27/",
+      "published_at": "2026-10-27",
+      "summary": "Der geplante Anthropic-Börsengang stützt die Stimmung bei KI-Aktien, während hohe Finanzierungskosten der Branche Sorgen bereiten.",
+      "region": "International",
+      "access": "teaser"
+    }
+  ],
+  "selection_audit": {
+    "feedback_applied": true,
+    "feedback_received": true,
+    "selection_changed": true,
+    "independent_research": true,
+    "source": "followup_learning_probe",
+    "regular_edition_unchanged": true
+  },
+  "fact_audit": {
+    "status": "not_formally_run",
+    "note": "Zusätzliche Lern-Sonderausgabe außerhalb des regulären täglichen Freigabeprozesses; redaktioneller Abgleich der kurzen Summaries mit den jeweils verfügbaren Originaltiteln und Quellenauszügen."
+  }
+}
