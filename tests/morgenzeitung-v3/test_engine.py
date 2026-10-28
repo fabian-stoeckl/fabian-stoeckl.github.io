@@ -2,6 +2,7 @@ import copy
 import json
 import unittest
 from scripts.morgenzeitung_v3_engine import compare_learning, evidence_guard, ingest_feedback, score, select, validate_edition
+from scripts.morgenzeitung_v3_release import private_review, check_public_receipt, check_private_receipt
 
 def cand(i, topic="Industrie", fit=4, discovery=False):
     return {"id":f"{i:016x}","title":f"Story {i}","source":f"Journal {i%4}",
@@ -90,6 +91,58 @@ class V3EngineTests(unittest.TestCase):
                  "articles":[article],"headlines":[headline],
                  "fact_audit":{"status":"warn"},"selection_audit":{"feedback_applied":False}}
         self.assertIn("fact audit not passed",validate_edition(edition))
+        # A handwritten pass is NOT a valid release receipt.
         edition["fact_audit"]={"status":"pass","warning_count":0,"claims_checked":2}
-        self.assertEqual(validate_edition(edition),[])
+        self.assertTrue(validate_edition(edition))
+        dossier={"proofs":{
+            article["id"]:{"source_url":article["url"],"level":"teaser","claims":[
+                {"text":article["summary"],"source_excerpt":"Belegte Entwicklung.","supported":True}]},
+            headline["id"]:{"source_url":headline["url"],"level":"teaser","claims":[
+                {"text":headline["summary"],"source_excerpt":"Neue Schlagzeile.","supported":True}]}
+        },"editorial_review":{"approved":True,"reviewed_at":"2026-10-28T05:35:00Z"}}
+        edition["fact_audit"]=private_review(edition,dossier)
+        self.assertEqual(validate_edition(edition,dossier,require_dossier=True),[])
+        self.assertEqual(check_public_receipt(edition),[])
+        self.assertIn("private dossier required for release",validate_edition(edition,require_dossier=True))
+        dossier["proofs"][article["id"]]["claims"][0]["source_excerpt"]="Unbelegte Behauptung."
+        self.assertTrue(check_private_receipt(edition,dossier))
+        dossier["proofs"][article["id"]]["claims"][0]["source_excerpt"]="Belegte Entwicklung."
+        edition["articles"][0]["summary"]="Geänderte unbelegte Entwicklung."
+        self.assertTrue(check_public_receipt(edition))
+    def test_individual_negative_rating_penalizes_article_without_topic_penalty(self):
+        pool=[cand(1),cand(2)]
+        p=copy.deepcopy(self.profile)
+        p["article_feedback"]={pool[0]["id"]:{"rating":"Nicht relevant","reason":"Schon bekannt"}}
+        self.assertEqual(select(pool,p)[0]["id"],pool[1]["id"])
+        self.assertEqual(p["feedback_topic_deltas"],{})
+        full=copy.deepcopy(pool)
+        full[0]["access"]="full";full[1]["access"]="teaser"
+        self.assertEqual([x["id"] for x in select(full,p)],[x["id"] for x in select(pool,p)])
+    def test_latest_issue_wins_even_with_reverse_api_order(self):
+        topic={"a"*16:"Industrie"}
+        old={"number":1,"updated_at":"2026-10-27T10:00:00Z",
+             "title":"[Morgenzeitung 3] Feedback 2026-10-27"}
+        new={"number":2,"updated_at":"2026-10-28T10:00:00Z",
+             "title":"[Morgenzeitung 3] Feedback 2026-10-28"}
+        def body(date,rating):
+            return "MORGENZEITUNG_V3_FEEDBACK_V1\\n".replace("\\n","\n")+json.dumps({
+                "date":date,"origin":"website-explicit",
+                "ratings":[{"id":"a"*16,"rating":rating,"reason":""}]})
+        old["body"]=body("2026-10-27","Sehr relevant")
+        new["body"]=body("2026-10-28","Nicht relevant")
+        a,_=ingest_feedback({},[new,old],topic)
+        b,_=ingest_feedback({},[old,new],topic)
+        self.assertEqual(a["article_feedback"]["a"*16]["rating"],"Nicht relevant")
+        self.assertEqual(a["article_feedback"],b["article_feedback"])
+        self.assertEqual(a["article_feedback"]["a"*16]["source_issue"],"2")
+    def test_topic_family_avoids_default_when_new_subtopic(self):
+        p={"topic_priorities":{"KI":5,"Industrie & Innovation":5}}
+        a=cand(1,topic="KI & Arbeit")
+        b=cand(2,topic="Anderes")
+        self.assertGreater(score(a,p),score(b,p))
+    def test_same_original_url_tracking_is_duplicate_without_network(self):
+        a=cand(1);b=cand(2)
+        b["url"]=a["url"]+"?utm_source=homepage&fbclid=123"
+        self.assertEqual(len(select([a,b],self.profile)),1)
+
 if __name__=="__main__":unittest.main()
