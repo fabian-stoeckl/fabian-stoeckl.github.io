@@ -109,6 +109,18 @@ class V3EngineTests(unittest.TestCase):
         dossier["proofs"][article["id"]]["claims"][0]["source_excerpt"]="Belegte Entwicklung."
         edition["articles"][0]["summary"]="Geänderte unbelegte Entwicklung."
         self.assertTrue(check_public_receipt(edition))
+    def test_partially_relevant_rating_is_neutral_for_article_and_rank(self):
+        pool=[cand(1),cand(2)]
+        p=copy.deepcopy(self.profile)
+        original=score(pool[0],p)
+        before=[x["id"] for x in select(pool,p,limit=2,discovery_slots=0)]
+        p["article_feedback"]={pool[0]["id"]:{"rating":"Teilweise relevant","reason":""}}
+        self.assertEqual(score(pool[0],p),original)
+        self.assertEqual([x["id"] for x in select(pool,p,limit=2,discovery_slots=0)],before)
+        p["article_feedback"][pool[0]["id"]]={"rating":"Nicht relevant","reason":""}
+        self.assertLess(score(pool[0],p),original)
+        self.assertEqual(select(pool,p,limit=2,discovery_slots=0)[0]["id"],pool[1]["id"])
+
     def test_individual_negative_rating_penalizes_article_without_topic_penalty(self):
         pool=[cand(1),cand(2)]
         p=copy.deepcopy(self.profile)
