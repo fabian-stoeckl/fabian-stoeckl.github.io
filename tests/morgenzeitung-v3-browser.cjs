@@ -54,6 +54,13 @@ const {chromium}=require('playwright');
  const payload=JSON.parse(saved.body.split('\n').slice(1).join('\n'));
  assert.equal(payload.ratings.length,2);
  assert.deepEqual(payload.ratings.map(r=>r.rating).sort(),['Nicht relevant','Sehr relevant']);
+ // The old access="full" flag never proves the editorial team read that text.
+ await page.evaluate(()=>{
+   edition.articles[0].access='full';
+   delete edition.articles[0].evidence_level;
+   render();
+ });
+ await page.waitForFunction(()=>document.querySelector('#articles article .v3-extra-context')?.textContent.includes('nicht dokumentiert'));
  // V3.5: Only genuine edition-provided editorial notes and comparisons show.
  await page.evaluate(()=>{
    edition.articles[0].article_type='analysis';
