@@ -54,6 +54,20 @@ def validate(ed):
                 related_url=canonical(related["url"])
                 if related_url==canonical(a["url"]):
                     raise ValueError("Related article must be a different original URL")
+            correction=a.get("correction")
+            if correction is not None:
+                if ed["preview"] or not isinstance(correction,dict):
+                    raise ValueError("Structured article corrections require a real edition")
+                required=("corrected_at","previous_summary","note","source_url")
+                if any(not isinstance(correction.get(k),str) or not correction[k].strip() for k in required):
+                    raise ValueError("Incomplete article correction")
+                timestamp=datetime.fromisoformat(correction["corrected_at"].replace("Z","+00:00"))
+                if timestamp.tzinfo is None: raise ValueError("Correction needs a timezone")
+                if len(correction["note"])>900 or len(correction["previous_summary"])>3000:
+                    raise ValueError("Correction explanation is too long")
+                if correction["previous_summary"]==a["summary"]:
+                    raise ValueError("Correction must change the described content")
+                canonical(correction["source_url"])
             level=a.get("evidence_level")
             if not ed["preview"] and level not in ("headline","teaser","read","unknown"):
                 raise ValueError("Missing source evidence level")
