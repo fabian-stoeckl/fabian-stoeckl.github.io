@@ -8,7 +8,7 @@ const feedback=fs.readFileSync(path+'direct-feedback.js','utf8');
 assert.match(home,/href="\.\/Morgenzeitung-Neu\/"/);
 assert.match(home,/href="\.\/ETFs\/"/);
 assert.match(home,/Website ändern/);
-assert.match(page,/WENIGER SUCHEN/);
+assert.doesNotMatch(page,/value-proposition|WENIGER SUCHEN/,'No introductory promotional section on the classic reader');
 assert.match(page,/id="profile-toggle" href="\.\/praeferenzen.html"/);
 assert.match(page,/id="feedback-section"/);
 assert.match(page,/id="feedback" rows="4"/);
@@ -29,7 +29,7 @@ for(const n of ['app','github','direct-feedback','rating-reasons','editorial-ext
 }
 const dates=JSON.parse(fs.readFileSync(path+'data/index.json','utf8')).dates;
 assert.ok(dates.length);
-const ed=JSON.parse(fs.readFileSync(path+'data/'+dates[0]+'.json','utf8'));
+const ed=JSON.parse(fs.readFileSync(path+'data/2026-10-28.json','utf8'));
 assert.equal(ed.preview,true,'Imported edition must never masquerade as fresh research');
 assert.match(ed.editorial_note,/Archivierte/);
 const engine=fs.readFileSync('services/morgenzeitung-neu/INTERESSEN.md','utf8');

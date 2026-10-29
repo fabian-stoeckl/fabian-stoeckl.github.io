@@ -31,7 +31,7 @@ const {chromium}=require('playwright');
    const root=(process.env.PREVIEW_URL||'http://127.0.0.1:8766')+'/Privat/Morgenzeitung-Neu/';
    await page.goto(root);
    await page.waitForSelector('#feedback-section:not([hidden])');
-   assert.match(await page.locator('.value-proposition').innerText(),/Die Auswahl soll mit der Zeit besser werden|Deine Zeitung lernt mit dir/);
+   assert.equal(await page.locator('.value-proposition').count(),0,'Classic reader has no promotional introduction');
    assert.match(await page.locator('#publication-status').innerText(),/Archivierte|Beispielausgabe/);
    assert.equal(await page.locator('#feedback').isVisible(),true,'Open feedback is always visible');
    assert.ok(await page.locator('.feedback-suggestions button').count()>=4);
