@@ -52,7 +52,7 @@ assert.match(fs.readFileSync(path+'app.js','utf8'),/Weiterer Beitrag zum Thema:/
 assert.match(research,/event_key/);
 assert.match(research,/distinct_contribution/);
 assert.match(research,/related_article/);
-assert.match(research,/letzten tatsächlich erfolgreich recherchierten/);
+assert.match(research,/letzten nachweislich erfolgreichen Veröffentlichung/);
 assert.match(research,/Zuckerl/);
 assert.match(fs.readFileSync(path+'app.js','utf8'),/Weiterer Beitrag zum Thema/);
 console.log('PASS: independent classic reader, qualitative learning prompts, intact archives and open feedback');
