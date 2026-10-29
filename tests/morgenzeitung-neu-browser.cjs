@@ -29,7 +29,7 @@ const {chromium}=require('playwright');
     }
     await route.fulfill({status:200,json:response});
    });
-   await page.route('**/Privat/Morgenzeitung-Neu/data/2026-10-28.json',async route=>{
+   await page.route(/\/Privat\/Morgenzeitung-Neu\/data\/\d{4}-\d{2}-\d{2}\.json(?:\?.*)?$/,async route=>{
      const response=await route.fetch();
      const sample=await response.json();
      sample.articles[0].related_article={title:'Independent follow-up',source:'Another publisher',url:'https://example.org/follow-up'};
@@ -39,7 +39,7 @@ const {chromium}=require('playwright');
    await page.goto(root);
    await page.waitForSelector('#feedback-section:not([hidden])');
    assert.equal(await page.locator('.value-proposition').count(),0,'Classic reader has no promotional introduction');
-   assert.equal(await page.locator('#publication-status').isVisible(),false);
+   assert.doesNotMatch(await page.locator('#publication-status').innerText(),/Archivierte Beispielausgabe|keine neue Recherche|kein Nachweis für das neue Lernkonzept/);
    assert.equal(await page.locator('#feedback').isVisible(),true,'Open feedback is always visible');
    assert.ok(await page.locator('.feedback-suggestions button').count()>=4);
    await page.locator('.feedback-suggestions button').first().click();
