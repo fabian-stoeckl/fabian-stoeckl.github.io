@@ -12,6 +12,10 @@ const DirectFeedback=(()=>{
   const CODES=['topic_dislike','too_shallow','already_known','too_niche','one_sided','more_of_this'];
   const codes=r=>Array.isArray(r.reason_codes)?[...new Set(r.reason_codes.filter(c=>CODES.includes(c)))].sort():[];
   const suggested=r=>Array.isArray(r?.suggested_reasons)?[...new Set(r.suggested_reasons.filter(x=>typeof x==='string'&&x.length>0&&x.length<=120))].slice(0,5):[];
+  // Mark only whole sentences actually clicked; ordinary typed text remains independent.
+  const commentSuggestions=(items,comment)=>[...new Set((Array.isArray(items)?items:[])
+    .filter(s=>typeof s==='string'&&s.length<=160&&s.length>0
+      &&String(comment).split('\n').some(line=>line.trim()===s)))].slice(0,12);
   const sameRating=(a,b)=>!a&&!b||!!a&&!!b&&a.value===b.value&&a.reason===b.reason&&a.section===b.section&&JSON.stringify(codes(a))===JSON.stringify(codes(b))&&JSON.stringify(suggested(a))===JSON.stringify(suggested(b));
   function readToken(store=localStorage){try{return store.getItem(TOKEN_KEY)||'';}catch(_){return '';}}
   function clearToken(store=localStorage){store.removeItem(TOKEN_KEY);}
@@ -47,7 +51,9 @@ const DirectFeedback=(()=>{
         id:r.id,value:r.rating||'',reason:String(r.reason||'').slice(0,600),
         section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen',reason_codes:codes(r),suggested_reasons:suggested(r)
       }));
-      return {date:x.date,ratings,feedback:typeof x.comment==='string'?x.comment:'',number:issue.number,updated_at:issue.updated_at||''};
+      const feedback=typeof x.comment==='string'?x.comment:'';
+      return {date:x.date,ratings,feedback,comment_suggestions:commentSuggestions(x.comment_suggestions,feedback),
+        number:issue.number,updated_at:issue.updated_at||''};
     }catch(_){return null;}
   }
   async function feedbackHistory(token,transport=fetch){
@@ -165,12 +171,17 @@ const DirectFeedback=(()=>{
         comment?preserveComparisonNotes(base?.feedback,comment):(base?.feedback||'');
       if(mergedComment.length>4000)throw Error('Der gespeicherte Kommentar überschreitet 4000 Zeichen. Bitte kürzen.');
       if(!byId.size&&!mergedComment)throw Error('Bitte mindestens eine Bewertung oder Feedback eingeben.');
+      const freshPhraseSource=appendText||comment;
+      const newSuggestions=(appendText&&mergedComment===(base?.feedback||''))||options.comparisonOnly
+        ?[]:commentSuggestions(options.commentSuggestions,freshPhraseSource);
+      const tagged=commentSuggestions([...(base?.comment_suggestions||[]),...newSuggestions],mergedComment);
       const title=PREFIX+date;
       const payload={version:1,date,
         ratings:[...byId.values()].map(r=>({id:r.id,section:r.section,rating:r.value,reason:r.reason,...(codes(r).length?{reason_codes:codes(r)}:{}),...(suggested(r).length?{suggested_reasons:suggested(r)}:{})})),
-        comment:mergedComment,origin:'website-explicit'};
+        comment:mergedComment,...(tagged.length?{comment_suggestions:tagged}:{}),origin:'website-explicit'};
       const body=MARKER+JSON.stringify(payload,null,2);
-      if(record?.body===body)return {ok:true,existing:true,html_url:record.html_url,feedback:mergedComment};
+      if(record?.body===body)return {ok:true,existing:true,html_url:record.html_url,
+        feedback:mergedComment,comment_suggestions:tagged};
       const result=await request(token,existing?'/issues/'+existing:'/issues',
                                  existing?'PATCH':'POST',{title,body},transport);
       if(!Number.isSafeInteger(result.number)||
@@ -187,15 +198,18 @@ const DirectFeedback=(()=>{
       const found=new Map(verified.ratings.map(row=>[row.id,row]));
       const preserved=[...intended].every(([id,row])=>
         found.has(id)&&sameRating(found.get(id),row));
-      if(preserved&&verified.feedback===mergedComment)
-        return {ok:true,updated:!!existing,html_url:result.html_url,feedback:verified.feedback};
+      if(preserved&&verified.feedback===mergedComment&&
+         JSON.stringify(verified.comment_suggestions)===JSON.stringify(tagged))
+        return {ok:true,updated:!!existing,html_url:result.html_url,
+          feedback:verified.feedback,comment_suggestions:verified.comment_suggestions};
       // A competing edit has won at least one write; merge it on the next read.
       previousIssue=verified;
     }
     throw Error('Gleichzeitige Änderungen konnten nicht sicher zusammengeführt werden. Bitte erneut speichern.');
   }
-  async function appendComment(date,text,token,store=localStorage,transport=fetch){
-    return submit(date,[],'',token,store,transport,{appendComment:text});
+  async function appendComment(date,text,token,store=localStorage,transport=fetch,options={}){
+    return submit(date,[],'',token,store,transport,
+      {appendComment:text,commentSuggestions:options.commentSuggestions||[]});
   }
   return {REPO,TOKEN_KEY,RECEIPTS_KEY,readToken,clearToken,saveToken,verify,feedbackHistory,readReceipts,savedFeedback,submit,appendComment,preserveComparisonNotes};
 })();

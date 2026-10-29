@@ -19,6 +19,7 @@ jobs:
       - run: python3 scripts/morgenzeitung_neu.py verify
       - run: python3 tests/morgenzeitung-neu-editorial.py
       - run: node tests/morgenzeitung-neu.test.cjs
+      - run: node tests/morgenzeitung-neu-feedback.cjs
       - run: node tests/morgenzeitung-v3-ui.test.cjs
       - run: npm ci
       - run: npx playwright install --with-deps chromium

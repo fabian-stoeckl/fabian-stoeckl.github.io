@@ -46,13 +46,13 @@ assert.match(research,/abschließenden? Aktualitätsdurchgang|Aktualitätsdurchg
 assert.match(research,/Nachrichtenanlass/);
 assert.match(research,/Redaktionsrunde vor der Veröffentlichung/);
 assert.match(research,/preview:false/);
-assert.match(research,/related_article/);
-assert.ok(!research.includes(String.raw`\n\n`),'No literal escaped paragraph delimiters in research prompt');
-assert.match(fs.readFileSync(path+'app.js','utf8'),/Weiterer Beitrag zum Thema:/);
-assert.match(research,/event_key/);
-assert.match(research,/distinct_contribution/);
-assert.match(research,/related_article/);
-assert.match(research,/letzten nachweislich erfolgreichen Veröffentlichung/);
-assert.match(research,/Zuckerl/);
+assert.ok(!research.includes(String.raw`\n\n`),'No literal escaped paragraph delimiters');
+for(const required of [/related_article/,/event_key/,/distinct_contribution/,
+  /letzten nachweislich erfolgreichen Veröffentlichung/,/Zuckerl/,
+  /Tatsächlich vermittelt/,/Erste echte Produktionsausgabe abnehmen/])
+  assert.match(research,required);
+for(const required of [/comment_suggestions/,/Rubriken sauber auseinanderhalten/])
+  assert.match(engine,required);
+assert.match(feedback,/comment_suggestions/);
 assert.match(fs.readFileSync(path+'app.js','utf8'),/Weiterer Beitrag zum Thema/);
 console.log('PASS: independent classic reader, qualitative learning prompts, intact archives and open feedback');
