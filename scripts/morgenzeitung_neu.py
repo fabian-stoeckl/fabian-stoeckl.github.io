@@ -44,6 +44,16 @@ def validate(ed):
             distinct=a.get("distinct_contribution")
             if distinct is not None and (not isinstance(distinct,str) or not distinct.strip() or len(distinct)>400):
                 raise ValueError("Invalid editorial distinct contribution")
+            related=a.get("related_article")
+            if related is not None:
+                if not isinstance(related,dict) or any(
+                    not isinstance(related.get(k),str) or not related[k].strip()
+                    for k in ("title","source","url")
+                ):
+                    raise ValueError("Incomplete related original article")
+                related_url=canonical(related["url"])
+                if related_url==canonical(a["url"]):
+                    raise ValueError("Related article must be a different original URL")
             level=a.get("evidence_level")
             if not ed["preview"] and level not in ("headline","teaser","read","unknown"):
                 raise ValueError("Missing source evidence level")
