@@ -264,7 +264,7 @@ function updatePublicationStatus(e) {
   // Never show transitional example-edition notices; provenance stays in JSON.
   if(e.preview||e.date===d){node.hidden=true;node.textContent='';return;}
   node.dataset.state=e.date!==d&&late?'stale':'pending';node.hidden=false;
-  if(late)node.textContent='Hinweis: Die heutige Morgenzeitung fehlt noch. Letzte Ausgabe: '+e.date+'.';
+  if(late)node.textContent='Hinweis: Die heutige Persönliche Zeitung fehlt noch. Letzte Ausgabe: '+e.date+'.';
   else node.textContent='Neue Ausgabe wird um 07:45 Uhr Wiener Zeit erwartet. Zuletzt: '+e.date+'.';
 }
 async function collectDraftRatings(date,groups){
@@ -353,7 +353,7 @@ for(const d of index.dates){const o=el('option',d);o.value=d;$('date').append(o)
 $('operating-state').textContent='Ausgaben aus GitHub · Feedback wird nach einmaliger Verbindung direkt auf GitHub gespeichert.';
 if(!latestDate){status('Noch keine veröffentlichte Ausgabe verfügbar.');return;}
 edition=await GitHubPaper.edition(latestDate);render();await RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken());await restoreSavedRatings();return;
-}catch(e){status('Morgenzeitung nicht erreichbar. '+e.message);}})();
+}catch(e){status('Persönliche Zeitung nicht erreichbar. '+e.message);}})();
 
 $('feedback').addEventListener('input',()=>{
   if(edition)stashComment(edition.date);
