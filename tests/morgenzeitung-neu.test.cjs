@@ -44,7 +44,7 @@ assert.match(research,/Nachrichtenanlass/);
 assert.match(research,/Redaktionsrunde vor der Veröffentlichung/);
 assert.match(research,/preview:false/);
 assert.match(research,/related_article/);
-assert.ok(!research.includes('\\\\n\\\\n'),'No literal escaped paragraph delimiters in research prompt');
+assert.ok(!research.includes(String.raw`\n\n`),'No literal escaped paragraph delimiters in research prompt');
 assert.match(fs.readFileSync(path+'app.js','utf8'),/Weiterer Beitrag zum Thema:/);
 assert.match(research,/event_key/);
 assert.match(research,/distinct_contribution/);
