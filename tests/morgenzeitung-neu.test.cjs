@@ -49,10 +49,11 @@ assert.match(research,/preview:false/);
 assert.ok(!research.includes(String.raw`\n\n`),'No literal escaped paragraph delimiters');
 for(const required of [/related_article/,/event_key/,/distinct_contribution/,
   /letzten nachweislich erfolgreichen Veröffentlichung/,/Zuckerl/,
-  /Tatsächlich vermittelt/,/Erste echte Produktionsausgabe abnehmen/])
+  /Tatsächlich vermittelt/,/Praxisabnahme der ersten drei echten Ausgaben/,/Korrekturen ohne Feedbackverlust/])
   assert.match(research,required);
 for(const required of [/comment_suggestions/,/Rubriken sauber auseinanderhalten/])
   assert.match(engine,required);
 assert.match(feedback,/comment_suggestions/);
 assert.match(fs.readFileSync(path+'app.js','utf8'),/Weiterer Beitrag zum Thema/);
 console.log('PASS: independent classic reader, qualitative learning prompts, intact archives and open feedback');
+
