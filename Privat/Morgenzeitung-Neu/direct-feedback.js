@@ -11,7 +11,8 @@ const DirectFeedback=(()=>{
   const VALID=['','Sehr relevant','Teilweise relevant','Nicht relevant'];
   const CODES=['topic_dislike','too_shallow','already_known','too_niche','one_sided','more_of_this'];
   const codes=r=>Array.isArray(r.reason_codes)?[...new Set(r.reason_codes.filter(c=>CODES.includes(c)))].sort():[];
-  const sameRating=(a,b)=>!a&&!b||!!a&&!!b&&a.value===b.value&&a.reason===b.reason&&a.section===b.section&&JSON.stringify(codes(a))===JSON.stringify(codes(b));
+  const suggested=r=>Array.isArray(r?.suggested_reasons)?[...new Set(r.suggested_reasons.filter(x=>typeof x==='string'&&x.length>0&&x.length<=120))].slice(0,5):[];
+  const sameRating=(a,b)=>!a&&!b||!!a&&!!b&&a.value===b.value&&a.reason===b.reason&&a.section===b.section&&JSON.stringify(codes(a))===JSON.stringify(codes(b))&&JSON.stringify(suggested(a))===JSON.stringify(suggested(b));
   function readToken(store=localStorage){try{return store.getItem(TOKEN_KEY)||'';}catch(_){return '';}}
   function clearToken(store=localStorage){store.removeItem(TOKEN_KEY);}
   function saveToken(token,store=localStorage){
@@ -44,7 +45,7 @@ const DirectFeedback=(()=>{
          !Array.isArray(x.ratings)||x.origin!=='website-explicit'||x.test===true)return null;
       const ratings=x.ratings.filter(r=>r&&/^[a-f0-9]{16}$/.test(r.id)&&VALID.includes(r.rating||'')).map(r=>({
         id:r.id,value:r.rating||'',reason:String(r.reason||'').slice(0,600),
-        section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen',reason_codes:codes(r)
+        section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen',reason_codes:codes(r),suggested_reasons:suggested(r)
       }));
       return {date:x.date,ratings,feedback:typeof x.comment==='string'?x.comment:'',number:issue.number,updated_at:issue.updated_at||''};
     }catch(_){return null;}
@@ -133,7 +134,7 @@ const DirectFeedback=(()=>{
          !VALID.includes(r.value||'')||typeof r.reason!=='string'||r.reason.length>600)
         throw Error('Ungültige Artikelbewertung');
       intended.set(r.id,{id:r.id,value:r.value||'',reason:r.reason,
-                         section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen',reason_codes:codes(r)});
+                         section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen',reason_codes:codes(r),suggested_reasons:suggested(r)});
     }
     const comment=feedback.trim();
     const appendText=options?.appendComment===undefined?'':String(options.appendComment).trim();
@@ -166,7 +167,7 @@ const DirectFeedback=(()=>{
       if(!byId.size&&!mergedComment)throw Error('Bitte mindestens eine Bewertung oder Feedback eingeben.');
       const title=PREFIX+date;
       const payload={version:1,date,
-        ratings:[...byId.values()].map(r=>({id:r.id,section:r.section,rating:r.value,reason:r.reason,...(codes(r).length?{reason_codes:codes(r)}:{})})),
+        ratings:[...byId.values()].map(r=>({id:r.id,section:r.section,rating:r.value,reason:r.reason,...(codes(r).length?{reason_codes:codes(r)}:{}),...(suggested(r).length?{suggested_reasons:suggested(r)}:{})})),
         comment:mergedComment,origin:'website-explicit'};
       const body=MARKER+JSON.stringify(payload,null,2);
       if(record?.body===body)return {ok:true,existing:true,html_url:record.html_url,feedback:mergedComment};

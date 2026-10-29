@@ -30,6 +30,10 @@ function githubRating(a,section='Vertiefungen') {
   box.dataset.ratingKey=key;
   box.dataset.reasonCodes=JSON.stringify(readerState.ratingDrafts[key]?.reason_codes||[]);
   box.addEventListener('reasoncodes',e=>{readerState.ratingDrafts[key]={value:'',reason:'',section,...readerState.ratingDrafts[key],reason_codes:e.detail,dirty:true};feedbackStatus('Begründung vorgemerkt.');});
+  box.addEventListener('suggestionclick',e=>{
+    const old=readerState.ratingDrafts[key]||{};
+    readerState.ratingDrafts[key]={...old,section,suggested_reasons:[...new Set([...(old.suggested_reasons||[]),e.detail])],dirty:true};
+  });
   for(const value of ['Sehr relevant','Teilweise relevant','Nicht relevant']) {
     const label=el('label');const input=el('input');input.type='radio';input.name='rating-'+key;
     input.value=value;input.checked=readerState.ratingDrafts[key]?.value===value;
@@ -38,11 +42,17 @@ function githubRating(a,section='Vertiefungen') {
   }
   const details=el('details',undefined,'rating-reason');
   details.append(el('summary','Optional begründen'));
-  const label=el('label','Deine Begründung','reason');const reason=el('textarea');
+  const wrapper=el('div',undefined,'reason');const reason=el('textarea');
   reason.rows=2;reason.maxLength=600;reason.placeholder='Was war hilfreich oder hat dir gefehlt?';
-  reason.value=readerState.ratingDrafts[key]?.reason||'';details.open=!!reason.value;
-  reason.oninput=()=>{readerState.ratingDrafts[key]={...readerState.ratingDrafts[key],value:readerState.ratingDrafts[key]?.value||'',reason:reason.value,section,dirty:true};feedbackStatus('Änderung vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};
-  label.append(reason);details.append(label);box.append(details);
+  reason.setAttribute('aria-label','Artikel begründen: '+a.title);
+  reason.value=readerState.ratingDrafts[key]?.reason||'';details.open=true;
+  reason.oninput=()=>{
+    const old=readerState.ratingDrafts[key]||{};
+    readerState.ratingDrafts[key]={...old,value:old.value||'',reason:reason.value,section,
+      suggested_reasons:(old.suggested_reasons||[]).filter(t=>reason.value.includes(t)),dirty:true};
+    feedbackStatus('Änderung vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');
+  };
+  wrapper.append(reason);details.append(wrapper);box.append(details);
   return box;
 }
 function article(a,index,section='Vertiefungen'){
@@ -92,7 +102,7 @@ function render(){
     const list=el('div',undefined,'article-list');
     const regional=readerState.visibleHeadlines.filter(a=>a.region===region);
     if(!regional.length){
-      list.append(el('p',e.preview?'Keine zusätzlichen eigenständigen Nachrichten in dieser reduzierten Vorschau.':'Keine weiteren aktuellen Meldungen in dieser Ausgabe.','small empty-region'));
+      list.append(el('p','Keine weiteren aktuellen Meldungen in dieser Ausgabe.','small empty-region'));
     }
     for(const a of regional)list.append(article(a,undefined,'Heute wichtig'));
     sec.append(list);cols.append(sec);
@@ -122,12 +132,12 @@ function render(){
   // Use noon UTC for the calendar date, to avoid browser timezone rollover.
   const issueDay=new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'}).format(new Date(e.date+'T12:00:00Z'));
   const issueTime=new Intl.DateTimeFormat('de-AT',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Vienna'}).format(new Date(e.researched_at));
-  $('edition-meta').textContent=issueDay+' · Stand '+issueTime+' Uhr (Wien)'+(e.preview?' · Vorschau':'');
+  $('edition-meta').textContent=issueDay+' · Stand '+issueTime+' Uhr (Wien)';
   $('feedback-section').hidden=false;
   updatePublicationStatus(e);
   let correction=$('correction-note');
   if(!correction){correction=el('p','','small');correction.id='correction-note';$('edition-meta').after(correction);}
-  correction.textContent=e.correction_note||'';correction.hidden=!e.correction_note;
+  correction.textContent=e.preview?'':(e.correction_note||'');correction.hidden=!correction.textContent;
   // The edition's free-form limitations are editorial notes, not errors. Display
   // only explicitly flagged operational issues or genuinely filtered duplicates.
   const errors=[...(Array.isArray(e.errors)?e.errors:[]),...(Array.isArray(e.warnings)?e.warnings:[])];
@@ -151,7 +161,7 @@ async function restoreSavedRatings(){
       const savedRow=byId.get(id),key=draftKey(item);
       if(!Object.hasOwn(readerState.ratingBaselines,key))readerState.ratingBaselines[key]=savedRow||null;
       if(!savedRow||readerState.ratingDrafts[key]?.dirty)continue;
-      readerState.ratingDrafts[key]={value:savedRow.value,reason:savedRow.reason,section:savedRow.section,reason_codes:savedRow.reason_codes||[],dirty:false};
+      readerState.ratingDrafts[key]={value:savedRow.value,reason:savedRow.reason,section:savedRow.section,reason_codes:savedRow.reason_codes||[],suggested_reasons:savedRow.suggested_reasons||[],dirty:false};
       const field=[...document.querySelectorAll('.rating-dots')].find(x=>x.dataset.ratingKey===key);
       if(!field)continue;
       field.dataset.reasonCodes=JSON.stringify(savedRow.reason_codes||[]);
@@ -159,7 +169,7 @@ async function restoreSavedRatings(){
       for(const input of field.querySelectorAll('input[type=radio]'))input.checked=input.value===savedRow.value;
       const note=field.querySelector('textarea');
       if(note)note.value=savedRow.reason;
-      const disclosure=field.querySelector('.rating-reason');if(disclosure)disclosure.open=!!savedRow.reason;
+      const disclosure=field.querySelector('.rating-reason');if(disclosure)disclosure.open=true;
     }
     if(!Object.hasOwn(readerState.commentBaselines,date))
       readerState.commentBaselines[date]=saved.feedback||'';
@@ -213,12 +223,10 @@ function updatePublicationStatus(e) {
     node.textContent='Archivansicht: '+e.date+'. Neueste verfügbare Ausgabe: '+latestDate+'.';
     return;
   }
-  node.dataset.state=e.preview||e.date!==d&&late?'stale':e.date===d?'fresh':'pending';
-  // No third repeated date/time block when today's regular edition is up.
-  if(!e.preview&&e.date===d){node.hidden=true;node.textContent='';return;}
-  node.hidden=false;
-  if(e.preview)node.textContent='Archivierte Beispielausgabe – keine neue Recherche und kein Nachweis für das neue Lernkonzept.';
-  else if(late)node.textContent='Hinweis: Die heutige Morgenzeitung fehlt noch. Letzte Ausgabe: '+e.date+'.';
+  // Never show transitional example-edition notices; provenance stays in JSON.
+  if(e.preview||e.date===d){node.hidden=true;node.textContent='';return;}
+  node.dataset.state=e.date!==d&&late?'stale':'pending';node.hidden=false;
+  if(late)node.textContent='Hinweis: Die heutige Morgenzeitung fehlt noch. Letzte Ausgabe: '+e.date+'.';
   else node.textContent='Neue Ausgabe wird um 07:45 Uhr Wiener Zeit erwartet. Zuletzt: '+e.date+'.';
 }
 async function collectDraftRatings(date,groups){
@@ -227,7 +235,7 @@ async function collectDraftRatings(date,groups){
     for(const item of items){
       const draft=readerState.ratingDrafts[date+':'+(item.id||item.url)];
       if(draft?.dirty&&(draft.value||draft.reason.trim()||draft.reason_codes?.length))
-        selected.push({id:await GitHubPaper.ratingId(item),value:draft.value||'',reason:draft.reason||'',reason_codes:draft.reason_codes||[],section});
+        selected.push({id:await GitHubPaper.ratingId(item),value:draft.value||'',reason:draft.reason||'',reason_codes:draft.reason_codes||[],suggested_reasons:draft.suggested_reasons||[],section});
     }
   }
   return selected;
@@ -269,7 +277,7 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
       const key=submittedEdition.date+':'+row.id;
       readerState.ratingBaselines[key]=row;
       const current=readerState.ratingDrafts[key];
-      if(current&&current.value===row.value&&current.reason===row.reason&&JSON.stringify(current.reason_codes||[])===JSON.stringify(row.reason_codes||[]))current.dirty=false;
+      if(current&&current.value===row.value&&current.reason===row.reason&&JSON.stringify(current.reason_codes||[])===JSON.stringify(row.reason_codes||[])&&JSON.stringify(current.suggested_reasons||[])===JSON.stringify(row.suggested_reasons||[]))current.dirty=false;
     }
     // Remember the exact confirmed canonical comment as the next baseline.
     if(typeof result.feedback==='string'){
@@ -302,7 +310,7 @@ const index=await GitHubPaper.json('./data/index.json');latestDate=index.dates[0
 for(const d of index.dates){const o=el('option',d);o.value=d;$('date').append(o);}
 $('operating-state').textContent='Ausgaben aus GitHub · Feedback wird nach einmaliger Verbindung direkt auf GitHub gespeichert.';
 if(!latestDate){status('Noch keine veröffentlichte Ausgabe verfügbar.');return;}
-edition=await GitHubPaper.edition(latestDate);render();await restoreSavedRatings();return;
+edition=await GitHubPaper.edition(latestDate);render();await RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken());await restoreSavedRatings();return;
 }catch(e){status('Morgenzeitung nicht erreichbar. '+e.message);}})();
 
 $('feedback').addEventListener('input',()=>{if(edition)readerState.commentDrafts[edition.date]=$('feedback').value;feedbackStatus('Änderung noch nicht gesendet.');});
@@ -331,6 +339,7 @@ $('github-setup-form').onsubmit=async e=>{
     $('github-setup-status').textContent='';
     refreshGitHubConnection();
     feedbackStatus('GitHub verbunden. Dein nächstes Feedback lässt sich mit einem Klick speichern.');
+    await RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken());
     await restoreSavedRatings();
   }catch(err){
     $('github-setup-status').textContent=err.message+' Kein Token gespeichert.';
@@ -339,6 +348,7 @@ $('github-setup-form').onsubmit=async e=>{
 const disconnect=$('github-disconnect');
 if(disconnect)disconnect.onclick=()=>{
   DirectFeedback.clearToken();
+  RatingReasons.loadPrivateSuggestions('');
   refreshGitHubConnection();
   feedbackStatus('GitHub-Verbindung auf diesem Gerät entfernt. Bereits gespeicherte GitHub-Rückmeldungen bleiben erhalten.');
 };
