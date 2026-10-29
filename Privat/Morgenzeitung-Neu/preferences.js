@@ -53,7 +53,13 @@ byId('preference-comment-form').onsubmit=async e=>{
  if(!latestDate){status.textContent='Es ist noch keine Ausgabe vorhanden.';return;}
  const token=DirectFeedback.readToken();if(!token){status.textContent='Bitte auf der Zeitungsseite deinen GitHub-Zugang verbinden.';return;}
  button.disabled=true;status.textContent='Speichere deine Rückmeldung privat …';
- try{await DirectFeedback.appendComment(latestDate,comment,token);field.value='';status.textContent='Gespeichert. Der nächste Lauf prüft, ob die Interessenbeschreibung dadurch besser wird.';await refresh();}
+ try{
+  await DirectFeedback.appendComment(latestDate,comment,token,localStorage,fetch,
+    {commentSuggestions:FeedbackSuggestions.getSelected(field)});
+  field.value='';FeedbackSuggestions.setSelected(field,[]);
+  status.textContent='Gespeichert. Der nächste Lauf prüft, ob die Interessenbeschreibung dadurch besser wird.';
+  await refresh();
+ }
  catch(e){status.textContent=e.message+' Deine Eingabe bleibt erhalten.';}
  finally{button.disabled=false;}
 };
