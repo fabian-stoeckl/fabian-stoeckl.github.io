@@ -16,11 +16,17 @@ async function refresh(){
   show('profile-status','Verbinde deinen GitHub-Zugang auf der Zeitungsseite, um deine persönliche Beschreibung zu lesen.');
   show('feedback-summary','Ohne Verbindung sind keine persönlichen Bewertungen sichtbar.');
   show('profile-changes','Die Änderungen werden nach der Verbindung angezeigt.');
+  show('learning-monitor','Verbinde deinen GitHub-Zugang, um deine private Lernbilanz zu lesen.');
   return;
  }
  const tasks=[
   privateFile('morgenzeitung-neu/interessen.md').then(t=>{byId('profile-text').textContent=t;byId('profile-text').hidden=false;show('profile-status','Aktuelle Fassung aus dem privaten Redaktionsgedächtnis.');}).catch(e=>show('profile-status',e.message)),
   privateFile('morgenzeitung-neu/aenderungen.md').then(t=>show('profile-changes',t)).catch(e=>show('profile-changes',e.message)),
+  privateFile('morgenzeitung-neu/lernmonitoring.md')
+    .then(t=>show('learning-monitor',t.trim()||'Noch keine belastbare Lernbilanz vorhanden.'))
+    .catch(e=>show('learning-monitor',/HTTP 404/.test(e.message)
+      ?'Noch keine Lernbilanz vorhanden. Sie beginnt nach den ersten echten Ausgaben und Rückmeldungen.'
+      :'Lernbilanz konnte nicht privat gelesen werden: '+e.message)),
   DirectFeedback.feedbackHistory(token).then(history=>{
     const ratings=new Map();
     // Latest explicitly saved article state wins; earlier issue versions are not extra votes.
