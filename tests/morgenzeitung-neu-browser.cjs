@@ -39,6 +39,7 @@ const {chromium}=require('playwright');
      const response=await route.fetch();
      const sample=await response.json();
      sample.articles[0].related_article={title:'Independent follow-up',source:'Another publisher',url:'https://example.org/follow-up'};
+     sample.preview=false; // Synthetic real-edition correction fixture.
      sample.articles[0].correction={
        corrected_at:'2026-10-29T12:00:00+01:00',
        previous_summary:'Falsche ursprüngliche Zusammenfassung',
@@ -67,6 +68,7 @@ const {chromium}=require('playwright');
    assert.equal(await page.getByText('Falsche ursprüngliche Zusammenfassung').count(),1);
    assert.equal(await page.getByText('Weiterer Beitrag zum Thema:').count(),1,'Related reporting is separately marked');
    assert.equal(await page.getByRole('link',{name:'Independent follow-up'}).getAttribute('href'),'https://example.org/follow-up');
+   const correctedId=await page.locator('#articles article').first().getAttribute('data-article-id');
    const group=page.locator('#articles .ratings').first();
    await group.locator('input[type=radio][value="Sehr relevant"]').check();
    assert.equal(await group.locator('.rating-reason').evaluate(el=>el.open),true);
@@ -80,6 +82,7 @@ const {chromium}=require('playwright');
    assert.match(issues[0].body,/MORGENZEITUNG_NEU_FEEDBACK_V1/);
    const payload=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
    assert.ok(payload.ratings.length>=1&&payload.comment.includes('Thema interessiert'));
+   assert.ok(payload.ratings.some(r=>r.id===correctedId),'Correction retains same article rating identity');
    assert.deepEqual(payload.comment_suggestions,[suggestion]);
    assert.ok(payload.comment.includes('Freie eigene Begründung zur Artikelwahl.'));
    assert.ok(payload.ratings.some(r=>r.suggested_reasons?.includes('Zu juristisch für ein Randthema')));
