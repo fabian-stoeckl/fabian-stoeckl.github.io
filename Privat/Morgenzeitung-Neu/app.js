@@ -72,6 +72,16 @@ function article(a,index,section='Vertiefungen'){
   const title=el('h2');title.append(link(a.title,a.url));
   body.append(title,el('p',a.summary,isHeadline?'news-summary':undefined));
   if(a.source_context)body.append(el('p',a.source_context,'small'));
+  // Optional separate reporting; never claim this link is the paywalled original.
+  const related=a.related_article;
+  if(related&&typeof related.title==='string'&&typeof related.url==='string'&&typeof related.source==='string'){
+    try{
+      const more=el('p',undefined,'small related-reporting');
+      more.append(document.createTextNode('Weiterer Beitrag zum Thema: '),link(related.title,related.url),
+        document.createTextNode(' · '+related.source));
+      body.append(more);
+    }catch(_){/* Invalid optional link cannot displace the original article. */}
+  }
   if(!isHeadline&&typeof a.novelty_explanation==='string'&&a.novelty_explanation.trim())
     body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty_explanation,'novelty'));
   body.append(githubRating(a,section));node.append(intro,body);return node;
