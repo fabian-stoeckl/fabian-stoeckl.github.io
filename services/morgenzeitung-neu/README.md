@@ -22,6 +22,14 @@ Eine gute ungewöhnliche Vertiefung kann als `treat:true` das vertraute **Zucker
 
 **Betriebsziel:** ein bestehender einzelner täglicher Lauf mit ausreichend Vorlauf bis 07:45 Europe/Vienna, nicht mehrere Zeitungen oder separate Dauertests. Die redaktionelle Wahrheit wird nicht durch bestandene Schema- oder CI-Tests behauptet.
 
+## Schutz vor selbstbestätigendem Lernen
+
+Sowohl einzelne Artikelbegründungen (`suggested_reasons`) als auch allgemeine Rückmeldungen (`comment_suggestions`) unterscheiden explizit angeklickte Textbausteine von tatsächlich frei formuliertem Text. Die Texte werden im privaten Feedback-Issue weiterhin vollständig gespeichert, aber Vorlagen nicht fälschlich als spontane, unabhängige Mehrfachbestätigung interpretiert. Präferenzseiten-Kommentare behalten die Herkunftsinformation beim Anhängen. Alte Rückmeldungen ohne Provenienz nicht rückwirkend als sicher spontan deklarieren. Negative persönliche Bewertungen bei „Heute wichtig“ dürfen objektiv relevante Nachrichten nicht unterdrücken; bei „Vertiefungen“ ist die individuelle Passung stärker ausschlaggebend.
+
+## Erste Produktionsabnahme und kompaktes Erkenntnisgedächtnis
+
+Nach der ersten echten recherchierten und veröffentlichten Ausgabe eine kurze private journalistische Abnahme durchführen. Beurteile Quellen- und Themenmix, Belegtreue, unabhängigen Mehrwert, Paywall-Neutralität und redundante Ereignisse getrennt von einem grünen technischen CI-Lauf. Das private Tagesdossier enthält zukünftig einen kurzen Abschnitt `## Tatsächlich vermittelt` mit belegten Kernaussagen und ggf. `event_key`; spätere Recherchen vergleichen die bekannten Aussagen statt bloß Artikeltitel oder Schlagworte. **Nicht** als Beweis tatsächlicher Lektüre durch den Nutzer behandeln. Keine neue Automationsserie, keine eigenständige wachsende Datenbank und keine Punktetabelle.
+
 ## Feedbacksicherheit und historische Kontinuität
 
 Neue Issues: Präfix `[Morgenzeitung Neu] Feedback YYYY-MM-DD`, Marker `MORGENZEITUNG_NEU_FEEDBACK_V1`, bestehendes V3-kompatibles Ratingschema mit `value`, `reason`, `reason_codes`. Das Frontend benutzt denselben bewährten GitHub-Schreibmechanismus, aber einen **neuen Issue-Namensraum** und neue lokale Receipts. Vorherige V3- und Pressespiegelbewertungen bleiben im Archiv und sind nur Startkontext – nie neue Stimmen. Latest edited state wins. Kein Lernprofil aus synthetischem Feedback.
