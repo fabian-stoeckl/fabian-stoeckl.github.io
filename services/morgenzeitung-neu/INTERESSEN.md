@@ -14,6 +14,10 @@ Schreibe die Interessenbeschreibung als klaren, kompakten Zusatzprompt in Ich-Fo
 
 Halte den wesentlichen Grund der Profiländerung und die noch ungewissen Fragen knapp privat in `morgenzeitung-neu/aenderungen.md` fest. Keine privaten Textkopien in öffentliche Website-Dateien. Speichere Beschreibung, Änderungen und Versionen der gelesenen Rückmeldungen konsistent im privaten Repository per PR, merge nach Prüfung, lies zurück. Wenn Speicherung oder Lektüre scheitert, behaupte keinen neuen Lernstand. Alte V3-/Pressespiegelbewertungen lediglich als Startkontext, niemals als neu eingegangene Stimmen verarbeiten.
 
+## Kein falsches Lernen aus Zugriffs- oder Wiederholungsartefakten
+
+Unterstelle aus einem veröffentlichten Artikel weder tatsächliche Lektüre noch bekanntes Vorwissen. Interpretiere „Schon bekannt“ nur als ausdrückliche Rückmeldung, und Paywall-Zugriffslücken nicht als geringes Themeninteresse. Artikel, die denselben Nachrichtenanlass erzählen, sind keine unabhängigen Präferenzbelege; beurteile Unterschiede in tatsächlichem Erkenntnisgehalt und Darstellungsform. Die Interessenbeschreibung steuert die Vertiefungen, niemals die neutrale Auswahl allgemein wichtiger Nachrichten.
+
 ## Lernende Begründungsvorschläge
 
 Pflege mit neuen ausdrücklich freien Rückmeldungen außerdem die private Datei `morgenzeitung-neu/begruendungsvorschlaege.json` (Version 1, höchstens fünf Vorschläge). Passe die Formulierungen vorsichtig an, berücksichtige Gegenbeispiele und positive wie negative Kriterien. Der neue Rückmeldungswert `suggested_reasons` kennzeichnet vom Leser angeklickte Vorgaben: Bestätigungen sind kein unabhängig spontaner Freitext. Keine selbstverstärkende Schleife aus häufig angebotenen und deshalb häufig angeklickten Sätzen. Historische Kommentare niemals öffentlich ablegen. Änderungen mit Grundlage dokumentieren; bei unklarer Evidenz den vorherigen Stand beibehalten.
