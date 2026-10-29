@@ -85,6 +85,10 @@ function article(a,index,section='Vertiefungen'){
     heading.append(el('strong','Berichtigung ('+fmt(c.corrected_at)+'): '),
       document.createTextNode(c.note));
     box.append(heading);
+    if(typeof c.source_url==='string'){
+      try{box.append(link('Beleg zur Berichtigung',c.source_url));}
+      catch(_){/* Invalid optional evidence link does not hide the correction. */}
+    }
     if(typeof c.previous_summary==='string'&&c.previous_summary.trim()){
       const history=el('details',undefined,'correction-history');
       history.append(el('summary','Früherer Beschreibungstext'),
