@@ -39,6 +39,12 @@ const {chromium}=require('playwright');
      const response=await route.fetch();
      const sample=await response.json();
      sample.articles[0].related_article={title:'Independent follow-up',source:'Another publisher',url:'https://example.org/follow-up'};
+     sample.articles[0].correction={
+       corrected_at:'2026-10-29T12:00:00+01:00',
+       previous_summary:'Falsche ursprüngliche Zusammenfassung',
+       note:'Eine unzutreffende Behauptung wurde berichtigt.',
+       source_url:'https://example.org/evidence'
+     };
      await route.fulfill({response,json:sample});
    });
    const root=(process.env.PREVIEW_URL||'http://127.0.0.1:8766')+'/Privat/Morgenzeitung-Neu/';
@@ -55,6 +61,10 @@ const {chromium}=require('playwright');
    assert.match(await general.inputValue(),/Thema interessiert/);
    await page.locator('#tab-articles').click();
    assert.equal(await page.locator('#articles').isVisible(),true);
+   assert.equal(await page.locator('#articles .article-correction').count(),1);
+   assert.match(await page.locator('#articles .article-correction').innerText(),/unzutreffende Behauptung wurde berichtigt/);
+   await page.locator('#articles .correction-history summary').first().click();
+   assert.equal(await page.getByText('Falsche ursprüngliche Zusammenfassung').count(),1);
    assert.equal(await page.getByText('Weiterer Beitrag zum Thema:').count(),1,'Related reporting is separately marked');
    assert.equal(await page.getByRole('link',{name:'Independent follow-up'}).getAttribute('href'),'https://example.org/follow-up');
    const group=page.locator('#articles .ratings').first();
