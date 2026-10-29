@@ -14,6 +14,8 @@ assert.match(page,/id="feedback-section"/);
 assert.match(page,/id="feedback" rows="4"/);
 assert.match(page,/id="tab-headlines"/);
 assert.match(page,/id="tab-articles"/);
+assert.match(fs.readFileSync(path+'rating-reasons.js','utf8'),/begruendungsvorschlaege.json/);
+assert.match(fs.readFileSync(path+'app.js','utf8'),/details.open=true/);
 assert.match(pref,/id="profile-text"/);
 assert.match(pref,/id="profile-changes"/);
 assert.match(pref,/id="preference-comment"/);
