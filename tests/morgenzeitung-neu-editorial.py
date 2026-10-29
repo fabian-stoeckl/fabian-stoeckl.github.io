@@ -47,6 +47,23 @@ class EditorialEventTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"event key"):
             mod.validate(ed)
 
+    def test_related_article_must_be_independent(self):
+        ed=self.edition()
+        ed["headlines"][0]["related_article"]={
+            "title":"Different original report", "source":"Another publisher",
+            "url":"https://example.org/original"
+        }
+        mod.validate(ed)
+        ed["headlines"][0]["related_article"]["url"]=ed["headlines"][0]["url"]
+        with self.assertRaisesRegex(ValueError,"different original"):
+            mod.validate(ed)
+
+    def test_malformed_related_article_not_published(self):
+        ed=self.edition()
+        ed["headlines"][0]["related_article"]={"title":"Context"}
+        with self.assertRaisesRegex(ValueError,"Incomplete related"):
+            mod.validate(ed)
+
     def test_preview_stays_historical_without_new_editorial_requirements(self):
         ed=self.edition()
         ed["preview"]=True
