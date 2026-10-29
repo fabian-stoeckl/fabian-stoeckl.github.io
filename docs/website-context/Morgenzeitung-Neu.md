@@ -32,6 +32,12 @@ Eigenständige neue Zeitung: `Privat/Morgenzeitung-Neu/`. Die vertraute klassisc
 - Korrigierte falsche Artikelzusammenfassungen erhalten öffentlich `correction` (`corrected_at`, `previous_summary`, `note`, `source_url`) und eine sichtbare Berichtigung beim **gleichen Artikel**. Ursprüngliche Artikel-ID, URL, Rubrik, Datum und bestehende private Bewertungen bleiben erhalten. Im privaten Tagesdossier Falschaussagen ausdrücklich berichtigen; bei Feedback vor der Korrektur den damaligen sichtbaren Stand berücksichtigen bzw. Unsicherheit markieren.
 - Schema-/Browser-/Regressionstests für Berichtigungen; keine Änderungen am ETF oder am alten Zeitungsarchiv.
 
+## Ergänzung 29.10.2026 – Schlankes Monitoring des Lernerfolgs
+- Unter `Meine Präferenzen` eigener Bereich „Wie gut lernt meine Morgenzeitung?“ mit privatem, über das bestehende GitHub-Contents-Recht gelesenem Klartext aus `morgenzeitung-neu/lernmonitoring.md`. Keine eigenen Ratings, Analytics-Tracker oder öffentliche Profile.
+- `INTERESSEN.md` ist alleinige fachliche Quelle für die qualitative Lernprüfung: erste Ausgangsbilanz nach drei echten Veröffentlichungen; danach ungefähr alle 14 Tage und nach etwa zwei Monaten eine längere Rückschau im schon bestehenden Tageslauf. Klare Trennung von redaktioneller Drei-Ausgaben-Abnahme.
+- Zu jeder Behauptung über Lernen gehören ursprünglich beobachtetes echtes Feedback, mögliche alternative Erklärung, konkrete Auswahländerung, spätere unabhängige echte Artikelreaktion samt Gegenbeispielen. Unbewertet neutral; Vorlagenklicks/alte Issue-Versionen nicht als zusätzlichen Beweis zählen. Ohne genügend Reaktionen „noch nicht beurteilbar“ statt erfundener positiver Trend.
+- Private Initialdatei beginnt ohne erfundene Hypothesen oder Erfolge; klares UI für fehlenden GitHub-Zugang und 404-Fallback. Keine neue Automation, unveränderte ETF- und V3-Teile.
+
 ## Offen
 - Erste drei tatsächlich neu recherchierte und veröffentlichte Ausgaben, mit dokumentierter journalistischer Praxisabnahme und Musterbilanz nach der dritten.
 - Späteren realen Lernerfolg an Artikelfeedback beurteilen, nicht an einer Änderung des Beschreibungstextes oder grüner CI.
