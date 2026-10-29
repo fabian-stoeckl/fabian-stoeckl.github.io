@@ -2,7 +2,7 @@
 // One explicit browser-owned state object; edition/config remain stable V3 hooks.
 let config, edition, latestDate;
 const readerState={visibleArticles:[],visibleHeadlines:[],ratingDrafts:{},commentDrafts:{},
-  commentBaselines:{},ratingBaselines:{},loadSequence:0,saving:false};
+  commentSuggestionDrafts:{},commentBaselines:{},ratingBaselines:{},loadSequence:0,saving:false};
 const draftKey=a=>edition.date+':'+(a.id||a.url);
 function feedbackStatus(msg){$('feedback-status').textContent=msg;for(const id of ['news-feedback-status','features-feedback-status'])if($(id))$(id).textContent=msg;}
 const $=id=>document.getElementById(id);
@@ -183,9 +183,12 @@ async function restoreSavedRatings(){
     }
     if(!Object.hasOwn(readerState.commentBaselines,date))
       readerState.commentBaselines[date]=saved.feedback||'';
+    if(!Object.hasOwn(readerState.commentSuggestionDrafts,date))
+      readerState.commentSuggestionDrafts[date]=saved.comment_suggestions||[];
     if(!$('feedback').value&&saved.feedback){
       $('feedback').value=saved.feedback;
       readerState.commentDrafts[date]=saved.feedback;
+      FeedbackSuggestions.setSelected($('feedback'),readerState.commentSuggestionDrafts[date]);
     }
   }catch(err){feedbackStatus('Gespeicherte Bewertungen konnten nicht geladen werden: '+err.message);}
 }
@@ -196,7 +199,10 @@ $('date').onchange=async()=>{
   const previous=edition;
   // A comment draft belongs to one edition, never the date currently selected
   // in a dropdown while the asynchronous edition fetch is running.
-  if(previous)readerState.commentDrafts[previous.date]=$('feedback').value;
+  if(previous){
+    readerState.commentDrafts[previous.date]=$('feedback').value;
+    readerState.commentSuggestionDrafts[previous.date]=FeedbackSuggestions.getSelected($('feedback'));
+  }
   try{
     const next=await GitHubPaper.edition(requested);
     if(sequence!==readerState.loadSequence)return;
@@ -205,6 +211,7 @@ $('date').onchange=async()=>{
     edition=next;
     $('feedback').value=Object.hasOwn(readerState.commentDrafts,next.date)
       ?readerState.commentDrafts[next.date]:'';
+    FeedbackSuggestions.setSelected($('feedback'),readerState.commentSuggestionDrafts[next.date]||[]);
     $('feedback-confirmation').hidden=true;
     render();
     await restoreSavedRatings();
@@ -282,7 +289,9 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
     feedbackStatus('Wird gemeinsam auf GitHub gespeichert …');
     $('feedback-confirmation').hidden=true;
     const result=await DirectFeedback.submit(submittedEdition.date,selected,comment,token,
-      localStorage,fetch,{comparisonOnly:unchanged,baselineRatings:Object.fromEntries(selected.map(row=>[row.id,readerState.ratingBaselines[submittedEdition.date+':'+row.id]||null]))});
+      localStorage,fetch,{comparisonOnly:unchanged,
+        commentSuggestions:FeedbackSuggestions.getSelected($('feedback')),
+        baselineRatings:Object.fromEntries(selected.map(row=>[row.id,readerState.ratingBaselines[submittedEdition.date+':'+row.id]||null]))});
     for(const row of selected){
       const key=submittedEdition.date+':'+row.id;
       readerState.ratingBaselines[key]=row;
@@ -295,6 +304,8 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
       if(edition===submittedEdition&&$('feedback').value===submittedText){
         $('feedback').value=result.feedback;
         readerState.commentDrafts[submittedEdition.date]=result.feedback;
+        readerState.commentSuggestionDrafts[submittedEdition.date]=result.comment_suggestions||[];
+        FeedbackSuggestions.setSelected($('feedback'),readerState.commentSuggestionDrafts[submittedEdition.date]);
       }
     }
     // The previous issue may finish writing after the reader changed dates.
@@ -323,7 +334,13 @@ if(!latestDate){status('Noch keine veröffentlichte Ausgabe verfügbar.');return
 edition=await GitHubPaper.edition(latestDate);render();await RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken());await restoreSavedRatings();return;
 }catch(e){status('Morgenzeitung nicht erreichbar. '+e.message);}})();
 
-$('feedback').addEventListener('input',()=>{if(edition)readerState.commentDrafts[edition.date]=$('feedback').value;feedbackStatus('Änderung noch nicht gesendet.');});
+$('feedback').addEventListener('input',()=>{
+  if(edition){
+    readerState.commentDrafts[edition.date]=$('feedback').value;
+    readerState.commentSuggestionDrafts[edition.date]=FeedbackSuggestions.getSelected($('feedback'));
+  }
+  feedbackStatus('Änderung noch nicht gesendet.');
+});
 
 
 function refreshGitHubConnection(){
