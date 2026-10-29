@@ -171,10 +171,10 @@ const DirectFeedback=(()=>{
         comment?preserveComparisonNotes(base?.feedback,comment):(base?.feedback||'');
       if(mergedComment.length>4000)throw Error('Der gespeicherte Kommentar überschreitet 4000 Zeichen. Bitte kürzen.');
       if(!byId.size&&!mergedComment)throw Error('Bitte mindestens eine Bewertung oder Feedback eingeben.');
+      const freshPhraseSource=appendText||comment;
       const newSuggestions=(appendText&&mergedComment===(base?.feedback||''))||options.comparisonOnly
-        ?[]:options.commentSuggestions;
-      const tagged=commentSuggestions([...(base?.comment_suggestions||[]),
-        ...(Array.isArray(newSuggestions)?newSuggestions:[])],mergedComment);
+        ?[]:commentSuggestions(options.commentSuggestions,freshPhraseSource);
+      const tagged=commentSuggestions([...(base?.comment_suggestions||[]),...newSuggestions],mergedComment);
       const title=PREFIX+date;
       const payload={version:1,date,
         ratings:[...byId.values()].map(r=>({id:r.id,section:r.section,rating:r.value,reason:r.reason,...(codes(r).length?{reason_codes:codes(r)}:{}),...(suggested(r).length?{suggested_reasons:suggested(r)}:{})})),
