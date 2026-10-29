@@ -15,8 +15,6 @@ const RatingReasons=(()=>{
       box.dataset.v3Enhanced='true';
       const toolbar=document.createElement('div');toolbar.className='v3-quick-reasons';
       toolbar.setAttribute('role','group');toolbar.setAttribute('aria-label','Optionale kurze Bewertungsgründe');
-      const hint=document.createElement('p');hint.className='small';
-      hint.textContent='Optionale Gründe auswählen; eigener Text bleibt separat:';toolbar.append(hint);
       for(const [label,code] of CHOICES){
         const b=document.createElement('button');b.type='button';b.className='v3-reason-choice';
         b.textContent=label;b.dataset.reasonCode=code;
@@ -27,7 +25,7 @@ const RatingReasons=(()=>{
           sync(field);field.dispatchEvent(new CustomEvent('reasoncodes',{detail:selected}));box.open=true;
         };toolbar.append(b);
       }
-      input.parentNode.insertBefore(toolbar,input);sync(field);
+      input.parentNode.insertBefore(toolbar,input);box.open=true;sync(field);
     }
   }
   return {enhance,sync};
