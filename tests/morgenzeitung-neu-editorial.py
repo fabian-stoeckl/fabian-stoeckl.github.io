@@ -64,6 +64,42 @@ class EditorialEventTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"Incomplete related"):
             mod.validate(ed)
 
+    def test_correction_retains_original_article_identity(self):
+        ed=self.edition()
+        original=ed["headlines"][0]
+        original_id,original_url=original["id"],original["url"]
+        original["correction"]={
+            "corrected_at":"2026-10-30T11:15:00+01:00",
+            "previous_summary":"The earlier, incorrect description",
+            "note":"Corrected the verified interpretation of the decision.",
+            "source_url":"https://example.org/evidence"
+        }
+        mod.validate(ed)
+        self.assertEqual((original["id"],original["url"]),(original_id,original_url))
+
+    def test_correction_must_retain_previous_visible_text_and_valid_date(self):
+        ed=self.edition()
+        article=ed["headlines"][0]
+        article["correction"]={"corrected_at":"2026-10-30T11:15:00+01:00",
+            "previous_summary":article["summary"],"note":"Wrong claim",
+            "source_url":"https://example.org/evidence"}
+        with self.assertRaisesRegex(ValueError,"change"):
+            mod.validate(ed)
+        article["correction"]["previous_summary"]="Earlier incorrect words"
+        article["correction"]["corrected_at"]="2026-10-30T11:15:00"
+        with self.assertRaisesRegex(ValueError,"timezone"):
+            mod.validate(ed)
+
+    def test_correction_cannot_be_attached_to_imported_preview(self):
+        ed=self.edition()
+        ed["preview"]=True
+        ed["headlines"][0]["correction"]={
+            "corrected_at":"2026-10-30T11:15:00+01:00",
+            "previous_summary":"Old description","note":"Fixed text",
+            "source_url":"https://example.org/evidence"}
+        with self.assertRaisesRegex(ValueError,"real edition"):
+            mod.validate(ed)
+
     def test_preview_stays_historical_without_new_editorial_requirements(self):
         ed=self.edition()
         ed["preview"]=True

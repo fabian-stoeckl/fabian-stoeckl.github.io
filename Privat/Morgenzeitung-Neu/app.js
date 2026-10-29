@@ -77,6 +77,26 @@ function article(a,index,section='Vertiefungen'){
   const title=el('h2');title.append(link(a.title,a.url));
   body.append(title,el('p',a.summary,isHeadline?'news-summary':undefined));
   if(a.source_context)body.append(el('p',a.source_context,'small'));
+  // Keep correction visible beside the same original article and rating ID.
+  if(a.correction&&typeof a.correction.note==='string'){
+    const c=a.correction;
+    const box=el('div',undefined,'article-correction');
+    const heading=el('p',undefined,'small');
+    heading.append(el('strong','Berichtigung ('+fmt(c.corrected_at)+'): '),
+      document.createTextNode(c.note));
+    box.append(heading);
+    if(typeof c.source_url==='string'){
+      try{box.append(link('Beleg zur Berichtigung',c.source_url));}
+      catch(_){/* Invalid optional evidence link does not hide the correction. */}
+    }
+    if(typeof c.previous_summary==='string'&&c.previous_summary.trim()){
+      const history=el('details',undefined,'correction-history');
+      history.append(el('summary','Früherer Beschreibungstext'),
+        el('p',c.previous_summary,'small'));
+      box.append(history);
+    }
+    body.append(box);
+  }
   // Optional separate reporting; never claim this link is the paywalled original.
   const related=a.related_article;
   if(related&&typeof related.title==='string'&&typeof related.url==='string'&&typeof related.source==='string'){

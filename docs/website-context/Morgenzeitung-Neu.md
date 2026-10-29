@@ -26,6 +26,12 @@ Eigenständige neue Zeitung: `Privat/Morgenzeitung-Neu/`. Die vertraute klassisc
 - Pro echter Ausgabe privat wenige belegte Kernaussagen unter `## Tatsächlich vermittelt` dokumentieren und mit Folgetagen vergleichen; keine weitere Datei/Datenbank oder automatische Semantik-Löschroutine. Erste echte Ausgabe journalistisch abnehmen, nicht nur technische CI.
 - Doppelte Regressionserwartungen vereinfachen, Berechtigungen und Verhalten alter Ausgaben erhalten; ETF/alte Zeitungen nicht ändern.
 
+## Ergänzungen 29.10.2026 – Vereinfachung, Praxisabnahme und Korrekturen
+- Ausführliche Dopplungen über drei Prompts beseitigt: `INTERESSEN.md` ist allein für das Lernen und `RECHERCHE.md` allein für Auswahl, Belege, Korrekturen und Veröffentlichung zuständig. `README.md` erklärt kurz die Schnittstellen; die einzige tägliche Automation orchestriert und verweist auf die aktuelle Hauptbranch-Version.
+- Statt bloß erster echter Ausgabe: **erste drei** tatsächlich veröffentlichte `preview:false`-Ausgaben anhand überprüfbarer Beispiele journalistisch abnehmen (übersehene wesentliche Meldungen und bessere Alternativen, Quellenvielfalt, Erkenntniswert, Paywall-Neutralität, Belegtreue, Dopplungen), dritte Ausgabe mit kurzer Musterbilanz. Kein synthetisches Nutzerfeedback, keine weitere Automation oder Score-Tabelle.
+- Korrigierte falsche Artikelzusammenfassungen erhalten öffentlich `correction` (`corrected_at`, `previous_summary`, `note`, `source_url`) und eine sichtbare Berichtigung beim **gleichen Artikel**. Ursprüngliche Artikel-ID, URL, Rubrik, Datum und bestehende private Bewertungen bleiben erhalten. Im privaten Tagesdossier Falschaussagen ausdrücklich berichtigen; bei Feedback vor der Korrektur den damaligen sichtbaren Stand berücksichtigen bzw. Unsicherheit markieren.
+- Schema-/Browser-/Regressionstests für Berichtigungen; keine Änderungen am ETF oder am alten Zeitungsarchiv.
+
 ## Offen
-- Erste tatsächlich neu recherchierte Ausgabe nach privatem Belegdossier, Quellenprüfung, erfolgreichem Pull Request und überprüfter Veröffentlichung.
+- Erste drei tatsächlich neu recherchierte und veröffentlichte Ausgaben, mit dokumentierter journalistischer Praxisabnahme und Musterbilanz nach der dritten.
 - Späteren realen Lernerfolg an Artikelfeedback beurteilen, nicht an einer Änderung des Beschreibungstextes oder grüner CI.

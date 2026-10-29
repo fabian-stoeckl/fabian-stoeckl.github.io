@@ -226,3 +226,9 @@ body.preferences-view .topline #profile-toggle{display:none!important}
 }
 
 .v3-reason-choice[aria-pressed="true"] { background: #204c70; color: white; border-color: #204c70; }
+
+/* Public corrections are visible but do not alter the article's feedback identity. */
+.article-correction{border-inline-start:2px solid var(--accent);margin:14px 0;padding:4px 10px}
+.article-correction p{margin:4px 0}
+.article-correction .correction-history{font-size:.82rem}
+.article-correction .correction-history summary{cursor:pointer}
