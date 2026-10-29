@@ -64,6 +64,7 @@ const {chromium}=require('playwright');
    assert.equal(await page.locator('#articles').isVisible(),true);
    assert.equal(await page.locator('#articles .article-correction').count(),1);
    assert.match(await page.locator('#articles .article-correction').innerText(),/unzutreffende Behauptung wurde berichtigt/);
+   assert.equal(await page.getByRole('link',{name:'Beleg zur Berichtigung'}).getAttribute('href'),'https://example.org/evidence');
    await page.locator('#articles .correction-history summary').first().click();
    assert.equal(await page.getByText('Falsche ursprüngliche Zusammenfassung').count(),1);
    assert.equal(await page.getByText('Weiterer Beitrag zum Thema:').count(),1,'Related reporting is separately marked');
