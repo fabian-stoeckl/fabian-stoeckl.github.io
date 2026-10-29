@@ -41,7 +41,7 @@ const RatingReasons=(()=>{
       if(!response.ok)return;
       const file=await response.json();
       const data=JSON.parse(new TextDecoder().decode(
-        Uint8Array.from(atob(file.content.replace(/\\s/g,'')),c=>c.charCodeAt(0))));
+        Uint8Array.from(atob(file.content.replace(/\s/g,'')),c=>c.charCodeAt(0))));
       if(data.version!==1||!Array.isArray(data.suggestions))return;
       if(current!==currentRequest||DirectFeedback.readToken()!==token)return;
       personalized=[...new Set(data.suggestions.filter(x=>typeof x==='string').map(x=>x.trim())
