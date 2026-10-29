@@ -4,6 +4,11 @@ let config, edition, latestDate;
 const readerState={visibleArticles:[],visibleHeadlines:[],ratingDrafts:{},commentDrafts:{},
   commentSuggestionDrafts:{},commentBaselines:{},ratingBaselines:{},loadSequence:0,saving:false};
 const draftKey=a=>edition.date+':'+(a.id||a.url);
+function stashComment(date){
+  if(!date)return;
+  readerState.commentDrafts[date]=$('feedback').value;
+  readerState.commentSuggestionDrafts[date]=FeedbackSuggestions.getSelected($('feedback'));
+}
 function feedbackStatus(msg){$('feedback-status').textContent=msg;for(const id of ['news-feedback-status','features-feedback-status'])if($(id))$(id).textContent=msg;}
 const $=id=>document.getElementById(id);
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
@@ -199,15 +204,11 @@ $('date').onchange=async()=>{
   const previous=edition;
   // A comment draft belongs to one edition, never the date currently selected
   // in a dropdown while the asynchronous edition fetch is running.
-  if(previous){
-    readerState.commentDrafts[previous.date]=$('feedback').value;
-    readerState.commentSuggestionDrafts[previous.date]=FeedbackSuggestions.getSelected($('feedback'));
-  }
+  if(previous)stashComment(previous.date);
   try{
     const next=await GitHubPaper.edition(requested);
     if(sequence!==readerState.loadSequence)return;
-    if(previous&&edition===previous)
-      readerState.commentDrafts[previous.date]=$('feedback').value;
+    if(previous&&edition===previous)stashComment(previous.date);
     edition=next;
     $('feedback').value=Object.hasOwn(readerState.commentDrafts,next.date)
       ?readerState.commentDrafts[next.date]:'';
@@ -335,10 +336,7 @@ edition=await GitHubPaper.edition(latestDate);render();await RatingReasons.loadP
 }catch(e){status('Morgenzeitung nicht erreichbar. '+e.message);}})();
 
 $('feedback').addEventListener('input',()=>{
-  if(edition){
-    readerState.commentDrafts[edition.date]=$('feedback').value;
-    readerState.commentSuggestionDrafts[edition.date]=FeedbackSuggestions.getSelected($('feedback'));
-  }
+  if(edition)stashComment(edition.date);
   feedbackStatus('Änderung noch nicht gesendet.');
 });
 
