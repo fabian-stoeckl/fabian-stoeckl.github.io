@@ -326,7 +326,7 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
 };
 (async()=>{try{config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode!=='github')throw Error('Ungültiger V3-Modus');
 $('feedback').maxLength=4000;
-$('feedback-form').querySelector('button').textContent='Feedback speichern';
+// The existing submit button already has the correct label in HTML.
 refreshGitHubConnection();$('feedback').required=false;
 const index=await GitHubPaper.json('./data/index.json');latestDate=index.dates[0];$('date').replaceChildren();
 for(const d of index.dates){const o=el('option',d);o.value=d;$('date').append(o);}
