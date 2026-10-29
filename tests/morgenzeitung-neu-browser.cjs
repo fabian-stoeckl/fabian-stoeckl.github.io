@@ -14,7 +14,8 @@ const {chromium}=require('playwright');
     const req=route.request(),url=new URL(req.url());
     let response;
     if(url.pathname.includes('/contents/morgenzeitung-neu/')){
-     response={content:Buffer.from(url.pathname.endsWith('interessen.md')?'Ich interessiere mich für gut belegte Analysen und neue wirtschaftliche Erkenntnisse.':'28.10.2026: Startbeschreibung aus früherem Feedback übernommen.').toString('base64')};
+     const responseText=url.pathname.endsWith('begruendungsvorschlaege.json')?JSON.stringify({version:1,suggestions:['Zu juristisch für ein Randthema']}):url.pathname.endsWith('interessen.md')?'Ich interessiere mich für gut belegte Analysen und neue wirtschaftliche Erkenntnisse.':'28.10.2026: Startbeschreibung aus früherem Feedback übernommen.';
+     response={content:Buffer.from(responseText).toString('base64')};
     }else if(req.method()==='POST'&&url.pathname.endsWith('/issues')){
      const body=req.postDataJSON();
      response={...body,number:50+issues.length,html_url:'https://github.com/fabian-stoeckl/morgenzeitung-feedback/issues/'+(50+issues.length),updated_at:'2026-10-28T16:00:00Z'};
