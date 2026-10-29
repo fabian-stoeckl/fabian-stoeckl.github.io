@@ -9,6 +9,10 @@ Die einzige aktive Morgenzeitung unter `Privat/Morgenzeitung-Neu/` übernimmt be
 3. **Privates Tagesdossier:** `fabian-stoeckl/morgenzeitung-feedback/morgenzeitung-neu/recherche/YYYY-MM-DD.md` hält echte Originalbelege und `## Tatsächlich vermittelt` als dokumentierten **Zeitungsinhalt**, nie als behauptete Leserlektüre. Für die **ersten drei echten publizierten Ausgaben** jeweils eine kurze journalistische Qualitätsabnahme; nach der dritten eine zusammenfassende, belegte Musterprüfung. Nicht die importierte Vorschau mitzählen.
 4. **Öffentliche Ausgabe:** `Privat/Morgenzeitung-Neu/data/YYYY-MM-DD.json` und Index, V3-kompatibel, für echte Ausgaben `preview:false`. Die übernommene Ausgabe 2026-10-28 bleibt `preview:true` und zählt weder als echte Recherche noch als Lernerfolgsnachweis. Private Profile/Kommentare gehören **nicht** in öffentliches JSON.
 
+## Qualitative Lernbilanz – ohne zusätzliche Automation
+
+`INTERESSEN.md` pflegt im bestehenden Morgenlauf die private `morgenzeitung-neu/lernmonitoring.md`; `Meine Präferenzen` zeigt sie nach authentifiziertem Contents-Read an. Ausgangsbilanz nach drei echten Veröffentlichungen; danach etwa zweiwöchig prüfen, nach etwa zwei Monaten längerfristig rückblicken. Nur echter nachfolgender Feedback-Kontext kann einen Lerneffekt belegen; bei wenig Rückmeldungen ausdrücklich **noch nicht beurteilbar**. Redaktionelle Qualität und persönliche Lernwirkung sind getrennt. Keine numerische Erfolgspunktzahl oder zusätzliche Aufgabe.
+
 ## Integrität und nachträgliche Berichtigungen
 
 `scripts/morgenzeitung_neu.py verify` testet ausschließlich Datenstruktur, URL-/ID-Eindeutigkeit und strukturierte Korrekturen – **keine** journalistische Wahrheit. `event_key` gruppiert optionale Nachrichtenanlässe; mehrere unterschiedliche Originalartikel dürfen bleiben, wenn `distinct_contribution` echten Zusatzwert begründet (nur redaktionelle Hinweise, keine automatische Löschung). `related_article` bezeichnet ausdrücklich einen separaten Originalbeitrag, keinen erfundenen Zugang zum ungelesenen Paywall-Text.

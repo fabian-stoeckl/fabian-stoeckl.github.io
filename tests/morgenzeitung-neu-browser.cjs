@@ -13,8 +13,11 @@ const {chromium}=require('playwright');
    await page.route('https://api.github.com/**',async route=>{
     const req=route.request(),url=new URL(req.url());
     let response;
+    if(url.pathname.endsWith('/lernmonitoring.md')&&width===390){
+     await route.fulfill({status:404,json:{message:'Not Found'}});return;
+    }
     if(url.pathname.includes('/contents/morgenzeitung-neu/')){
-     const responseText=url.pathname.endsWith('begruendungsvorschlaege.json')?JSON.stringify({version:1,suggestions:['Zu juristisch für ein Randthema']}):url.pathname.endsWith('interessen.md')?'Ich interessiere mich für gut belegte Analysen und neue wirtschaftliche Erkenntnisse.':'28.10.2026: Startbeschreibung aus früherem Feedback übernommen.';
+     const responseText=url.pathname.endsWith('lernmonitoring.md')?'Lernbilanz · Morgenzeitung Neu\nNoch nicht beurteilbar.':url.pathname.endsWith('begruendungsvorschlaege.json')?JSON.stringify({version:1,suggestions:['Zu juristisch für ein Randthema']}):url.pathname.endsWith('interessen.md')?'Ich interessiere mich für gut belegte Analysen und neue wirtschaftliche Erkenntnisse.':'28.10.2026: Startbeschreibung aus früherem Feedback übernommen.';
      response={content:Buffer.from(responseText).toString('base64')};
     }else if(req.method()==='POST'&&url.pathname.endsWith('/issues')){
      const body=req.postDataJSON();
@@ -93,6 +96,11 @@ const {chromium}=require('playwright');
    assert.match(await page.locator('#profile-text').innerText(),/wirtschaftliche Erkenntnisse/);
    assert.ok((await page.locator('#profile-changes').innerText()).includes('Startbeschreibung'));
    assert.equal(await page.locator('#preference-comment').isVisible(),true);
+   await page.waitForFunction(()=>!document.querySelector('#learning-monitor').textContent.includes('geladen'));
+   assert.match(await page.locator('#learning-monitor').innerText(),
+     width===390?/Noch keine Lernbilanz vorhanden/:/Noch nicht beurteilbar/);
+   assert.equal(await page.locator('#learning-monitor').isVisible(),true);
+
    const prefSuggestion=await page.locator('.feedback-suggestions button').first().innerText();
    await page.locator('.feedback-suggestions button').first().click();
    const pref=page.locator('#preference-comment');

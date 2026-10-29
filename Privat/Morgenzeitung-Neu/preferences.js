@@ -5,7 +5,11 @@ async function privateFile(path){
  const token=DirectFeedback.readToken();
  if(!token)throw Error('Bitte zuerst deinen GitHub-Zugang auf der Zeitungsseite verbinden.');
  const r=await fetch(root+'/contents/'+path,{cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer',headers:{Accept:'application/vnd.github+json',Authorization:'Bearer '+token}});
- if(!r.ok)throw Error('Privater Zugriff fehlgeschlagen (HTTP '+r.status+'). Bitte die Berechtigung Contents: Read prüfen.');
+ if(!r.ok){
+  const err=Error('Privater Zugriff fehlgeschlagen (HTTP '+r.status+'). Bitte die Berechtigung Contents: Read prüfen.');
+  err.status=r.status;
+  throw err;
+ }
  const file=await r.json();
  return new TextDecoder().decode(Uint8Array.from(atob(String(file.content||'').replace(/\s/g,'')),c=>c.charCodeAt(0)));
 }
@@ -16,11 +20,17 @@ async function refresh(){
   show('profile-status','Verbinde deinen GitHub-Zugang auf der Zeitungsseite, um deine persönliche Beschreibung zu lesen.');
   show('feedback-summary','Ohne Verbindung sind keine persönlichen Bewertungen sichtbar.');
   show('profile-changes','Die Änderungen werden nach der Verbindung angezeigt.');
+  show('learning-monitor','Verbinde deinen GitHub-Zugang, um deine private Lernbilanz zu lesen.');
   return;
  }
  const tasks=[
   privateFile('morgenzeitung-neu/interessen.md').then(t=>{byId('profile-text').textContent=t;byId('profile-text').hidden=false;show('profile-status','Aktuelle Fassung aus dem privaten Redaktionsgedächtnis.');}).catch(e=>show('profile-status',e.message)),
   privateFile('morgenzeitung-neu/aenderungen.md').then(t=>show('profile-changes',t)).catch(e=>show('profile-changes',e.message)),
+  privateFile('morgenzeitung-neu/lernmonitoring.md')
+    .then(t=>show('learning-monitor',t.trim()||'Noch keine belastbare Lernbilanz vorhanden.'))
+    .catch(e=>show('learning-monitor',e.status===404
+      ?'Noch keine Lernbilanz vorhanden. Sie beginnt nach den ersten echten Ausgaben und Rückmeldungen.'
+      :'Lernbilanz konnte nicht privat gelesen werden: '+e.message)),
   DirectFeedback.feedbackHistory(token).then(history=>{
     const ratings=new Map();
     // Latest explicitly saved article state wins; earlier issue versions are not extra votes.
