@@ -102,7 +102,7 @@ def merge_archive(fresh, previous):
             continue
         if (not isinstance(post.get("title"), str) or not post["title"].strip() or
                 not isinstance(post.get("published_at"), str) or
-                not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", post["published_at"])):
+                not re.fullmatch(r"\d{4}-\d{2}-\d{2}", post["published_at"])):
             continue
         seen.add(key)
         combined.append(post)
