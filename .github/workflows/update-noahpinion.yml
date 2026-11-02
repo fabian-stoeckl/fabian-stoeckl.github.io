@@ -2,6 +2,12 @@ name: Refresh Noahpinion blog links
 on:
   schedule:
     - cron: '13 */3 * * *'
+  # Backfill the available RSS archive on deployment of parser changes.
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/sync_blogs.py'
+      - '.github/workflows/update-noahpinion.yml'
   workflow_dispatch:
 
 permissions:
