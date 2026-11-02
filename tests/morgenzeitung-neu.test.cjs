@@ -23,7 +23,7 @@ assert.match(fs.readFileSync('Privat/Pressespiegel-Archiv/index.html','utf8'),/A
 assert.match(page,/id="blogs" aria-label="Blogs"/);
 assert.match(page,/raw.githubusercontent.com/);
 const blogData=JSON.parse(fs.readFileSync(path+'data/blogs.json','utf8'));
-assert.equal(blogData.posts.length,5);
+assert.ok(blogData.posts.length>=5,'RSS fallback retains five or more posts');
 assert.equal(blogData.author,'Noah Smith');
 assert.match(fs.readFileSync(path+'app.js','utf8'),/blogLastCheck/);
 assert.match(fs.readFileSync(path+'app.js','utf8'),/blogVisibleCount\+10/);

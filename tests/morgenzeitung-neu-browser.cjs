@@ -55,6 +55,7 @@ const fs=require('node:fs');
    await page.route('https://raw.githubusercontent.com/**/blogs-live/**',async route=>{
      const payload=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/blogs.json','utf8'));
      // Simulate a retained RSS archive with 28 posts, including guest authors.
+     payload.posts=payload.posts.slice(0,5);
      for(let n=5;n<28;n++)payload.posts.push({
        title:'Older Noahpinion entry '+n,
        url:'https://www.noahpinion.blog/p/test-archive-'+n,
