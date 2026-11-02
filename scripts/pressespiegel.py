@@ -71,7 +71,7 @@ def feedback_packet(issues,state):
             'note':'State proposal only: save after actual reading and profile update. No automatic interpretation.'}
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('action',choices=['verify','feedback']);p.add_argument('--root',default='Privat/Pressespiegel/data');p.add_argument('--issues');p.add_argument('--state');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('action',choices=['verify','feedback']);p.add_argument('--root',default='Privat/Pressespiegel-Archiv/data');p.add_argument('--issues');p.add_argument('--state');a=p.parse_args()
     if a.action=='feedback':
         print(json.dumps(feedback_packet(json.loads(Path(a.issues).read_text()),json.loads(Path(a.state).read_text())),ensure_ascii=False,indent=2));return
     root=Path(a.root);dates=json.loads((root/'index.json').read_text())['dates']

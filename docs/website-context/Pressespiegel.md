@@ -1,43 +1,61 @@
-<!-- website-area: {"name":"Pressespiegel","paths":["Privat/Pressespiegel/"]} -->
+<!-- website-area: {"name": "Pressespiegel", "paths": ["Privat/Pressespiegel/"]} -->
 # Bereichsprotokoll: Pressespiegel
 
-**Stand:** 28.10.2026. **Status:** Neuer Pressespiegel veröffentlicht; automatischer täglicher Concierge-Ablauf aktiv.
+**Stand:** 29.10.2026
 
-## Auftrag und Konzept
+Eigenständige neue Zeitung: `Privat/Pressespiegel/`. Die vertraute klassische V3-Oberfläche wird bewusst als Grundlage kopiert: Papierfarben, Typografie, die Tabs „Heute wichtig“/„Vertiefungen“, Bewertungen und Schnellgründe, stets offenes Freitextfeedback mit Formulierungsvorschlägen, eigene Präferenzseite.
 
-Nutzer wünscht vollständigen Neustart: Ein täglicher automatischer Lauf liest Rückmeldungen, verbessert die natürlich formulierte Interessenbeschreibung, speichert sie, nutzt sie zur eigentlichen Recherche und publiziert die besten Artikel auf der Website. Keine manuelle Promptbedienung nötig. Zwei getrennte Prompts, nacheinander im selben Morgenlauf; keine Rankingengine, Themengewichte, festen Lernschwellen, Gegenfaktual-Simulationen oder zusätzlichen Rechercheplan-Dateien.
+## Entscheidungen
+- Die neue Engine besteht aus einem qualitätsorientierten, im privaten Repository wachsenden Interessenbeschreibungstext und anschließender langer, journalistisch eigenständiger Recherche. Der Text ist das zentrale Gedächtnis, keine numerischen Gewichte.
+- Aus nicht begründeten positiven und negativen Klicks vorsichtige, reversible Musterhypothesen bilden, gegen positive Gegenbeispiele halten und in späteren Ausgaben prüfen; Einzelablehnung nicht als ganze Themenablehnung deuten.
+- Identität, Originaltitel, Datum, Zeitbezug und jede Tatsachenaussage aus tatsächlich gesichtetem Titel/Vorspann/Text belegen. Redaktionsbelege privat, keine erdachten Inhalte. Nachrichtenwert und individuelle Passung trennen.
+- Keine technischen Artikel-Linktests, Paywall-Abwertung, Markenboni, künstliche Platzquoten, erneuten Doppeleintrag historischer Ratings oder Scheinsicherheit.
+- Neuer privater Ordner `morgenzeitung-neu/`, neuer Issue-Marker, bereits vorhandene alte Versionsarchive bleiben erhalten. Die alte Ausgabe 28.10. wird nur als `preview:true` übernommen; sie wurde nicht mit der neuen Engine recherchiert.
+- Vertraute Kachel „Website ändern“ und ETF vollständig erhalten. Nur die Zeitungskachel führt zur neuen Seite.
 
-Neue Website `Privat/Pressespiegel/`; zwei Prompts `services/pressespiegel/INTERESSEN.md` und `RECHERCHE.md`; einfache Betriebs-/Schemaangaben in README. Beschreibung privat in `pressespiegel/interessen.md`, begleitet von knapper Änderungsnotiz und gelesenen Feedbackversionen. Browser kann den Text anzeigen/kopieren; Kopieren ist optional. Bewertungen und freie Wünsche speichern neue Ereignisse im bestehenden privaten Repository. Unbestätigte Übertragungen werden mit derselben Kennung erneut geprüft, kein Überschreiben anderer Geräte.
+## Ergänzungen 29.10.2026 – journalistisches Qualitätsaudit
+- Mehrfachberichte nicht nach Wortähnlichkeit löschen, sondern bei gemeinsamen Ereignissen mit `event_key` gruppieren und einen anderen Erkenntnisbeitrag ggf. durch `distinct_contribution` begründen; informierende CLI-Meldungen statt harter Inhaltsblockade.
+- **Heute wichtig:** Neuigkeiten seit der letzten nachweislich erfolgreichen Veröffentlichung einer echten Ausgabe, mit kurzer Überschneidung, Nachholung ausgefallener Tage und abschließendem Nachrichten-Check. Importierte Vorschauen und Tests sind kein Ausgangsdatum. **Vertiefungen:** ausdrücklich keine starre Altersgrenze; auch vor einer Woche oder länger veröffentlichte, bisher übersehene Originalanalysen bei erheblichem Erkenntniswert aufnehmen. Ereignis-, Veröffentlichungs-, Änderungs- und Publikationszeitpunkt auseinanderhalten.
+- Pro Aussage tatsächlich sichtbares Originalmaterial, Quellenrolle und Ungewissheit privat dokumentieren. Bei Paywalls strikte Trennung zwischen dem ausgewählten, nur teilweise lesbaren Original und Kontext aus anderen Quellen. Optional `related_article` für klar gesonderte weiterführende Lektüre.
+- Ganze Ausgabe nach Nachrichtenwert, österreichischen Themen, Genre-/Perspektivenvielfalt, Mehrwert und echtem Zuckerl durchdenken; keine Quoten, Score-Engine oder individuellen Artikel-Linktests.
+- Bestehende eine Morgenautomation früher starten, aber Ziel 07:45 Europe/Vienna behalten. ETF und andere Leseroberflächen bleiben unangetastet.
 
-## Inhalte und Übergang
+## Ergänzungen 29.10.2026 – Lernen, redaktioneller Gedächtnisstand und Codepflege
+- Allgemeine vorgefertigte Textantworten in beiden Feedbackfeldern werden als `comment_suggestions` getrennt von unabhängig getipptem Text im bestehenden privaten Feedback-Issue gekennzeichnet. Keine retroaktive falsche Kennzeichnung alter Antworten, Herkunft beim Ändern/Ausgabenwechsel/Anhängen erhalten.
+- „Heute wichtig“-Urteile nicht als Urteil über objektiven Nachrichtenwert deuten; persönliche Passung vor allem in „Vertiefungen“ lernen. Unerwünschte Filterblasen und Selbstbestätigung durch vorgeschlagene Formulierungen vermeiden.
+- Pro echter Ausgabe privat wenige belegte Kernaussagen unter `## Tatsächlich vermittelt` dokumentieren und mit Folgetagen vergleichen; keine weitere Datei/Datenbank oder automatische Semantik-Löschroutine. Erste echte Ausgabe journalistisch abnehmen, nicht nur technische CI.
+- Doppelte Regressionserwartungen vereinfachen, Berechtigungen und Verhalten alter Ausgaben erhalten; ETF/alte Zeitungen nicht ändern.
 
-Rubriken Heute wichtig und Für dich ausgewählt. Die Quellenliste ist Anregung, keine Pflichtliste. Recherche journalistisch, offene Suchfragen aus dem Beschreibungstext; Qualität, Originalbelege und unabhängige Nachrichtenrelevanz bleiben wichtig. Technische Tests sind keine Faktenprüfung.
+## Ergänzungen 29.10.2026 – Vereinfachung, Praxisabnahme und Korrekturen
+- Ausführliche Dopplungen über drei Prompts beseitigt: `INTERESSEN.md` ist allein für das Lernen und `RECHERCHE.md` allein für Auswahl, Belege, Korrekturen und Veröffentlichung zuständig. `README.md` erklärt kurz die Schnittstellen; die einzige tägliche Automation orchestriert und verweist auf die aktuelle Hauptbranch-Version.
+- Statt bloß erster echter Ausgabe: **erste drei** tatsächlich veröffentlichte `preview:false`-Ausgaben anhand überprüfbarer Beispiele journalistisch abnehmen (übersehene wesentliche Meldungen und bessere Alternativen, Quellenvielfalt, Erkenntniswert, Paywall-Neutralität, Belegtreue, Dopplungen), dritte Ausgabe mit kurzer Musterbilanz. Kein synthetisches Nutzerfeedback, keine weitere Automation oder Score-Tabelle.
+- Korrigierte falsche Artikelzusammenfassungen erhalten öffentlich `correction` (`corrected_at`, `previous_summary`, `note`, `source_url`) und eine sichtbare Berichtigung beim **gleichen Artikel**. Ursprüngliche Artikel-ID, URL, Rubrik, Datum und bestehende private Bewertungen bleiben erhalten. Im privaten Tagesdossier Falschaussagen ausdrücklich berichtigen; bei Feedback vor der Korrektur den damaligen sichtbaren Stand berücksichtigen bzw. Unsicherheit markieren.
+- Schema-/Browser-/Regressionstests für Berichtigungen; keine Änderungen am ETF oder am alten Zeitungsarchiv.
 
-Startausgabe vom 28.10. übernimmt die vorhandenen belegten Artikel als sichtbar gekennzeichnete historische Ausgabe; keine neu erfolgte Recherche behauptet. Alte Zeitung, Artikel-IDs und Bewertungen bleiben erhalten. Kachel im Privatbereich führt zum neuen Reader, bestehende ETF-/Skill-Kacheln unverändert.
-
-Der bestehende tägliche Lauf wird nach erfolgreicher Veröffentlichung auf die zwei neuen Prompts umgestellt: 06:45 Europe/Vienna, Ziel Veröffentlichung bis 07:45. Die bisherige separate V3-Störungswache wird pausiert; keine parallele Zeitungserzeugung. Die befristete alte Score-Lernmessung entfällt. Fehler im täglichen Lauf selbst melden und letzte gültige Ausgabe erhalten.
-
-## Umsetzung und Prüfung
-
-Ausgangs-/Rücknahmebasis `137161e28e2cdcbc707152085cd46484a994e3ed`, Branch `feat/pressespiegel-simple`. Expliziter Auftrag zum autonomen täglichen Veröffentlichen liegt vor. Neubau enthält eigene Anzeige-, Feedback- und Schemafunktionen, keine Imports aus dem V3-Reader. Lokale neue Unit-Tests und mobile/Desktop-Browserprüfung einschließlich abgebrochener Antwort nach erfolgreichem Speichern bestanden. Weitere CI-/Produktionschecks und privater Profil-Readback vor Aktivierung erforderlich.
+## Ergänzung 29.10.2026 – Schlankes Monitoring des Lernerfolgs
+- Unter `Meine Präferenzen` eigener Bereich „Wie gut lernt meine Morgenzeitung?“ mit privatem, über das bestehende GitHub-Contents-Recht gelesenem Klartext aus `morgenzeitung-neu/lernmonitoring.md`. Keine eigenen Ratings, Analytics-Tracker oder öffentliche Profile.
+- `INTERESSEN.md` ist alleinige fachliche Quelle für die qualitative Lernprüfung: erste Ausgangsbilanz nach drei echten Veröffentlichungen; danach ungefähr alle 14 Tage und nach etwa zwei Monaten eine längere Rückschau im schon bestehenden Tageslauf. Klare Trennung von redaktioneller Drei-Ausgaben-Abnahme.
+- Zu jeder Behauptung über Lernen gehören ursprünglich beobachtetes echtes Feedback, mögliche alternative Erklärung, konkrete Auswahländerung, spätere unabhängige echte Artikelreaktion samt Gegenbeispielen. Unbewertet neutral; Vorlagenklicks/alte Issue-Versionen nicht als zusätzlichen Beweis zählen. Ohne genügend Reaktionen „noch nicht beurteilbar“ statt erfundener positiver Trend.
+- Private Initialdatei beginnt ohne erfundene Hypothesen oder Erfolge; klares UI für fehlenden GitHub-Zugang und 404-Fallback. Keine neue Automation, unveränderte ETF- und V3-Teile.
 
 ## Offen
+- Erste drei tatsächlich neu recherchierte und veröffentlichte Ausgaben, mit dokumentierter journalistischer Praxisabnahme und Musterbilanz nach der dritten.
+- Späteren realen Lernerfolg an Artikelfeedback beurteilen, nicht an einer Änderung des Beschreibungstextes oder grüner CI.
 
-PR/CI, private Startbeschreibung, Deployment/Live-Abnahme und tatsächliche Umstellung des vorhandenen Morgenlaufs dokumentieren. Erster autonomer Lauf nach neuem Konzept steht noch aus. Historisches Material nicht als Beleg für neue Recherche- oder Lernqualität darstellen.
+## Ergänzung 02.11.2026 – Rubrik Blogs
+- Dritter Reiter **Blogs** ohne Bewertungssystem. Zeigt Blogname und jeweils fünf letzte direkte Beitragslinks mit Datum und kurzer Beschreibung. Bestehende Tagesausgaben, Nachrichten, Vertiefungen und privates Feedback unberührt.
+- Erster Blog **Noah Smith · Noahpinion**, `https://www.noahpinion.blog/feed`; Gastbeiträge anderer Autoren ausdrücklich mitzählen; Autor je Beitrag nennen, soweit im Feed angegeben. Entscheidend sind die fünf neuesten Posts des gesamten Blogs, nicht nur Noah Smiths eigene Texte.
+- Unabhängige GitHub-Actions-Aktualisierung alle drei Stunden: `scripts/sync_blogs.py` prüft den RSS-Feed und schreibt nur auf den separaten Datenbranch `blogs-live`; keine direkten automatischen Änderungen an `main`, keine weitere ChatGPT-Automation. Reader lädt aktuelle Daten von GitHub Raw und fällt bei Fehlern auf die im Hauptbranch gespeicherte Startliste zurück. Feedtext nicht als redaktionell geprüfte Synthese behandeln.
 
-### Geprüfter Entwurfsstand
+## Korrektur 02.11.2026 – Gastbeiträge zählen mit
+- Nutzer hinterfragte die ohne Auftrag vorgenommene Eingrenzung auf persönlich von Noah Smith verfasste Beiträge. Für **Noahpinion** gelten fortan die letzten fünf Artikel des ganzen Blogs inklusive Gastbeiträgen. Das Feed-Skript filtert nicht nach Autor; Autorzeile im Reader bei vorhandenen RSS-Angaben.
 
-Fünf neue Python-Tests und mobile/Desktop-Tests bei 390/1440 Pixeln bestanden, einschließlich Lesen der Beschreibung, Bewertungen/Freitext und Retry nach verloren gegangener Speicherbestätigung ohne doppeltes Issue. Alte 96 Python-Regressionen, JS-Tests und Kontextprüfung weiterhin erfolgreich. Private Startbeschreibung mit Herkunftsnotiz und Issue-Version über privaten PR #11 zusammengeführt; ursprüngliche Daten unverändert. Kein autonomer neuer Recherchelauf vorgetäuscht. Erst nach Bereitstellung wird der vorhandene Tageslauf umgestellt.
+## Ergänzung 02.11.2026 – Ältere Blogbeiträge aufklappen
+- Die fünf neuesten Blogbeiträge sind zuerst sichtbar. „Weitere 10 Beiträge anzeigen“ erweitert die **gleiche** Liste pro Klick um zehn (letzter Schritt ggf. weniger); nach Ende der gespeicherten Liste verschwindet der Button. Erweiterten Zustand beim Rubrikwechsel erhalten; **keine Bewertungen**.
+- Die bestehende RSS-Automation speichert künftig alle derzeit im RSS angebotenen Beiträge und führt sie mit den bereits gespeicherten älteren Feed-Beiträgen zusammen. Dadurch gehen Beiträge beim Herausfallen aus dem RSS-Zeitfenster nicht wieder verloren. Keine Behauptung, das vollständige historische Blogarchiv vor dem ersten Feedabruf rückwirkend zu besitzen. Die Startliste im Hauptbranch bleibt Notfall-Fallback, nicht ein vorgeblich vollständiges Archiv.
 
-
-## Abschluss 28.10.2026 – live und automatisch eingerichtet
-
-Public PR [#241](https://github.com/fabian-stoeckl/fabian-stoeckl.github.io/pull/241) nach allen erfolgreichen PR-Prüfungen zusammengeführt: geprüfter Head `85e52b7ee80c0b01eb45e0d70469ba3dbab45cd3`, Merge `967eb87c3a3fc360e5f352dfacdd32d6a885a802`. Pages-Bereitstellung [40722073337](https://github.com/fabian-stoeckl/fabian-stoeckl.github.io/actions/runs/40722073337) erfolgreich. Sieben produktive Dateien (Reader, drei lokale Assets, Index, Startausgabe, Privat-Einstieg) per HTTPS 200 bytegleich zum getesteten Stand gelesen. Mobile/Desktop-Darstellung lokal visuell und im Browser geprüft; dies ist keine separate visuelle Live-Browserprüfung.
-
-Private Startbeschreibung, Änderungsnotiz und Zustand über privaten PR #11 zusammengeführt, alle drei Dateien identisch zurückgelesen. Alte Profile, Rückmeldungen, Artikel-IDs und Belegdossiers unverändert. Keine numerischen Gewichte in den neuen Beschreibungstext übernommen.
-
-Bestehende Automation `6ae148b170108191a9414da73668e09a` heißt jetzt **Persönlicher Pressespiegel** und ist aktiv. Zeitplan unverändert täglich 06:45 Europe/Vienna; Ziel Veröffentlichung bis 07:45. Neuer Auftrag vollständig gespeichert und zurückgelesen: Originalrückmeldungen auf GitHub lesen → Beschreibung bei Bedarf verbessern und speichern → gespeicherte Beschreibung frisch lesen → recherchieren/auswählen → per PR/CI auf der Website veröffentlichen. Kein manuelles Starten, Kopieren von Prompts oder tägliches Freigeben nötig. Explizite Nutzerbestätigung dieses Kreislaufs und des Concierge-Betriebs liegt vor. Alte separate V3-Störungswache `6ae0b7da23cc81919d2ecd1546bdc081` pausiert und zurückgelesen; keine neue oder parallele Automation erstellt.
-
-Frühere Angaben „ausstehend/Entwurf“ oben dokumentieren den Vorbereitungsstand. Offen bleibt der erste echte autonome Morgenlauf und die tatsächliche Wirkung späterer Rückmeldungen. Startausgabe enthält sichtbar gekennzeichnete übernommene Artikel; keine neue Recherche behauptet. Dieser Abschluss ist reine Protokollpflege; sein Merge-/Checkstatus steht im zugehörigen PR. Rücknahme nur eigener Änderungen, unabhängige spätere Commits erhalten.
-
-Die neue Quellenliste wurde beim Abschluss auf reine unverbindliche Beispiele reduziert; historische Fixstarter-, Bewährungs- und Beförderungsregeln aus V3 gelten nicht. Keine Änderung der alten Quellenliste oder der Website-Inhalte.
+## 02.11.2026 – Öffentlicher Name und neue Adresse
+- Die **aktuelle** Zeitung heißt jetzt **Pressespiegel**, auch Kachel, URL, Masthead, Präferenzseite, Links, 404-Seite und RSS-Liste. Ziel `Privat/Pressespiegel/`. Der vorangegangene Stand dieser aktuellen Zeitung unter `Privat/Morgenzeitung-Neu/` bleibt als weiterleitende Adresse erhalten.
+- Die früher eigenständige historische Pressespiegel-Variante wurde als `Privat/Pressespiegel-Archiv/` mit Code, Ausgabe und Styles gesichert.
+- Das bestehende private Feedback-Repository verwendet weiterhin `morgenzeitung-neu/` und den Marker `MORGENZEITUNG_NEU_FEEDBACK_V1`, damit bestehende Ratings/Präferenzen erhalten bleiben. Neue Feedbacktitel heißen `[Pressespiegel] Feedback`, ältere Titel werden weiter gelesen. Testnamen und redaktionelle Dateipfade bleiben aus technischen Kontinuitätsgründen erhalten.
+- Der tägliche Lauf verwendet nur noch die neue öffentliche Adresse; keine zweite Automation. Der RSS-Datenbranch schreibt ebenfalls auf das neue Ziel.

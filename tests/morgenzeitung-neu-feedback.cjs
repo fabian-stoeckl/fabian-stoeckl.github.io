@@ -1,6 +1,6 @@
 'use strict';
 const assert=require('node:assert/strict');
-const Feedback=require('../Privat/Morgenzeitung-Neu/direct-feedback.js');
+const Feedback=require('../Privat/Pressespiegel/direct-feedback.js');
 const PREFIX='MORGENZEITUNG_NEU_FEEDBACK_V1\n';
 const SAMPLE='Mehr analytische Tiefe: Bitte Mechanismen und Folgen erklären.';
 const storage={read:{},getItem(k){return this.read[k]||null;},setItem(k,v){this.read[k]=v;}};

@@ -1,10 +1,10 @@
-name: Verify Morgenzeitung Neu
+name: Verify Pressespiegel (aktuell)
 on:
   pull_request:
-    paths: ['Privat/Morgenzeitung-Neu/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
+    paths: ['Privat/Pressespiegel/**', 'Privat/Morgenzeitung-Neu/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
   push:
     branches: [main]
-    paths: ['Privat/Morgenzeitung-Neu/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
+    paths: ['Privat/Pressespiegel/**', 'Privat/Morgenzeitung-Neu/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
 permissions: {contents: read}
 jobs:
   verify:
@@ -29,7 +29,7 @@ jobs:
           server_pid=$!
           trap 'kill "$server_pid"' EXIT
           for attempt in {1..20}; do
-            curl --silent --fail http://127.0.0.1:8766/Privat/Morgenzeitung-Neu/ >/dev/null && break
+            curl --silent --fail http://127.0.0.1:8766/Privat/Pressespiegel/ >/dev/null && break
             sleep 1
           done
           node tests/morgenzeitung-neu-browser.cjs

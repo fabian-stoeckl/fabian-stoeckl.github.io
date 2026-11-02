@@ -89,3 +89,6 @@ Offen bleibt allein der tatsächliche redaktionelle Nutzen kommender Recherchen 
 ## 28.10.2026 – Nachfolger Pressespiegel
 
 Neuer ausdrücklicher Nutzerauftrag: vollständiger Neubau in einem neuen Ordner, mit einem täglich automatisch ausgeführten Ablauf aus Interessenbeschreibung aktualisieren/speichern und anschließender Recherche/Veröffentlichung. Der Nachfolger liegt unter `Privat/Pressespiegel/`; aktueller Vertrag in zwei kurzen Prompts unter `services/pressespiegel/`, Protokoll `Pressespiegel.md`. Die oben beschriebenen V3.7-Ranking-, Rechercheplan- und Lernmessregeln gelten nur für das alte Archiv und werden nicht in den Neubau übernommen. Originaldateien und Rückmeldungen bleiben erhalten. Bestehenden Tageslauf nach erfolgreicher Bereitstellung umstellen; alte Störungswache pausieren. Noch ausstehende Aktivierung siehe aktuelles Nachfolgerprotokoll.
+
+## 02.11.2026 – Nachfolger heißt Pressespiegel
+- Die aktuelle Zeitung liegt auf `Privat/Pressespiegel/` mit der blauen Kachel „Pressespiegel“. Der alte Oktober-Neubau liegt im Archiv `Privat/Pressespiegel-Archiv/`; das Protokoll der aktiven Zeitung ist [Pressespiegel.md](Pressespiegel.md).

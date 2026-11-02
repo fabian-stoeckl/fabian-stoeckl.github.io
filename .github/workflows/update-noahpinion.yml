@@ -34,14 +34,14 @@ jobs:
       - name: Test feed parser
         run: python3 -m unittest discover -s tests -p test_noahpinion_feed.py -v
       - name: Refresh full available RSS history
-        run: python3 scripts/sync_blogs.py --output .blogs-live/Privat/Morgenzeitung-Neu/data/blogs.json
+        run: python3 scripts/sync_blogs.py --output .blogs-live/Privat/Pressespiegel/data/blogs.json
       - name: Update dedicated data branch only
         shell: bash
         run: |
           cd .blogs-live
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add Privat/Morgenzeitung-Neu/data/blogs.json
+          git add Privat/Pressespiegel/data/blogs.json
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Refresh Noahpinion RSS history"
           git push origin HEAD:blogs-live

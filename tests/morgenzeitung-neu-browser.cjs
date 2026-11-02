@@ -39,7 +39,7 @@ const fs=require('node:fs');
     }
     await route.fulfill({status:200,json:response});
    });
-   await page.route(/\/Privat\/Morgenzeitung-Neu\/data\/\d{4}-\d{2}-\d{2}\.json(?:\?.*)?$/,async route=>{
+   await page.route(/\/Privat\/Pressespiegel\/data\/\d{4}-\d{2}-\d{2}\.json(?:\?.*)?$/,async route=>{
      const response=await route.fetch();
      const sample=await response.json();
      sample.articles[0].related_article={title:'Independent follow-up',source:'Another publisher',url:'https://example.org/follow-up'};
@@ -53,8 +53,9 @@ const fs=require('node:fs');
      await route.fulfill({response,json:sample});
    });
    await page.route('https://raw.githubusercontent.com/**/blogs-live/**',async route=>{
-     const payload=JSON.parse(fs.readFileSync('Privat/Morgenzeitung-Neu/data/blogs.json','utf8'));
+     const payload=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/blogs.json','utf8'));
      // Simulate a retained RSS archive with 28 posts, including guest authors.
+     payload.posts=payload.posts.slice(0,5);
      for(let n=5;n<28;n++)payload.posts.push({
        title:'Older Noahpinion entry '+n,
        url:'https://www.noahpinion.blog/p/test-archive-'+n,
@@ -64,7 +65,7 @@ const fs=require('node:fs');
      });
      await route.fulfill({status:200,json:payload});
    });
-   const root=(process.env.PREVIEW_URL||'http://127.0.0.1:8766')+'/Privat/Morgenzeitung-Neu/';
+   const root=(process.env.PREVIEW_URL||'http://127.0.0.1:8766')+'/Privat/Pressespiegel/';
    await page.goto(root);
    await page.waitForSelector('#feedback-section:not([hidden])');
    assert.equal(await page.locator('.value-proposition').count(),0,'Classic reader has no promotional introduction');

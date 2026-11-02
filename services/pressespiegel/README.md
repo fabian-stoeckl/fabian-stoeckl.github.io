@@ -1,3 +1,4 @@
+<!-- HISTORISCHES ARCHIV: NICHT FÜR DIE AKTUELLE TAGESZEITUNG BENUTZEN -->
 # Pressespiegel: zwei Prompts, ein Beschreibungstext
 
 Neuaufbau vom 28.10.2026. Keine V3-Auswahlengine, numerischen Profile, Ranking-Snapshots, Quoten oder verpflichtenden Suchplan-Dateien. Der Code zeigt Artikel an, speichert Rückmeldungen und prüft das Ausgabeformat. ChatGPT liest, versteht, sucht und wählt aus.
@@ -29,3 +30,7 @@ Prüfen: `python3 scripts/pressespiegel.py verify` und `node tests/pressespiegel
 ## Übergang
 
 Neue Oberfläche `/Privat/Pressespiegel/`, bisherige `/Privat/Persoenliche-Zeitung/` als lesbares Archiv. Nach erfolgreicher Bereitstellung den bestehenden Morgenlauf auf diese zwei Prompts umstellen, die alte separate Störungswache pausieren. Keine parallelen Zeitungsproduktionen. Die alte befristete Rankingmessung entfällt für das neue Konzept; tatsächliche Leserreaktionen zählen. Rücknahme: Morgenlauf auf den archivierten alten Auftrag zurückstellen, Kachel zurücksetzen; Originaldaten bleiben erhalten.
+
+
+## Archivstatus 02.11.2026
+Dies ist ausschließlich der ehemalige Pressespiegel-2026-Vertrag. Die aktuelle Zeitung heißt nun ebenfalls **Pressespiegel**, liegt aber unter `Privat/Pressespiegel/` und wird über `services/morgenzeitung-neu/` publiziert. Dieses historische Projekt findet sich unter `Privat/Pressespiegel-Archiv/` und darf nicht automatisch veröffentlicht werden.
