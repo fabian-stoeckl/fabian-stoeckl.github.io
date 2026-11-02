@@ -1,4 +1,4 @@
-"""Automatically refresh Noahpinion's five latest posts, including guest authors."""
+"""Automatically refresh all available Noahpinion RSS posts and retain older cached items."""
 import argparse
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
@@ -59,7 +59,8 @@ def parse_feed(raw):
             continue
         candidates.append((published, {
             "title": title, "url": url, "published_at": published.date().isoformat(),
-            "author": creator, "description": excerpt(item.findtext("description") or "")
+            "author": creator, "description": excerpt(item.findtext("description") or ""),
+            "published_time": published.astimezone(timezone.utc).isoformat(timespec="seconds")
         }))
     candidates.sort(key=lambda pair: pair[0], reverse=True)
     posts, seen = [], set()
@@ -68,8 +69,6 @@ def parse_feed(raw):
             continue
         posts.append(post)
         seen.add(post["url"])
-        if len(posts) == 5:
-            break
     if len(posts) < 5:
         raise ValueError("RSS has fewer than five valid Noahpinion posts; previous data kept")
     return {
@@ -78,6 +77,38 @@ def parse_feed(raw):
         "checked_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "posts": posts
     }
+
+
+def merge_archive(fresh, previous):
+    """Keep every valid previously collected post when it falls off the RSS window."""
+    if not isinstance(previous, dict) or not isinstance(previous.get("posts"), list):
+        raise ValueError("Stored blog archive is invalid; refusing to overwrite it")
+    seen = set()
+    combined = []
+    for post in [*fresh["posts"], *previous["posts"]]:
+        if not isinstance(post, dict):
+            continue
+        url = post.get("url")
+        if not isinstance(url, str):
+            continue
+        parsed = urlsplit(url)
+        if (parsed.scheme != "https" or
+                parsed.hostname not in ("www.noahpinion.blog", "noahpinion.blog",
+                                        "noahpinion.substack.com") or
+                parsed.username or parsed.password):
+            continue
+        key = parsed.hostname.removeprefix("www.") + parsed.path.rstrip("/").lower()
+        if key in seen:
+            continue
+        if (not isinstance(post.get("title"), str) or not post["title"].strip() or
+                not isinstance(post.get("published_at"), str) or
+                not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", post["published_at"])):
+            continue
+        seen.add(key)
+        combined.append(post)
+    combined.sort(key=lambda p: (p["published_at"], p.get("published_time", "")), reverse=True)
+    fresh["posts"] = combined
+    return fresh
 
 
 def main():
@@ -93,9 +124,13 @@ def main():
     if len(payload) > 6_000_000:
         raise ValueError("RSS response too large; previous data kept")
     data = parse_feed(payload)
+    if args.output.exists():
+        previous = json.loads(args.output.read_text(encoding="utf-8"))
+        data = merge_archive(data, previous)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print("Updated Noahpinion: " + " | ".join(x["title"] for x in data["posts"]))
+    print(f"Updated Noahpinion archive: {len(data['posts'])} posts; "
+          f"newest: {data['posts'][0]['title']}")
 
 
 if __name__ == "__main__":

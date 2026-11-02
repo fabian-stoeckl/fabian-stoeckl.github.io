@@ -11,19 +11,19 @@ function stashComment(date){
 }
 
 const BLOGS_FEED='https://raw.githubusercontent.com/fabian-stoeckl/fabian-stoeckl.github.io/blogs-live/Privat/Morgenzeitung-Neu/data/blogs.json';
-let blogLastCheck=0,blogLoading=false;
+let blogLastCheck=0,blogLoading=false,blogVisibleCount=5;
 function renderBlogPosts(data,stale=false){
   if(!data||!Array.isArray(data.posts))throw Error('Ungültige Blogdaten');
   const root=$('blogs');root.replaceChildren();
   const heading=el('div',undefined,'blog-heading');
   const title=el('h2');title.append(link('Noah Smith · Noahpinion','https://www.noahpinion.blog/'));
-  heading.append(title,el('p','Wirtschaft, Technologie und Gesellschaft · die fünf neuesten Beiträge des Blogs, auch Gastbeiträge.','small'));
+  heading.append(title,el('p','Wirtschaft, Technologie und Gesellschaft · aktuelle und ältere Beiträge, auch Gastbeiträge.','small'));
   if(data.checked_at&&Number.isFinite(Date.parse(data.checked_at)))
     heading.append(el('p','Feed zuletzt geprüft: '+fmt(data.checked_at)+(stale?' · letzte gespeicherte Liste':''),'small'));
   root.append(heading);
   const list=el('div',undefined,'blog-list');
   let count=0;
-  for(const post of data.posts.slice(0,5)){
+  for(const post of data.posts.slice(0,blogVisibleCount)){
     if(!post||typeof post.title!=='string'||typeof post.url!=='string')continue;
     let target;
     try{
@@ -45,6 +45,20 @@ function renderBlogPosts(data,stale=false){
   $('blog-count').textContent=count;
   root.append(list);
   if(!count)root.append(el('p','Aktuell sind keine Beiträge verfügbar.','small'));
+  if(data.posts.length>blogVisibleCount){
+    const more=el('button','Weitere 10 Beiträge anzeigen','blog-more');
+    more.type='button';
+    more.onclick=()=>{
+      const previous=blogVisibleCount;
+      blogVisibleCount=Math.min(data.posts.length,blogVisibleCount+10);
+      renderBlogPosts(data,stale);
+      const firstAdded=$('blogs').querySelectorAll('.blog-entry')[previous];
+      if(firstAdded)firstAdded.scrollIntoView({behavior:'smooth',block:'start'});
+    };
+    root.append(more);
+  }else if(data.posts.length>5){
+    root.append(el('p','Alle derzeit verfügbaren Beiträge angezeigt.','small blog-end'));
+  }
 }
 async function loadBlogs(){
   if(blogLoading)return;
