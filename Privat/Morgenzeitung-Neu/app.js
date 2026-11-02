@@ -17,7 +17,7 @@ function renderBlogPosts(data,stale=false){
   const root=$('blogs');root.replaceChildren();
   const heading=el('div',undefined,'blog-heading');
   const title=el('h2');title.append(link('Noah Smith · Noahpinion','https://www.noahpinion.blog/'));
-  heading.append(title,el('p','Wirtschaft, Technologie und Gesellschaft · die fünf neuesten Beiträge von Noah Smith.','small'));
+  heading.append(title,el('p','Wirtschaft, Technologie und Gesellschaft · die fünf neuesten Beiträge des Blogs, auch Gastbeiträge.','small'));
   if(data.checked_at&&Number.isFinite(Date.parse(data.checked_at)))
     heading.append(el('p','Feed zuletzt geprüft: '+fmt(data.checked_at)+(stale?' · letzte gespeicherte Liste':''),'small'));
   root.append(heading);
@@ -32,8 +32,12 @@ function renderBlogPosts(data,stale=false){
     }catch(_){continue;}
     const item=el('div',undefined,'blog-entry');
     const h=el('h3');h.append(link(post.title,target.href));item.append(h);
+    const details=[];
     if(typeof post.published_at==='string'&&/^\d{4}-\d{2}-\d{2}/.test(post.published_at))
-      item.append(el('p',fmt(post.published_at.slice(0,10)),'meta'));
+      details.push(fmt(post.published_at.slice(0,10)));
+    if(typeof post.author==='string'&&post.author.trim())
+      details.push('Von '+post.author.trim().slice(0,110));
+    if(details.length)item.append(el('p',details.join(' · '),'meta'));
     if(typeof post.description==='string'&&post.description.trim())
       item.append(el('p',post.description.slice(0,320),'blog-description'));
     list.append(item);count++;
