@@ -83,3 +83,6 @@ Der alte Zeitungsordner und seine Redirect-Einträge sind entfernt. Nur die dire
 ## 28.10.2026 – neuer Pressespiegel-Einstieg
 
 Auf ausdrücklichen Auftrag zum vollständigen Neubau führt die mittlere Privat-Kachel jetzt zu `Privat/Pressespiegel/` und heißt Pressespiegel. Weiterhin genau drei Kacheln; ETF und Website-ändern-Skill unverändert. Bisherige Zeitung bleibt über den neuen Reader als Archiv erreichbar. Maßgeblicher neuer Ablauf und Veröffentlichungsstand: `Pressespiegel.md`. Historische Aussagen zur einzigen aktiven V3-Zeitung sind damit überholt.
+
+## 02.11.2026 – Name und kanonische Adresse der aktuellen Zeitung
+- Auf `Privat/index.html` heißen die drei Kacheln **ETF**, **Pressespiegel**, **Website ändern**. Die mittlere Kachel führt auf die aktive Zeitung `Privat/Pressespiegel/` (statt `Privat/Morgenzeitung-Neu/`). Der frühere Pressespiegel ist unter `Privat/Pressespiegel-Archiv/` historisch gesichert; die alte aktive Adresse leitet weiter. Der ETF- und ChatGPT-Skill-Bereich bleiben unangetastet. Alle früheren Aussagen über Kacheln in diesem Protokoll sind zeitgebundene Historie.

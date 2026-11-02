@@ -1,13 +1,13 @@
-# Morgenzeitung Neu – Architektur und Betrieb
+# Pressespiegel – Architektur und Betrieb
 
-Die einzige aktive Morgenzeitung unter `Privat/Morgenzeitung-Neu/` übernimmt bewusst das **klassische** Design mit „Heute wichtig“, „Vertiefungen“, drei Relevanzstufen, optionalen Begründungen, freiem Feedback und separater Präferenzseite. Alte Versionen bleiben Archive. Andere Website-Bereiche, besonders ETFs, bleiben unberührt.
+Der einzige aktive Pressespiegel unter `Privat/Pressespiegel/` übernimmt bewusst das **klassische** Design mit „Heute wichtig“, „Vertiefungen“, drei Relevanzstufen, optionalen Begründungen, freiem Feedback und separater Präferenzseite. Alte Versionen bleiben Archive. Andere Website-Bereiche, besonders ETFs, bleiben unberührt.
 
 ## Eine Quelle pro Verantwortung
 
 1. **`INTERESSEN.md` – lernende Redaktion:** Neue/geänderte echte private Feedback-Issues im Artikelkontext lesen und das natürlichsprachliche `morgenzeitung-neu/interessen.md` nur bei belegbarem Erkenntnisgewinn vorsichtig verändern. Vorlagenprovenienz beachten (`suggested_reasons` und `comment_suggestions`); „Heute wichtig“ bleibt nach allgemeinem Nachrichtenwert kuratiert. Private Änderungen, Versionen und Gründe in `aenderungen.md` und `state.json` sichern und nach PR-Merge zurücklesen.
 2. **`RECHERCHE.md` – journalistische Redaktion:** Bestätigtes privates Profil neu lesen, umfassend recherchieren, unabhängig wichtige Nachrichten und persönlich lohnende Vertiefungen auswählen, belegtreu formulieren, redaktionell gegen Dopplungen und übersehene wesentliche Geschichten prüfen. Nachrichten seit letzter bestätigter Veröffentlichung; ältere, bislang übersehene gute Vertiefungen ohne Altersgrenze. Kein Ranking-Score, Verlagsbonus oder Paywall-Zugangsbonus.
 3. **Privates Tagesdossier:** `fabian-stoeckl/morgenzeitung-feedback/morgenzeitung-neu/recherche/YYYY-MM-DD.md` hält echte Originalbelege und `## Tatsächlich vermittelt` als dokumentierten **Zeitungsinhalt**, nie als behauptete Leserlektüre. Für die **ersten drei echten publizierten Ausgaben** jeweils eine kurze journalistische Qualitätsabnahme; nach der dritten eine zusammenfassende, belegte Musterprüfung. Nicht die importierte Vorschau mitzählen.
-4. **Öffentliche Ausgabe:** `Privat/Morgenzeitung-Neu/data/YYYY-MM-DD.json` und Index, V3-kompatibel, für echte Ausgaben `preview:false`. Die übernommene Ausgabe 2026-10-28 bleibt `preview:true` und zählt weder als echte Recherche noch als Lernerfolgsnachweis. Private Profile/Kommentare gehören **nicht** in öffentliches JSON.
+4. **Öffentliche Ausgabe:** `Privat/Pressespiegel/data/YYYY-MM-DD.json` und Index, V3-kompatibel, für echte Ausgaben `preview:false`. Die übernommene Ausgabe 2026-10-28 bleibt `preview:true` und zählt weder als echte Recherche noch als Lernerfolgsnachweis. Private Profile/Kommentare gehören **nicht** in öffentliches JSON.
 
 ## Qualitative Lernbilanz – ohne zusätzliche Automation
 
@@ -26,3 +26,5 @@ Der **eine bereits existierende** tägliche Automationsauftrag lädt den aktuell
 ## Prüfen
 
 `python3 scripts/morgenzeitung_neu.py verify`, `python3 tests/morgenzeitung-neu-editorial.py`, `node tests/morgenzeitung-neu.test.cjs`, `node tests/morgenzeitung-neu-feedback.cjs` sowie die vorhandenen GitHub-Browser- und allgemeinen Website-Prüfungen. Diese Tests bestätigen Struktur und Abläufe, **nicht** die Qualität der journalistischen Auswahl.
+## Öffentliche Umbenennung 02.11.2026
+Die Zeitung heißt öffentlich **Pressespiegel** und liegt auf `Privat/Pressespiegel/`. Die frühere Adresse ist eine Weiterleitung. Der vorherige Pressespiegel ist unter `Privat/Pressespiegel-Archiv/` archiviert. Private GitHub-Ordner `morgenzeitung-neu/`, Marker und Artikel-IDs bleiben stabil, damit frühere Bewertungen nicht verloren gehen.
