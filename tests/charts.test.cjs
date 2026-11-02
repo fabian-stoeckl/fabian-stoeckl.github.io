@@ -6,11 +6,11 @@ const assert = require('assert');
   const data = JSON.parse(fs.readFileSync('Privat/ETFs/data/etf_data.json','utf8'));
   if(!data.fx?.some(f=>f.status==='ok'))data.fx=['USD','JPY','GBP'].map((code,i)=>({code,name:code,status:'ok',series:Object.fromEntries(Object.entries(data.etfs[0].series).map(([year,points])=>[year,points.map((p,j)=>({...p,price:(i+1)*(1+j*.001)}))]))}));
   const chart = fs.readFileSync('node_modules/chart.js/dist/chart.umd.js','utf8');
-  // Keep the ETF's design tokens synchronized with the actual Morgenzeitung.
-  const pressCSS=fs.readFileSync('Privat/Persoenliche-Zeitung/style.css','utf8');
+  // Keep the ETF's design tokens synchronized with the actual Pressespiegel.
+  const pressCSS=fs.readFileSync('Privat/Pressespiegel/style.css','utf8');
   const pressToken=name=>{
     const match=pressCSS.match(new RegExp('--'+name+':(#[0-9a-fA-F]{3,8})'));
-    assert(match,'Missing Morgenzeitung token '+name);
+    assert(match,'Missing Pressespiegel token '+name);
     return match[1];
   };
   fs.mkdirSync('artifacts/screenshots',{recursive:true});

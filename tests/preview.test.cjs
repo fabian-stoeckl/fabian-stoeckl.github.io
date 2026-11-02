@@ -8,12 +8,8 @@ const pages = [
   { name: 'homepage', path: '/', ready: 'h1' },
   { name: 'dashboard', path: '/Privat/', ready: '.grid' },
   { name: 'etf-dashboard', path: '/Privat/ETFs/', ready: '.year-key' },
-  { name: 'morgenzeitung', path: '/Privat/Persoenliche-Zeitung/', ready: 'h1' },
   { name: 'pressespiegel', path: '/Privat/Pressespiegel/', ready: '#tab-blogs' },
-  { name: 'pressespiegel-archiv', path: '/Privat/Pressespiegel-Archiv/', ready: 'h1' },
-  { name: 'morgenzeitung-redirect', path: '/Privat/Morgenzeitung-Neu/', ready: '#tab-blogs' },
   { name: 'pressespiegel-prefs', path: '/Privat/Pressespiegel/praeferenzen.html', ready: 'h1' },
-  { name: 'pressespiegel-old-prefs-redirect', path: '/Privat/Morgenzeitung-Neu/praeferenzen.html', ready: 'h1' },
 ];
 const viewports = [
   { name: 'desktop', width: 1440, height: 1000 },
@@ -50,11 +46,6 @@ const viewports = [
         }
         if ((await page.locator('body').innerText()).includes('Weitere Themen finden hier später ihren Platz.')) {
           throw new Error('Removed private footer notice is visible again');
-        }
-      }
-      if (target.name === 'morgenzeitung') {
-        if (await page.getByRole('link', { name: '← Privat' }).count() !== 1) {
-          throw new Error('Morgenzeitung has no return link to Privat');
         }
       }
       if (target.name === 'homepage') {

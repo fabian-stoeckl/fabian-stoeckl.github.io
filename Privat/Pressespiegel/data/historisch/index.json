@@ -1,0 +1,47 @@
+{
+  "description": "Eigenständige öffentliche historische Zeitungsdaten, originalgetreu aus entfernten Vorgänger-Verzeichnissen übernommen. Nicht Bestandteil des aktiven Pressespiegel-Ausgabenindex.",
+  "editions": [
+    {
+      "filename": "2026-10-28-v3-original.json",
+      "date": "2026-10-28",
+      "description": "Frühere reguläre V3-Ausgabe mit ursprünglichen Recherchen und Korrekturen",
+      "original_path": "Privat/Persoenliche-Zeitung/data/2026-10-28.json",
+      "original_blob_sha": "cd9508006361042c70bcfcbe0d0a24d2a95c90b6"
+    },
+    {
+      "filename": "2026-10-28-v3-lernausgabe.json",
+      "date": "2026-10-28",
+      "description": "Eigenständige V3-Sonderausgabe/Lern-Ausgabe; separat von regulärer Ausgabe",
+      "original_path": "Privat/Persoenliche-Zeitung/lern-ausgabe-2026-10-28/data/2026-10-28.json",
+      "original_blob_sha": "3718546aeee8bcb315ee52b234c427738057ea83"
+    },
+    {
+      "filename": "2026-10-28-frueherer-pressespiegel.json",
+      "date": "2026-10-28",
+      "description": "Altes Pressespiegel-Vorläuferformat",
+      "original_path": "Privat/Pressespiegel-Archiv/data/2026-10-28.json",
+      "original_blob_sha": "0a285c91480414cdf463a9dbb9aaf218557ab52d"
+    },
+    {
+      "filename": "2026-10-27-v3-referenz.json",
+      "date": "2026-10-27",
+      "description": "V3-Referenzausgabe aus ursprünglicher Entwicklungsphase",
+      "original_path": "services/morgenzeitung-v3/fixtures/v1-reference-2026-10-27.json",
+      "original_blob_sha": "02cb011fe6ea67df0f153da582acd1d19ddcafb8"
+    }
+  ],
+  "additional_sources": [
+    {
+      "filename": "v3-editions-manifest.json",
+      "original_path": "services/morgenzeitung-v3/editions.json"
+    },
+    {
+      "filename": "quellen-frueherer-pressespiegel.json",
+      "original_path": "services/pressespiegel/quellen.json"
+    },
+    {
+      "filename": "v3-quellen.json",
+      "original_path": "services/morgenzeitung-v3/sources.json"
+    }
+  ]
+}

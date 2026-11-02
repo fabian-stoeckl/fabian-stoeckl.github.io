@@ -44,15 +44,16 @@ Run `npm run context:update` to regenerate README from all area protocols. Run `
 
 The context test also exercises temporary fixtures for a fourth area, missing protocols, stale registry entries and unsafe paths. It never modifies website content or financial data.
 
-## Persönliche Zeitung
+## Pressespiegel (einzige aktive Zeitung)
 
-Run `npm run check:morgenzeitung` for the isolated newspaper tests. Run `python3 -m http.server 8766 --bind 127.0.0.1` and `node tests/morgenzeitung-v3-browser.cjs` for mocked mobile feedback journeys; no publisher or real feedback writes are performed. Registry `services/morgenzeitung-v3/editions.json` covers regular and special editions. Both existing CI workflows verify all registered public receipts; changed editions additionally require their mapped private evidence dossier. Production selection and private snapshots must share the same `--selection` settings file; see the current editorial contract.
+Die einzige Website liegt unter `Privat/Pressespiegel/` mit den Reitern **Heute wichtig**, **Vertiefungen** und **Blogs**. Es bestehen **keine** Weiterleitungsseiten unter früheren Zeitungsadressen. Alte eigenständige Datenquellen aus dem Oktober 2026 sind unverändert in `Privat/Pressespiegel/data/historisch/` erhalten, samt `index.json`. Die aktive Ausgabe `data/YYYY-MM-DD.json` und ihr Index bleiben davon unabhängig; keine automatische Vermischung gleicher Ausgabedaten.
 
+Die aktive redaktionelle Engine bleibt `services/morgenzeitung-neu/` und der bestehende private GitHub-Feedbackordner `morgenzeitung-neu/`. Historische V3-Feedbackmarker und Ratings werden nicht auf die aktive Zeitung übertragen. Das öffentliche Blogverzeichnis wird vom GitHub-Actions-RSS-Workflow in `blogs-live` aktuell gehalten.
 
-## Pressespiegel-Archiv (historischer Neubau vom Oktober 2026)
-
-`python3 scripts/pressespiegel.py verify` prüft Index, Schema und Duplikate, keine inhaltliche Wahrheit. `python3 -m unittest discover -s tests/pressespiegel -v` prüft Ausgabe-/Feedbacklogik. Mit lokalem HTTP-Server auf Port 8766 `node tests/pressespiegel-browser.cjs` für mobile/Desktop-Anzeige und private API-Mocks ausführen. Die zwei redaktionellen Prompts stehen in `services/pressespiegel/`; keine V3-Rankingengine auf neue Ausgaben anwenden. Alte Zeitung bleibt Archiv.
-
-## Pressespiegel (aktuelle Zeitung seit 02.11.2026)
-- Aktive Adresse `/Privat/Pressespiegel/`; alte `/Privat/Morgenzeitung-Neu/` weitergeleitet, historisches Altprojekt `/Privat/Pressespiegel-Archiv/`.
-- Redaktionell bestehendes `services/morgenzeitung-neu/`, `scripts/morgenzeitung_neu.py`, Tests `tests/morgenzeitung-neu*` und privates Feedback `morgenzeitung-neu/` bleiben aus Kontinuitätsgründen unverändert benannt. Deren **öffentliche Ausgabe** und RSS liegen unter `Privat/Pressespiegel/data/`.
+Zum Testen:
+```sh
+npm run check:morgenzeitung
+python3 -m http.server 8766 --bind 127.0.0.1
+# In einem anderen Terminal:
+node tests/morgenzeitung-neu-browser.cjs
+```
