@@ -39,6 +39,7 @@ assert.match(fs.readFileSync(path+'feedback-suggestions.js','utf8'),/Genaueres F
 for(const n of ['app','github','direct-feedback','rating-reasons','editorial-extras','feedback-suggestions','preferences']){
  execFileSync(process.execPath,['--check',path+n+'.js']);
 }
+execFileSync('python3',['-m','unittest','discover','-s','tests','-p','test_noahpinion_feed.py','-v']);
 const dates=JSON.parse(fs.readFileSync(path+'data/index.json','utf8')).dates;
 assert.ok(dates.length);
 const ed=JSON.parse(fs.readFileSync(path+'data/2026-10-28.json','utf8'));

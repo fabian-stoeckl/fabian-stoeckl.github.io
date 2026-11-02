@@ -1,6 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict');
 const {chromium}=require('playwright');
+const fs=require('node:fs');
 (async()=>{
  const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
  try{
@@ -51,12 +52,24 @@ const {chromium}=require('playwright');
      };
      await route.fulfill({response,json:sample});
    });
+   await page.route('https://raw.githubusercontent.com/**/blogs-live/**',async route=>{
+     const payload=JSON.parse(fs.readFileSync('Privat/Morgenzeitung-Neu/data/blogs.json','utf8'));
+     await route.fulfill({status:200,json:payload});
+   });
    const root=(process.env.PREVIEW_URL||'http://127.0.0.1:8766')+'/Privat/Morgenzeitung-Neu/';
    await page.goto(root);
    await page.waitForSelector('#feedback-section:not([hidden])');
    assert.equal(await page.locator('.value-proposition').count(),0,'Classic reader has no promotional introduction');
    assert.doesNotMatch(await page.locator('#publication-status').innerText(),/Archivierte Beispielausgabe|keine neue Recherche|kein Nachweis für das neue Lernkonzept/);
    assert.equal(await page.locator('#feedback').isVisible(),true,'Open feedback is always visible');
+   await page.locator('#tab-blogs').click();
+   await page.waitForSelector('#blogs .blog-entry');
+   assert.equal(await page.locator('#blogs .blog-entry').count(),5);
+   assert.equal(await page.locator('#blogs .rating-dots').count(),0,'Blogs must never have article ratings');
+   assert.equal(await page.locator('#feedback-section').isVisible(),false,'Blogs have no feedback controls');
+   assert.equal(await page.locator('#blogs .blog-entry a').first().getAttribute('href'),'https://www.noahpinion.blog/p/anthropics-moat-is-claude');
+   await page.locator('#tab-headlines').click();
+   assert.equal(await page.locator('#feedback-section').isVisible(),true,'Newspaper ratings remain available');
    assert.ok(await page.locator('.feedback-suggestions button').count()>=4);
    const suggestion=await page.locator('.feedback-suggestions button').first().innerText();
    await page.locator('.feedback-suggestions button').first().click();
