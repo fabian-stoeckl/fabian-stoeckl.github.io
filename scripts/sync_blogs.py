@@ -13,7 +13,7 @@ from xml.etree import ElementTree as ET
 
 FEED = "https://www.noahpinion.blog/feed"
 DC = "{http://purl.org/dc/elements/1.1/}creator"
-DEFAULT = Path("Privat/Morgenzeitung-Neu/data/blogs.json")
+DEFAULT = Path("Privat/Pressespiegel/data/blogs.json")
 
 
 class PlainText(HTMLParser):

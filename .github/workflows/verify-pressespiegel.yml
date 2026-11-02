@@ -1,10 +1,10 @@
-name: Verify Pressespiegel
+name: Verify Pressespiegel-Archiv
 on:
   pull_request:
-    paths: ['Privat/Pressespiegel/**','services/pressespiegel/**','scripts/pressespiegel.py','tests/pressespiegel/**','tests/pressespiegel-browser.cjs','.github/workflows/verify-pressespiegel.yml']
+    paths: ['Privat/Pressespiegel-Archiv/**','services/pressespiegel/**','scripts/pressespiegel.py','tests/pressespiegel/**','tests/pressespiegel-browser.cjs','.github/workflows/verify-pressespiegel.yml']
   push:
     branches: [main]
-    paths: ['Privat/Pressespiegel/**','services/pressespiegel/**','scripts/pressespiegel.py','tests/pressespiegel/**','tests/pressespiegel-browser.cjs','.github/workflows/verify-pressespiegel.yml']
+    paths: ['Privat/Pressespiegel-Archiv/**','services/pressespiegel/**','scripts/pressespiegel.py','tests/pressespiegel/**','tests/pressespiegel-browser.cjs','.github/workflows/verify-pressespiegel.yml']
 permissions: {contents: read}
 jobs:
   verify:
@@ -25,7 +25,7 @@ jobs:
           server_pid=$!
           trap 'kill "$server_pid"' EXIT
           for attempt in {1..20}; do
-            curl --silent --fail http://127.0.0.1:8766/Privat/Pressespiegel/ >/dev/null && break
+            curl --silent --fail http://127.0.0.1:8766/Privat/Pressespiegel-Archiv/ >/dev/null && break
             sleep 1
           done
           node tests/pressespiegel-browser.cjs

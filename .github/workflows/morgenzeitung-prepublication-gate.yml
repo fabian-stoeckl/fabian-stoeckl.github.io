@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
-      - name: Verify released Persönliche Zeitung edition receipts (full tests run in V3 workflow)
+      - name: Verify released Pressespiegel edition receipts (full tests run in V3 workflow)
         run: |
           python3 - <<'PY'
           import json, pathlib, subprocess, sys

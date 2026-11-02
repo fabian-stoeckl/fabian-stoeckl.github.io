@@ -15,7 +15,7 @@ for(const width of [390,1440]){
   else result={private:true,full_name:'fabian-stoeckl/morgenzeitung-feedback'};
   await route.fulfill({json:result});
  });
- await page.goto((process.env.PREVIEW_URL||'http://127.0.0.1:8766')+'/Privat/Pressespiegel/');await page.waitForSelector('.story');await page.waitForSelector('#interest-text:not([hidden])');
+ await page.goto((process.env.PREVIEW_URL||'http://127.0.0.1:8766')+'/Privat/Pressespiegel-Archiv/');await page.waitForSelector('.story');await page.waitForSelector('#interest-text:not([hidden])');
  assert.match(await page.locator('#edition-meta').innerText(),/Übernommene Ausgabe/);
  assert.match(await page.locator('#interest-text').innerText(),/wirtschaftliche/);
  const rating=page.locator('.rating').first();await rating.locator('summary').click();await rating.getByLabel('Sehr relevant',{exact:true}).check();await rating.locator('textarea').fill('Gute Erklärung');await page.locator('#comment').fill('Mehr Einordnung');

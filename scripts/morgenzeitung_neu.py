@@ -1,4 +1,4 @@
-"""Structural checks only for Morgenzeitung Neu: journalistic truth requires human/AI source review."""
+"""Structural checks only for Pressespiegel: journalistic truth requires human/AI source review."""
 import argparse
 import json
 import re
@@ -6,7 +6,7 @@ from datetime import date, datetime
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qsl, urlencode, urlunsplit
 
-ROOT=Path("Privat/Morgenzeitung-Neu/data")
+ROOT=Path("Privat/Pressespiegel/data")
 ID=re.compile(r"^[a-f0-9]{16}$")
 EVENT_KEY=re.compile(r"^[a-z0-9][a-z0-9-]{2,99}$")
 
