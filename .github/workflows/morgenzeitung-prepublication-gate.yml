@@ -1,14 +1,13 @@
-name: Morgenzeitung prepublication gate
+name: Pressespiegel prepublication gate
 on:
-  # Preserve the existing required check name for main branch protection.
   pull_request:
     branches: [main]
   push:
     branches: [main]
     paths:
-      - 'Privat/Persoenliche-Zeitung/**'
-      - 'services/morgenzeitung-v3/editions.json'
-      - 'scripts/morgenzeitung_v3_*.py'
+      - 'Privat/Pressespiegel/data/**'
+      - 'services/morgenzeitung-neu/**'
+      - 'scripts/morgenzeitung_neu.py'
       - '.github/workflows/morgenzeitung-prepublication-gate.yml'
   workflow_dispatch:
 permissions:
@@ -21,15 +20,5 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
-      - name: Verify released Pressespiegel edition receipts (full tests run in V3 workflow)
-        run: |
-          python3 - <<'PY'
-          import json, pathlib, subprocess, sys
-          from scripts.morgenzeitung_v3_private_ci import public_edition_paths
-          for path in public_edition_paths('.'):
-              subprocess.run([sys.executable,"-m","scripts.morgenzeitung_v3_engine",
-                  "verify","--edition",str(path)],check=True)
-              subprocess.run([sys.executable,"-m","scripts.morgenzeitung_v3_release",
-                  "verify","--edition",str(path)],check=True)
-          print("PASS: V3 only; no publisher URL probes or legacy V1/V2 duties")
-          PY
+      - name: Verify current Pressespiegel edition structure and corrections
+        run: python3 scripts/morgenzeitung_neu.py verify

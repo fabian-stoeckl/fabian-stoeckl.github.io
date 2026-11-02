@@ -17,7 +17,7 @@ function renderBlogPosts(data,stale=false){
   const root=$('blogs');root.replaceChildren();
   const heading=el('div',undefined,'blog-heading');
   const title=el('h2');title.append(link('Noah Smith · Noahpinion','https://www.noahpinion.blog/'));
-  heading.append(title,el('p','Wirtschaft, Technologie und Gesellschaft · aktuelle und ältere Beiträge, auch Gastbeiträge.','small'));
+  heading.append(title);
   if(data.checked_at&&Number.isFinite(Date.parse(data.checked_at)))
     heading.append(el('p','Feed zuletzt geprüft: '+fmt(data.checked_at)+(stale?' · letzte gespeicherte Liste':''),'small'));
   root.append(heading);

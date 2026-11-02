@@ -1,7 +1,7 @@
 name: Verify Pressespiegel (aktuell)
 on:
   pull_request:
-    paths: ['Privat/Pressespiegel/**', 'Privat/Morgenzeitung-Neu/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
+    paths: ['Privat/Pressespiegel/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
   push:
     branches: [main]
     paths: ['Privat/Pressespiegel/**', 'Privat/Morgenzeitung-Neu/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
@@ -20,7 +20,6 @@ jobs:
       - run: python3 tests/morgenzeitung-neu-editorial.py
       - run: node tests/morgenzeitung-neu.test.cjs
       - run: node tests/morgenzeitung-neu-feedback.cjs
-      - run: node tests/morgenzeitung-v3-ui.test.cjs
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - name: Classic reader and independent preference page on mobile and desktop

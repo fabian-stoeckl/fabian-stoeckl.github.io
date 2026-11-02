@@ -18,8 +18,17 @@ assert.match(page,/id="tab-blogs"/);
 assert.match(page,/<title>Pressespiegel<\/title>/);
 assert.match(page,/DEIN PRESSESPIEGEL/);
 assert.match(home,/aria-label="Pressespiegel öffnen"/);
-assert.match(fs.readFileSync('Privat/Morgenzeitung-Neu/index.html','utf8'),/Pressespiegel/);
-assert.match(fs.readFileSync('Privat/Pressespiegel-Archiv/index.html','utf8'),/Archiv/);
+for(const removed of ['Morgenzeitung-Neu','Persoenliche-Zeitung','Pressespiegel-Archiv']){
+ assert.equal(fs.existsSync('Privat/'+removed),false,'Obsolete public archive must be absent: '+removed);
+}
+const historical=JSON.parse(fs.readFileSync(path+'data/historisch/index.json','utf8'));
+assert.equal(historical.editions.length,4);
+for(const entry of historical.editions){
+ const legacy=JSON.parse(fs.readFileSync(path+'data/historisch/'+entry.filename,'utf8'));
+ assert.equal(legacy.date,entry.date,'Original historical date retained');
+ assert.ok((legacy.articles?.length||0)+(legacy.headlines?.length||0)>0);
+}
+
 assert.match(page,/id="blogs" aria-label="Blogs"/);
 assert.match(page,/raw.githubusercontent.com/);
 const blogData=JSON.parse(fs.readFileSync(path+'data/blogs.json','utf8'));
@@ -78,5 +87,5 @@ for(const required of [/comment_suggestions/,/Rubriken sauber auseinanderhalten/
   assert.match(engine,required);
 assert.match(feedback,/comment_suggestions/);
 assert.match(fs.readFileSync(path+'app.js','utf8'),/Weiterer Beitrag zum Thema/);
-console.log('PASS: independent classic reader, qualitative learning prompts, intact archives and open feedback');
+console.log('PASS: single Pressespiegel reader, retained historical data, qualitative learning and feedback');
 
