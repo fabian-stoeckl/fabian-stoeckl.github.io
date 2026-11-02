@@ -1,0 +1,39 @@
+{
+  "author": "Noah Smith",
+  "name": "Noahpinion",
+  "homepage": "https://www.noahpinion.blog/",
+  "feed": "https://www.noahpinion.blog/feed",
+  "checked_at": "2026-11-02",
+  "posts": [
+    {
+      "title": "Anthropic’s moat is Claude",
+      "url": "https://www.noahpinion.blog/p/anthropics-moat-is-claude",
+      "published_at": "2026-11-02",
+      "description": "Ob Claude Anthropic einen dauerhaften Wettbewerbsvorteil verschafft und wie sich die Bewertung des geplanten Börsengangs rechtfertigen ließe."
+    },
+    {
+      "title": "Farewell, my Captain",
+      "url": "https://www.noahpinion.blog/p/farewell-my-captain",
+      "published_at": "2026-10-31",
+      "description": "Ein Essay über Captain Picard, Star Trek und die Hoffnung auf eine vernünftigere, menschlichere Gesellschaft."
+    },
+    {
+      "title": "A golden age of science is coming",
+      "url": "https://www.noahpinion.blog/p/a-golden-age-of-science-is-coming",
+      "published_at": "2026-10-29",
+      "description": "Warum KI wissenschaftliche Erkenntnisse ermöglichen könnte, die Forschenden allein bislang verschlossen bleiben."
+    },
+    {
+      "title": "Roundup #90: In which Noah joins a Japanese VC firm",
+      "url": "https://www.noahpinion.blog/p/roundup-90-in-which-noah-joins-a",
+      "published_at": "2026-10-27",
+      "description": "Über Noahs neuen Posten bei Coral Capital und Themen wie KI-Investitionen, Chinas Kommunalfinanzen und Japans Wohnungsbau."
+    },
+    {
+      "title": "The internet breaks",
+      "url": "https://www.noahpinion.blog/p/the-internet-breaks",
+      "published_at": "2026-10-25",
+      "description": "Was leistungsfähige KI-Agenten für Cybersicherheit und Stabilität des Internets bedeuten können."
+    }
+  ]
+}
