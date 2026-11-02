@@ -1,4 +1,4 @@
-"""Automatically refresh Noah Smith's five latest posts from Noahpinion RSS."""
+"""Automatically refresh Noahpinion's five latest posts, including guest authors."""
 import argparse
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
@@ -43,9 +43,6 @@ def parse_feed(raw):
     candidates = []
     for item in root.findall(".//channel/item"):
         creator = (item.findtext(DC) or item.findtext("author") or "").strip()
-        # Exclude identifiable guest authors; an absent creator is not proof of another author.
-        if creator and creator.casefold() not in ("noah smith", "noahpinion"):
-            continue
         title = (item.findtext("title") or "").strip()
         url = (item.findtext("link") or "").strip()
         parsed = urlsplit(url)
@@ -62,7 +59,7 @@ def parse_feed(raw):
             continue
         candidates.append((published, {
             "title": title, "url": url, "published_at": published.date().isoformat(),
-            "description": excerpt(item.findtext("description") or "")
+            "author": creator, "description": excerpt(item.findtext("description") or "")
         }))
     candidates.sort(key=lambda pair: pair[0], reverse=True)
     posts, seen = [], set()
@@ -74,7 +71,7 @@ def parse_feed(raw):
         if len(posts) == 5:
             break
     if len(posts) < 5:
-        raise ValueError("RSS has fewer than five valid Noah Smith posts; previous data kept")
+        raise ValueError("RSS has fewer than five valid Noahpinion posts; previous data kept")
     return {
         "author": "Noah Smith", "name": "Noahpinion",
         "homepage": "https://www.noahpinion.blog/", "feed": FEED,

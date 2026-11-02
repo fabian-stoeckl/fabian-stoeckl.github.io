@@ -10,7 +10,7 @@ def entry(title, author, date, slug):
 
 
 class BlogFeedTests(unittest.TestCase):
-    def test_five_newest_from_author(self):
+    def test_five_newest_including_guests(self):
         dates = ["Mon, 02 Nov 2026 10:00:00 +0000", "Sat, 31 Oct 2026 10:00:00 +0000",
                  "Thu, 29 Oct 2026 10:00:00 +0000", "Tue, 27 Oct 2026 10:00:00 +0000",
                  "Sun, 25 Oct 2026 10:00:00 +0000"]
@@ -20,7 +20,8 @@ class BlogFeedTests(unittest.TestCase):
         xml = ('<rss xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>'
                + "".join(reversed(items)) + "</channel></rss>").encode()
         posts = parse_feed(xml)["posts"]
-        self.assertEqual([p["title"] for p in posts], ["Noah 0", "Noah 1", "Noah 2", "Noah 3", "Noah 4"])
+        self.assertEqual([p["title"] for p in posts], ["Guest", "Noah 0", "Noah 1", "Noah 2", "Noah 3"])
+        self.assertEqual(posts[0]["author"], "Ramez Naam")
         self.assertEqual(posts[0]["description"], "Short text & more.")
 
     def test_keeps_old_data_on_insufficient_unique_posts(self):
