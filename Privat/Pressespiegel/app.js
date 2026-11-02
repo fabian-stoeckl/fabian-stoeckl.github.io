@@ -333,7 +333,7 @@ function updatePublicationStatus(e) {
   // Never show transitional example-edition notices; provenance stays in JSON.
   if(e.preview||e.date===d){node.hidden=true;node.textContent='';return;}
   node.dataset.state=e.date!==d&&late?'stale':'pending';node.hidden=false;
-  if(late)node.textContent='Hinweis: Die heutige Persönliche Zeitung fehlt noch. Letzte Ausgabe: '+e.date+'.';
+  if(late)node.textContent='Hinweis: Der heutige Pressespiegel fehlt noch. Letzte Ausgabe: '+e.date+'.';
   else node.textContent='Neue Ausgabe wird um 07:45 Uhr Wiener Zeit erwartet. Zuletzt: '+e.date+'.';
 }
 async function collectDraftRatings(date,groups){
@@ -413,7 +413,7 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
     }
   }finally{b.disabled=false;readerState.saving=false;}
 };
-(async()=>{try{config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode!=='github')throw Error('Ungültiger V3-Modus');
+(async()=>{try{config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode!=='github')throw Error('Ungültiger Pressespiegel-Modus');
 $('feedback').maxLength=4000;
 // The existing submit button already has the correct label in HTML.
 refreshGitHubConnection();$('feedback').required=false;
