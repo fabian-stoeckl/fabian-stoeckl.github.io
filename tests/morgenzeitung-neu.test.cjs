@@ -21,6 +21,8 @@ const blogData=JSON.parse(fs.readFileSync(path+'data/blogs.json','utf8'));
 assert.equal(blogData.posts.length,5);
 assert.equal(blogData.author,'Noah Smith');
 assert.match(fs.readFileSync(path+'app.js','utf8'),/blogLastCheck/);
+assert.match(fs.readFileSync(path+'app.js','utf8'),/blogVisibleCount\+10/);
+assert.match(fs.readFileSync(path+'app.js','utf8'),/Weitere 10 Beiträge anzeigen/);
 assert.match(fs.readFileSync(path+'style.css','utf8'),/blogs-view/);
 assert.match(fs.readFileSync(path+'rating-reasons.js','utf8'),/begruendungsvorschlaege.json/);
 assert.match(fs.readFileSync(path+'app.js','utf8'),/details.open=true/);

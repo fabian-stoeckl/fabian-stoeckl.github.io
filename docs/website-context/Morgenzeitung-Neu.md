@@ -49,3 +49,7 @@ Eigenständige neue Zeitung: `Privat/Morgenzeitung-Neu/`. Die vertraute klassisc
 
 ## Korrektur 02.11.2026 – Gastbeiträge zählen mit
 - Nutzer hinterfragte die ohne Auftrag vorgenommene Eingrenzung auf persönlich von Noah Smith verfasste Beiträge. Für **Noahpinion** gelten fortan die letzten fünf Artikel des ganzen Blogs inklusive Gastbeiträgen. Das Feed-Skript filtert nicht nach Autor; Autorzeile im Reader bei vorhandenen RSS-Angaben.
+
+## Ergänzung 02.11.2026 – Ältere Blogbeiträge aufklappen
+- Die fünf neuesten Blogbeiträge sind zuerst sichtbar. „Weitere 10 Beiträge anzeigen“ erweitert die **gleiche** Liste pro Klick um zehn (letzter Schritt ggf. weniger); nach Ende der gespeicherten Liste verschwindet der Button. Erweiterten Zustand beim Rubrikwechsel erhalten; **keine Bewertungen**.
+- Die bestehende RSS-Automation speichert künftig alle derzeit im RSS angebotenen Beiträge und führt sie mit den bereits gespeicherten älteren Feed-Beiträgen zusammen. Dadurch gehen Beiträge beim Herausfallen aus dem RSS-Zeitfenster nicht wieder verloren. Keine Behauptung, das vollständige historische Blogarchiv vor dem ersten Feedabruf rückwirkend zu besitzen. Die Startliste im Hauptbranch bleibt Notfall-Fallback, nicht ein vorgeblich vollständiges Archiv.

@@ -54,6 +54,14 @@ const fs=require('node:fs');
    });
    await page.route('https://raw.githubusercontent.com/**/blogs-live/**',async route=>{
      const payload=JSON.parse(fs.readFileSync('Privat/Morgenzeitung-Neu/data/blogs.json','utf8'));
+     // Simulate a retained RSS archive with 28 posts, including guest authors.
+     for(let n=5;n<28;n++)payload.posts.push({
+       title:'Older Noahpinion entry '+n,
+       url:'https://www.noahpinion.blog/p/test-archive-'+n,
+       published_at:'2026-10-20',
+       author:n%2?'Guest Contributor':'Noah Smith',
+       description:'Feed summary for item '+n
+     });
      await route.fulfill({status:200,json:payload});
    });
    const root=(process.env.PREVIEW_URL||'http://127.0.0.1:8766')+'/Privat/Morgenzeitung-Neu/';
@@ -65,11 +73,22 @@ const fs=require('node:fs');
    await page.locator('#tab-blogs').click();
    await page.waitForSelector('#blogs .blog-entry');
    assert.equal(await page.locator('#blogs .blog-entry').count(),5);
+   assert.equal(await page.locator('#blogs .blog-more').count(),1);
+   await page.locator('#blogs .blog-more').click();
+   assert.equal(await page.locator('#blogs .blog-entry').count(),15);
+   await page.locator('#blogs .blog-more').click();
+   assert.equal(await page.locator('#blogs .blog-entry').count(),25);
+   await page.locator('#blogs .blog-more').click();
+   assert.equal(await page.locator('#blogs .blog-entry').count(),28);
+   assert.equal(await page.locator('#blogs .blog-more').count(),0,'No more button after archive end');
    assert.equal(await page.locator('#blogs .rating-dots').count(),0,'Blogs must never have article ratings');
    assert.equal(await page.locator('#feedback-section').isVisible(),false,'Blogs have no feedback controls');
    assert.equal(await page.locator('#blogs .blog-entry a').first().getAttribute('href'),'https://www.noahpinion.blog/p/anthropics-moat-is-claude');
    await page.locator('#tab-headlines').click();
    assert.equal(await page.locator('#feedback-section').isVisible(),true,'Newspaper ratings remain available');
+   await page.locator('#tab-blogs').click();
+   assert.equal(await page.locator('#blogs .blog-entry').count(),28,'Expanded archive persists across tabs');
+   await page.locator('#tab-headlines').click();
    assert.ok(await page.locator('.feedback-suggestions button').count()>=4);
    const suggestion=await page.locator('.feedback-suggestions button').first().innerText();
    await page.locator('.feedback-suggestions button').first().click();
