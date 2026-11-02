@@ -52,9 +52,13 @@ for(const n of ['app','github','direct-feedback','rating-reasons','editorial-ext
 execFileSync('python3',['-m','unittest','discover','-s','tests','-p','test_noahpinion_feed.py','-v']);
 const dates=JSON.parse(fs.readFileSync(path+'data/index.json','utf8')).dates;
 assert.ok(dates.length);
-const ed=JSON.parse(fs.readFileSync(path+'data/2026-10-28.json','utf8'));
-assert.equal(ed.preview,true,'Imported edition must never masquerade as fresh research');
-assert.match(ed.editorial_note,/Archivierte/);
+assert.ok(!dates.includes('2026-10-28'),'Retired preview no longer published');
+assert.equal(fs.existsSync(path+'data/2026-10-28.json'),false,'Retired preview file must be absent');
+for(const day of dates){
+ const ed=JSON.parse(fs.readFileSync(path+'data/'+day+'.json','utf8'));
+ assert.equal(ed.preview,false,'Current edition must be genuine research');
+}
+assert.deepEqual(JSON.parse(fs.readFileSync(path+'config.json','utf8')),{mode:'github'});
 const engine=fs.readFileSync('services/morgenzeitung-neu/INTERESSEN.md','utf8');
 const research=fs.readFileSync('services/morgenzeitung-neu/RECHERCHE.md','utf8');
 assert.match(engine,/Muster ausdrücklich/);
@@ -81,5 +85,8 @@ for(const required of [/comment_suggestions/,/Rubriken sauber auseinanderhalten/
   assert.match(engine,required);
 assert.match(feedback,/comment_suggestions/);
 assert.match(fs.readFileSync(path+'app.js','utf8'),/Weiterer Beitrag zum Thema/);
-console.log('PASS: single Pressespiegel reader, retained historical data, qualitative learning and feedback');
+assert.doesNotMatch(page,/Bereiche der Persönlichen Zeitung/);
+assert.doesNotMatch(pref,/Zur Persönlichen Zeitung|Wie gut lernt meine Pressespiegel/);
+assert.doesNotMatch(fs.readFileSync(path+'app.js','utf8'),/heutige Persönliche Zeitung/);
+console.log('PASS: Pressespiegel reader, genuine editions and feedback continuity');
 
