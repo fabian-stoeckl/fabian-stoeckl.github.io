@@ -41,3 +41,8 @@ Eigenständige neue Zeitung: `Privat/Morgenzeitung-Neu/`. Die vertraute klassisc
 ## Offen
 - Erste drei tatsächlich neu recherchierte und veröffentlichte Ausgaben, mit dokumentierter journalistischer Praxisabnahme und Musterbilanz nach der dritten.
 - Späteren realen Lernerfolg an Artikelfeedback beurteilen, nicht an einer Änderung des Beschreibungstextes oder grüner CI.
+
+## Ergänzung 02.11.2026 – Rubrik Blogs
+- Dritter Reiter **Blogs** ohne Bewertungssystem. Zeigt Blogautor und jeweils fünf letzte direkte Beitragslinks mit Datum und kurzer Beschreibung. Bestehende Tagesausgaben, Nachrichten, Vertiefungen und privates Feedback unberührt.
+- Erster Blog **Noah Smith · Noahpinion**, `https://www.noahpinion.blog/feed`; Gastbeiträge anderer Autoren nicht mitzählen.
+- Unabhängige GitHub-Actions-Aktualisierung alle drei Stunden: `scripts/sync_blogs.py` prüft den RSS-Feed und schreibt nur auf den separaten Datenbranch `blogs-live`; keine direkten automatischen Änderungen an `main`, keine weitere ChatGPT-Automation. Reader lädt aktuelle Daten von GitHub Raw und fällt bei Fehlern auf die im Hauptbranch gespeicherte Startliste zurück. Feedtext nicht als redaktionell geprüfte Synthese behandeln.

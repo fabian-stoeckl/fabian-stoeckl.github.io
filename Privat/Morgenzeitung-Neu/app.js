@@ -9,6 +9,55 @@ function stashComment(date){
   readerState.commentDrafts[date]=$('feedback').value;
   readerState.commentSuggestionDrafts[date]=FeedbackSuggestions.getSelected($('feedback'));
 }
+
+const BLOGS_FEED='https://raw.githubusercontent.com/fabian-stoeckl/fabian-stoeckl.github.io/blogs-live/Privat/Morgenzeitung-Neu/data/blogs.json';
+let blogLastCheck=0,blogLoading=false;
+function renderBlogPosts(data,stale=false){
+  if(!data||!Array.isArray(data.posts))throw Error('Ungültige Blogdaten');
+  const root=$('blogs');root.replaceChildren();
+  const heading=el('div',undefined,'blog-heading');
+  const title=el('h2');title.append(link('Noah Smith · Noahpinion','https://www.noahpinion.blog/'));
+  heading.append(title,el('p','Wirtschaft, Technologie und Gesellschaft · die fünf neuesten Beiträge von Noah Smith.','small'));
+  if(data.checked_at&&Number.isFinite(Date.parse(data.checked_at)))
+    heading.append(el('p','Feed zuletzt geprüft: '+fmt(data.checked_at)+(stale?' · letzte gespeicherte Liste':''),'small'));
+  root.append(heading);
+  const list=el('div',undefined,'blog-list');
+  let count=0;
+  for(const post of data.posts.slice(0,5)){
+    if(!post||typeof post.title!=='string'||typeof post.url!=='string')continue;
+    let target;
+    try{
+      target=new URL(post.url);
+      if(target.protocol!=='https:'||!['www.noahpinion.blog','noahpinion.blog','noahpinion.substack.com'].includes(target.hostname))continue;
+    }catch(_){continue;}
+    const item=el('div',undefined,'blog-entry');
+    const h=el('h3');h.append(link(post.title,target.href));item.append(h);
+    if(typeof post.published_at==='string'&&/^\d{4}-\d{2}-\d{2}/.test(post.published_at))
+      item.append(el('p',fmt(post.published_at.slice(0,10)),'meta'));
+    if(typeof post.description==='string'&&post.description.trim())
+      item.append(el('p',post.description.slice(0,320),'blog-description'));
+    list.append(item);count++;
+  }
+  $('blog-count').textContent=count;
+  root.append(list);
+  if(!count)root.append(el('p','Aktuell sind keine Beiträge verfügbar.','small'));
+}
+async function loadBlogs(){
+  if(blogLoading)return;
+  blogLoading=true;blogLastCheck=Date.now();
+  try{
+    const response=await fetch(BLOGS_FEED,{cache:'no-store',signal:AbortSignal.timeout(7000)});
+    if(!response.ok)throw Error('Live-Liste derzeit nicht erreichbar');
+    renderBlogPosts(await response.json());
+  }catch(_){
+    try{
+      const fallback=await fetch('./data/blogs.json',{cache:'no-store'});
+      if(!fallback.ok)throw Error('Keine gespeicherten Beiträge');
+      renderBlogPosts(await fallback.json(),true);
+    }catch(_){$('blogs').replaceChildren(el('p','Noahpinion kann gerade nicht geladen werden.','small'));}
+  }finally{blogLoading=false;}
+}
+
 function feedbackStatus(msg){$('feedback-status').textContent=msg;for(const id of ['news-feedback-status','features-feedback-status'])if($(id))$(id).textContent=msg;}
 const $=id=>document.getElementById(id);
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
@@ -238,13 +287,15 @@ $('date').onchange=async()=>{
     await restoreSavedRatings();
   }catch(e){if(sequence===readerState.loadSequence)status(e.message);}
 };
-for(const tab of ['headlines','articles'])$('tab-'+tab).onclick=()=>{
+for(const tab of ['headlines','articles','blogs'])$('tab-'+tab).onclick=()=>{
   // Preserve unsent feedback; switching only changes visibility.
   if($('tab-'+tab).getAttribute('aria-pressed')==='true')return;
-  for(const name of ['headlines','articles']){
+  for(const name of ['headlines','articles','blogs']){
     $(name).hidden=name!==tab;
     $('tab-'+name).setAttribute('aria-pressed',String(name===tab));
   }
+  document.body.classList.toggle('blogs-view',tab==='blogs');
+  if(tab==='blogs'&&Date.now()-blogLastCheck>20*60*1000)void loadBlogs();
   // Sticky tabs may have been clicked far down the page: show the masthead again.
   window.scrollTo(0,0);
 };
@@ -352,7 +403,7 @@ const index=await GitHubPaper.json('./data/index.json');latestDate=index.dates[0
 for(const d of index.dates){const o=el('option',d);o.value=d;$('date').append(o);}
 $('operating-state').textContent='Ausgaben aus GitHub · Feedback wird nach einmaliger Verbindung direkt auf GitHub gespeichert.';
 if(!latestDate){status('Noch keine veröffentlichte Ausgabe verfügbar.');return;}
-edition=await GitHubPaper.edition(latestDate);render();await RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken());await restoreSavedRatings();return;
+edition=await GitHubPaper.edition(latestDate);render();void loadBlogs();await RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken());await restoreSavedRatings();return;
 }catch(e){status('Persönliche Zeitung nicht erreichbar. '+e.message);}})();
 
 $('feedback').addEventListener('input',()=>{
