@@ -13,6 +13,7 @@ const pages = [
   { name: 'pressespiegel-archiv', path: '/Privat/Pressespiegel-Archiv/', ready: 'h1' },
   { name: 'morgenzeitung-redirect', path: '/Privat/Morgenzeitung-Neu/', ready: '#tab-blogs' },
   { name: 'pressespiegel-prefs', path: '/Privat/Pressespiegel/praeferenzen.html', ready: 'h1' },
+  { name: 'pressespiegel-old-prefs-redirect', path: '/Privat/Morgenzeitung-Neu/praeferenzen.html', ready: 'h1' },
 ];
 const viewports = [
   { name: 'desktop', width: 1440, height: 1000 },
