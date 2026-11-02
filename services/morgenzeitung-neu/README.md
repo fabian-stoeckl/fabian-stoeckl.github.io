@@ -1,6 +1,6 @@
 # Pressespiegel – Architektur und Betrieb
 
-Der einzige aktive Pressespiegel unter `Privat/Pressespiegel/` übernimmt bewusst das **klassische** Design mit „Heute wichtig“, „Vertiefungen“, drei Relevanzstufen, optionalen Begründungen, freiem Feedback und separater Präferenzseite. Historische Ausgaben sind als separate Original-JSON-Dateien unter `Privat/Pressespiegel/data/historisch/` erhalten. Andere Website-Bereiche, besonders ETFs, bleiben unberührt.
+Der einzige aktive Pressespiegel unter `Privat/Pressespiegel/` übernimmt bewusst das **klassische** Design mit „Heute wichtig“, „Vertiefungen“, drei Relevanzstufen, optionalen Begründungen, freiem Feedback und separater Präferenzseite. Andere Website-Bereiche, besonders ETFs, bleiben unberührt.
 
 ## Eine Quelle pro Verantwortung
 
@@ -27,4 +27,4 @@ Der **eine bereits existierende** tägliche Automationsauftrag lädt den aktuell
 
 `python3 scripts/morgenzeitung_neu.py verify`, `python3 tests/morgenzeitung-neu-editorial.py`, `node tests/morgenzeitung-neu.test.cjs`, `node tests/morgenzeitung-neu-feedback.cjs` sowie die vorhandenen GitHub-Browser- und allgemeinen Website-Prüfungen. Diese Tests bestätigen Struktur und Abläufe, **nicht** die Qualität der journalistischen Auswahl.
 ## Öffentliche Umbenennung 02.11.2026
-Die Zeitung heißt öffentlich **Pressespiegel** und liegt auf `Privat/Pressespiegel/`. Die alten Verzeichnisse und Weiterleitungen sind entfernt. Einmalige historische JSON-Quellen vom 27./28.10.2026 liegen unverändert und getrennt von den aktuellen Ausgaben in `Privat/Pressespiegel/data/historisch/`. Die private Feedback- und Profilspeicherung bleibt unberührt. Private GitHub-Ordner `morgenzeitung-neu/`, Marker und Artikel-IDs bleiben stabil, damit frühere Bewertungen nicht verloren gehen.
+Die Zeitung heißt öffentlich **Pressespiegel** und liegt auf `Privat/Pressespiegel/`. Die alten Verzeichnisse und Weiterleitungen sind entfernt. Die ungenutzten älteren Archivdateien vom 27./28.10.2026 wurden auf Nutzerwunsch gelöscht; die aktuelle Ausgabe vom 28.10.2026 bleibt bewusst als `preview:true` erhalten. Die private Feedback- und Profilspeicherung bleibt unberührt. Private GitHub-Ordner `morgenzeitung-neu/`, Marker und Artikel-IDs bleiben stabil, damit frühere Bewertungen nicht verloren gehen.

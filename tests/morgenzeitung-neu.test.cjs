@@ -21,13 +21,8 @@ assert.match(home,/aria-label="Pressespiegel öffnen"/);
 for(const removed of ['Morgenzeitung-Neu','Persoenliche-Zeitung','Pressespiegel-Archiv']){
  assert.equal(fs.existsSync('Privat/'+removed),false,'Obsolete public archive must be absent: '+removed);
 }
-const historical=JSON.parse(fs.readFileSync(path+'data/historisch/index.json','utf8'));
-assert.equal(historical.editions.length,4);
-for(const entry of historical.editions){
- const legacy=JSON.parse(fs.readFileSync(path+'data/historisch/'+entry.filename,'utf8'));
- assert.equal(legacy.date,entry.date,'Original historical date retained');
- assert.ok((legacy.articles?.length||0)+(legacy.headlines?.length||0)>0);
-}
+assert.equal(fs.existsSync(path+'data/historisch'),false,'Unused historical data directory must be removed');
+assert.equal(fs.existsSync(path+'data/historische-versionen.json'),false,'No replacement history bundle should be created');
 
 assert.match(page,/id="blogs" aria-label="Blogs"/);
 assert.match(page,/raw.githubusercontent.com/);
