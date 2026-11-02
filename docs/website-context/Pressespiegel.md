@@ -70,3 +70,8 @@ Eigenständige neue Zeitung: `Privat/Pressespiegel/`. Die vertraute klassische V
 - Auf ausdrücklichen Wunsch wurden die acht Dateien unter `Privat/Pressespiegel/data/historisch/` (vier alte Ausgaben und die damaligen Quellen-/Verzeichnismetadaten) wieder aus der veröffentlichten Website entfernt. Es erfolgt **keine** Verschmelzung dieser alten Daten mit dem aktuellen Ausgabenindex. Der frühere Dateistand bleibt im Git-Verlauf des Repositorys rekonstruierbar (vor dem Entfernen: Commit `b18011ea61b8c2f2f30e9265e3c1c491f2b0919d`).
 - Die sechs gültig indexierten aktuellen Ausgabedateien einschließlich der ausdrücklich als `preview:true` markierten Startausgabe vom 28.10.2026 sowie die laufende RSS-/Feedbacktechnik bleiben unverändert. Es gibt nur eine aktive Zeitung: `Privat/Pressespiegel/`.
 
+
+## Abschlussbereinigung 02.11.2026 – nur aktuelle Ausgaben
+- Die importierte `preview:true`-Vorschau vom 28.10.2026 ist auf Nutzerwunsch gelöscht und aus dem Ausgabenindex entfernt. Die fünf echten Ausgaben vom 29.10. bis 02.11.2026 bleiben unverändert; private Feedback-Issues wurden nicht angefasst.
+- Veraltete sichtbare Oberflächenbeschriftungen ersetzt; die Reader-Konfiguration enthält nur noch den verwendeten `mode: github`. Frühere Abschnitte bleiben als Entscheidungshistorie, nicht als aktiver Datenstand.
+- Nicht mehr benutzte private Test- und Vorgängerdateien können getrennt bereinigt werden; das operative Feedbackverzeichnis `morgenzeitung-neu/` mit den darin tatsächlich genutzten Daten bleibt bestehen.

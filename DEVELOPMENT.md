@@ -46,7 +46,7 @@ The context test also exercises temporary fixtures for a fourth area, missing pr
 
 ## Pressespiegel (einzige aktive Zeitung)
 
-Die einzige Website liegt unter `Privat/Pressespiegel/` mit den Reitern **Heute wichtig**, **Vertiefungen** und **Blogs**. Es bestehen **keine** Weiterleitungsseiten unter früheren Zeitungsadressen. Unbenutzte Archivdateien früherer Zeitungsvarianten wurden auf Wunsch vollständig aus der aktuellen Website entfernt; sie sind im Git-Verlauf historisch nachvollziehbar. Die aktive Ausgabe `data/YYYY-MM-DD.json` und ihr Index bleiben unverändert. Bitte keine historischen Doppelausgaben in den aktuellen Index mischen.
+Die einzige Website liegt unter `Privat/Pressespiegel/` mit den Reitern **Heute wichtig**, **Vertiefungen** und **Blogs**. Es bestehen **keine** Weiterleitungsseiten unter früheren Zeitungsadressen. Unbenutzte Archivdateien früherer Zeitungsvarianten wurden auf Wunsch vollständig aus der aktuellen Website entfernt; sie sind im Git-Verlauf historisch nachvollziehbar. Die importierte Vorschau vom 28.10.2026 ist aus dem aktiven Verzeichnis und Index entfernt; die echten Ausgaben ab 29.10.2026 bleiben unverändert. Bitte keine historischen Doppelausgaben in den aktuellen Index mischen.
 
 Die aktive redaktionelle Engine bleibt `services/morgenzeitung-neu/` und der bestehende private GitHub-Feedbackordner `morgenzeitung-neu/`. Historische V3-Feedbackmarker und Ratings werden nicht auf die aktive Zeitung übertragen. Das öffentliche Blogverzeichnis wird vom GitHub-Actions-RSS-Workflow in `blogs-live` aktuell gehalten.
 
