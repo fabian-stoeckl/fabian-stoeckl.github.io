@@ -15,7 +15,7 @@
 
 ## Pressespiegel – sole active newspaper
 
-The current (and only public) reader is `Privat/Pressespiegel/`. It shows **Heute wichtig**, **Vertiefungen**, and **Blogs**. There are no public legacy newspaper directories or redirect pages. Historical public edition JSONs are preserved **without modification** under `Privat/Pressespiegel/data/historisch/`, with a manifest; they are **not** mixed into the active edition index or treated as new published research.
+The current (and only public) reader is `Privat/Pressespiegel/`. It shows **Heute wichtig**, **Vertiefungen**, and **Blogs**. There are no public legacy newspaper directories or redirect pages. Unused historical edition copies were removed from the active website; they remain recoverable from git history, not from current public paths. Do not merge them into the active edition index or treat them as new published research.
 
 The current editorial contracts remain `services/morgenzeitung-neu/INTERESSEN.md`, `RECHERCHE.md`, and `README.md`. Their longstanding private GitHub feedback storage is `morgenzeitung-neu/` under `fabian-stoeckl/morgenzeitung-feedback`, using `MORGENZEITUNG_NEU_FEEDBACK_V1`; do not rename or mix historic V3 feedback. Retain stable article IDs, URLs, existing feedback and prior corrections. Never alter ETF resources for a newspaper task. Existing automation publishes only to `Privat/Pressespiegel/data/`, while the independent Noahpinion RSS sync writes to the `blogs-live` branch.
 
