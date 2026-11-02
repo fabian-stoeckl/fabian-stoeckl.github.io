@@ -38,6 +38,10 @@
     {
       "filename": "quellen-frueherer-pressespiegel.json",
       "original_path": "services/pressespiegel/quellen.json"
+    },
+    {
+      "filename": "v3-quellen.json",
+      "original_path": "services/morgenzeitung-v3/sources.json"
     }
   ]
 }
