@@ -1,0 +1,169 @@
+{
+  "author": "Noah Smith",
+  "name": "Noahpinion",
+  "homepage": "https://www.noahpinion.blog/",
+  "feed": "https://www.noahpinion.blog/feed",
+  "checked_at": "2026-11-02T21:01:22+00:00",
+  "posts": [
+    {
+      "title": "Anthropic’s moat is Claude",
+      "url": "https://www.noahpinion.blog/p/anthropics-moat-is-claude",
+      "published_at": "2026-11-02",
+      "author": "Noah Smith",
+      "description": "The bull case for Anthropic’s IPO.",
+      "published_time": "2026-11-02T11:03:51+00:00"
+    },
+    {
+      "title": "Farewell, my Captain",
+      "url": "https://www.noahpinion.blog/p/farewell-my-captain",
+      "published_at": "2026-10-31",
+      "author": "Noah Smith",
+      "description": "A TV character gave us a glimpse of what humanity might become.",
+      "published_time": "2026-10-31T01:39:39+00:00"
+    },
+    {
+      "title": "A golden age of science is coming",
+      "url": "https://www.noahpinion.blog/p/a-golden-age-of-science-is-coming",
+      "published_at": "2026-10-29",
+      "author": "Noah Smith",
+      "description": "AI can do things humans researchers can’t, even in groups.",
+      "published_time": "2026-10-29T09:55:51+00:00"
+    },
+    {
+      "title": "Roundup #90: In which Noah joins a Japanese VC firm",
+      "url": "https://www.noahpinion.blog/p/roundup-90-in-which-noah-joins-a",
+      "published_at": "2026-10-27",
+      "author": "Noah Smith",
+      "description": "The humanities; Data center crowd-out; Chinese local governments; AI and capitalism; How Japan builds; Phones bad; Chinese manufacturing; Rent control",
+      "published_time": "2026-10-27T07:17:34+00:00"
+    },
+    {
+      "title": "The internet breaks",
+      "url": "https://www.noahpinion.blog/p/the-internet-breaks",
+      "published_at": "2026-10-25",
+      "author": "Noah Smith",
+      "description": "What will be next to break?",
+      "published_time": "2026-10-25T07:19:36+00:00"
+    },
+    {
+      "title": "France and the limits of liberalism",
+      "url": "https://www.noahpinion.blog/p/france-and-the-limits-of-liberalism",
+      "published_at": "2026-10-22",
+      "author": "Noah Smith",
+      "description": "Immigration, the welfare state, and Keynesian economics are all showing signs of strain.",
+      "published_time": "2026-10-22T08:04:41+00:00"
+    },
+    {
+      "title": "“You Can See Everything” and the nature of liars",
+      "url": "https://www.noahpinion.blog/p/you-can-see-everything-and-the-nature",
+      "published_at": "2026-10-21",
+      "author": "Noah Smith",
+      "description": "A movie review, plus some thoughts on dishonesty, belief, and human communication.",
+      "published_time": "2026-10-21T08:45:19+00:00"
+    },
+    {
+      "title": "Can a Million AI Agents Create Superintelligence?",
+      "url": "https://www.noahpinion.blog/p/can-a-million-ai-agents-create-superintelligence",
+      "published_at": "2026-10-19",
+      "author": "Ramez Naam",
+      "description": "Ramez Naam gives a skeptic’s take on agent swarms.",
+      "published_time": "2026-10-19T04:33:30+00:00"
+    },
+    {
+      "title": "Why are we ruled by barbarians?",
+      "url": "https://www.noahpinion.blog/p/why-are-we-ruled-by-barbarians",
+      "published_at": "2026-10-18",
+      "author": "Noah Smith",
+      "description": "America’s New Right believes that savagery is the key to victory.",
+      "published_time": "2026-10-18T06:34:00+00:00"
+    },
+    {
+      "title": "AI vs. the railroads",
+      "url": "https://www.noahpinion.blog/p/ai-vs-the-railroads",
+      "published_at": "2026-10-15",
+      "author": "Noah Smith",
+      "description": "Are we in 1872?",
+      "published_time": "2026-10-15T08:47:39+00:00"
+    },
+    {
+      "title": "A Nobel for New Keynesian macro, at last!",
+      "url": "https://www.noahpinion.blog/p/a-nobel-for-new-keynesian-macro-at",
+      "published_at": "2026-10-13",
+      "author": "Noah Smith",
+      "description": "It’s about time.",
+      "published_time": "2026-10-13T05:28:43+00:00"
+    },
+    {
+      "title": "Why Donald Trump won in 2024",
+      "url": "https://www.noahpinion.blog/p/why-donald-trump-won-in-2024",
+      "published_at": "2026-10-11",
+      "author": "Noah Smith",
+      "description": "Re-upping my election post-mortem, so that we don’t forget.",
+      "published_time": "2026-10-11T07:31:44+00:00"
+    },
+    {
+      "title": "Maybe the Rapture is already here",
+      "url": "https://www.noahpinion.blog/p/maybe-the-rapture-is-already-here",
+      "published_at": "2026-10-09",
+      "author": "Noah Smith",
+      "description": "In the future, we’re all heavenbanned.",
+      "published_time": "2026-10-09T09:18:32+00:00"
+    },
+    {
+      "title": "There is no “Indian Question”",
+      "url": "https://www.noahpinion.blog/p/there-is-no-indian-question",
+      "published_at": "2026-10-07",
+      "author": "Noah Smith",
+      "description": "The actual question is what kind of a nation America is going to be.",
+      "published_time": "2026-10-07T09:47:37+00:00"
+    },
+    {
+      "title": "What the AI boom is doing for Americans",
+      "url": "https://www.noahpinion.blog/p/what-the-ai-boom-is-doing-for-americans",
+      "published_at": "2026-10-05",
+      "author": "Noah Smith",
+      "description": "It’s not just “of, by and for oligarchs”.",
+      "published_time": "2026-10-05T08:12:53+00:00"
+    },
+    {
+      "title": "The second Trump presidency is a world-historic failure",
+      "url": "https://www.noahpinion.blog/p/the-second-trump-presidency-is-a",
+      "published_at": "2026-10-03",
+      "author": "Noah Smith",
+      "description": "How did Trump fumble so badly?",
+      "published_time": "2026-10-03T08:47:17+00:00"
+    },
+    {
+      "title": "Roundup #89: It isn’t X, it’s Y",
+      "url": "https://www.noahpinion.blog/p/roundup-89-it-isnt-x-its-y",
+      "published_at": "2026-10-01",
+      "author": "Noah Smith",
+      "description": "AI risk; Reindustrialization; The rent crisis; AI and jobs; Mass deportation; Chinese investment; Cyber risk",
+      "published_time": "2026-10-01T06:14:51+00:00"
+    },
+    {
+      "title": "Stop spending money on smaller classes",
+      "url": "https://www.noahpinion.blog/p/stop-spending-money-on-smaller-classes",
+      "published_at": "2026-09-28",
+      "author": "Noah Smith",
+      "description": "We’ve spent decades raising teacher quantity when we should have been raising quality.",
+      "published_time": "2026-09-28T22:27:25+00:00"
+    },
+    {
+      "title": "Where’s the “intelligence explosion”?",
+      "url": "https://www.noahpinion.blog/p/wheres-the-intelligence-explosion",
+      "published_at": "2026-09-27",
+      "author": "Ramez Naam",
+      "description": "Ramez Naam gives a skeptic’s take on Recursive Self-Improvement.",
+      "published_time": "2026-09-27T07:20:08+00:00"
+    },
+    {
+      "title": "Four eras of San Francisco tech culture",
+      "url": "https://www.noahpinion.blog/p/four-eras-of-san-francisco-tech-culture",
+      "published_at": "2026-09-25",
+      "author": "Noah Smith",
+      "description": "An anthropological reflection.",
+      "published_time": "2026-09-25T08:29:29+00:00"
+    }
+  ]
+}
