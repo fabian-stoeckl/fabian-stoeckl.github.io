@@ -1,0 +1,186 @@
+{
+  "date": "2026-11-03",
+  "researched_at": "2026-11-03T03:42:00+01:00",
+  "preview": false,
+  "editorial_note": "Redaktionsschluss 03.11.2026 ca. 04:40 Uhr Wien. Größere neue Entwicklungen, begrenzte Quellensichtung und ausgewählte ältere Analysen; Originalzugriff je Beitrag gekennzeichnet.",
+  "articles": [
+    {
+      "id": "f228ec2d00000000",
+      "title": "Palantir AI tech unused or little used by 29 NHS trusts said to be benefiting from it",
+      "url": "https://www.theguardian.com/technology/2026/nov/02/palantir-unused-nhs-hospital-trusts",
+      "source": "The Guardian",
+      "published_at": "2026-11-02",
+      "summary": "Nach mehr als 100 Informationsfreiheitsanfragen berichten 29 britische Krankenhausorganisationen, dass die als nützlich ausgewiesene Palantir-Plattform nicht oder kaum eingesetzt wird. NHS England verweist auf breitere Nutzung, räumt aber ein, den behaupteten Anstieg der Operationen nicht kausal zuordnen zu können.",
+      "article_type": "analysis",
+      "topic": "KI im öffentlichen Sektor",
+      "evidence_level": "read"
+    },
+    {
+      "id": "5ee0bfdc00000000",
+      "title": "Finnisches Start-up sucht Antwort auf Elon Musks Starlink",
+      "url": "https://www.derstandard.at/story/3000000347113/finnisches-start-up-sucht-antwort-auf-elon-musks-starlink",
+      "source": "Der Standard",
+      "published_at": "2026-11-02",
+      "summary": "Die Reportage stellt Reorbit als finnischen Anbieter souveräner Kommunikationssatelliten vor. Das Unternehmen will Regierungen eigene Systeme statt bloßer gemieteter Kapazitäten anbieten; ein erster Start ist für Februar 2027 angekündigt, noch kein Nachweis kommerzieller Skalierung.",
+      "article_type": "analysis",
+      "topic": "Technologische Souveränität",
+      "evidence_level": "read"
+    },
+    {
+      "id": "547097f800000000",
+      "title": "Ryanair faces clash with unions as it mulls pay freezes amid soaring fuel costs",
+      "url": "https://www.theguardian.com/business/2026/nov/02/ryanair-considers-pay-freezes-reducing-crew-on-flights-fuel-costs-soar-ai",
+      "source": "The Guardian",
+      "published_at": "2026-11-02",
+      "summary": "Ryanair prüft angesichts erwarteter Mehrkosten für Treibstoff von rund zwei Milliarden Euro im kommenden Geschäftsjahr Nullrunden, Personalmaßnahmen und mehr KI. Gewerkschaften verweisen auf bestehende Vereinbarungen; die Kostenzahl ist eine Unternehmensprognose.",
+      "article_type": "analysis",
+      "topic": "Produktivität und Energiepreise",
+      "evidence_level": "read"
+    },
+    {
+      "id": "c47eb42000000000",
+      "title": "Police use facial recognition to scan one million faces in WA trial leading to 122 arrests",
+      "url": "https://www.theguardian.com/australia-news/2026/nov/02/wa-police-facial-recognition-technology-trial",
+      "source": "The Guardian",
+      "published_at": "2026-11-02",
+      "summary": "Die Polizei Westaustraliens meldet 1,38 Millionen Gesichtsscans, 122 Festnahmen und neun Fehlalarme in einem fünfmonatigen Versuch. Bürgerrechtsgruppen kritisieren, dass die extrem niedrige Fehlerquote pro Scan die Eingriffe bei falsch Verdächtigten verschleiert.",
+      "article_type": "analysis",
+      "topic": "KI und Bürgerrechte",
+      "evidence_level": "read"
+    },
+    {
+      "id": "6957aa0e00000000",
+      "title": "‘Digital hostile environment’: AI secretly being embedded across Home Office, report claims",
+      "url": "https://www.theguardian.com/politics/2026/oct/27/digital-hostile-environment-ai-secretly-embedded-home-office-report",
+      "source": "The Guardian",
+      "published_at": "2026-10-27",
+      "summary": "Ein Bericht der Bürgerrechtsorganisation Open Rights Group dokumentiert den Einsatz von KI in britischen Migrationsverfahren, von Altersabschätzungen bis zur Fallpriorisierung. Das Innenministerium betont, Menschen träfen die Asylentscheidungen; die Transparenz und Fehlerkontrolle bleiben umstritten.",
+      "article_type": "analysis",
+      "topic": "Migration und KI",
+      "evidence_level": "read"
+    },
+    {
+      "id": "bb862fc100000000",
+      "title": "Warum die Erste Group in Polen investiert und Österreich zum \"Visegrád-Plus\"-Staat machen will",
+      "url": "https://www.derstandard.at/story/3000000346362/warum-die-erste-group-in-polen-investiert-und-oesterreich-zum-visegrad-plus-staat-machen-will",
+      "source": "Der Standard",
+      "published_at": "2026-10-30",
+      "summary": "Die Erste Group erwarb für rund sieben Milliarden Euro eine kontrollierende Beteiligung an einer polnischen Bank. Der Vor-Ort-Bericht beleuchtet das Wachstumspotenzial und die digitale Banknutzung in Polen, benennt aber auch Demografie- und Sicherheitsrisiken; die Reise erfolgte auf Einladung der Bank.",
+      "article_type": "analysis",
+      "topic": "Österreichische Unternehmen und Osteuropa",
+      "evidence_level": "read"
+    },
+    {
+      "id": "7eec9d7900000000",
+      "title": "Europe must build own AI or risk getting cut off by US or China, says ECB's Lagarde",
+      "url": "https://www.theguardian.com/technology/2026/sep/14/europe-ai-datacentres-growth-us-china-ecb-christine-lagarde",
+      "source": "The Guardian",
+      "published_at": "2026-09-14",
+      "summary": "EZB-Präsidentin Lagarde warnt vor Europas Abhängigkeit von ausländischen KI-Modellen und Rechenkapazitäten. Ihr Argument verbindet Produktivitätspotenzial mit wirtschaftlicher und politischer Verwundbarkeit; es handelt sich um eine zugeschriebene politische Position.",
+      "article_type": "analysis",
+      "topic": "KI und europäische Wettbewerbsfähigkeit",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "882c91de00000000",
+      "title": "Why Europe has been absent from the great AI safety debate",
+      "url": "https://www.theguardian.com/technology/2026/sep/18/europe-ai-safety-debate",
+      "source": "The Guardian",
+      "published_at": "2026-09-18",
+      "summary": "Der Beitrag untersucht, warum Europa in Debatten über die Sicherheit führender KI-Modelle wenig Einfluss hat. Er kontrastiert fehlende heimische Modellanbieter mit Europas regulatorischer Stärke und dem Risiko weiterer technischer Abhängigkeit.",
+      "article_type": "analysis",
+      "topic": "KI-Governance und Europa",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "dc74f82000000000",
+      "title": "Abu Dhabi's ADNOC, G42 sign deal with OpenAI as Sam Altman travels to UAE",
+      "url": "https://www.reuters.com/business/energy/abu-dhabis-adnoc-g42-sign-deal-with-openai-sam-altman-travels-uae-2026-11-02/",
+      "source": "Reuters",
+      "published_at": "2026-11-02",
+      "summary": "Der Ölkonzern ADNOC und G42 vereinbarten mit OpenAI den Einsatz fortgeschrittener KI in den Betriebsabläufen. Reuters beschreibt außerdem den Zusammenhang zwischen KI-Infrastruktur, Energiebedarf und staatlichen Investitionen in den Emiraten; erwartete Produktivitätswirkungen sind noch nicht belegt.",
+      "article_type": "analysis",
+      "topic": "KI und Energieindustrie",
+      "evidence_level": "read"
+    }
+  ],
+  "headlines": [
+    {
+      "id": "d1b1a2c300000001",
+      "title": "Arbeitslosigkeit im Oktober weiter gestiegen – 390.000 ohne Job",
+      "url": "https://www.vol.at/arbeitslosigkeit-in-vorarlberg-steigt-weiter-wer-betroffen-ist/10605290",
+      "source": "VOL.AT / APA",
+      "published_at": "2026-11-02",
+      "summary": "Laut AMS waren Ende Oktober österreichweit 389.941 Menschen arbeitslos gemeldet oder in Schulung, 0,5 Prozent mehr als ein Jahr zuvor. Die Arbeitslosigkeit bei Frauen stieg, bei Männern ging sie zurück; der leichte Konjunkturaufschwung schlägt noch nicht deutlich auf den Arbeitsmarkt durch.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read"
+    },
+    {
+      "id": "ca80eed900000000",
+      "title": "US to mediate trilateral talks with Ukraine, Russia in Abu Dhabi next week, US envoy says",
+      "url": "https://www.reuters.com/world/europe/us-hold-trilateral-talks-with-ukraine-russia-abu-dhabi-next-week-us-official-2026-11-02/",
+      "source": "Reuters",
+      "published_at": "2026-11-02",
+      "summary": "US-Gesandter Witkoff kündigte für den 10. und 11. November Gespräche mit Ukraine und Russland in Abu Dhabi an. Ein Termin ist noch keine Einigung; Sicherheitsgarantien sollen vorab auch mit europäischen Partnern besprochen werden.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "e96d7d3000000000",
+      "title": "More drops for AI and tech stocks overshadow gains for most of Wall Street",
+      "url": "https://apnews.com/article/stocks-markets-ai-earnings-oil-iran-048328e49e47ce7afe6c1fb9d9acf13d",
+      "source": "Associated Press",
+      "published_at": "2026-11-02",
+      "summary": "Der Nasdaq verlor am Montag 1,1 Prozent, während die meisten S&P-500-Titel stiegen. AP beschreibt die Sorge um Renditen hoher KI-Investitionen; zugleich fiel Brent-Öl um 7,6 Prozent.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "63cdfd2900000000",
+      "title": "Ikea among shops affected by fridge cyber-hacks - Europe live",
+      "url": "https://www.theguardian.com/world/live/2026/nov/02/ukraine-russia-emergency-warning-systems-hack-zelenskyy-streeting-eu-latest-news-updates",
+      "source": "The Guardian",
+      "published_at": "2026-11-02",
+      "summary": "In mehreren europäischen Ländern wurden Kühlsteuerungen von Geschäften manipuliert. Der Livebericht nennt über 100 betroffene Läden; Täter und mögliche Zusammenhänge mit früheren Angriffen sind nicht geklärt.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "35f586cf00000000",
+      "title": "China to raise FX reserve requirement to slow yuan's rally",
+      "url": "https://www.reuters.com/world/asia-pacific/china-raise-forex-deposit-reserve-ratio-6-starting-november-15-2026-11-03/",
+      "source": "Reuters",
+      "published_at": "2026-11-03",
+      "summary": "Chinas Notenbank kündigte eine Erhöhung der Mindestreserve auf Fremdwährungseinlagen von vier auf sechs Prozent ab 15. November an. Reuters ordnet dies als Versuch ein, die Yuan-Aufwertung zu bremsen.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "e6ad08a800000000",
+      "title": "South Korea's Lee calls for powerful government-wide cybersecurity body",
+      "url": "https://www.reuters.com/world/asia-pacific/south-koreas-lee-calls-powerful-government-wide-cybersecurity-body-2026-11-03/",
+      "source": "Reuters",
+      "published_at": "2026-11-03",
+      "summary": "Südkoreas Präsident Lee fordert eine ressortübergreifende Cybersicherheitsorganisation nach einer Serie von Angriffen. Es handelt sich um einen politischen Vorschlag, nicht um eine bereits gegründete Behörde.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "13c9a52a00000000",
+      "title": "Ethiopia attacks kill civilians as health system nears collapse, WHO chief says",
+      "url": "https://apnews.com/article/70bee2b7fe23dd348c5ac8adf833332a",
+      "source": "Associated Press",
+      "published_at": "2026-11-03",
+      "summary": "WHO-Chef Tedros berichtet über zivile Opfer und stark belastete Gesundheitsversorgung in äthiopischen Konfliktregionen. Er nannte dabei keine belastbare Gesamtzahl oder eindeutige Täterzuordnung.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    }
+  ]
+}
