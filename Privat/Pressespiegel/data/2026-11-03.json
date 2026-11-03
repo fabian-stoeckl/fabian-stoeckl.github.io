@@ -106,6 +106,17 @@
   ],
   "headlines": [
     {
+      "id": "d1b1a2c300000001",
+      "title": "Arbeitslosigkeit im Oktober weiter gestiegen – 390.000 ohne Job",
+      "url": "https://www.vol.at/arbeitslosigkeit-in-vorarlberg-steigt-weiter-wer-betroffen-ist/10605290",
+      "source": "VOL.AT / APA",
+      "published_at": "2026-11-02",
+      "summary": "Laut AMS waren Ende Oktober österreichweit 389.941 Menschen arbeitslos gemeldet oder in Schulung, 0,5 Prozent mehr als ein Jahr zuvor. Die Arbeitslosigkeit bei Frauen stieg, bei Männern ging sie zurück; der leichte Konjunkturaufschwung schlägt noch nicht deutlich auf den Arbeitsmarkt durch.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read"
+    },
+    {
       "id": "ca80eed900000000",
       "title": "US to mediate trilateral talks with Ukraine, Russia in Abu Dhabi next week, US envoy says",
       "url": "https://www.reuters.com/world/europe/us-hold-trilateral-talks-with-ukraine-russia-abu-dhabi-next-week-us-official-2026-11-02/",
