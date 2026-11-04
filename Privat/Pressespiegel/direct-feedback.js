@@ -72,7 +72,10 @@ const DirectFeedback=(()=>{
     catch(_){return {};}
   }
   function uniqueFeedbackForDate(items,date){
-    const current=items.filter(x=>x.date===date);
+    // Pagination may repeat a record during concurrent updates; only
+    // different GitHub issue numbers constitute a real duplicate.
+    const current=[...new Map(items.filter(x=>x.date===date)
+      .map(x=>[x.number,x])).values()];
     if(current.length>1)
       throw Error('Mehrere gültige Feedback-Issues für '+date+' gefunden ('+
         current.map(x=>'#'+x.number).join(', ')+
