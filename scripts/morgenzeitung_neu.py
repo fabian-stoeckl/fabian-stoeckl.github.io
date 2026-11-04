@@ -1,5 +1,6 @@
 """Structural checks only for Pressespiegel: journalistic truth requires human/AI source review."""
 import argparse
+import hashlib
 import json
 import re
 from datetime import date, datetime
@@ -74,8 +75,47 @@ def validate(ed):
             if level is not None and level not in ("headline","teaser","read","unknown"):
                 raise ValueError("Invalid source evidence level")
             url=canonical(a["url"])
+            # Existing editions already have feedback linked to their published IDs.
+            # Enforce reproducible URL identities only on new editions, not retroactively.
+            if ed["date"] >= "2026-11-05":
+                expected=hashlib.sha256(url.encode("utf-8")).hexdigest()[:16]
+                if a["id"] != expected:
+                    raise ValueError(f"Article ID must equal SHA-256(canonical URL)[:16]: {a['id']}")
             if a["id"] in ids or url in urls: raise ValueError("Duplicate ID/URL")
             ids.add(a["id"]);urls.add(url)
+    for field in ("new_topics","new_sources"):
+        entries=ed.get(field,[])
+        if not isinstance(entries,list) or len(entries)>5:
+            raise ValueError(f"{field}: expected at most five discoveries")
+        links=set()
+        for entry in entries:
+            if not isinstance(entry,dict) or any(
+                not isinstance(entry.get(key),str) or not entry[key].strip()
+                for key in ("name","why","example_url")
+            ):
+                raise ValueError(f"{field}: incomplete discovery")
+            if len(entry["name"])>160 or len(entry["why"])>650:
+                raise ValueError(f"{field}: discovery text too long")
+            u=canonical(entry["example_url"])
+            if u in links: raise ValueError(f"{field}: duplicate discovery URL")
+            links.add(u)
+    counter=ed.get("counterpositions",[])
+    if not isinstance(counter,list) or len(counter)>4:
+        raise ValueError("counterpositions: expected at most four")
+    referenced=set()
+    for entry in counter:
+        keys=("article_id","counter_title","counter_source","counter_url","why")
+        if not isinstance(entry,dict) or any(
+            not isinstance(entry.get(key),str) or not entry[key].strip() for key in keys
+        ):
+            raise ValueError("Incomplete counterposition")
+        if entry["article_id"] not in ids or entry["article_id"] in referenced:
+            raise ValueError("Counterposition must reference one unique published article ID")
+        referenced.add(entry["article_id"])
+        if len(entry["counter_title"])>300 or len(entry["counter_source"])>160 or len(entry["why"])>850:
+            raise ValueError("Counterposition text too long")
+        if canonical(entry["counter_url"]) in urls:
+            raise ValueError("Counterposition must link to a different original article")
 
 def editorial_warnings(ed):
     """Advisory newsroom signals; not a semantic classifier or publication veto."""
@@ -111,9 +151,14 @@ def verify(root=ROOT):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument("action",choices=("verify",))
+    p.add_argument("action",choices=("verify","id"))
     p.add_argument("--root",type=Path,default=ROOT)
+    p.add_argument("--url",help="Original HTTPS article URL for canonical SHA-256 ID")
     args=p.parse_args()
+    if args.action=="id":
+        if not args.url: p.error("id requires --url")
+        print(hashlib.sha256(canonical(args.url).encode("utf-8")).hexdigest()[:16])
+        return
     count,warnings=verify(args.root)
     print(f"PASS: {count} edition(s); structural test only. Source evidence needs editorial review.")
     for note in warnings:
