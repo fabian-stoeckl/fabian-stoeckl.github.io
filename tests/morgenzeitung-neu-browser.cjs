@@ -178,7 +178,7 @@ const fs=require('node:fs');
    const pref=page.locator('#preference-comment');
    await pref.fill((await pref.inputValue())+'\nEigenständiger Hinweis von der Präferenzseite.');
    await page.locator('#preference-comment-form button[type=submit]').click();
-   await page.waitForFunction(()=>document.querySelector('#preference-comment-status').textContent.startsWith('Gespeichert.'));
+   await page.waitForFunction(()=>document.querySelector('#preference-comment-status').textContent.startsWith('Gespeichert'));
    const revised=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
    assert.deepEqual(revised.comment_suggestions,[suggestion]);
    assert.equal(prefSuggestion,suggestion);
