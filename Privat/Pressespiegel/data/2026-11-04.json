@@ -1,0 +1,186 @@
+{
+  "date": "2026-11-04",
+  "researched_at": "2026-11-04T04:43:00+01:00",
+  "preview": false,
+  "editorial_note": "Redaktionsstand am frühen 4. November (Wien). US-Wahlergebnisse sind vorläufig; Originalzugriff je Beitrag gekennzeichnet. Neue explizite Präferenz: mehr allgemeine und globale Wirtschaftspolitik, weniger KI-Schwerpunkt.",
+  "articles": [
+    {
+      "id": "e80ea78e00000000",
+      "title": "Handel: EU und Großbritannien stehen vor Handelserleichterungen",
+      "url": "https://www.handelsblatt.com/politik/international/handel-eu-und-grossbritannien-stehen-vor-handelserleichterungen/100267085.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-03",
+      "summary": "Das Handelsblatt berichtet über einen vertraulichen Entwurf zu engeren Handelsbeziehungen zwischen EU und Großbritannien, darunter weniger Agrarkontrollen und eine mögliche Verknüpfung der Emissionshandelssysteme. Es handelt sich um Verhandlungspläne, nicht vollständig umgesetzte Regeln.",
+      "article_type": "analysis",
+      "topic": "Globale Handelspolitik",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "399a9a7a00000000",
+      "title": "Robert Habeck: „China hat den Freihandel zu einer Falle gemacht“",
+      "url": "https://www.handelsblatt.com/politik/deutschland/robert-habeck-china-hat-den-freihandel-zu-einer-falle-gemacht-03/100265339.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-03",
+      "summary": "In einem Handelsblatt-Interview argumentiert der frühere deutsche Wirtschaftsminister Robert Habeck über Chinas Industriepolitik und Europas Reaktion auf die Konkurrenz großer Wirtschaftsmächte. Die zugespitzte Freihandelskritik ist seine Position, kein neutraler Befund.",
+      "article_type": "analysis",
+      "topic": "Industrie- und Handelspolitik",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "9614d1d800000000",
+      "title": "Lars Felds Ordnungsruf: Der Westen greift in der Handelspolitik zu falschen Mitteln",
+      "url": "https://www.handelsblatt.com/meinung/wirtschaftsforum/lars-felds-ordnungsruf-der-westen-greift-in-der-handelspolitik-zu-falschen-mitteln/100266449.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-03",
+      "summary": "Ökonom Lars Feld kritisiert in einem Gastbeitrag die seit der Finanzkrise zunehmende Nutzung von Zöllen, Subventionen und Handelsschranken. Eine ausdrücklich wirtschaftsliberale Gegenposition zu protektionistischer Industriepolitik.",
+      "article_type": "analysis",
+      "topic": "Wirtschaftspolitik",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "7f49678800000000",
+      "title": "Märkte Insight: Die gefährliche Polarisierung der US-Wirtschaft",
+      "url": "https://www.handelsblatt.com/finanzen/anlagestrategie/kolumnen/maerkte-insight-die-gefaehrliche-polarisierung-der-us-wirtschaft/100266664.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-03",
+      "summary": "Handelsblatt-Autor Jakob Blume argumentiert, dass sich die starke US-Konjunktur und Unternehmensgewinne auf einen schmalen Kreis von Gewinnern konzentrieren könnten. Die Kolumne hinterfragt, wie breit der wirtschaftliche Aufschwung tatsächlich trägt.",
+      "article_type": "analysis",
+      "topic": "US-Wirtschaft",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "fc60762900000000",
+      "title": "Global markets were already fragile. Big AI bets could break them",
+      "url": "https://www.reuters.com/markets/wealth/global-markets-risks-analysis-pix-graphics-2026-11-03/",
+      "source": "Reuters",
+      "published_at": "2026-11-03",
+      "summary": "Eine Reuters-Analyse verbindet hohe Schulden, Inflationsrisiken und konzentrierte Aktienmärkte mit der Frage, ob milliardenschwere Technologieinvestitionen ausreichend Ertrag abwerfen. Der Beitrag untersucht Finanzmarktrisiken, nicht bloß neue KI-Produkte.",
+      "article_type": "analysis",
+      "topic": "Weltwirtschaft und Finanzstabilität",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "64f10ee300000000",
+      "title": "Gehalt: Vergleichen Sie Ihr Einkommen mit anderen Haushalten",
+      "url": "https://www.handelsblatt.com/politik/deutschland/gehalt-vergleichen-sie-ihr-einkommen-mit-anderen-haushalten/100261943.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-03",
+      "summary": "Ein Handelsblatt-Rechner ordnet Haushaltseinkommen anhand einer Untersuchung des arbeitgebernahen Instituts der deutschen Wirtschaft in die deutsche Einkommensverteilung ein. Interessant sind die Verteilungsfragen; die Einordnung gilt für Deutschland.",
+      "article_type": "analysis",
+      "topic": "Einkommensverteilung",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "e39aa95b00000000",
+      "title": "Demokratie: Wissenschaft sorgt sich um akademische Freiheit",
+      "url": "https://science.orf.at/stories/3237996/",
+      "source": "ORF Science",
+      "published_at": "2026-11-03",
+      "summary": "Wissenschaftliche Chefberater der EU-Kommission warnen in einem Nature-Kommentar vor Angriffen auf die akademische Freiheit. Sie sehen unabhängige Wissenschaft als Grundlage demokratischer Institutionen; der Beitrag ist eine argumentierende Stellungnahme.",
+      "article_type": "analysis",
+      "topic": "Wissenschaft und Gesellschaft",
+      "evidence_level": "read"
+    }
+  ],
+  "headlines": [
+    {
+      "id": "9d7a052b00000000",
+      "title": "Democrats close in on US House, make gains in Senate",
+      "url": "https://www.reuters.com/world/us/trump-faces-midterm-verdict-with-control-congress-stake-2026-11-03/",
+      "source": "Reuters",
+      "published_at": "2026-11-04",
+      "summary": "US-Medien prognostizieren eine Mehrheit der Demokraten im Repräsentantenhaus. Im Senat gewannen Demokraten laut Reuters bisher republikanische Sitze in North und South Carolina; die Mehrheitsfrage bleibt wegen noch offener Rennen unentschieden.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "38f0f08200000000",
+      "title": "Österreich verschuldet sich günstiger",
+      "url": "https://orf.at/stories/3446964/",
+      "source": "ORF / APA",
+      "published_at": "2026-11-03",
+      "summary": "Österreich stockte zwei Bundesanleihen auf. Die zehnjährige Anleihe wurde bei einer Rendite von 3,55 Prozent platziert; die Bundesfinanzierungsagentur meldet, dass mehr als 90 Prozent des Jahresfinanzierungsziels erreicht sind.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read"
+    },
+    {
+      "id": "1221c2c300000000",
+      "title": "EU genehmigt chinesische Übernahme von Mediamarkt-Saturn",
+      "url": "https://orf.at/stories/3446947/",
+      "source": "ORF / Agenturen",
+      "published_at": "2026-11-03",
+      "summary": "Die EU-Kommission genehmigte die Mehrheitsübernahme der Ceconomy-Mutter von MediaMarkt und Saturn durch JD.com. Der chinesische Käufer muss nach Angaben der Kommission unfaire Vorteile aus staatlichen Subventionen verhindern.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "f21f51cc00000000",
+      "title": "Schumann bewirbt Projekt zur Gleichstellung",
+      "url": "https://orf.at/stories/3446944/",
+      "source": "ORF / Agenturen",
+      "published_at": "2026-11-03",
+      "summary": "Sozialministerin Schumann wirbt für ein Gleichstellungsprojekt für Unternehmen. Österreich ist bei der Umsetzung der EU-Lohntransparenzrichtlinie säumig; laut ORF scheiterte bisher eine Einigung mit den Sozialpartnern.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read"
+    },
+    {
+      "id": "fdc6ea7f00000000",
+      "title": "UK and EU agree deal to remove Brexit checks on food and animal products",
+      "url": "https://www.theguardian.com/politics/2026/nov/03/deal-finalised-remove-brexit-checks-food-animal-products",
+      "source": "The Guardian",
+      "published_at": "2026-11-03",
+      "summary": "Laut Guardian ist ein Abkommen zum Abbau der meisten britisch-europäischen Kontrollen im Agrar- und Lebensmittelhandel ausverhandelt. Die Umsetzung wird erst für Anfang 2028 erwartet; weitere Teile des UK-EU-Pakets sind noch in Verhandlung.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "6c4e2c0f00000000",
+      "title": "Australia's central bank lifts rates to 18-year high, split vote points to pause ahead",
+      "url": "https://www.reuters.com/world/asia-pacific/australias-central-bank-lifts-rates-18-year-high-split-vote-points-pause-ahead-2026-11-03/",
+      "source": "Reuters",
+      "published_at": "2026-11-03",
+      "summary": "Australiens Notenbank erhöhte den Leitzins um 0,25 Prozentpunkte auf 4,85 Prozent. Das knappe Votum von sechs zu drei Stimmen deutet auf eine mögliche Zinspause, ist aber keine entsprechende Zusage.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "32a2aaf900000000",
+      "title": "ECB's Machado backs cross-border safeguards for EU banks",
+      "url": "https://www.reuters.com/business/finance/ecbs-machado-warns-against-softer-capital-requirements-banks-2026-11-03/",
+      "source": "Reuters",
+      "published_at": "2026-11-03",
+      "summary": "EZB-Bankenaufseher Pedro Machado unterstützt Reformen, die grenzüberschreitende Liquiditätsnutzung erleichtern sollen, warnt aber vor einer pauschalen Lockerung von Kapitalvorschriften. Eine Reform wird diskutiert, ist noch nicht beschlossen.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "ac03b36200000000",
+      "title": "Nordkorea warnt USA vor verschärfter Reaktion",
+      "url": "https://orf.at/stories/3447044/",
+      "source": "ORF / Agenturen",
+      "published_at": "2026-11-04",
+      "summary": "Nordkoreas Kim Yo Jong drohte den USA mit verschärften Gegenmaßnahmen und wies US-Vorwürfe zu einem milliardenschweren Krypto-Diebstahl zurück. Die Täterschaft ist eine FBI-Zuschreibung, kein unabhängig nachgewiesener Befund dieser Meldung.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "5f8a664c00000000",
+      "title": "World faces €30 trillion financing gap, Santander report warns",
+      "url": "https://www.reuters.com/business/finance/world-faces-30-trillion-financing-gap-santander-report-warns-2026-11-03/",
+      "source": "Reuters",
+      "published_at": "2026-11-03",
+      "summary": "Santander schätzt für 2026 bis 2030 eine weltweite Finanzierungslücke von rund 30 Billionen Euro, vor allem bei der Energie- und Klimatransformation. Das ist eine Bankenschätzung und kein amtlich festgestellter Fehlbetrag.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    }
+  ]
+}
