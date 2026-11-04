@@ -58,14 +58,11 @@ async function refresh(){
   }).catch(e=>show('feedback-summary','Bewertungen konnten nicht gelesen werden: '+e.message))
  ];await Promise.all(tasks);
 }
-let latestDate='';
-(async()=>{
- try{const index=await GitHubPaper.json('./data/index.json');latestDate=index.dates?.[0]||'';}
- catch(e){show('preference-comment-status','Ausgabenindex nicht erreichbar: '+e.message);}
- await refresh();
-})();
+// The index is intentionally fetched only at submission. Page-load dates become
+// stale for readers who leave the preferences page open across publication.
+void refresh();
 byId('preference-comment-form').onsubmit=async e=>{
- e.preventDefault();const field=byId('preference-comment'),comment=field.value.trim(),status=byId('preference-comment-status'),button=e.submitter;
+ e.preventDefault();const field=byId('preference-comment'),comment=field.value.trim(),status=byId('preference-comment-status'),button=e.submitter||byId('preference-comment-form').querySelector('button[type=submit]');
  if(!comment){status.textContent='Bitte zuerst eine konkrete Rückmeldung eingeben.';return;}
  const token=DirectFeedback.readToken();if(!token){status.textContent='Bitte auf der Zeitungsseite deinen GitHub-Zugang verbinden.';return;}
  button.disabled=true;status.textContent='Prüfe die neueste Ausgabe und speichere deine Rückmeldung privat …';
@@ -78,7 +75,6 @@ byId('preference-comment-form').onsubmit=async e=>{
     throw Error('Die aktuelle Ausgabe konnte nicht sicher bestimmt werden.');
   await DirectFeedback.appendComment(currentDate,comment,token,localStorage,fetch,
     {commentSuggestions:FeedbackSuggestions.getSelected(field)});
-  latestDate=currentDate;
   field.value='';FeedbackSuggestions.setSelected(field,[]);
   status.textContent='Gespeichert zur Ausgabe '+currentDate+'. Der nächste Lauf prüft deine Rückmeldung.';
   await refresh();
