@@ -110,6 +110,13 @@ class ReadbackTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "asset differs"):
             self.check_reader(base, pages)
 
+    def test_changed_html_with_same_asset_versions_is_not_a_live_match(self):
+        for page_name in ("/", "/praeferenzen.html"):
+            base, pages = self.payloads()
+            pages[base + page_name] = pages[base + page_name].replace(b'</html>', b'<button>Old UI</button></html>')
+            with self.assertRaisesRegex(RuntimeError, "HTML differs"):
+                self.check_reader(base, pages)
+
     def test_stale_html_cache_version_is_failure(self):
         base, pages = self.payloads()
         pages[base + "/"] = self.reader_html.replace("app.js?v=test1", "app.js?v=older").encode()

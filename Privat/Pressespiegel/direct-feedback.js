@@ -27,7 +27,7 @@ const DirectFeedback=(()=>{
   }
   async function request(token,path,method='GET',body,transport=fetch){
     if(!/^(?:|\/issues(?:\/\d+)?|\/issues\?state=all&per_page=100&page=(?:[1-9]|1[0-9]|20))$/.test(path))throw Error('Unzulässiger GitHub-Pfad.');
-    const r=await transport(API+path,{method,credentials:'omit',cache:'no-store',redirect:'error',referrerPolicy:'no-referrer',
+    const r=await transport(API+path,{signal:AbortSignal.timeout(15000),method,credentials:'omit',cache:'no-store',redirect:'error',referrerPolicy:'no-referrer',
       headers:{'Accept':'application/vnd.github+json','Authorization':'Bearer '+token,...(body?{'Content-Type':'application/json'}:{})},
       ...(body?{body:JSON.stringify(body)}:{})});
     if(!r.ok){

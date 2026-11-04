@@ -31,7 +31,7 @@ const GitHubPaper = {
     return [...new Uint8Array(digest)].slice(0,8).map(v=>v.toString(16).padStart(2,'0')).join('');
   },
   async json(path) {
-    const r = await fetch(path, {cache:'no-store'});
+    const r = await fetch(path, {signal:AbortSignal.timeout(15000),cache:'no-store'});
     if (!r.ok) throw Error('Ausgabe nicht erreichbar (' + r.status + ')');
     return r.json();
   },
