@@ -67,14 +67,20 @@ let latestDate='';
 byId('preference-comment-form').onsubmit=async e=>{
  e.preventDefault();const field=byId('preference-comment'),comment=field.value.trim(),status=byId('preference-comment-status'),button=e.submitter;
  if(!comment){status.textContent='Bitte zuerst eine konkrete Rückmeldung eingeben.';return;}
- if(!latestDate){status.textContent='Es ist noch keine Ausgabe vorhanden.';return;}
  const token=DirectFeedback.readToken();if(!token){status.textContent='Bitte auf der Zeitungsseite deinen GitHub-Zugang verbinden.';return;}
- button.disabled=true;status.textContent='Speichere deine Rückmeldung privat …';
+ button.disabled=true;status.textContent='Prüfe die neueste Ausgabe und speichere deine Rückmeldung privat …';
  try{
-  await DirectFeedback.appendComment(latestDate,comment,token,localStorage,fetch,
+  // This page may remain open overnight. A date captured at page-load would
+  // silently attach today's feedback to yesterday's publication.
+  const index=await GitHubPaper.json('./data/index.json');
+  const currentDate=index?.dates?.[0];
+  if(typeof currentDate!=='string'||!/^\\d{4}-\\d{2}-\\d{2}$/.test(currentDate))
+    throw Error('Die aktuelle Ausgabe konnte nicht sicher bestimmt werden.');
+  await DirectFeedback.appendComment(currentDate,comment,token,localStorage,fetch,
     {commentSuggestions:FeedbackSuggestions.getSelected(field)});
+  latestDate=currentDate;
   field.value='';FeedbackSuggestions.setSelected(field,[]);
-  status.textContent='Gespeichert. Der nächste Lauf prüft, ob die Interessenbeschreibung dadurch besser wird.';
+  status.textContent='Gespeichert zur Ausgabe '+currentDate+'. Der nächste Lauf prüft deine Rückmeldung.';
   await refresh();
  }
  catch(e){status.textContent=e.message+' Deine Eingabe bleibt erhalten.';}
