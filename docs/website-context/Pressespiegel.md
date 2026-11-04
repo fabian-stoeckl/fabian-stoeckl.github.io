@@ -1,6 +1,6 @@
 <!-- website-area: {"name": "Pressespiegel", "paths": ["Privat/Pressespiegel/"]} -->
 # Bereichsprotokoll: Pressespiegel
-**Aktueller maßgeblicher Stand: 04.11.2026.** Dieses Dokument beschreibt ausschließlich die derzeit gültige Architektur und Entscheidungslage. Frühere Zwischenlösungen, obsolete Redirects und ursprüngliche Archivpläne sind im Git-Verlauf nachvollziehbar, aber **keine** Handlungsanweisungen mehr.
+**Stand:** 04.11.2026. **Aktueller maßgeblicher Stand.** Dieses Dokument beschreibt ausschließlich die derzeit gültige Architektur und Entscheidungslage. Frühere Zwischenlösungen, obsolete Redirects und ursprüngliche Archivpläne sind im Git-Verlauf nachvollziehbar, aber **keine** Handlungsanweisungen mehr.
 
 ## Kanonischer Stand
 - **Einzige öffentliche Zeitung:** `Privat/Pressespiegel/` mit „Heute wichtig“, „Vertiefungen“ und „Blogs“. Alte Pfade `Privat/Morgenzeitung-Neu/`, `Privat/Persoenliche-Zeitung/` und `Privat/Pressespiegel-Archiv/` wurden entfernt; keine zusätzlichen historischen Zeitungs-URLs oder Redirects wieder anlegen.
