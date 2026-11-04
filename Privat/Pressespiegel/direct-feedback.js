@@ -44,7 +44,7 @@ const DirectFeedback=(()=>{
   }
   function parse(issue){
     if(!issue||typeof issue.body!=='string'||!issue.body.startsWith(MARKER)||
-       ![PREFIX,LEGACY_PREFIX].some(p=>issue.title?.startsWith(p))||issue.pull_request)return null;
+       issue.pull_request)return null;
     // Once an issue claims to be genuine feedback, never silently discard a
     // malformed row: the next PATCH would otherwise erase that original signal.
     try{
