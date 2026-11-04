@@ -43,19 +43,42 @@ const DirectFeedback=(()=>{
     return true;
   }
   function parse(issue){
-    if(!issue||typeof issue.body!=='string'||!issue.body.startsWith(MARKER)||![PREFIX,LEGACY_PREFIX].some(p=>issue.title?.startsWith(p))||issue.pull_request)return null;
+    if(!issue||typeof issue.body!=='string'||!issue.body.startsWith(MARKER)||
+       ![PREFIX,LEGACY_PREFIX].some(p=>issue.title?.startsWith(p))||issue.pull_request)return null;
+    // Once an issue claims to be genuine feedback, never silently discard a
+    // malformed row: the next PATCH would otherwise erase that original signal.
     try{
       const x=JSON.parse(issue.body.slice(MARKER.length));
-      if(!/^\d{4}-\d{2}-\d{2}$/.test(x.date)||![PREFIX,LEGACY_PREFIX].some(p=>issue.title===p+x.date)||
-         !Array.isArray(x.ratings)||x.origin!=='website-explicit'||x.test===true)return null;
-      const ratings=x.ratings.filter(r=>r&&/^[a-f0-9]{16}$/.test(r.id)&&VALID.includes(r.rating||'')).map(r=>({
-        id:r.id,value:r.rating||'',reason:String(r.reason||'').slice(0,600),
-        section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen',reason_codes:codes(r),suggested_reasons:suggested(r)
-      }));
-      const feedback=typeof x.comment==='string'?x.comment:'';
+      if(x.origin!=='website-explicit'||x.test===true)return null;
+      if(x.version!==1||!/^\d{4}-\d{2}-\d{2}$/.test(x.date)||
+         ![PREFIX,LEGACY_PREFIX].some(p=>issue.title===p+x.date)||
+         !Array.isArray(x.ratings)||x.ratings.length>100)
+        throw Error('Ungültiges Format, Datum oder Version');
+      if(x.comment!==undefined&&typeof x.comment!=='string')
+        throw Error('Ungültiger allgemeiner Kommentar');
+      const seen=new Set();
+      const ratings=x.ratings.map(r=>{
+        if(!r||typeof r!=='object'||!/^[a-f0-9]{16}$/.test(r.id)||
+           !VALID.includes(r.rating??'')||
+           !['Heute wichtig','Vertiefungen'].includes(r.section)||
+           (r.reason!==undefined&&(typeof r.reason!=='string'||r.reason.length>600))||
+           (r.reason_codes!==undefined&&(!Array.isArray(r.reason_codes)||
+              r.reason_codes.some(code=>!CODES.includes(code))))||
+           (r.suggested_reasons!==undefined&&(!Array.isArray(r.suggested_reasons)||
+              r.suggested_reasons.some(v=>typeof v!=='string'||v.length>120))))
+          throw Error('Ungültige Artikelbewertung oder Rubrik');
+        if(seen.has(r.id))throw Error('Doppelte Artikel-ID');
+        seen.add(r.id);
+        return {id:r.id,value:r.rating||'',reason:r.reason||'',section:r.section,
+                reason_codes:codes(r),suggested_reasons:suggested(r)};
+      });
+      const feedback=x.comment||'';
       return {date:x.date,ratings,feedback,comment_suggestions:commentSuggestions(x.comment_suggestions,feedback),
         number:issue.number,updated_at:issue.updated_at||''};
-    }catch(_){return null;}
+    }catch(e){
+      throw Error('Original-Feedback-Issue #'+issue.number+' ist nicht eindeutig lesbar: '+e.message+
+        '. Es wurde nichts stillschweigend verworfen.');
+    }
   }
   async function feedbackHistory(token,transport=fetch){
     const byIssue=new Map();
@@ -147,8 +170,10 @@ const DirectFeedback=(()=>{
       if(!r||typeof r.id!=='string'||!/^[a-f0-9]{16}$/.test(r.id)||
          !VALID.includes(r.value||'')||typeof r.reason!=='string'||r.reason.length>600)
         throw Error('Ungültige Artikelbewertung');
+      if(!['Heute wichtig','Vertiefungen'].includes(r.section)||intended.has(r.id))
+        throw Error('Ungültige oder doppelte Artikel-ID/Rubrik im Bewertungsentwurf');
       intended.set(r.id,{id:r.id,value:r.value||'',reason:r.reason,
-                         section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen',reason_codes:codes(r),suggested_reasons:suggested(r)});
+                         section:r.section,reason_codes:codes(r),suggested_reasons:suggested(r)});
     }
     const comment=feedback.trim();
     const appendText=options?.appendComment===undefined?'':String(options.appendComment).trim();
