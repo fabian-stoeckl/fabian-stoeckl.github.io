@@ -158,6 +158,19 @@ const fs=require('node:fs');
    assert.ok(payload.ratings.some(r=>r.id===noteOnlyId&&r.rating===''&&
      r.reason==='Bitte hier mehr konkrete wirtschaftliche Folgen erklären.'),
      'Qualitative-only article text is saved without falsely choosing a relevance level');
+   // A clicked phrase is a suggested reason only while it is retained
+   // verbatim on its own line. Rewriting it as original prose removes the
+   // provenance tag instead of misclassifying the user's words as a click.
+   await group.locator('.rating-reason textarea').fill(
+     'Eigene Formulierung: Zu juristisch für ein Randthema gilt hier nur als Teil eines eigenen Satzes.');
+   await page.locator('#feedback-form button[type=submit]').click();
+   await page.waitForFunction(()=>document.querySelector('#feedback-status').textContent.includes('aktualisiert.'));
+   const rewritten=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
+   const rewrittenRow=rewritten.ratings.find(r=>r.id===correctedId);
+   assert.ok(rewrittenRow.reason.includes('Zu juristisch für ein Randthema'));
+   assert.ok(!rewrittenRow.suggested_reasons?.includes('Zu juristisch für ein Randthema'),
+     'Rewritten free prose must not retain a clicked-template marker');
+
    await page.getByRole('link',{name:/Meine Präferenzen/}).first().click();
    await page.waitForURL(/praeferenzen.html/);
    await page.waitForSelector('#profile-text:not([hidden])');
@@ -281,6 +294,60 @@ const fs=require('node:fs');
    assert.equal(await page.locator('#articles .ratings').first()
      .locator('input[type=radio][value="'+targetRow.rating+'"]').isChecked(),true,
      'Stale reply from an earlier render cannot clobber newer saved relevance');
+
+   // A remote change after a previous read must refresh clean baselines on
+   // A -> B -> A. Otherwise the reader displays an up-to-date rating but
+   // rejects legitimate edits because its conflict baseline is outdated.
+   targetRow.rating='Teilweise relevant';
+   storedBody.comment+='\nNeuer bestätigter Text von einem anderen Gerät.';
+   issues[0].body='MORGENZEITUNG_NEU_FEEDBACK_V1\n'+JSON.stringify(storedBody);
+   issues[0].updated_at='2026-11-04T20:15:00Z';
+   await page.locator('#date').selectOption(second);
+   await page.waitForFunction(d=>document.querySelector('#date').value===d&&
+     document.querySelector('#edition-meta').textContent.includes(
+       new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'})
+       .format(new Date(d+'T12:00:00Z'))),second);
+   await page.locator('#date').selectOption(first);
+   await page.waitForFunction(text=>document.querySelector('#feedback').value===text,storedBody.comment);
+   await page.waitForFunction(()=>document.querySelector('#articles .ratings input[type=radio][value="Teilweise relevant"]').checked);
+   await page.locator('#tab-articles').click();
+   const refreshedGroup=page.locator('#articles .ratings').first();
+   await refreshedGroup.locator('input[type=radio][value="Sehr relevant"]').check();
+   await page.locator('#feedback').fill(storedBody.comment+'\nNeue eigene Ergänzung nach erneutem Laden.');
+   await page.locator('#feedback-form button[type=submit]').click();
+   await page.waitForFunction(()=>/gespeichert\.|aktualisiert\.|bleiben im Tab erhalten\./.test(document.querySelector('#feedback-status').textContent));
+   const crossDeviceStatus=await page.locator('#feedback-status').innerText();
+   assert.match(crossDeviceStatus,/gespeichert\.|aktualisiert\./);
+   const refreshedPayload=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
+   assert.equal(refreshedPayload.ratings.find(r=>r.id===correctedId).rating,'Sehr relevant',
+     'Editing a freshly restored rating must use the new remote baseline, not an old one');
+   assert.match(refreshedPayload.comment,/Neue eigene Ergänzung nach erneutem Laden/,
+     'A refreshed remote comment must remain editable without a false conflict');
+   // Keep a clean fixture for the following invalid-rubric test.
+   storedBody.comment=refreshedPayload.comment;
+   targetRow.rating='Sehr relevant';
+
+   // Explicitly deleting the original GitHub feedback must clear clean,
+   // cached ratings/comments when the reader returns to the edition.
+   const removedIssue=issues.splice(0,1)[0];
+   assert.ok(removedIssue,'Expected feedback issue to test remote removal');
+   await page.locator('#date').selectOption(second);
+   await page.waitForFunction(d=>document.querySelector('#edition-meta').textContent.includes(
+     new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'})
+     .format(new Date(d+'T12:00:00Z'))),second);
+   await page.locator('#date').selectOption(first);
+   await page.waitForFunction(()=>document.querySelector('#feedback').value===''&&
+     !document.querySelector('#articles .ratings input[type=radio]:checked'));
+   assert.equal(await page.locator('#articles .ratings').first()
+     .locator('input[type=radio]:checked').count(),0,
+     'Deleted remote feedback must not remain selected locally');
+   issues.unshift(removedIssue);
+   await page.locator('#date').selectOption(second);
+   await page.waitForFunction(d=>document.querySelector('#edition-meta').textContent.includes(
+     new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'})
+     .format(new Date(d+'T12:00:00Z'))),second);
+   await page.locator('#date').selectOption(first);
+   await page.waitForFunction(()=>document.querySelector('#articles .ratings input[type=radio][value="Sehr relevant"]').checked);
 
    // A well-formed but semantically wrong rubric must not hydrate the story.
    targetRow.section='Heute wichtig';
