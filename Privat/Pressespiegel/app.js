@@ -368,7 +368,9 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
     const comment=(unchanged
       ? EditorialExtras.comparisonChoices(submittedEdition)
       : EditorialExtras.enrichFeedback(submittedEdition,submittedText)).trim();
-    if(!selected.length&&!comment)throw Error('Bitte mindestens einen Artikel bewerten oder Feedback eingeben.');
+    // Clearing a previously saved free-text comment is itself an intentional edit.
+    if(!selected.length&&!comment&&(unchanged||!baseline.trim()))
+      throw Error('Bitte mindestens einen Artikel bewerten oder Feedback eingeben.');
     const token=DirectFeedback.readToken();
     if(!token){
       refreshGitHubConnection();
@@ -379,7 +381,8 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
     feedbackStatus('Wird gemeinsam auf GitHub gespeichert …');
     $('feedback-confirmation').hidden=true;
     const result=await DirectFeedback.submit(submittedEdition.date,selected,comment,token,
-      localStorage,fetch,{comparisonOnly:unchanged,
+      localStorage,fetch,{comparisonOnly:unchanged,replaceComment:!unchanged,
+        baselineComment:baseline,
         commentSuggestions:FeedbackSuggestions.getSelected($('feedback')),
         baselineRatings:Object.fromEntries(selected.map(row=>[row.id,readerState.ratingBaselines[submittedEdition.date+':'+row.id]||null]))});
     for(const row of selected){
