@@ -186,6 +186,56 @@ function addSaveAction(section,statusId){
   const state=el('p','','section-save-status');state.id=statusId;state.setAttribute('role','status');
   bar.append(button,hint,state);section.append(bar);
 }
+// Optional, independently sourced discoveries are editorial suggestions, not extra votes.
+function renderDiscoveries(e){
+  const root=$('discoveries');
+  root.replaceChildren();
+  root.append(el('h2','Neues · Themen, Quellen und Perspektiven'));
+  root.append(el('p','Gelegentliche Entdeckungen jenseits der gewohnten Auswahl. Gegenpositionen werden nur gezeigt, wenn sie belegbar sind und neue Argumente liefern – keine künstliche Gleichgewichtspflicht.','small'));
+  let count=0;
+  function entries(title,rows){
+    if(!Array.isArray(rows)||!rows.length)return;
+    const section=el('section',undefined,'discovery-section');
+    const heading=el('h3',title);section.append(heading);
+    const list=el('ul',undefined,'source-trials');
+    for(const item of rows){
+      if(!item||typeof item.name!=='string'||typeof item.why!=='string'||typeof item.example_url!=='string')continue;
+      const li=el('li');
+      try{li.append(link(item.name,item.example_url));}
+      catch(_){continue;}
+      li.append(el('p',item.why,'small'));list.append(li);count++;
+    }
+    if(list.childElementCount){section.append(list);root.append(section);}
+  }
+  entries('Neue Themen',e.new_topics);
+  entries('Neue Quellen',e.new_sources);
+  if(Array.isArray(e.counterpositions)&&e.counterpositions.length){
+    const section=el('section',undefined,'discovery-section');
+    section.append(el('h3','Fundierte Gegenpositionen'));
+    const list=el('ul',undefined,'source-trials');
+    const originals=[...(e.articles||[]),...(e.headlines||[])];
+    for(const item of e.counterpositions){
+      if(!item||typeof item.article_id!=='string'||typeof item.counter_title!=='string'||
+         typeof item.counter_source!=='string'||typeof item.counter_url!=='string'||
+         typeof item.why!=='string')continue;
+      const original=originals.find(a=>a.id===item.article_id);
+      if(!original)continue;
+      const li=el('li'),first=el('p',undefined,'small');
+      try{
+        first.append(document.createTextNode('Ausgangsartikel: '),link(original.title,original.url));
+        const second=el('p',undefined,'small');
+        second.append(document.createTextNode('Andere Perspektive: '),link(item.counter_title,item.counter_url),
+          document.createTextNode(' · '+item.counter_source));
+        li.append(first,second,el('p',item.why,'small'));
+        list.append(li);count++;
+      }catch(_){/* Ignore malformed optional links, never construct raw HTML. */}
+    }
+    if(list.childElementCount){section.append(list);root.append(section);}
+  }
+  if(!count)root.append(el('p','In dieser Ausgabe gibt es keine zusätzlichen, ausreichend geprüften Entdeckungen. Die Redaktion sucht weiter.','empty'));
+  $('discovery-count').textContent=count;
+}
+
 function render(){
   const e=edition,selection=GitHubPaper.partition(e);
   readerState.visibleArticles=selection.articles;
@@ -210,24 +260,7 @@ function render(){
     sec.append(list);cols.append(sec);
   }
   $('headlines').append(cols);
-  const discovery=$('new-sources');
-  if(discovery){
-    discovery.replaceChildren();
-    const trials=Array.isArray(e.new_sources)?e.new_sources.filter(s=>s&&typeof s.name==='string'&&typeof s.why==='string'&&typeof s.example_url==='string'):[];
-    discovery.hidden=trials.length===0;
-    if(trials.length){
-      discovery.append(el('h2','Neue Quellen entdeckt'));
-      discovery.append(el('p','Testquellen mit konkreten Artikeln. Eine dauerhafte Aufnahme erfolgt erst nach wiederholt guter Relevanz und deinem Feedback.','small'));
-      const items=el('ul',undefined,'source-trials');
-      for(const source of trials){
-        const item=el('li');
-        try{item.append(link(source.name,source.example_url));}catch{continue;}
-        item.append(document.createTextNode(' – '+source.why));
-        items.append(item);
-      }
-      discovery.append(items);
-    }
-  }
+  renderDiscoveries(e);
   addSaveAction($('headlines'),'news-feedback-status');
   addSaveAction($('articles'),'features-feedback-status');
   // The date and the research timestamp are shown exactly once in the masthead.
@@ -322,14 +355,15 @@ $('date').onchange=async()=>{
     await restoreSavedRatings();
   }catch(e){if(sequence===readerState.loadSequence)status(e.message);}
 };
-for(const tab of ['headlines','articles','blogs'])$('tab-'+tab).onclick=()=>{
+for(const tab of ['headlines','articles','blogs','discoveries'])$('tab-'+tab).onclick=()=>{
   // Preserve unsent feedback; switching only changes visibility.
   if($('tab-'+tab).getAttribute('aria-pressed')==='true')return;
-  for(const name of ['headlines','articles','blogs']){
+  for(const name of ['headlines','articles','blogs','discoveries']){
     $(name).hidden=name!==tab;
     $('tab-'+name).setAttribute('aria-pressed',String(name===tab));
   }
   document.body.classList.toggle('blogs-view',tab==='blogs');
+  document.body.classList.toggle('discoveries-view',tab==='discoveries');
   if(tab==='blogs'&&Date.now()-blogLastCheck>20*60*1000)void loadBlogs();
   // Sticky tabs may have been clicked far down the page: show the masthead again.
   window.scrollTo(0,0);
