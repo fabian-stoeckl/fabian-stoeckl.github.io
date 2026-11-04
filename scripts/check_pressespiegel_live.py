@@ -22,7 +22,7 @@ def read_json(url, opener=urlopen):
         return json.load(response)
 
 
-RESOURCE = re.compile(r'(?:src|href)="\\./([a-zA-Z0-9_-]+\\.(?:js|css))(\\?v=[a-zA-Z0-9_-]+)?"')
+RESOURCE = re.compile(r'(?:src|href)="\./([a-zA-Z0-9_-]+\.(?:js|css))(\?v=[a-zA-Z0-9_-]+)?"')
 
 
 def local_resources(html):
