@@ -349,6 +349,36 @@ const fs=require('node:fs');
    await page.locator('#date').selectOption(first);
    await page.waitForFunction(()=>document.querySelector('#articles .ratings input[type=radio][value="Sehr relevant"]').checked);
 
+   // An external edit made while this browser remains open must refresh
+   // clean baselines after navigating away and back. Otherwise the newly
+   // displayed value cannot be safely edited and a newer general comment
+   // remains hidden behind an old clean browser draft.
+   targetRow.rating='Teilweise relevant';
+   storedBody.comment+='\nNeuer bestätigter Text von einem anderen Gerät.';
+   issues[0].body='MORGENZEITUNG_NEU_FEEDBACK_V1\n'+JSON.stringify(storedBody);
+   issues[0].updated_at='2026-11-04T20:15:00Z';
+   await page.locator('#date').selectOption(second);
+   await page.waitForFunction(d=>document.querySelector('#date').value===d&&
+     document.querySelector('#edition-meta').textContent.includes(
+       new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'})
+       .format(new Date(d+'T12:00:00Z'))),second);
+   await page.locator('#date').selectOption(first);
+   await page.waitForFunction(text=>document.querySelector('#feedback').value===text,storedBody.comment);
+   await page.waitForFunction(()=>document.querySelector('#articles .ratings input[type=radio][value="Teilweise relevant"]').checked);
+   await page.locator('#tab-articles').click();
+   const refreshedGroup=page.locator('#articles .ratings').first();
+   await refreshedGroup.locator('input[type=radio][value="Sehr relevant"]').check();
+   await page.locator('#feedback').fill(storedBody.comment+'\nNeue eigene Ergänzung nach erneutem Laden.');
+   await page.locator('#feedback-form button[type=submit]').click();
+   await page.waitForFunction(()=>document.querySelector('#feedback-status').textContent.includes('gespeichert.'));
+   const refreshedPayload=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
+   assert.equal(refreshedPayload.ratings.find(r=>r.id===correctedId).rating,'Sehr relevant',
+     'Editing refreshed rating must use the current remote baseline, not a stale one');
+   assert.match(refreshedPayload.comment,/Neue eigene Ergänzung nach erneutem Laden/,
+     'A refreshed remote comment must remain editable without false conflict');
+   storedBody.comment=refreshedPayload.comment;
+   targetRow.rating='Sehr relevant';
+
    // A well-formed but semantically wrong rubric must not hydrate the story.
    targetRow.section='Heute wichtig';
    issues[0].body='MORGENZEITUNG_NEU_FEEDBACK_V1\n'+JSON.stringify(storedBody);
