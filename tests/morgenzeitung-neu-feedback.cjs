@@ -46,5 +46,56 @@ async function transport(url,opt={}){
     {commentSuggestions:[SAMPLE]});
   payload=JSON.parse(issue.body.slice(PREFIX.length));
   assert.ok(!('comment_suggestions' in payload),'Cannot tag a phrase not present in appended comment');
+  // A rating and its free-text reason are one article vote, not two.
+  const row={id:'1234567890abcdef',section:'Vertiefungen',value:'Sehr relevant',
+    reason:'Erklärt die wirtschaftlichen Folgen gut.',reason_codes:['more_of_this'],
+    suggested_reasons:['Zu juristisch für ein Randthema']};
+  let previous=payload.comment;
+  await Feedback.submit('2026-10-29',[row],'Meine eigene allgemeine Rückmeldung.',
+    'token',storage,transport,{replaceComment:true,baselineComment:previous});
+  payload=JSON.parse(issue.body.slice(PREFIX.length));
+  assert.equal(payload.ratings.length,1);
+  assert.equal(payload.ratings[0].reason,row.reason);
+  assert.deepEqual(payload.ratings[0].reason_codes,['more_of_this']);
+  assert.equal(payload.comment,'Meine eigene allgemeine Rückmeldung.');
+  // Erasing a saved comment must not silently restore it.
+  previous=payload.comment;
+  await Feedback.submit('2026-10-29',[],'','token',storage,transport,
+    {replaceComment:true,baselineComment:previous});
+  payload=JSON.parse(issue.body.slice(PREFIX.length));
+  assert.equal(payload.comment,'','Explicit empty edit removes saved general free text');
+  assert.equal(payload.ratings.length,1,'Article rating and its free-text reason survive');
+  assert.ok(!('comment_suggestions' in payload));
+  // A rating-only save must NOT remove general prose from a different device.
+  await Feedback.appendComment('2026-10-29','Auch gesellschaftliche Folgen beachten.',
+    'token',storage,transport);
+  previous=JSON.parse(issue.body.slice(PREFIX.length)).comment;
+  const changed={...row,value:'Teilweise relevant',reason:'Mehr Daten wären hilfreich.'};
+  await Feedback.submit('2026-10-29',[changed],'','token',storage,transport,
+    {comparisonOnly:true});
+  payload=JSON.parse(issue.body.slice(PREFIX.length));
+  assert.equal(payload.comment,previous,'Rating-only edit keeps stored general feedback');
+  assert.equal(payload.ratings.length,1);
+  assert.equal(payload.ratings[0].reason,changed.reason);
+  await assert.rejects(
+    Feedback.submit('2026-10-29',[],'Veralteter Kommentar','token',storage,transport,
+      {replaceComment:true,baselineComment:'Ein vorheriger anderer Text'}),
+    /auf einem anderen Gerät geändert/,
+    'Must not overwrite a newer comment from another device');
+  // Qualitative article feedback without selecting a relevance level is valid,
+  // but must not increase the count of selected relevance votes.
+  const noteOnly={id:'abcdefabcdef1234',section:'Heute wichtig',value:'',
+    reason:'Diese Nachricht ist schon bekannt; bitte mehr neue Entwicklung.',
+    reason_codes:['already_known'],suggested_reasons:[]};
+  await Feedback.submit('2026-10-29',[noteOnly],'','token',storage,transport,
+    {comparisonOnly:true});
+  payload=JSON.parse(issue.body.slice(PREFIX.length));
+  assert.equal(payload.ratings.length,2,'Both existing rating and qualitative-only entry remain');
+  assert.equal(payload.ratings.filter(x=>x.rating).length,1,
+    'Only the entry with a selected relevance level is a relevance vote');
+  assert.equal(payload.ratings.find(x=>x.id===noteOnly.id).reason,noteOnly.reason);
+  const canonical=(await Feedback.feedbackHistory('token',transport))[0];
+  assert.equal(canonical.ratings.find(x=>x.id===noteOnly.id).value,'');
+  assert.equal(canonical.ratings.find(x=>x.id===noteOnly.id).reason,noteOnly.reason);
   console.log('PASS: prompted vs independently authored feedback, edits, private persistence, append safeguards');
 })().catch(e=>{console.error(e);process.exitCode=1;});

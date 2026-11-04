@@ -36,15 +36,22 @@ async function refresh(){
     // Latest explicitly saved article state wins; earlier issue versions are not extra votes.
     for(const x of [...history].sort((a,b)=>a.updated_at.localeCompare(b.updated_at)))
       for(const y of x.ratings||[])ratings.set(x.date+':'+y.id,{date:x.date,...y});
-    const count=[...ratings.values()].filter(x=>x.value);
+    const all=[...ratings.values()];
+    const count=all.filter(x=>x.value);
+    const notesOnly=all.filter(x=>!x.value&&(x.reason?.trim()||
+      x.reason_codes?.length||x.suggested_reasons?.length));
     const intro=document.createElement('p');
-    intro.textContent=history.length+' Ausgabe-Rückmeldungen, '+count.length+' aktuell bewertete Artikel, '+history.filter(x=>x.feedback.trim()).length+' allgemeine Kommentare. Historische Urteile der früheren Zeitungen wurden nicht als neue Bewertungen gezählt.';
+    intro.textContent=history.length+' Ausgabe-Rückmeldungen, '+count.length+' aktuell bewertete Artikel, '+
+      notesOnly.length+' qualitative Artikelhinweise ohne Relevanzstufe, '+
+      history.filter(x=>x.feedback.trim()).length+
+      ' allgemeine Kommentare. Historische Urteile der früheren Zeitungen wurden nicht als neue Bewertungen gezählt.';
     const list=document.createElement('ul');list.className='preference-list';
     const labels={topic_dislike:'Thema unpassend',too_shallow:'Zu oberflächlich',already_known:'Schon bekannt',too_niche:'Zu speziell',one_sided:'Einseitige Perspektive',more_of_this:'Mehr davon'};
-    for(const x of count.slice(-10).reverse()){
+    for(const x of all.filter(y=>y.value||y.reason?.trim()||y.reason_codes?.length||y.suggested_reasons?.length).slice(-10).reverse()){
       const li=document.createElement('li');
       const reasons=(x.reason_codes||[]).map(s=>labels[s]||s);
-      li.textContent=x.date+' · '+x.value+(reasons.length?' · '+reasons.join(', '):'')+(x.reason?' · '+x.reason:'');
+      li.textContent=x.date+' · '+(x.value||'Artikelhinweis ohne Relevanzstufe')+
+        (reasons.length?' · '+reasons.join(', '):'')+(x.reason?' · '+x.reason:'');
       list.append(li);
     }
     byId('feedback-summary').replaceChildren(intro,list);

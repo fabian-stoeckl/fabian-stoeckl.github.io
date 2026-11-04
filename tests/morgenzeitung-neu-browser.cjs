@@ -9,6 +9,7 @@ const fs=require('node:fs');
    const context=await browser.newContext({viewport:{width,height:900}});
    const page=await context.newPage(),errors=[];
    const issues=[];
+   let holdIssueRead=false,releaseHeldRead=null,notifyHeldRead=null;
    page.on('pageerror',e=>errors.push(e.message));
    await page.addInitScript(()=>localStorage.setItem('morgenzeitung:github-token:v1','github_pat_'+'A'.repeat(42)));
    await page.route('https://api.github.com/**',async route=>{
@@ -31,6 +32,10 @@ const fs=require('node:fs');
      issues[idx]={...issues[idx],...patch,updated_at:'2026-10-29T03:00:00Z'};
      response=issues[idx];
     }else if(/\/issues\/\d+$/.test(url.pathname)){
+     if(holdIssueRead){
+      notifyHeldRead?.();
+      await new Promise(resolve=>{releaseHeldRead=resolve;});
+     }
      response=issues.find(x=>x.number===Number(url.pathname.split('/').at(-1)))||{message:'not found'};
     }else if(url.pathname.endsWith('/issues')){
      response=issues;
@@ -113,6 +118,9 @@ const fs=require('node:fs');
    assert.equal(await group.getByText('Optionale Gründe auswählen; eigener Text bleibt separat:').count(),0);
    await group.locator('.v3-reason-choice').first().click();
    await group.locator('.personal-reason-choice').first().click();
+   const noteOnlyArticle=page.locator('#articles article').nth(1);
+   const noteOnlyId=await noteOnlyArticle.getAttribute('data-article-id');
+   await noteOnlyArticle.locator('.rating-reason textarea').fill('Bitte hier mehr konkrete wirtschaftliche Folgen erklären.');
    await page.locator('#feedback-form button[type=submit]').click();
    await page.waitForFunction(()=>document.querySelector('#feedback-status').textContent.includes('gespeichert.'));
    assert.equal(issues.length,1);
@@ -123,12 +131,19 @@ const fs=require('node:fs');
    assert.deepEqual(payload.comment_suggestions,[suggestion]);
    assert.ok(payload.comment.includes('Freie eigene Begründung zur Artikelwahl.'));
    assert.ok(payload.ratings.some(r=>r.suggested_reasons?.includes('Zu juristisch für ein Randthema')));
+   assert.ok(payload.ratings.some(r=>r.id===noteOnlyId&&r.rating===''&&
+     r.reason==='Bitte hier mehr konkrete wirtschaftliche Folgen erklären.'),
+     'Qualitative-only article text is saved without falsely choosing a relevance level');
    await page.getByRole('link',{name:/Meine Präferenzen/}).first().click();
    await page.waitForURL(/praeferenzen.html/);
    await page.waitForSelector('#profile-text:not([hidden])');
    assert.match(await page.locator('#profile-text').innerText(),/wirtschaftliche Erkenntnisse/);
    assert.ok((await page.locator('#profile-changes').innerText()).includes('Startbeschreibung'));
    assert.equal(await page.locator('#preference-comment').isVisible(),true);
+   await page.waitForFunction(()=>document.querySelector('#feedback-summary').textContent.includes('qualitative Artikelhinweise'));
+   assert.match(await page.locator('#feedback-summary').innerText(),
+     /1 qualitative Artikelhinweise ohne Relevanzstufe/,
+     'Qualitative-only article notes remain visible and are not counted as relevance votes');
    await page.waitForFunction(()=>!document.querySelector('#learning-monitor').textContent.includes('geladen'));
    assert.match(await page.locator('#learning-monitor').innerText(),
      width===390?/Noch keine Lernbilanz vorhanden/:/Noch nicht beurteilbar/);
@@ -144,6 +159,57 @@ const fs=require('node:fs');
    assert.deepEqual(revised.comment_suggestions,[suggestion]);
    assert.equal(prefSuggestion,suggestion);
    assert.ok(revised.comment.includes('Eigenständiger Hinweis von der Präferenzseite.'));
+   // An empty unsent local draft survives changing to a different edition and back.
+   await page.goto(root);
+   await page.waitForSelector('#feedback-section:not([hidden])');
+   await page.waitForFunction(()=>document.querySelector('#feedback').value.includes('Eigenständiger Hinweis von der Präferenzseite.'));
+   // Delayed GitHub read: a fast relevance click must preserve the saved reason.
+   let notifyRead;
+   const readStarted=new Promise(resolve=>{notifyRead=resolve;});
+   notifyHeldRead=notifyRead;
+   holdIssueRead=true;
+   await page.reload();
+   await page.waitForSelector('#feedback-section:not([hidden])');
+   await readStarted;
+   await page.locator('#tab-articles').click();
+   const earlyGroup=page.locator('#articles .ratings').first();
+   await earlyGroup.locator('input[type=radio][value="Teilweise relevant"]').check();
+   holdIssueRead=false;releaseHeldRead();
+   await page.waitForFunction(()=>document.querySelector('#articles .ratings textarea').value.includes('Zu juristisch für ein Randthema'));
+   assert.equal(await earlyGroup.locator('input[type=radio][value="Teilweise relevant"]').isChecked(),true);
+   assert.match(await earlyGroup.locator('textarea').inputValue(),/Zu juristisch für ein Randthema/,
+     'A quick radio click cannot clear the previously saved article reason');
+   // Reverse race: writing only a new explanation must retain the already
+   // selected relevance value until the delayed issue state arrives.
+   let notifySecondRead;
+   const secondReadStarted=new Promise(resolve=>{notifySecondRead=resolve;});
+   notifyHeldRead=notifySecondRead;
+   holdIssueRead=true;
+   await page.reload();
+   await page.waitForSelector('#feedback-section:not([hidden])');
+   await secondReadStarted;
+   await page.locator('#tab-articles').click();
+   const reasonOnlyGroup=page.locator('#articles .ratings').first();
+   await reasonOnlyGroup.locator('textarea').fill('Neue eigene Erläuterung.');
+   holdIssueRead=false;releaseHeldRead();
+   await page.waitForFunction(()=>document.querySelector('#articles .ratings input[type=radio][value="Sehr relevant"]').checked);
+   assert.equal(await reasonOnlyGroup.locator('textarea').inputValue(),'Neue eigene Erläuterung.');
+   assert.equal(await reasonOnlyGroup.locator('input[type=radio][value="Sehr relevant"]').isChecked(),true,
+     'A quick explanation edit cannot clear the previously saved relevance value');
+   await page.waitForFunction(()=>document.querySelector('#feedback').value.includes('Eigenständiger Hinweis von der Präferenzseite.'));
+   const datePicker=page.locator('#date'),originalDate=await datePicker.inputValue();
+   const secondDate=await datePicker.locator('option').nth(1).getAttribute('value');
+   await page.locator('#feedback').fill('');
+   await datePicker.selectOption(secondDate);
+   await page.waitForFunction(day=>document.querySelector('#edition-meta').textContent.includes(
+     new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'})
+       .format(new Date(day+'T12:00:00Z'))),secondDate);
+   await datePicker.selectOption(originalDate);
+   await page.waitForFunction(day=>document.querySelector('#edition-meta').textContent.includes(
+     new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'})
+       .format(new Date(day+'T12:00:00Z'))),originalDate);
+   assert.equal(await page.locator('#feedback').inputValue(),'',
+     'Unsent intentional clearing survives an edition round trip');
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'No horizontal overflow');
    assert.deepEqual(errors,[],'No JS page errors');
    await context.close();
