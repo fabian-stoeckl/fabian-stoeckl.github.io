@@ -228,6 +228,13 @@ const fs=require('node:fs');
    assert.equal(await page.locator('#feedback').inputValue(),'',
      'Unsent intentional clearing survives an edition round trip');
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'No horizontal overflow');
+   // Privacy control must actually remove the stored GitHub token.
+   await page.goto(root);
+   await page.waitForSelector('#github-connected:not([hidden])');
+   await page.locator('#github-disconnect').click();
+   assert.equal(await page.evaluate(()=>localStorage.getItem('morgenzeitung:github-token:v1')),
+     null,'Disconnect must clear the token from this device');
+   assert.equal(await page.locator('#github-setup').isVisible(),true);
    assert.deepEqual(errors,[],'No JS page errors');
    await context.close();
   }
