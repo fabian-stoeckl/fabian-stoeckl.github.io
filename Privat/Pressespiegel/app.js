@@ -121,7 +121,7 @@ function githubRating(a,section='Vertiefungen') {
   reason.oninput=()=>{
     const old=readerState.ratingDrafts[key]||{};
     readerState.ratingDrafts[key]={...old,value:old.value||'',reason:reason.value,section,
-      suggested_reasons:(old.suggested_reasons||[]).filter(t=>reason.value.includes(t)),reasonEdited:true,dirty:true};
+      suggested_reasons:(old.suggested_reasons||[]).filter(t=>reason.value.split('\n').some(line=>line.trim()===t)),reasonEdited:true,dirty:true};
     feedbackStatus('Änderung vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');
   };
   wrapper.append(reason);details.append(wrapper);box.append(details);
