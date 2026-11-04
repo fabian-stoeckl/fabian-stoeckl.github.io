@@ -18,6 +18,8 @@ jobs:
         with: {python-version: '3.12'}
       - run: python3 scripts/morgenzeitung_neu.py verify
       - run: python3 tests/morgenzeitung-neu-editorial.py
+      - name: Regression-test public readback logic (offline)
+        run: python3 -m unittest discover -s tests -p test_pressespiegel_readback.py -v
       - name: Document editorial source/evidence distribution
         run: python3 scripts/pressespiegel_quality_report.py | tee -a "$GITHUB_STEP_SUMMARY"
       - run: node tests/morgenzeitung-neu.test.cjs
@@ -46,7 +48,5 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
-      - name: Test public-readback logic without network
-        run: python3 -m unittest discover -s tests -p test_pressespiegel_readback.py -v
       - name: Verify live GitHub Pages output
         run: python3 scripts/check_pressespiegel_live.py --attempts 16 --delay 20

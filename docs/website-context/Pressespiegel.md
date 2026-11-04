@@ -16,4 +16,4 @@
 ## Offene Prüfungen (Stand 04.11.)
 - End-to-End-Live-Auslieferung über GitHub Pages wurde beim letzten Morgenlauf nicht abschließend bestätigt; der Merge alleine genügt nicht.
 - Der tatsächliche Lernzuwachs kann erst anhand von Rückmeldungen zu späteren Ausgaben beurteilt werden.
-- Die separate Bereinigung der privaten Test-/Vorgängerbestände ist noch nicht abgeschlossen. `morgenzeitung-neu/` einschließlich Feedback, Profil, State, Monitoring, Gründen, Änderungen und Dossiers nicht als Altlast behandeln; weitere Löschungen nur nach Abhängigkeitsprüfung.
+- **Private Altdateien:** 222 ausschließlich historische Arbeitsdateien wurden am 04.11.2026 über den geprüften privaten PR #44 entfernt. Die aktiven Interessen-, Bewertungs-, Monitoring- und sieben Tagesdossier-Dateien wurden danach zurückgelesen. Branch-Bereinigung ist ein separater, nur für bereits gemergte bzw. in `main` enthaltene Branches zulässiger Schritt; verbliebene divergente Branches nicht löschen. `morgenzeitung-neu/` einschließlich Feedback, Profil, State, Monitoring, Gründen, Änderungen und Dossiers nicht als Altlast behandeln.
