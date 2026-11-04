@@ -3,8 +3,16 @@
   "name": "Noahpinion",
   "homepage": "https://www.noahpinion.blog/",
   "feed": "https://www.noahpinion.blog/feed",
-  "checked_at": "2026-11-04T01:18:48+00:00",
+  "checked_at": "2026-11-04T10:48:58+00:00",
   "posts": [
+    {
+      "title": "Normal Americans punished MAGA",
+      "url": "https://www.noahpinion.blog/p/normal-americans-punished-maga",
+      "published_at": "2026-11-04",
+      "author": "Noah Smith",
+      "description": "Normies exist, and there’s only so far you can push them before they get mad.",
+      "published_time": "2026-11-04T10:33:58+00:00"
+    },
     {
       "title": "Anthropic’s moat is Claude",
       "url": "https://www.noahpinion.blog/p/anthropics-moat-is-claude",
