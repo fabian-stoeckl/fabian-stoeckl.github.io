@@ -58,34 +58,41 @@ const DirectFeedback=(()=>{
     }catch(_){return null;}
   }
   async function feedbackHistory(token,transport=fetch){
-    const out=[];
+    const byIssue=new Map();
     for(let page=1;page<=20;page++){
       const rows=await request(token,'/issues?state=all&per_page=100&page='+page,'GET',undefined,transport);
       if(!Array.isArray(rows))throw Error('Ungültige GitHub-Feedback-Antwort');
-      for(const row of rows){const v=parse(row);if(v)out.push(v);}
+      for(const row of rows){
+        const v=parse(row);
+        if(!v)continue;
+        const previous=byIssue.get(v.number);
+        if(!previous||v.updated_at>=previous.updated_at)byIssue.set(v.number,v);
+      }
       if(rows.length<100)break;
+      if(page===20)throw Error('Feedback-Historie umfasst zu viele Seiten. Bitte Paginierung prüfen.');
     }
-    return out.sort((a,b)=>b.updated_at.localeCompare(a.updated_at));
+    return [...byIssue.values()].sort((a,b)=>b.updated_at.localeCompare(a.updated_at));
   }
   function readReceipts(store=localStorage){
     try{const v=JSON.parse(store.getItem(RECEIPTS_KEY)||'{}');return v&&typeof v==='object'?v:{};}
     catch(_){return {};}
   }
+  function uniqueFeedbackForDate(items,date){
+    // Pagination may repeat a record during concurrent updates; only
+    // different GitHub issue numbers constitute a real duplicate.
+    const current=[...new Map(items.filter(x=>x.date===date)
+      .map(x=>[x.number,x])).values()];
+    if(current.length>1)
+      throw Error('Mehrere gültige Feedback-Issues für '+date+' gefunden ('+
+        current.map(x=>'#'+x.number).join(', ')+
+        '). Die getrennten Rückmeldungen müssen zuerst zusammengeführt werden; es wurde nichts überschrieben.');
+    return current[0]||null;
+  }
   async function savedFeedback(date,token,store=localStorage,transport=fetch){
-    // Fast path: use the recorded private issue number. Still GET the canonical
-    // issue from GitHub, not a potentially stale browser cache.
-    const receipt=readReceipts(store)[date];
-    if(receipt && Number.isSafeInteger(receipt.number) && receipt.number>0){
-      try{
-        const current=parse(await request(token,'/issues/'+receipt.number,'GET',undefined,transport));
-        if(current?.date===date)return current;
-      }catch(err){
-        // Authorization failures must not be silently swallowed.
-        if(/ungültig oder abgelaufen|verweigert Zugriff/.test(err.message))throw err;
-      }
-    }
-    const items=await feedbackHistory(token,transport);
-    return items.find(x=>x.date===date)||null;
+    // A local receipt only identifies this browser's issue. Another device
+    // might have created a second valid issue for the same edition, so always
+    // inspect all canonical issues before selecting an editable issue.
+    return uniqueFeedbackForDate(await feedbackHistory(token,transport),date);
   }
   const COMPARISON_NOTE=/^\[V3-Vergleich (\d{4}-\d{2}-\d{2} [a-zA-Z0-9_-]{1,90}): (?:published|alternative|equal)\]$/;
   function preserveComparisonNotes(previous,incoming){
@@ -202,6 +209,10 @@ const DirectFeedback=(()=>{
         receipts[date]=receipt;store.setItem(RECEIPTS_KEY,JSON.stringify(receipts));
       }catch(_){}
       const confirmed=await request(token,'/issues/'+result.number,'GET',undefined,transport);
+      // Two browsers may simultaneously observe no issue and both POST.
+      // GitHub Issues has no unique constraint; detect that race before
+      // reporting a confirmed first-time save.
+      if(!existing)uniqueFeedbackForDate(await feedbackHistory(token,transport),date);
       const verified=parse(confirmed);
       if(!verified)throw Error('Gespeichertes GitHub-Feedback konnte nicht nachgelesen werden.');
       const found=new Map(verified.ratings.map(row=>[row.id,row]));

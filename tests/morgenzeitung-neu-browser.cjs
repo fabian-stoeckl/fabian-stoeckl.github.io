@@ -32,12 +32,14 @@ const fs=require('node:fs');
      issues[idx]={...issues[idx],...patch,updated_at:'2026-10-29T03:00:00Z'};
      response=issues[idx];
     }else if(/\/issues\/\d+$/.test(url.pathname)){
+     response=issues.find(x=>x.number===Number(url.pathname.split('/').at(-1)))||{message:'not found'};
+    }else if(url.pathname.endsWith('/issues')){
+     // Current persistence reads the full issue collection to detect same-day
+     // duplicates; the delayed-read race must intercept that actual endpoint.
      if(holdIssueRead){
       notifyHeldRead?.();
       await new Promise(resolve=>{releaseHeldRead=resolve;});
      }
-     response=issues.find(x=>x.number===Number(url.pathname.split('/').at(-1)))||{message:'not found'};
-    }else if(url.pathname.endsWith('/issues')){
      response=issues;
     }else{
      response={private:true,full_name:'fabian-stoeckl/morgenzeitung-feedback'};

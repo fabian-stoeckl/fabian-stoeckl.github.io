@@ -4,17 +4,21 @@ const Feedback=require('../Privat/Pressespiegel/direct-feedback.js');
 const PREFIX='MORGENZEITUNG_NEU_FEEDBACK_V1\n';
 const SAMPLE='Mehr analytische Tiefe: Bitte Mechanismen und Folgen erklären.';
 const storage={read:{},getItem(k){return this.read[k]||null;},setItem(k,v){this.read[k]=v;}};
-let issue;
+let issue, duplicateIssue=null,injectPostDuplicate=false;
 async function transport(url,opt={}){
   const path=new URL(url).pathname,method=opt.method||'GET';
   const response=(value,status=200)=>({ok:status>=200&&status<300,status,json:async()=>value});
-  if(path.endsWith('/issues')&&method==='GET')return response(issue?[issue]:[]);
+  if(path.endsWith('/issues')&&method==='GET')return response([...(issue?[issue]:[]),...(duplicateIssue?[duplicateIssue]:[])]);
   if(/\/issues\/\d+$/.test(path)&&method==='GET')return issue?response(issue):response({},404);
   if((path.endsWith('/issues')&&method==='POST')||
      (/\/issues\/\d+$/.test(path)&&method==='PATCH')){
     const payload=JSON.parse(opt.body);
     issue={...payload,number:31,html_url:'https://github.com/fabian-stoeckl/morgenzeitung-feedback/issues/31',
       updated_at:new Date().toISOString()};
+    if(injectPostDuplicate&&method==='POST'){
+      duplicateIssue={...issue,number:32,html_url:'https://github.com/fabian-stoeckl/morgenzeitung-feedback/issues/32'};
+      injectPostDuplicate=false;
+    }
     return response(issue);
   }
   throw Error('Unexpected API path '+method+' '+path);
@@ -97,5 +101,31 @@ async function transport(url,opt={}){
   const canonical=(await Feedback.feedbackHistory('token',transport))[0];
   assert.equal(canonical.ratings.find(x=>x.id===noteOnly.id).value,'');
   assert.equal(canonical.ratings.find(x=>x.id===noteOnly.id).reason,noteOnly.reason);
-  console.log('PASS: prompted vs independently authored feedback, edits, private persistence, append safeguards');
+  // Multiple valid issues for one date must not silently discard another
+  // device's comments/ratings, regardless of a local issue receipt.
+  duplicateIssue={...issue,number:32,
+    html_url:'https://github.com/fabian-stoeckl/morgenzeitung-feedback/issues/32'};
+  await assert.rejects(
+    Feedback.savedFeedback('2026-10-29','token',storage,transport),
+    /Mehrere gültige Feedback-Issues/,
+    'A receipt from one device must not hide another valid same-date issue');
+  await assert.rejects(
+    Feedback.submit('2026-10-29',[changed],'','token',storage,transport,
+      {comparisonOnly:true}),
+    /Mehrere gültige Feedback-Issues/,
+    'Do not overwrite a same-date duplicate until feedback is reconciled');
+  duplicateIssue={...issue,number:issue.number};
+  const deduped=await Feedback.feedbackHistory('token',transport);
+  assert.equal(deduped.filter(x=>x.date==='2026-10-29').length,1,
+    'A repeated page-row for the SAME issue number must not count as a second issue');
+  duplicateIssue=null;
+  // Race during a first POST: the second issue can appear after the initial
+  // discovery check. Read back the full index before reporting success.
+  injectPostDuplicate=true;
+  await assert.rejects(
+    Feedback.submit('2026-10-30',[row],'Neue Ausgabe.','token',storage,transport),
+    /Mehrere gültige Feedback-Issues/,
+    'First-time issue creation must detect a same-date second issue');
+  duplicateIssue=null;
+  console.log('PASS: prompted vs independently authored feedback, edits, duplicate issue detection, private persistence');
 })().catch(e=>{console.error(e);process.exitCode=1;});
