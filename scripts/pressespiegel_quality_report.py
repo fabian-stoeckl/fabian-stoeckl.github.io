@@ -2,7 +2,7 @@
 import json
 from collections import Counter
 from pathlib import Path
-from scripts.morgenzeitung_neu import editorial_warnings
+from morgenzeitung_neu import editorial_warnings
 
 ROOT = Path("Privat/Pressespiegel/data")
 
