@@ -58,14 +58,20 @@ const DirectFeedback=(()=>{
     }catch(_){return null;}
   }
   async function feedbackHistory(token,transport=fetch){
-    const out=[];
+    const byIssue=new Map();
     for(let page=1;page<=20;page++){
       const rows=await request(token,'/issues?state=all&per_page=100&page='+page,'GET',undefined,transport);
       if(!Array.isArray(rows))throw Error('Ungültige GitHub-Feedback-Antwort');
-      for(const row of rows){const v=parse(row);if(v)out.push(v);}
+      for(const row of rows){
+        const v=parse(row);
+        if(!v)continue;
+        const previous=byIssue.get(v.number);
+        if(!previous||v.updated_at>=previous.updated_at)byIssue.set(v.number,v);
+      }
       if(rows.length<100)break;
+      if(page===20)throw Error('Feedback-Historie umfasst zu viele Seiten. Bitte Paginierung prüfen.');
     }
-    return out.sort((a,b)=>b.updated_at.localeCompare(a.updated_at));
+    return [...byIssue.values()].sort((a,b)=>b.updated_at.localeCompare(a.updated_at));
   }
   function readReceipts(store=localStorage){
     try{const v=JSON.parse(store.getItem(RECEIPTS_KEY)||'{}');return v&&typeof v==='object'?v:{};}
