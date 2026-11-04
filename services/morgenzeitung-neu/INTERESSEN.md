@@ -48,6 +48,10 @@ Auch ohne erklärende Kommentare in gleichartigen Positiv-/Negativurteilen vorsi
 
 `suggested_reasons` (Artikel) und `comment_suggestions` (allgemeine Texte) markieren **angeklickte Vorlagen**, nicht unabhängig spontan formulierte Rückmeldungen. Im Kommentar nur die gekennzeichneten exakten Zeilen als Prompt-Vorschläge behandeln; übrige erkennbare Eigenformulierungen gesondert lesen. Angezeigte Vorlagen und wiederholte Klicks dürfen keine selbstbestätigende Schleife ergeben. Bei historischen Daten ohne Provenienz die Herkunft nicht rückwirkend erfinden.
 
+## Exploration und Gegenpositionen beim Lernen
+
+Die redaktionelle Rubrik „Neues“ und gelegentliche Gegenpositionen dienen bewusst auch der Erschließung **noch nicht bewerteter** Themen und glaubwürdiger Quellen. Explizite Wünsche nach neuen Denkansätzen ernst nehmen, aber eine unbewertete Entdeckung niemals als Ablehnung, Zustimmung oder Profilsignal zählen. Der Agent soll nach jeder Profilschärfung weiter aktiv nach bislang nicht behandelten Fragen und seriösen andersdenkenden Analysen suchen, statt sich über den Tag für Tag engeren Themenkreis selbst zu bestätigen. Wenn Nutzer ausdrücklich eine fundierte Gegenargumentation wünscht, eine **substantielle, evidenzgestützte** andere Sichtweise zeigen, nicht künstliche Balance oder Desinformation. Anhand späterer echter Rückmeldungen untersuchen, ob die Entdeckung tatsächlich hilfreich war; fehlendes Feedback ist neutral.
+
 ## Lernerfolg beobachten – keine Selbstbestätigung
 
 Nutze **dieselbe tägliche Aufgabe**, **dieselben echten Feedback-Issues** und die **bereits veröffentlichten echten Ausgaben** für eine kleine qualitative Lernbilanz in der privaten Datei `morgenzeitung-neu/lernmonitoring.md`. Sie erscheint auf „Meine Präferenzen“. Keine zweite Automation, kein Score-Dashboard und keine neuen Feedbackfragen. Die Lernbilanz ist **keine** Erweiterung von `aenderungen.md`: Dort steht, *was am Interessenprofil geändert wurde*; hier steht, *ob die geänderte Artikelauswahl später nachweislich hilfreicher war*.
