@@ -82,5 +82,20 @@ async function transport(url,opt={}){
       {replaceComment:true,baselineComment:'Ein vorheriger anderer Text'}),
     /auf einem anderen Gerät geändert/,
     'Must not overwrite a newer comment from another device');
+  // Qualitative article feedback without selecting a relevance level is valid,
+  // but must not increase the count of selected relevance votes.
+  const noteOnly={id:'abcdefabcdef1234',section:'Heute wichtig',value:'',
+    reason:'Diese Nachricht ist schon bekannt; bitte mehr neue Entwicklung.',
+    reason_codes:['already_known'],suggested_reasons:[]};
+  await Feedback.submit('2026-10-29',[noteOnly],'','token',storage,transport,
+    {comparisonOnly:true});
+  payload=JSON.parse(issue.body.slice(PREFIX.length));
+  assert.equal(payload.ratings.length,2,'Both existing rating and qualitative-only entry remain');
+  assert.equal(payload.ratings.filter(x=>x.rating).length,1,
+    'Only the entry with a selected relevance level is a relevance vote');
+  assert.equal(payload.ratings.find(x=>x.id===noteOnly.id).reason,noteOnly.reason);
+  const canonical=(await Feedback.feedbackHistory('token',transport))[0];
+  assert.equal(canonical.ratings.find(x=>x.id===noteOnly.id).value,'');
+  assert.equal(canonical.ratings.find(x=>x.id===noteOnly.id).reason,noteOnly.reason);
   console.log('PASS: prompted vs independently authored feedback, edits, private persistence, append safeguards');
 })().catch(e=>{console.error(e);process.exitCode=1;});
