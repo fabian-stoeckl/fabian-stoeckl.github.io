@@ -406,7 +406,10 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
       const key=submittedEdition.date+':'+row.id;
       readerState.ratingBaselines[key]=row;
       const current=readerState.ratingDrafts[key];
-      if(current&&current.value===row.value&&current.reason===row.reason&&JSON.stringify(current.reason_codes||[])===JSON.stringify(row.reason_codes||[])&&JSON.stringify(current.suggested_reasons||[])===JSON.stringify(row.suggested_reasons||[]))current.dirty=false;
+      if(current&&current.value===row.value&&current.reason===row.reason&&JSON.stringify(current.reason_codes||[])===JSON.stringify(row.reason_codes||[])&&JSON.stringify(current.suggested_reasons||[])===JSON.stringify(row.suggested_reasons||[])){
+        current.dirty=false;
+        current.ratingEdited=false;current.reasonEdited=false;current.codesEdited=false;
+      }
     }
     // Remember the exact confirmed canonical comment as the next baseline.
     if(typeof result.feedback==='string'){
