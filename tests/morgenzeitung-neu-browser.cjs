@@ -9,6 +9,7 @@ const fs=require('node:fs');
    const context=await browser.newContext({viewport:{width,height:900}});
    const page=await context.newPage(),errors=[];
    const issues=[];
+   let holdIssueRead=false,releaseHeldRead=null,notifyHeldRead=null;
    page.on('pageerror',e=>errors.push(e.message));
    await page.addInitScript(()=>localStorage.setItem('morgenzeitung:github-token:v1','github_pat_'+'A'.repeat(42)));
    await page.route('https://api.github.com/**',async route=>{
@@ -31,6 +32,10 @@ const fs=require('node:fs');
      issues[idx]={...issues[idx],...patch,updated_at:'2026-10-29T03:00:00Z'};
      response=issues[idx];
     }else if(/\/issues\/\d+$/.test(url.pathname)){
+     if(holdIssueRead){
+      notifyHeldRead?.();
+      await new Promise(resolve=>{releaseHeldRead=resolve;});
+     }
      response=issues.find(x=>x.number===Number(url.pathname.split('/').at(-1)))||{message:'not found'};
     }else if(url.pathname.endsWith('/issues')){
      response=issues;
@@ -157,6 +162,23 @@ const fs=require('node:fs');
    // An empty unsent local draft survives changing to a different edition and back.
    await page.goto(root);
    await page.waitForSelector('#feedback-section:not([hidden])');
+   await page.waitForFunction(()=>document.querySelector('#feedback').value.includes('Eigenständiger Hinweis von der Präferenzseite.'));
+   // Delayed GitHub read: a fast relevance click must preserve the saved reason.
+   let notifyRead;
+   const readStarted=new Promise(resolve=>{notifyRead=resolve;});
+   notifyHeldRead=notifyRead;
+   holdIssueRead=true;
+   await page.reload();
+   await page.waitForSelector('#feedback-section:not([hidden])');
+   await readStarted;
+   await page.locator('#tab-articles').click();
+   const earlyGroup=page.locator('#articles .ratings').first();
+   await earlyGroup.locator('input[type=radio][value="Teilweise relevant"]').check();
+   holdIssueRead=false;releaseHeldRead();
+   await page.waitForFunction(()=>document.querySelector('#articles .ratings textarea').value.includes('Zu juristisch für ein Randthema'));
+   assert.equal(await earlyGroup.locator('input[type=radio][value="Teilweise relevant"]').isChecked(),true);
+   assert.match(await earlyGroup.locator('textarea').inputValue(),/Zu juristisch für ein Randthema/,
+     'A quick radio click cannot clear the previously saved article reason');
    await page.waitForFunction(()=>document.querySelector('#feedback').value.includes('Eigenständiger Hinweis von der Präferenzseite.'));
    const datePicker=page.locator('#date'),originalDate=await datePicker.inputValue();
    const secondDate=await datePicker.locator('option').nth(1).getAttribute('value');
