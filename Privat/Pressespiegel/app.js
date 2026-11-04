@@ -176,6 +176,23 @@ function article(a,index,section='Vertiefungen'){
   }
   if(!isHeadline&&typeof a.novelty_explanation==='string'&&a.novelty_explanation.trim())
     body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty_explanation,'novelty'));
+  // A qualified alternative view belongs to this deep dive, not to Neues.
+  // It is not another rated article or an equivalent-truth assertion.
+  const alternative=a.alternative_view;
+  if(!isHeadline&&alternative&&typeof alternative.title==='string'&&
+     typeof alternative.source==='string'&&typeof alternative.url==='string'&&
+     typeof alternative.why==='string'){
+    try{
+      const panel=el('aside',undefined,'alternative-view');
+      panel.setAttribute('aria-label','Alternative Sichtweise');
+      panel.append(el('h3','Alternative Sichtweise'));
+      const source=el('p',undefined,'alternative-view-source');
+      source.append(link(alternative.title,alternative.url),
+        document.createTextNode(' · '+alternative.source));
+      panel.append(source,el('p',alternative.why,'small'));
+      body.append(panel);
+    }catch(_){/* Optional links must never break the newspaper reader. */}
+  }
   body.append(githubRating(a,section));node.append(intro,body);return node;
 }
 function addSaveAction(section,statusId){
@@ -190,8 +207,8 @@ function addSaveAction(section,statusId){
 function renderDiscoveries(e){
   const root=$('discoveries');
   root.replaceChildren();
-  root.append(el('h2','Neues · Themen, Quellen und Perspektiven'));
-  root.append(el('p','Gelegentliche Entdeckungen jenseits der gewohnten Auswahl. Gegenpositionen werden nur gezeigt, wenn sie belegbar sind und neue Argumente liefern – keine künstliche Gleichgewichtspflicht.','small'));
+  root.append(el('h2','Neues · Themen und Quellen'));
+  root.append(el('p','Gelegentliche, überprüfte Entdeckungen jenseits der gewohnten Themen und Medien. Keine Füllpflicht.','small'));
   let count=0;
   function entries(title,rows){
     if(!Array.isArray(rows)||!rows.length)return;
@@ -209,29 +226,6 @@ function renderDiscoveries(e){
   }
   entries('Neue Themen',e.new_topics);
   entries('Neue Quellen',e.new_sources);
-  if(Array.isArray(e.counterpositions)&&e.counterpositions.length){
-    const section=el('section',undefined,'discovery-section');
-    section.append(el('h3','Fundierte Gegenpositionen'));
-    const list=el('ul',undefined,'source-trials');
-    const originals=[...(e.articles||[]),...(e.headlines||[])];
-    for(const item of e.counterpositions){
-      if(!item||typeof item.article_id!=='string'||typeof item.counter_title!=='string'||
-         typeof item.counter_source!=='string'||typeof item.counter_url!=='string'||
-         typeof item.why!=='string')continue;
-      const original=originals.find(a=>a.id===item.article_id);
-      if(!original)continue;
-      const li=el('li'),first=el('p',undefined,'small');
-      try{
-        first.append(document.createTextNode('Ausgangsartikel: '),link(original.title,original.url));
-        const second=el('p',undefined,'small');
-        second.append(document.createTextNode('Andere Perspektive: '),link(item.counter_title,item.counter_url),
-          document.createTextNode(' · '+item.counter_source));
-        li.append(first,second,el('p',item.why,'small'));
-        list.append(li);count++;
-      }catch(_){/* Ignore malformed optional links, never construct raw HTML. */}
-    }
-    if(list.childElementCount){section.append(list);root.append(section);}
-  }
   if(!count)root.append(el('p','In dieser Ausgabe gibt es keine zusätzlichen, ausreichend geprüften Entdeckungen. Die Redaktion sucht weiter.','empty'));
   $('discovery-count').textContent=count;
 }
