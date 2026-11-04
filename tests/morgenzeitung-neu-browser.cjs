@@ -113,6 +113,9 @@ const fs=require('node:fs');
    assert.equal(await group.getByText('Optionale Gründe auswählen; eigener Text bleibt separat:').count(),0);
    await group.locator('.v3-reason-choice').first().click();
    await group.locator('.personal-reason-choice').first().click();
+   const noteOnlyArticle=page.locator('#articles article').nth(1);
+   const noteOnlyId=await noteOnlyArticle.getAttribute('data-article-id');
+   await noteOnlyArticle.locator('.rating-reason textarea').fill('Bitte hier mehr konkrete wirtschaftliche Folgen erklären.');
    await page.locator('#feedback-form button[type=submit]').click();
    await page.waitForFunction(()=>document.querySelector('#feedback-status').textContent.includes('gespeichert.'));
    assert.equal(issues.length,1);
@@ -123,12 +126,19 @@ const fs=require('node:fs');
    assert.deepEqual(payload.comment_suggestions,[suggestion]);
    assert.ok(payload.comment.includes('Freie eigene Begründung zur Artikelwahl.'));
    assert.ok(payload.ratings.some(r=>r.suggested_reasons?.includes('Zu juristisch für ein Randthema')));
+   assert.ok(payload.ratings.some(r=>r.id===noteOnlyId&&r.rating===''&&
+     r.reason==='Bitte hier mehr konkrete wirtschaftliche Folgen erklären.'),
+     'Qualitative-only article text is saved without falsely choosing a relevance level');
    await page.getByRole('link',{name:/Meine Präferenzen/}).first().click();
    await page.waitForURL(/praeferenzen.html/);
    await page.waitForSelector('#profile-text:not([hidden])');
    assert.match(await page.locator('#profile-text').innerText(),/wirtschaftliche Erkenntnisse/);
    assert.ok((await page.locator('#profile-changes').innerText()).includes('Startbeschreibung'));
    assert.equal(await page.locator('#preference-comment').isVisible(),true);
+   await page.waitForFunction(()=>document.querySelector('#feedback-summary').textContent.includes('qualitative Artikelhinweise'));
+   assert.match(await page.locator('#feedback-summary').innerText(),
+     /1 qualitative Artikelhinweise ohne Relevanzstufe/,
+     'Qualitative-only article notes remain visible and are not counted as relevance votes');
    await page.waitForFunction(()=>!document.querySelector('#learning-monitor').textContent.includes('geladen'));
    assert.match(await page.locator('#learning-monitor').innerText(),
      width===390?/Noch keine Lernbilanz vorhanden/:/Noch nicht beurteilbar/);
