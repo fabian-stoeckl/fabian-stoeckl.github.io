@@ -23,6 +23,14 @@ Bei einem echten **nachträglich erkannten Fehler** den betreffenden Artikel im 
 
 Der **eine bereits existierende** tägliche Automationsauftrag lädt den aktuellen Hauptbranch und führt `INTERESSEN.md` gefolgt von `RECHERCHE.md` aus. Er beginnt um 04:45 Uhr Europe/Vienna mit Ziel-Veröffentlichung 07:45 Uhr. Private Belege vor öffentlichem PR sichern; passende Struktur-, Unit- und Browser-Tests/CI prüfen, mergen, Pages-Deployment kontrollieren und nach Möglichkeit öffentliche HTTPS-Ausgabe zurücklesen. Scheitert ein Schritt, letzte gültige Ausgabe behalten und Hindernis ehrlich melden. Keine zweite parallele Produktion, Link-Test-Wache oder automatisch erfundene Erfolgsanalyse.
 
+## Neu: Post-Merge-Auslieferungskontrolle (04.11.2026)
+
+Nach Änderungen am Pressespiegel führt `.github/workflows/verify-morgenzeitung-neu.yml` auf `main` zusätzlich einen separaten `live-readback`-Job aus: `scripts/check_pressespiegel_live.py` wartet begrenzt auf GitHub Pages und vergleicht die öffentliche Reader-Seite, den gesamten Index und die neueste echte Ausgabe mit den Dateien auf `main`. Ein Merge oder grüner Strukturtest ist **kein** Live-Nachweis. Ein unerreichbarer Host, eine alte/abweichende öffentliche Ausgabe oder ausbleibender Readback führt ausdrücklich zu einem fehlgeschlagenen Job; nicht still als Erfolg verbuchen. Ein später erfolgreicher neuer Job darf vorherige Lieferausfälle nicht verdecken. Die laufende Zeitung nutzt weiterhin nur die **eine** bestehende ChatGPT-Automation.
+
+Der gleiche Prüfworkflow testet die Reader-Bedienung mit simuliertem privatem Feedback sowie den Ausfall des Blogs-Live-Feeds mit gespeicherter Fallback-Liste. `scripts/pressespiegel_quality_report.py` dokumentiert redaktionelle Metadatenhinweise (Quellenverteilung, Original-Zugriffstiefe und mögliche Anlassüberschneidung), ausdrücklich **nicht** die Wahrheit oder journalistische Qualität der Texte. Unabhängige fachliche Source-/Nachrichten-Audits und die noch offenen frühen Praxisabnahmen bleiben erforderlich.
+
+Die private `lernmonitoring.md` wird in **jedem** Morgenlauf auf inhaltliche Aktualität gegen neues/editiertes Feedback, `state.json` und das aktuelle Interessenprofil geprüft; nach neuen echten Erkenntnissen sofort berichtigen, ohne künstliche tägliche Erfolgsmeldung. Eine umfassendere Wirksamkeitsprüfung erfolgt zusätzlich ungefähr zweiwöchig, immer erst anhand zeitlich nach einer Profiländerung abgegebener Rückmeldungen.
+
 ## Prüfen
 
 `python3 scripts/morgenzeitung_neu.py verify`, `python3 tests/morgenzeitung-neu-editorial.py`, `node tests/morgenzeitung-neu.test.cjs`, `node tests/morgenzeitung-neu-feedback.cjs` sowie die vorhandenen GitHub-Browser- und allgemeinen Website-Prüfungen. Diese Tests bestätigen Struktur und Abläufe, **nicht** die Qualität der journalistischen Auswahl.
