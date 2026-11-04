@@ -34,13 +34,14 @@ const fs=require('node:fs');
     }else if(/\/issues\/\d+$/.test(url.pathname)){
      response=issues.find(x=>x.number===Number(url.pathname.split('/').at(-1)))||{message:'not found'};
     }else if(url.pathname.endsWith('/issues')){
-     // Current persistence reads the full issue collection to detect same-day
-     // duplicates; the delayed-read race must intercept that actual endpoint.
+     // Snapshot at GET initiation; a late reply can be older than the issue.
+     const snapshot=JSON.parse(JSON.stringify(issues));
      if(holdIssueRead){
+      holdIssueRead=false; // only this request is deliberately held
       notifyHeldRead?.();
       await new Promise(resolve=>{releaseHeldRead=resolve;});
      }
-     response=issues;
+     response=snapshot;
     }else{
      response={private:true,full_name:'fabian-stoeckl/morgenzeitung-feedback'};
     }
@@ -228,6 +229,51 @@ const fs=require('node:fs');
    assert.equal(await page.locator('#feedback').inputValue(),'',
      'Unsent intentional clearing survives an edition round trip');
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'No horizontal overflow');
+   // An older delayed response for date A must NOT replace a newer
+   // canonical answer after A -> B -> A.
+   const storedBody=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
+   const targetRow=storedBody.ratings.find(r=>r.id===correctedId);
+   assert.ok(targetRow,'Fixture must retain the first deep-dive rating');
+   const oldRelevance=targetRow.rating;
+   let notifyStaleRead;
+   const staleReadStarted=new Promise(resolve=>{notifyStaleRead=resolve;});
+   notifyHeldRead=notifyStaleRead;
+   holdIssueRead=true;
+   await page.reload();
+   await page.waitForSelector('#feedback-section:not([hidden])');
+   await staleReadStarted;
+   targetRow.rating=oldRelevance==='Nicht relevant'?'Sehr relevant':'Nicht relevant';
+   issues[0].body='MORGENZEITUNG_NEU_FEEDBACK_V1\n'+JSON.stringify(storedBody);
+   issues[0].updated_at='2026-11-04T20:00:00Z';
+   const first=await page.locator('#date').inputValue();
+   const second=await page.locator('#date option').nth(1).getAttribute('value');
+   await page.locator('#date').selectOption(second);
+   await page.waitForFunction(day=>document.querySelector('#date').value===day&&
+     document.querySelector('#edition-meta').textContent.includes(
+       new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'})
+       .format(new Date(day+'T12:00:00Z'))),second);
+   await page.locator('#date').selectOption(first);
+   await page.waitForFunction(day=>document.querySelector('#date').value===day&&
+     document.querySelector('#edition-meta').textContent.includes(
+       new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'})
+       .format(new Date(day+'T12:00:00Z'))),first);
+   await page.waitForFunction(value=>[...document.querySelectorAll('#articles .ratings input[type=radio]')]
+     .some(n=>n.value===value&&n.checked),targetRow.rating);
+   releaseHeldRead();
+   await page.waitForTimeout(100);
+   assert.equal(await page.locator('#articles .ratings').first()
+     .locator('input[type=radio][value="'+targetRow.rating+'"]').isChecked(),true,
+     'Stale reply from an earlier render cannot clobber newer saved relevance');
+
+   // A well-formed but semantically wrong rubric must not hydrate the story.
+   targetRow.section='Heute wichtig';
+   issues[0].body='MORGENZEITUNG_NEU_FEEDBACK_V1\n'+JSON.stringify(storedBody);
+   await page.reload();
+   await page.waitForFunction(()=>document.querySelector('#feedback-status').textContent.includes('falsche Rubrik'));
+   assert.match(await page.locator('#feedback-status').innerText(),/falsche Rubrik/);
+   targetRow.section='Vertiefungen';
+   issues[0].body='MORGENZEITUNG_NEU_FEEDBACK_V1\n'+JSON.stringify(storedBody);
+
    // Privacy control must actually remove the stored GitHub token.
    await page.goto(root);
    await page.waitForSelector('#github-connected:not([hidden])');

@@ -27,14 +27,20 @@ class ReadbackTests(unittest.TestCase):
         (self.assets / "app.js").write_text("console.log('new')")
         (self.assets / "style.css").write_text("body{}")
         (self.assets / "direct-feedback.js").write_text("const Feedback='new';")
+        (self.assets / "config.json").write_text(json.dumps({"mode": "github"}))
         (self.assets / "preferences.js").write_text("const Preferences='new';")
+        (self.assets / "github.js").write_text("const Github='new';")
+        (self.assets / "rating-reasons.js").write_text("const Reasons='new';")
         self.reader_html = ('<html><title>Pressespiegel</title>'
             '<link rel="stylesheet" href="./style.css?v=test1">'
             '<script src="./app.js?v=test1"></script>'
+            '<script src="./github.js?v=test1"></script>'
+            '<script src="./rating-reasons.js?v=test1"></script>'
             '<script src="./direct-feedback.js?v=test1"></script></html>')
         self.preferences_html = ('<html><title>Meine Präferenzen · Pressespiegel</title>'
             '<link rel="stylesheet" href="./style.css?v=test1">'
             '<script src="./preferences.js?v=test1"></script>'
+            '<script src="./github.js?v=test1"></script>'
             '<script src="./direct-feedback.js?v=test1"></script></html>')
         (self.assets / "index.html").write_text(self.reader_html)
         (self.assets / "praeferenzen.html").write_text(self.preferences_html)
@@ -51,12 +57,15 @@ class ReadbackTests(unittest.TestCase):
         return base, {
             base + "/data/index.json": self.index,
             base + "/data/2026-11-04.json": self.issue,
+            base + "/config.json": {"mode": "github"},
             base + "/": self.reader_html.encode(),
             base + "/praeferenzen.html": self.preferences_html.encode(),
             base + "/app.js?v=test1": b"console.log('new')",
             base + "/style.css?v=test1": b"body{}",
             base + "/direct-feedback.js?v=test1": b"const Feedback='new';",
             base + "/preferences.js?v=test1": b"const Preferences='new';",
+            base + "/github.js?v=test1": b"const Github='new';",
+            base + "/rating-reasons.js?v=test1": b"const Reasons='new';",
         }
     def check_reader(self, base, pages, **kwargs):
         return check(base, self.root, self.opener(pages), assets_root=self.assets, **kwargs)
@@ -72,6 +81,12 @@ class ReadbackTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "No edition for local Vienna date"):
             self.check_reader(base, pages,
                   require_today=True, local_today=date(2026, 11, 5))
+
+    def test_stale_feedback_mode_is_failure(self):
+        base, pages = self.payloads()
+        pages[base + "/config.json"] = {"mode": "old"}
+        with self.assertRaisesRegex(RuntimeError, "feedback configuration differs"):
+            self.check_reader(base, pages)
 
     def test_stale_index_is_failure(self):
         base, pages = self.payloads()
@@ -116,6 +131,20 @@ class ReadbackTests(unittest.TestCase):
         base, pages = self.payloads()
         pages[base + "/preferences.js?v=test1"] = b"const Preferences='old';"
         with self.assertRaisesRegex(RuntimeError, "asset differs"):
+            self.check_reader(base, pages)
+
+    def test_any_extra_reader_script_is_checked_for_stale_bytes(self):
+        base, pages = self.payloads()
+        pages[base + "/rating-reasons.js?v=test1"] = b"const Reasons='stale';"
+        with self.assertRaisesRegex(RuntimeError, "asset differs"):
+            self.check_reader(base, pages)
+
+    def test_reader_rejects_unversioned_local_script_dependency(self):
+        base, pages = self.payloads()
+        bad = self.reader_html.replace("github.js?v=test1", "github.js")
+        (self.assets / "index.html").write_text(bad)
+        pages[base + "/"] = bad.encode()
+        with self.assertRaisesRegex(RuntimeError, "Unversioned local JS/CSS"):
             self.check_reader(base, pages)
 
     def test_stale_stylesheet_is_failure(self):

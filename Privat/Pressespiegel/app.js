@@ -2,7 +2,7 @@
 // One explicit browser-owned state object; edition/config remain stable V3 hooks.
 let config, edition, latestDate;
 const readerState={visibleArticles:[],visibleHeadlines:[],ratingDrafts:{},commentDrafts:{},
-  commentSuggestionDrafts:{},commentBaselines:{},ratingBaselines:{},loadSequence:0,saving:false};
+  commentSuggestionDrafts:{},commentBaselines:{},ratingBaselines:{},loadSequence:0,restoreSequence:0,saving:false};
 const draftKey=a=>edition.date+':'+(a.id||a.url);
 function stashComment(date){
   if(!date)return;
@@ -278,23 +278,36 @@ function render(){
 }
 async function restoreSavedRatings(){
   if(config?.mode!=='github'||!edition)return;
-  const date=edition.date,token=DirectFeedback.readToken();
+  const requestedEdition=edition,date=requestedEdition.date,token=DirectFeedback.readToken();
   if(!token)return;
+  // A delayed reply from an earlier date switch, old token or pre-save read
+  // must never overwrite a newer form and its confirmed canonical baselines.
+  const sequence=++readerState.restoreSequence;
+  const current=()=>readerState.restoreSequence===sequence&&
+    edition===requestedEdition&&DirectFeedback.readToken()===token;
   try{
     const saved=await DirectFeedback.savedFeedback(date,token);
-    if(!saved||edition.date!==date)return;
+    if(!saved||!current())return;
+    const expected=new Map([
+      ...readerState.visibleHeadlines.map(a=>[a.id,'Heute wichtig']),
+      ...readerState.visibleArticles.map(a=>[a.id,'Vertiefungen'])
+    ]);
+    // A corrupted or differently dated issue must not hydrate an unrelated
+    // article or attach a rating to the wrong editorial section.
+    for(const row of saved.ratings){
+      if(expected.get(row.id)!==row.section)
+        throw Error('Gespeichertes Feedback enthält eine unbekannte Artikel-ID oder falsche Rubrik: '+row.id);
+    }
     const byId=new Map(saved.ratings.map(r=>[r.id,r]));
     for(const item of [...readerState.visibleHeadlines,...readerState.visibleArticles]){
       const id=await GitHubPaper.ratingId(item);
-      if(edition.date!==date)return;
+      if(!current())return;
       const savedRow=byId.get(id),key=draftKey(item);
       if(!Object.hasOwn(readerState.ratingBaselines,key))readerState.ratingBaselines[key]=savedRow||null;
       if(!savedRow)continue;
       const draft=readerState.ratingDrafts[key];
       if(draft?.dirty){
-        // A user can start editing before GitHub has returned the prior values.
-        // Merge only fields they have NOT explicitly edited, preventing a radio
-        // click from deleting an older free-text reason (or vice versa).
+        // Merge only fields the user has not explicitly edited during fetch.
         if(!draft.ratingEdited)draft.value=savedRow.value;
         if(!draft.reasonEdited){
           draft.reason=savedRow.reason;
@@ -315,22 +328,24 @@ async function restoreSavedRatings(){
       if(note)note.value=active.reason||'';
       const disclosure=field.querySelector('.rating-reason');if(disclosure)disclosure.open=true;
     }
+    if(!current())return;
     if(!Object.hasOwn(readerState.commentBaselines,date))
       readerState.commentBaselines[date]=saved.feedback||'';
     if(!Object.hasOwn(readerState.commentSuggestionDrafts,date))
       readerState.commentSuggestionDrafts[date]=saved.comment_suggestions||[];
-    // An intentionally emptied local draft must survive date changes/reloads.
-    // Only hydrate from GitHub when this edition has no local draft at all.
+    // Intentionally emptied local drafts survive navigation/reloads.
     if(!Object.hasOwn(readerState.commentDrafts,date)&&!$('feedback').value&&saved.feedback){
       $('feedback').value=saved.feedback;
       readerState.commentDrafts[date]=saved.feedback;
       FeedbackSuggestions.setSelected($('feedback'),readerState.commentSuggestionDrafts[date]);
     }
-  }catch(err){feedbackStatus('Gespeicherte Bewertungen konnten nicht geladen werden: '+err.message);}
+  }catch(err){
+    if(current())feedbackStatus('Gespeicherte Bewertungen konnten nicht geladen werden: '+err.message);
+  }
 }
-
 $('date').onchange=async()=>{
   const sequence=++readerState.loadSequence;
+  ++readerState.restoreSequence; // invalidate in-flight rating read immediately
   const requested=$('date').value;
   const previous=edition;
   // A comment draft belongs to one edition, never the date currently selected
@@ -398,6 +413,7 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
   // must never start competing writes to the same private GitHub Issue.
   if(readerState.saving)return;
   readerState.saving=true;
+  ++readerState.restoreSequence; // an older GitHub read may not hydrate after this save
   const submittedEdition=edition;
   const submittedText=$('feedback').value;
   const groups=[[readerState.visibleHeadlines.slice(),'Heute wichtig'],
@@ -512,6 +528,7 @@ $('github-setup-form').onsubmit=async e=>{
 };
 const disconnect=$('github-disconnect');
 if(disconnect)disconnect.onclick=()=>{
+  ++readerState.restoreSequence; // do not hydrate private data after disconnect
   DirectFeedback.clearToken();
   RatingReasons.loadPrivateSuggestions('');
   refreshGitHubConnection();

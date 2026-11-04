@@ -88,6 +88,46 @@ class QualitySignals(unittest.TestCase):
                 (root / (date + ".json")).write_text(json.dumps(ed))
             self.assertNotIn("Discovery has been empty", review(root))
 
+    def test_ai_clustering_hidden_by_unique_topic_titles_is_flagged(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "index.json").write_text(json.dumps({"dates": ["2026-11-03"]}))
+            issue = {"date": "2026-11-03", "preview": False,
+                "articles": [{"source": f"Independent outlet {i}", "evidence_level": "read",
+                              "topic": topic} for i, topic in enumerate([
+                    "KI im öffentlichen Sektor", "Technologische Souveränität",
+                    "Produktivität und Energiepreise", "KI und Bürgerrechte",
+                    "Migration und KI", "Österreichische Unternehmen und Osteuropa",
+                    "KI und europäische Wettbewerbsfähigkeit", "KI-Governance und Europa",
+                    "KI und Energieindustrie",
+                ])],
+                "headlines": [{"source": "News", "evidence_level": "read", "region": "Österreich"}]}
+            (root / "2026-11-03.json").write_text(json.dumps(issue))
+            output = review(root)
+            self.assertIn("broad topic label 'ki' occurs in 6/9", output)
+            self.assertNotIn("from Independent outlet", output)
+
+    def test_discovery_gaps_cannot_break_detection_of_outlet_swings(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            days = [f"2026-11-{day:02}" for day in range(5, 10)][::-1]
+            (root / "index.json").write_text(json.dumps({"dates": days}))
+            for index, day in enumerate(reversed(days)):
+                source = "Handelsblatt" if index % 2 else "The Guardian"
+                issue = {"date": day, "preview": False,
+                    "articles": [{"source": source, "evidence_level": "read",
+                                  "topic": "Different subject"} for _ in range(6)] +
+                                [{"source": "Another publisher", "evidence_level": "read"}],
+                    "headlines": [{"source": "News", "evidence_level": "read",
+                                   "region": "Österreich"}]}
+                (root / (day + ".json")).write_text(json.dumps(issue))
+            report = review(root)
+            self.assertIn("Discovery has been empty in at least five", report)
+            self.assertIn("dominant outlet changed from The Guardian", report)
+            self.assertIn("to Handelsblatt", report)
+
+
+
 
 if __name__ == "__main__":
     unittest.main()
