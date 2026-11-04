@@ -18,6 +18,8 @@ jobs:
         with: {python-version: '3.12'}
       - run: python3 scripts/morgenzeitung_neu.py verify
       - run: python3 tests/morgenzeitung-neu-editorial.py
+      - name: Document editorial source/evidence distribution
+        run: python3 scripts/pressespiegel_quality_report.py | tee -a "$GITHUB_STEP_SUMMARY"
       - run: node tests/morgenzeitung-neu.test.cjs
       - run: node tests/morgenzeitung-neu-feedback.cjs
       - run: npm ci
@@ -32,6 +34,7 @@ jobs:
             sleep 1
           done
           node tests/morgenzeitung-neu-browser.cjs
+          node tests/morgenzeitung-neu-resilience.cjs
 
   live-readback:
     name: Verify deployed public reader and edition
