@@ -55,7 +55,7 @@ def check(base=BASE, root=INDEX.parent, opener=urlopen, require_today=False, loc
     asset_root = Path(assets_root) if assets_root is not None else root.parent
     local_html = (asset_root / "index.html").read_text(encoding="utf-8")
     for filename in ("app.js", "style.css"):
-        pattern = r"(?:\\./)?" + re.escape(filename) + r"\\?v=([a-zA-Z0-9_-]+)"
+        pattern = r"(?:\./)?" + re.escape(filename) + r"\?v=([a-zA-Z0-9_-]+)"
         local = re.search(pattern, local_html)
         remote = re.search(pattern, html)
         if not local or not remote or local.group(1) != remote.group(1):
