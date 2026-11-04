@@ -9,6 +9,7 @@ const fs=require('node:fs');
    const context=await browser.newContext({viewport:{width,height:900}});
    const page=await context.newPage(),errors=[];
    const issues=[];
+   let overrideLatestDate=null;
    let holdIssueRead=false,releaseHeldRead=null,notifyHeldRead=null;
    page.on('pageerror',e=>errors.push(e.message));
    await page.addInitScript(()=>localStorage.setItem('morgenzeitung:github-token:v1','github_pat_'+'A'.repeat(42)));
@@ -46,6 +47,11 @@ const fs=require('node:fs');
      response={private:true,full_name:'fabian-stoeckl/morgenzeitung-feedback'};
     }
     await route.fulfill({status:200,json:response});
+   });
+   await page.route(/\/Privat\/Pressespiegel\/data\/index\.json(?:\?.*)?$/,async route=>{
+    const response=await route.fetch(),data=await response.json();
+    if(overrideLatestDate)data.dates=[overrideLatestDate,...data.dates.filter(d=>d!==overrideLatestDate)];
+    await route.fulfill({response,json:data});
    });
    await page.route(/\/Privat\/Pressespiegel\/data\/\d{4}-\d{2}-\d{2}\.json(?:\?.*)?$/,async route=>{
      const response=await route.fetch();
@@ -172,11 +178,22 @@ const fs=require('node:fs');
    const pref=page.locator('#preference-comment');
    await pref.fill((await pref.inputValue())+'\nEigenständiger Hinweis von der Präferenzseite.');
    await page.locator('#preference-comment-form button[type=submit]').click();
-   await page.waitForFunction(()=>document.querySelector('#preference-comment-status').textContent.startsWith('Gespeichert.'));
+   await page.waitForFunction(()=>document.querySelector('#preference-comment-status').textContent.startsWith('Gespeichert'));
    const revised=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
    assert.deepEqual(revised.comment_suggestions,[suggestion]);
    assert.equal(prefSuggestion,suggestion);
    assert.ok(revised.comment.includes('Eigenständiger Hinweis von der Präferenzseite.'));
+   // Submit again after a new edition appears while the preferences page stays open.
+   overrideLatestDate='2026-11-05';
+   await pref.fill('Rückmeldung nach neuer Ausgabe ohne Neuladen der Präferenzseite.');
+   await page.locator('#preference-comment-form button[type=submit]').click();
+   await page.waitForFunction(()=>document.querySelector('#preference-comment-status').textContent.includes('2026-11-05'));
+   const newIssue=issues.find(i=>i.title.endsWith('2026-11-05'));
+   assert.ok(newIssue,'The newest edition must receive the newly submitted preference comment');
+   assert.match(newIssue.body,/Rückmeldung nach neuer Ausgabe ohne Neuladen/);
+   assert.ok(!issues[0].body.includes('Rückmeldung nach neuer Ausgabe ohne Neuladen'),
+     'A stale page-load date cannot contaminate the earlier edition');
+   overrideLatestDate=null;
    // An empty unsent local draft survives changing to a different edition and back.
    await page.goto(root);
    await page.waitForSelector('#feedback-section:not([hidden])');
