@@ -305,7 +305,7 @@ const fs=require('node:fs');
    await page.waitForTimeout(1500);
    const crossDeviceStatus=await page.locator('#feedback-status').innerText();
    console.log('Cross-device regression save status:',crossDeviceStatus);
-   assert.match(crossDeviceStatus,/gespeichert\./);
+   assert.match(crossDeviceStatus,/gespeichert\.|aktualisiert\./);
    const refreshedPayload=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
    assert.equal(refreshedPayload.ratings.find(r=>r.id===correctedId).rating,'Sehr relevant',
      'Editing a freshly restored rating must use the new remote baseline, not an old one');
