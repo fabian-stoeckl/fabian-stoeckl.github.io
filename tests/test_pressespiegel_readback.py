@@ -48,7 +48,7 @@ class ReadbackTests(unittest.TestCase):
             base + "/style.css?v=test1": b"body{}",
         }
     def check_reader(self, base, pages, **kwargs):
-        return self.check_reader(base, pages, assets_root=self.assets, **kwargs)
+        return check(base, self.root, self.opener(pages), assets_root=self.assets, **kwargs)
     def test_matching_live_edition(self):
         base, pages = self.payloads()
         self.assertEqual(self.check_reader(base, pages), "2026-11-04")
