@@ -2,7 +2,7 @@
 // One explicit browser-owned state object; edition/config remain stable V3 hooks.
 let config, edition, latestDate;
 const readerState={visibleArticles:[],visibleHeadlines:[],ratingDrafts:{},commentDrafts:{},
-  commentSuggestionDrafts:{},commentBaselines:{},ratingBaselines:{},loadSequence:0,restoreSequence:0,saving:false};
+  commentSuggestionDrafts:{},commentBaselines:{},commentDirty:{},ratingBaselines:{},loadSequence:0,restoreSequence:0,saving:false};
 const draftKey=a=>edition.date+':'+(a.id||a.url);
 function stashComment(date){
   if(!date)return;
@@ -303,20 +303,28 @@ async function restoreSavedRatings(){
       const id=await GitHubPaper.ratingId(item);
       if(!current())return;
       const savedRow=byId.get(id),key=draftKey(item);
-      if(!Object.hasOwn(readerState.ratingBaselines,key))readerState.ratingBaselines[key]=savedRow||null;
-      if(!savedRow)continue;
       const draft=readerState.ratingDrafts[key];
+      // A clean re-opened edition must use the newly fetched version as the
+      // conflict baseline. A pending local edit instead keeps its old baseline
+      // so genuine competing edits are NOT silently overwritten.
+      if(!draft?.dirty||!Object.hasOwn(readerState.ratingBaselines,key))
+        readerState.ratingBaselines[key]=savedRow||null;
       if(draft?.dirty){
-        // Merge only fields the user has not explicitly edited during fetch.
-        if(!draft.ratingEdited)draft.value=savedRow.value;
-        if(!draft.reasonEdited){
-          draft.reason=savedRow.reason;
-          draft.suggested_reasons=savedRow.suggested_reasons||[];
+        if(savedRow){
+          // Merge only fields the user has not explicitly edited during fetch.
+          if(!draft.ratingEdited)draft.value=savedRow.value;
+          if(!draft.reasonEdited){
+            draft.reason=savedRow.reason;
+            draft.suggested_reasons=savedRow.suggested_reasons||[];
+          }
+          if(!draft.codesEdited)draft.reason_codes=savedRow.reason_codes||[];
+          draft.section=savedRow.section;
         }
-        if(!draft.codesEdited)draft.reason_codes=savedRow.reason_codes||[];
-        draft.section=savedRow.section;
       }else{
-        readerState.ratingDrafts[key]={value:savedRow.value,reason:savedRow.reason,section:savedRow.section,reason_codes:savedRow.reason_codes||[],suggested_reasons:savedRow.suggested_reasons||[],dirty:false};
+        readerState.ratingDrafts[key]=savedRow?
+          {value:savedRow.value,reason:savedRow.reason,section:savedRow.section,
+           reason_codes:savedRow.reason_codes||[],suggested_reasons:savedRow.suggested_reasons||[],dirty:false}:
+          {value:'',reason:'',section:expected.get(id),reason_codes:[],suggested_reasons:[],dirty:false};
       }
       const active=readerState.ratingDrafts[key];
       const field=[...document.querySelectorAll('.rating-dots')].find(x=>x.dataset.ratingKey===key);
@@ -329,15 +337,18 @@ async function restoreSavedRatings(){
       const disclosure=field.querySelector('.rating-reason');if(disclosure)disclosure.open=true;
     }
     if(!current())return;
-    if(!Object.hasOwn(readerState.commentBaselines,date))
+    if(!readerState.commentDirty[date]){
+      // Refresh both the visible text and the baseline when no local change
+      // is pending; simply preserving a cached draft hides remote edits.
       readerState.commentBaselines[date]=saved.feedback||'';
-    if(!Object.hasOwn(readerState.commentSuggestionDrafts,date))
+      readerState.commentDrafts[date]=saved.feedback||'';
       readerState.commentSuggestionDrafts[date]=saved.comment_suggestions||[];
-    // Intentionally emptied local drafts survive navigation/reloads.
-    if(!Object.hasOwn(readerState.commentDrafts,date)&&!$('feedback').value&&saved.feedback){
-      $('feedback').value=saved.feedback;
-      readerState.commentDrafts[date]=saved.feedback;
+      $('feedback').value=readerState.commentDrafts[date];
       FeedbackSuggestions.setSelected($('feedback'),readerState.commentSuggestionDrafts[date]);
+    }else if(!Object.hasOwn(readerState.commentBaselines,date)){
+      // Text entered before the first GitHub response did not see any
+      // existing saved comment. Do not imply it was based on that comment.
+      readerState.commentBaselines[date]='';
     }
   }catch(err){
     if(current())feedbackStatus('Gespeicherte Bewertungen konnten nicht geladen werden: '+err.message);
@@ -455,14 +466,20 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
         current.ratingEdited=false;current.reasonEdited=false;current.codesEdited=false;
       }
     }
-    // Remember the exact confirmed canonical comment as the next baseline.
+    // The confirmed remote result becomes the new baseline. Only clear the
+    // local dirty flag if no newer edit was typed during this async save.
     if(typeof result.feedback==='string'){
       readerState.commentBaselines[submittedEdition.date]=result.feedback;
-      if(edition===submittedEdition&&$('feedback').value===submittedText){
-        $('feedback').value=result.feedback;
+      const stillVisible=edition===submittedEdition&&$('feedback').value===submittedText;
+      const sameDraft=readerState.commentDrafts[submittedEdition.date]===submittedText;
+      if(stillVisible||sameDraft){
+        readerState.commentDirty[submittedEdition.date]=false;
         readerState.commentDrafts[submittedEdition.date]=result.feedback;
         readerState.commentSuggestionDrafts[submittedEdition.date]=result.comment_suggestions||[];
-        FeedbackSuggestions.setSelected($('feedback'),readerState.commentSuggestionDrafts[submittedEdition.date]);
+        if(stillVisible){
+          $('feedback').value=result.feedback;
+          FeedbackSuggestions.setSelected($('feedback'),readerState.commentSuggestionDrafts[submittedEdition.date]);
+        }
       }
     }
     // The previous issue may finish writing after the reader changed dates.
@@ -492,7 +509,14 @@ edition=await GitHubPaper.edition(latestDate);render();void loadBlogs();await Ra
 }catch(e){status('Pressespiegel nicht erreichbar. '+e.message);}})();
 
 $('feedback').addEventListener('input',()=>{
-  if(edition)stashComment(edition.date);
+  if(edition){
+    // If the user starts typing before initial restore completes, the
+    // on-screen baseline was blank and must stay blank for conflict safety.
+    if(!Object.hasOwn(readerState.commentBaselines,edition.date))
+      readerState.commentBaselines[edition.date]='';
+    readerState.commentDirty[edition.date]=true;
+    stashComment(edition.date);
+  }
   feedbackStatus('Änderung noch nicht gesendet.');
 });
 
