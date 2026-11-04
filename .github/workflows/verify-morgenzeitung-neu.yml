@@ -1,10 +1,10 @@
 name: Verify Pressespiegel (aktuell)
 on:
   pull_request:
-    paths: ['Privat/Pressespiegel/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
+    paths: ['Privat/Pressespiegel/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'scripts/check_pressespiegel_live.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
   push:
     branches: [main]
-    paths: ['Privat/Pressespiegel/**', 'Privat/Morgenzeitung-Neu/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
+    paths: ['Privat/Pressespiegel/**', 'Privat/Morgenzeitung-Neu/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'scripts/check_pressespiegel_live.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
 permissions: {contents: read}
 jobs:
   verify:
@@ -32,3 +32,18 @@ jobs:
             sleep 1
           done
           node tests/morgenzeitung-neu-browser.cjs
+
+  live-readback:
+    name: Verify deployed public reader and edition
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Test public-readback logic without network
+        run: python3 -m unittest discover -s tests -p test_pressespiegel_readback.py -v
+      - name: Verify live GitHub Pages output
+        run: python3 scripts/check_pressespiegel_live.py --attempts 16 --delay 20
