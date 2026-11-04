@@ -144,6 +144,23 @@ const fs=require('node:fs');
    assert.deepEqual(revised.comment_suggestions,[suggestion]);
    assert.equal(prefSuggestion,suggestion);
    assert.ok(revised.comment.includes('Eigenständiger Hinweis von der Präferenzseite.'));
+   // An empty unsent local draft survives changing to a different edition and back.
+   await page.goto(root);
+   await page.waitForSelector('#feedback-section:not([hidden])');
+   await page.waitForFunction(()=>document.querySelector('#feedback').value.includes('Eigenständiger Hinweis von der Präferenzseite.'));
+   const datePicker=page.locator('#date'),originalDate=await datePicker.inputValue();
+   const secondDate=await datePicker.locator('option').nth(1).getAttribute('value');
+   await page.locator('#feedback').fill('');
+   await datePicker.selectOption(secondDate);
+   await page.waitForFunction(day=>document.querySelector('#edition-meta').textContent.includes(
+     new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'})
+       .format(new Date(day+'T12:00:00Z'))),secondDate);
+   await datePicker.selectOption(originalDate);
+   await page.waitForFunction(day=>document.querySelector('#edition-meta').textContent.includes(
+     new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'})
+       .format(new Date(day+'T12:00:00Z'))),originalDate);
+   assert.equal(await page.locator('#feedback').inputValue(),'',
+     'Unsent intentional clearing survives an edition round trip');
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'No horizontal overflow');
    assert.deepEqual(errors,[],'No JS page errors');
    await context.close();
