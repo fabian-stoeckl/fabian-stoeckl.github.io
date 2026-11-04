@@ -26,10 +26,18 @@ class ReadbackTests(unittest.TestCase):
         self.assets.mkdir()
         (self.assets / "app.js").write_text("console.log('new')")
         (self.assets / "style.css").write_text("body{}")
+        (self.assets / "direct-feedback.js").write_text("const Feedback='new';")
+        (self.assets / "preferences.js").write_text("const Preferences='new';")
         self.reader_html = ('<html><title>Pressespiegel</title>'
             '<link rel="stylesheet" href="./style.css?v=test1">'
-            '<script src="./app.js?v=test1"></script></html>')
+            '<script src="./app.js?v=test1"></script>'
+            '<script src="./direct-feedback.js?v=test1"></script></html>')
+        self.preferences_html = ('<html><title>Meine Präferenzen · Pressespiegel</title>'
+            '<link rel="stylesheet" href="./style.css?v=test1">'
+            '<script src="./preferences.js?v=test1"></script>'
+            '<script src="./direct-feedback.js?v=test1"></script></html>')
         (self.assets / "index.html").write_text(self.reader_html)
+        (self.assets / "praeferenzen.html").write_text(self.preferences_html)
     def tearDown(self):
         self.tmp.cleanup()
     def opener(self, payloads):
@@ -44,8 +52,11 @@ class ReadbackTests(unittest.TestCase):
             base + "/data/index.json": self.index,
             base + "/data/2026-11-04.json": self.issue,
             base + "/": self.reader_html.encode(),
+            base + "/praeferenzen.html": self.preferences_html.encode(),
             base + "/app.js?v=test1": b"console.log('new')",
             base + "/style.css?v=test1": b"body{}",
+            base + "/direct-feedback.js?v=test1": b"const Feedback='new';",
+            base + "/preferences.js?v=test1": b"const Preferences='new';",
         }
     def check_reader(self, base, pages, **kwargs):
         return check(base, self.root, self.opener(pages), assets_root=self.assets, **kwargs)
@@ -88,6 +99,23 @@ class ReadbackTests(unittest.TestCase):
         base, pages = self.payloads()
         pages[base + "/"] = self.reader_html.replace("app.js?v=test1", "app.js?v=older").encode()
         with self.assertRaisesRegex(RuntimeError, "asset version is stale"):
+            self.check_reader(base, pages)
+
+    def test_private_feedback_backend_cannot_be_stale(self):
+        base, pages = self.payloads()
+        pages[base + "/direct-feedback.js?v=test1"] = b"const Feedback='old';"
+        with self.assertRaisesRegex(RuntimeError, "asset differs"):
+            self.check_reader(base, pages)
+
+    def test_preferences_html_or_script_cannot_be_stale(self):
+        base, pages = self.payloads()
+        pages[base + "/praeferenzen.html"] = self.preferences_html.replace(
+            "direct-feedback.js?v=test1", "direct-feedback.js?v=older").encode()
+        with self.assertRaisesRegex(RuntimeError, "asset version is stale"):
+            self.check_reader(base, pages)
+        base, pages = self.payloads()
+        pages[base + "/preferences.js?v=test1"] = b"const Preferences='old';"
+        with self.assertRaisesRegex(RuntimeError, "asset differs"):
             self.check_reader(base, pages)
 
     def test_stale_stylesheet_is_failure(self):
