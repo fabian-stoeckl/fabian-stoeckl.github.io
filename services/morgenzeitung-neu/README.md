@@ -1,6 +1,6 @@
 # Pressespiegel – Architektur und Betrieb
 
-Der einzige aktive Pressespiegel unter `Privat/Pressespiegel/` übernimmt bewusst das **klassische** Design mit „Heute wichtig“, „Vertiefungen“, „Blogs“ und „Neues“ (neue Themen, geprüfte Quellen, gelegentliche fundierte Gegenpositionen), drei Relevanzstufen für die beiden Artikelrubriken, optionalen Begründungen, freiem Feedback und separater Präferenzseite. Unbenutzte historische Einzelausgaben sind aus dem aktuellen Website-Baum entfernt; die Git-Historie bewahrt frühere Entwicklungsstände. Andere Website-Bereiche, besonders ETFs, bleiben unberührt.
+Der einzige aktive Pressespiegel unter `Privat/Pressespiegel/` übernimmt bewusst das **klassische** Design mit „Heute wichtig“, „Vertiefungen“, „Blogs“ und „Neues“ (nur neue Themen und geprüfte Quellen), drei Relevanzstufen für die beiden Artikelrubriken, optionalen Begründungen, freiem Feedback und separater Präferenzseite. Unbenutzte historische Einzelausgaben sind aus dem aktuellen Website-Baum entfernt; die Git-Historie bewahrt frühere Entwicklungsstände. Andere Website-Bereiche, besonders ETFs, bleiben unberührt.
 
 ## Eine Quelle pro Verantwortung
 
@@ -15,7 +15,7 @@ Der einzige aktive Pressespiegel unter `Privat/Pressespiegel/` übernimmt bewuss
 
 ## Freiwillige Entdeckungen und Perspektivenvielfalt
 
-Die vierte Leserrubrik **„Neues“** zeigt wenige redaktionell geprüfte `new_topics`, `new_sources` und gegebenenfalls `counterpositions` (mit Bezug auf eine vorhandene Artikel-ID). Original-Links, Perspektiven und Ungewissheiten müssen im privaten Tagesdossier belegt sein. Bei fehlender Qualität bleibt die Rubrik ohne Einträge; sie soll keine künstliche Kontroverse oder Score-Engine erzeugen. Der Rechercheauftrag prüft jeden Morgen auch außerhalb des bisherigen Interessenkorridors. Auf der Leseroberfläche können diese Einträge nicht als zusätzliche Relevanzstimmen gewertet werden; dafür gilt weiterhin das bestehende freie Feedback. Ab 05.11.2026 müssen neue Artikel-IDs reproduzierbar aus der kanonischen Original-URL erzeugt werden; bestehende IDs und bereits zugeordnetes Feedback bleiben unverändert.
+Die vierte Leserrubrik **„Neues“** zeigt wenige redaktionell geprüfte `new_topics` und `new_sources`. Eine gegebenenfalls sinnvolle `alternative_view` wird nur direkt bei einer **Vertiefung**, nicht in „Neues“ oder bei Nachrichten, angezeigt. Original-Links, Perspektiven und Ungewissheiten müssen im privaten Tagesdossier belegt sein. Bei fehlender Qualität bleibt die Rubrik ohne Einträge; sie soll keine künstliche Kontroverse oder Score-Engine erzeugen. Der Rechercheauftrag prüft jeden Morgen auch außerhalb des bisherigen Interessenkorridors. Auf der Leseroberfläche können diese Einträge nicht als zusätzliche Relevanzstimmen gewertet werden; dafür gilt weiterhin das bestehende freie Feedback. Ab 05.11.2026 müssen neue Artikel-IDs reproduzierbar aus der kanonischen Original-URL erzeugt werden; bestehende IDs und bereits zugeordnetes Feedback bleiben unverändert.
 
 ## Integrität und nachträgliche Berichtigungen
 
