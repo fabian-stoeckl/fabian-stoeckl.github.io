@@ -43,30 +43,36 @@ def check(base=BASE, root=INDEX.parent, opener=urlopen, require_today=False, loc
         raise RuntimeError("Public edition differs from the merged main branch")
     if public_issue.get("preview") is not False or public_issue.get("date") != day:
         raise RuntimeError("Published edition date/preview invalid")
-    with opener(Request(base + "/", headers=HEADERS), timeout=12) as response:
-        if response.status != 200:
-            raise RuntimeError("Reader HTML is not publicly accessible")
-        html = response.read(1_000_000).decode("utf-8", errors="replace")
-        if "Pressespiegel" not in html:
-            raise RuntimeError("Reader HTML lacks Pressespiegel marker")
-
-    # A green JSON readback must not conceal stale cached JavaScript or CSS:
-    # those files drive the tabs, optional views, and feedback controls.
+    # Both the newspaper and its separate private-preferences page are active UI.
+    # Previously the post-merge check omitted direct-feedback.js entirely.
     asset_root = Path(assets_root) if assets_root is not None else root.parent
-    local_html = (asset_root / "index.html").read_text(encoding="utf-8")
-    for filename in ("app.js", "style.css"):
-        pattern = r"(?:\./)?" + re.escape(filename) + r"\?v=([a-zA-Z0-9_-]+)"
-        local = re.search(pattern, local_html)
-        remote = re.search(pattern, html)
-        if not local or not remote or local.group(1) != remote.group(1):
-            raise RuntimeError("Public reader asset version is stale: " + filename)
-        url = base + "/" + filename + "?v=" + local.group(1)
-        with opener(Request(url, headers=HEADERS), timeout=12) as response:
+    for page_name, url_path, assets in (
+        ("index.html", "/", ("app.js", "style.css", "direct-feedback.js")),
+        ("praeferenzen.html", "/praeferenzen.html",
+         ("preferences.js", "style.css", "direct-feedback.js")),
+    ):
+        with opener(Request(base + url_path, headers=HEADERS), timeout=12) as response:
             if response.status != 200:
-                raise RuntimeError("Reader asset not accessible: " + filename)
-            live_content = response.read(1_000_000)
-        if live_content != (asset_root / filename).read_bytes():
-            raise RuntimeError("Public reader asset differs from merged main: " + filename)
+                raise RuntimeError("Pressespiegel page is not publicly accessible: " + page_name)
+            live_html = response.read(1_000_000).decode("utf-8", errors="replace")
+            if "Pressespiegel" not in live_html:
+                raise RuntimeError("Reader HTML lacks Pressespiegel marker: " + page_name)
+        local_html = (asset_root / page_name).read_text(encoding="utf-8")
+        for filename in assets:
+            pattern = r"(?:\\./)?" + re.escape(filename) + r"\\?v=([a-zA-Z0-9_-]+)"
+            local = re.search(pattern, local_html)
+            remote = re.search(pattern, live_html)
+            if not local or not remote or local.group(1) != remote.group(1):
+                raise RuntimeError("Public reader asset version is stale: " +
+                                   page_name + " / " + filename)
+            url = base + "/" + filename + "?v=" + local.group(1)
+            with opener(Request(url, headers=HEADERS), timeout=12) as response:
+                if response.status != 200:
+                    raise RuntimeError("Reader asset not accessible: " + filename)
+                live_content = response.read(1_000_000)
+            if live_content != (asset_root / filename).read_bytes():
+                raise RuntimeError("Public reader asset differs from merged main: " +
+                                   page_name + " / " + filename)
     return day
 
 
@@ -82,7 +88,7 @@ def main():
     for attempt in range(1, a.attempts + 1):
         try:
             day = check(require_today=a.require_today)
-            print(f"LIVE VERIFIED: reader, JS/CSS assets, index and full {day} edition match merged main.")
+            print(f"LIVE VERIFIED: reader, preferences, feedback scripts, CSS, index and full {day} edition match merged main.")
             return 0
         except (OSError, ValueError, TypeError, KeyError, RuntimeError, HTTPError, URLError) as e:
             last = str(e)
