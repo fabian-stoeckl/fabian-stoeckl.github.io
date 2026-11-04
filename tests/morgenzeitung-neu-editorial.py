@@ -117,17 +117,25 @@ class EditorialEventTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"HTTPS"):
             mod.validate(ed)
 
-    def test_counterposition_must_reference_real_article(self):
+    def test_alternative_view_only_for_deep_dive_and_independent_url(self):
         ed=self.edition()
-        ed["counterpositions"]=[{"article_id":"f"*16,"counter_title":"A strong counterargument",
-            "counter_source":"Original publisher","counter_url":"https://example.org/different",
-            "why":"Distinct, verified argument"}]
-        with self.assertRaisesRegex(ValueError,"unique published article"):
+        alt={"title":"A strong alternative case","source":"Independent original",
+             "url":"https://example.org/other","why":"Different evidence for disputed mechanism"}
+        ed["headlines"][0]["alternative_view"]=alt
+        with self.assertRaisesRegex(ValueError,"only allowed for deep dives"):
             mod.validate(ed)
-        ed["counterpositions"][0]["article_id"]="a"*16
+        del ed["headlines"][0]["alternative_view"]
+        feature=story("c"*16,"https://c.example/report")
+        feature.pop("region")
+        feature["topic"]="Economics"
+        feature["alternative_view"]=alt
+        ed["articles"]=[feature]
         mod.validate(ed)
-        ed["counterpositions"][0]["counter_url"]="https://a.example/a"
+        feature["alternative_view"]["url"]=feature["url"]
         with self.assertRaisesRegex(ValueError,"different original"):
+            mod.validate(ed)
+        feature["alternative_view"]["url"]="http://bad.example/other"
+        with self.assertRaisesRegex(ValueError,"HTTPS"):
             mod.validate(ed)
 
     def test_future_ids_match_url_hash_without_changing_historic_ratings(self):
