@@ -39,6 +39,7 @@ jobs:
           done
           node tests/morgenzeitung-neu-browser.cjs
           node tests/morgenzeitung-neu-resilience.cjs
+          node tests/morgenzeitung-neu-audit.cjs
 
   live-readback:
     name: Verify deployed public reader and edition

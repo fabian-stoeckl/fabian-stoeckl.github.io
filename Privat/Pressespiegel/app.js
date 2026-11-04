@@ -69,7 +69,7 @@ async function loadBlogs(){
     renderBlogPosts(await response.json());
   }catch(_){
     try{
-      const fallback=await fetch('./data/blogs.json',{cache:'no-store'});
+      const fallback=await fetch('./data/blogs.json',{cache:'no-store',signal:AbortSignal.timeout(7000)});
       if(!fallback.ok)throw Error('Keine gespeicherten Beiträge');
       renderBlogPosts(await fallback.json(),true);
     }catch(_){$('blogs').replaceChildren(el('p','Noahpinion kann gerade nicht geladen werden.','small'));}
@@ -415,7 +415,10 @@ async function collectDraftRatings(date,groups){
   for(const [items,section] of groups){
     for(const item of items){
       const draft=readerState.ratingDrafts[date+':'+(item.id||item.url)];
-      if(draft?.dirty&&(draft.value||draft.reason.trim()||draft.reason_codes?.length))
+      // An explicitly emptied reason-only row must replace its stored version.
+      // Otherwise removing the last reason silently keeps the old learning signal.
+      if(draft?.dirty&&(draft.value||draft.reason.trim()||draft.reason_codes?.length||
+         readerState.ratingBaselines[date+':'+(item.id||item.url)]))
         selected.push({id:await GitHubPaper.ratingId(item),value:draft.value||'',reason:draft.reason||'',reason_codes:draft.reason_codes||[],suggested_reasons:draft.suggested_reasons||[],section});
     }
   }
@@ -500,7 +503,7 @@ $('feedback-form').onsubmit=async e=>{e.preventDefault();
     }
   }finally{b.disabled=false;readerState.saving=false;}
 };
-(async()=>{try{config=await(await fetch('./config.json',{cache:'no-store'})).json();if(config.mode!=='github')throw Error('Ungültiger Pressespiegel-Modus');
+(async()=>{try{config=await(await fetch('./config.json',{cache:'no-store',signal:AbortSignal.timeout(15000)})).json();if(config.mode!=='github')throw Error('Ungültiger Pressespiegel-Modus');
 $('feedback').maxLength=4000;
 // The existing submit button already has the correct label in HTML.
 refreshGitHubConnection();$('feedback').required=false;
@@ -508,7 +511,7 @@ const index=await GitHubPaper.json('./data/index.json');latestDate=index.dates[0
 for(const d of index.dates){const o=el('option',d);o.value=d;$('date').append(o);}
 $('operating-state').textContent='Ausgaben aus GitHub · Feedback wird nach einmaliger Verbindung direkt auf GitHub gespeichert.';
 if(!latestDate){status('Noch keine veröffentlichte Ausgabe verfügbar.');return;}
-edition=await GitHubPaper.edition(latestDate);render();void loadBlogs();await RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken());await restoreSavedRatings();return;
+edition=await GitHubPaper.edition(latestDate);render();void loadBlogs();await Promise.all([RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken()),restoreSavedRatings()]);return;
 }catch(e){status('Pressespiegel nicht erreichbar. '+e.message);}})();
 
 $('feedback').addEventListener('input',()=>{

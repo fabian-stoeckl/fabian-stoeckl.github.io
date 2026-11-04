@@ -80,6 +80,8 @@ def check(base=BASE, root=INDEX.parent, opener=urlopen, require_today=False, loc
         remote_assets = local_resources(live_html)
         if remote_assets != local_assets:
             raise RuntimeError("Public reader asset version is stale: " + page_name)
+        if live_html != local_html:
+            raise RuntimeError("Public reader HTML differs from merged main: " + page_name)
         for filename, suffix in local_assets.items():
             url = base + "/" + filename + suffix
             with opener(Request(url, headers=HEADERS), timeout=12) as response:

@@ -36,7 +36,7 @@ const RatingReasons=(()=>{
     if(!token)return;
     try{
       const url='https://api.github.com/repos/fabian-stoeckl/morgenzeitung-feedback/contents/morgenzeitung-neu/begruendungsvorschlaege.json';
-      const response=await fetch(url,{cache:'no-store',credentials:'omit',
+      const response=await fetch(url,{signal:AbortSignal.timeout(15000),cache:'no-store',credentials:'omit',
         headers:{Accept:'application/vnd.github+json',Authorization:'Bearer '+token}});
       if(!response.ok)return;
       const file=await response.json();

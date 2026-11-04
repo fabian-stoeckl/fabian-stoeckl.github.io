@@ -4,7 +4,7 @@ const root='https://api.github.com/repos/fabian-stoeckl/morgenzeitung-feedback';
 async function privateFile(path){
  const token=DirectFeedback.readToken();
  if(!token)throw Error('Bitte zuerst deinen GitHub-Zugang auf der Zeitungsseite verbinden.');
- const r=await fetch(root+'/contents/'+path,{cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer',headers:{Accept:'application/vnd.github+json',Authorization:'Bearer '+token}});
+ const r=await fetch(root+'/contents/'+path,{signal:AbortSignal.timeout(15000),cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer',headers:{Accept:'application/vnd.github+json',Authorization:'Bearer '+token}});
  if(!r.ok){
   const err=Error('Privater Zugriff fehlgeschlagen (HTTP '+r.status+'). Bitte die Berechtigung Contents: Read prüfen.');
   err.status=r.status;
@@ -61,11 +61,15 @@ async function refresh(){
 // The index is intentionally fetched only at submission. Page-load dates become
 // stale for readers who leave the preferences page open across publication.
 void refresh();
+let preferenceSaving=false;
 byId('preference-comment-form').onsubmit=async e=>{
- e.preventDefault();const field=byId('preference-comment'),comment=field.value.trim(),status=byId('preference-comment-status'),button=e.submitter||byId('preference-comment-form').querySelector('button[type=submit]');
+ e.preventDefault();
+ if(preferenceSaving)return;
+ const field=byId('preference-comment'),submittedText=field.value,comment=submittedText.trim(),status=byId('preference-comment-status'),button=e.submitter||byId('preference-comment-form').querySelector('button[type=submit]');
+ const suggestions=FeedbackSuggestions.getSelected(field);
  if(!comment){status.textContent='Bitte zuerst eine konkrete Rückmeldung eingeben.';return;}
  const token=DirectFeedback.readToken();if(!token){status.textContent='Bitte auf der Zeitungsseite deinen GitHub-Zugang verbinden.';return;}
- button.disabled=true;status.textContent='Prüfe die neueste Ausgabe und speichere deine Rückmeldung privat …';
+ preferenceSaving=true;button.disabled=true;status.textContent='Prüfe die neueste Ausgabe und speichere deine Rückmeldung privat …';
  try{
   // This page may remain open overnight. A date captured at page-load would
   // silently attach today's feedback to yesterday's publication.
@@ -74,11 +78,11 @@ byId('preference-comment-form').onsubmit=async e=>{
   if(typeof currentDate!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(currentDate))
     throw Error('Die aktuelle Ausgabe konnte nicht sicher bestimmt werden.');
   await DirectFeedback.appendComment(currentDate,comment,token,localStorage,fetch,
-    {commentSuggestions:FeedbackSuggestions.getSelected(field)});
-  field.value='';FeedbackSuggestions.setSelected(field,[]);
+    {commentSuggestions:suggestions});
+  if(field.value===submittedText){field.value='';FeedbackSuggestions.setSelected(field,[]);}
   status.textContent='Gespeichert zur Ausgabe '+currentDate+'. Der nächste Lauf prüft deine Rückmeldung.';
   await refresh();
  }
  catch(e){status.textContent=e.message+' Deine Eingabe bleibt erhalten.';}
- finally{button.disabled=false;}
+ finally{button.disabled=false;preferenceSaving=false;}
 };
