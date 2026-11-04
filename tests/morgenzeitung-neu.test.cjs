@@ -84,6 +84,9 @@ assert.match(research,/abschließenden? Aktualitätsdurchgang|Aktualitätsdurchg
 assert.match(research,/Nachrichtenanlass/);
 assert.match(research,/Redaktionsrunde vor der Veröffentlichung/);
 assert.match(research,/preview:false/);
+const deliveryWorkflow=fs.readFileSync('.github/workflows/check-pressespiegel-daily-live.yml','utf8');
+assert.match(deliveryWorkflow,/workflow_dispatch/,'Optional manual readback remains available');
+assert.doesNotMatch(deliveryWorkflow,/^\s+schedule\s*:/m,'No redundant scheduled daily delivery watcher');
 assert.ok(!research.includes(String.raw`\n\n`),'No literal escaped paragraph delimiters');
 for(const required of [/related_article/,/event_key/,/distinct_contribution/,
   /letzten nachweislich erfolgreichen Veröffentlichung/,/Zuckerl/,
