@@ -27,6 +27,7 @@ class ReadbackTests(unittest.TestCase):
         (self.assets / "app.js").write_text("console.log('new')")
         (self.assets / "style.css").write_text("body{}")
         (self.assets / "direct-feedback.js").write_text("const Feedback='new';")
+        (self.assets / "config.json").write_text(json.dumps({"mode": "github"}))
         (self.assets / "preferences.js").write_text("const Preferences='new';")
         (self.assets / "github.js").write_text("const Github='new';")
         (self.assets / "rating-reasons.js").write_text("const Reasons='new';")
@@ -56,6 +57,7 @@ class ReadbackTests(unittest.TestCase):
         return base, {
             base + "/data/index.json": self.index,
             base + "/data/2026-11-04.json": self.issue,
+            base + "/config.json": {"mode": "github"},
             base + "/": self.reader_html.encode(),
             base + "/praeferenzen.html": self.preferences_html.encode(),
             base + "/app.js?v=test1": b"console.log('new')",
@@ -79,6 +81,12 @@ class ReadbackTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "No edition for local Vienna date"):
             self.check_reader(base, pages,
                   require_today=True, local_today=date(2026, 11, 5))
+
+    def test_stale_feedback_mode_is_failure(self):
+        base, pages = self.payloads()
+        pages[base + "/config.json"] = {"mode": "old"}
+        with self.assertRaisesRegex(RuntimeError, "feedback configuration differs"):
+            self.check_reader(base, pages)
 
     def test_stale_index_is_failure(self):
         base, pages = self.payloads()
