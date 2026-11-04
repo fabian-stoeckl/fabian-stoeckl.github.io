@@ -315,7 +315,7 @@ const fs=require('node:fs');
    await refreshedGroup.locator('input[type=radio][value="Sehr relevant"]').check();
    await page.locator('#feedback').fill(storedBody.comment+'\nNeue eigene Ergänzung nach erneutem Laden.');
    await page.locator('#feedback-form button[type=submit]').click();
-   await page.waitForFunction(()=>/gespeichert|aktualisiert|bleiben im Tab/.test(document.querySelector('#feedback-status').textContent));
+   await page.waitForFunction(()=>/gespeichert\.|aktualisiert\.|bleiben im Tab erhalten\./.test(document.querySelector('#feedback-status').textContent));
    const crossDeviceStatus=await page.locator('#feedback-status').innerText();
    assert.match(crossDeviceStatus,/gespeichert\.|aktualisiert\./);
    const refreshedPayload=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
