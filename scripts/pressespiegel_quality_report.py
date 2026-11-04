@@ -16,6 +16,16 @@ def review(root=ROOT):
     notes=editorial_warnings(ed)
     if len(sources)==1 and len(entries)>1:
         notes.append("All articles draw from one publication; check whether diversity is adequate.")
+    # Overall source balance can conceal concentration in personally selected
+    # deep dives, or conversely in the objective news section.
+    for rubric, group in (("Vertiefungen", ed["articles"]),
+                          ("Heute wichtig", ed["headlines"])):
+        if len(group) >= 5:
+            counts = Counter(a.get("source", "") for a in group)
+            source, amount = counts.most_common(1)[0]
+            if amount / len(group) > 0.6:
+                notes.append(f"{rubric}: {amount}/{len(group)} pieces from {source}; "
+                             "review editorial variety, no automatic outlet quota.")
     if len(entries)>=8 and sources.most_common(1)[0][1] > len(entries)*0.6:
         notes.append("More than 60% of articles use a single source; review balance, not an automatic veto.")
     if sum(levels[k] for k in ("teaser","headline","unknown")) > len(entries)*0.75:
