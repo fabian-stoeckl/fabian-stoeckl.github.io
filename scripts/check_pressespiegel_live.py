@@ -1,6 +1,7 @@
 """Post-merge public HTTPS readback: never equate a Git commit with live publication."""
 import argparse
 import json
+import re
 from pathlib import Path
 from datetime import datetime, date
 from zoneinfo import ZoneInfo
@@ -21,7 +22,8 @@ def read_json(url, opener=urlopen):
         return json.load(response)
 
 
-def check(base=BASE, root=INDEX.parent, opener=urlopen, require_today=False, local_today=None):
+def check(base=BASE, root=INDEX.parent, opener=urlopen, require_today=False, local_today=None,
+          assets_root=None):
     """Verify that the newest committed edition is actually publicly readable."""
     expected = json.loads((root / "index.json").read_text(encoding="utf-8"))
     days = expected["dates"]
@@ -47,6 +49,24 @@ def check(base=BASE, root=INDEX.parent, opener=urlopen, require_today=False, loc
         html = response.read(1_000_000).decode("utf-8", errors="replace")
         if "Pressespiegel" not in html:
             raise RuntimeError("Reader HTML lacks Pressespiegel marker")
+
+    # A green JSON readback must not conceal stale cached JavaScript or CSS:
+    # those files drive the tabs, optional views, and feedback controls.
+    asset_root = Path(assets_root) if assets_root is not None else root.parent
+    local_html = (asset_root / "index.html").read_text(encoding="utf-8")
+    for filename in ("app.js", "style.css"):
+        pattern = r"(?:\\./)?" + re.escape(filename) + r"\\?v=([a-zA-Z0-9_-]+)"
+        local = re.search(pattern, local_html)
+        remote = re.search(pattern, html)
+        if not local or not remote or local.group(1) != remote.group(1):
+            raise RuntimeError("Public reader asset version is stale: " + filename)
+        url = base + "/" + filename + "?v=" + local.group(1)
+        with opener(Request(url, headers=HEADERS), timeout=12) as response:
+            if response.status != 200:
+                raise RuntimeError("Reader asset not accessible: " + filename)
+            live_content = response.read(1_000_000)
+        if live_content != (asset_root / filename).read_bytes():
+            raise RuntimeError("Public reader asset differs from merged main: " + filename)
     return day
 
 
@@ -62,7 +82,7 @@ def main():
     for attempt in range(1, a.attempts + 1):
         try:
             day = check(require_today=a.require_today)
-            print(f"LIVE VERIFIED: reader, index and full {day} edition match merged main.")
+            print(f"LIVE VERIFIED: reader, JS/CSS assets, index and full {day} edition match merged main.")
             return 0
         except (OSError, ValueError, TypeError, KeyError, RuntimeError, HTTPError, URLError) as e:
             last = str(e)
