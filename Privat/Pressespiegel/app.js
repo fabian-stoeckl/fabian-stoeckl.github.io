@@ -286,8 +286,11 @@ async function restoreSavedRatings(){
   const current=()=>readerState.restoreSequence===sequence&&
     edition===requestedEdition&&DirectFeedback.readToken()===token;
   try{
-    const saved=await DirectFeedback.savedFeedback(date,token);
-    if(!saved||!current())return;
+    const original=await DirectFeedback.savedFeedback(date,token);
+    if(!current())return;
+    // A deliberately deleted feedback issue is a confirmed empty canonical
+    // state, not a reason to keep showing an obsolete locally cached rating.
+    const saved=original||{ratings:[],feedback:'',comment_suggestions:[]};
     const expected=new Map([
       ...readerState.visibleHeadlines.map(a=>[a.id,'Heute wichtig']),
       ...readerState.visibleArticles.map(a=>[a.id,'Vertiefungen'])
