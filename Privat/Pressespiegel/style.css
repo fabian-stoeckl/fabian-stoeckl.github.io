@@ -234,10 +234,16 @@ body.preferences-view .topline #profile-toggle{display:none!important}
 .article-correction .correction-history summary{cursor:pointer}
 
 /* Read-only blog archive, separate from article ratings. */
-.blogs-view #feedback-section,.blogs-view #feedback-settings,.blogs-view #new-sources{display:none!important}
+.blogs-view #feedback-section,.blogs-view #feedback-settings,.discoveries-view #feedback-section,.discoveries-view #feedback-settings{display:none!important}
 .blog-heading{padding:25px 0 15px;border-bottom:2px solid var(--ink)}.blog-heading h2{font:clamp(25px,5vw,33px)/1.25 Georgia,serif;margin:0 0 8px}.blog-heading h2 a{text-decoration:none}.blog-heading p{margin:4px 0}.blog-entry{padding:22px 0;border-bottom:1px solid var(--line)}.blog-entry h3{font:24px/1.3 Georgia,serif;margin:0 0 8px}.blog-entry h3 a{text-decoration:none}.blog-entry .meta{margin:2px 0 7px}.blog-description{font-size:14px;line-height:1.65;margin:0;max-width:65ch}.tabs{gap:clamp(12px,3vw,30px)}@media(max-width:480px){.tabs button{font-size:13px;padding:13px 0}.tabs{justify-content:space-between}}
 
 /* Show five blog posts first; reveal ten more per click. */
 #blogs .blog-more{display:block;margin:24px auto 12px;padding:10px 20px;border:1px solid var(--accent);font-weight:650;color:var(--accent);background:transparent;border-radius:5px}
 #blogs .blog-more:hover,#blogs .blog-more:focus-visible{background:var(--ink);color:var(--paper)}
 #blogs .blog-end{text-align:center;margin:24px 0}
+
+/* Curated discoveries are deliberately read-only: no synthetic relevance votes. */
+#discoveries{padding:20px 0 5px}#discoveries>h2{font-size:clamp(26px,5vw,34px);margin-bottom:6px}.discovery-section{border-top:1px solid var(--line);margin-top:24px;padding-top:16px}.discovery-section h3{font:26px/1.3 Georgia,serif;margin:5px 0 12px}.source-trials{margin:0;padding-left:22px}.source-trials li{padding:10px 0 12px}.source-trials li+li{border-top:1px solid var(--line)}.source-trials li>a{font-weight:650}.source-trials p{margin:6px 0 0;max-width:74ch;font-size:14px}.tabs button{min-width:0}@media(max-width:480px){.tabs{gap:10px}.tabs button{font-size:12px;white-space:nowrap}}
+
+/* Optional evidence-based alternative perspectives sit beneath individual deep dives. */
+.alternative-view{margin:18px 0 5px;padding:12px 16px;border-left:3px solid var(--blue);background:rgba(35,79,99,.055);border-radius:0 5px 5px 0}.alternative-view h3{font:19px/1.3 Georgia,serif;margin:0 0 8px}.alternative-view-source{font-size:14px;margin:4px 0}.alternative-view .small{font-size:13px;line-height:1.6;margin:5px 0}

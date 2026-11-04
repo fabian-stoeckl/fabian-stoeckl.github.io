@@ -51,6 +51,10 @@ const fs=require('node:fs');
      const sample=await response.json();
      sample.articles[0].related_article={title:'Independent follow-up',source:'Another publisher',url:'https://example.org/follow-up'};
      sample.preview=false; // Synthetic real-edition correction fixture.
+     sample.new_topics=[{name:'New research area',why:'Previously overlooked question and original evidence',example_url:'https://example.org/topic'}];
+     sample.new_sources=[{name:'Independent specialist source',why:'Different original dataset',example_url:'https://example.org/source'}];
+     sample.articles[0].alternative_view={title:'A substantial alternative argument',
+       source:'Independent analysis',url:'https://example.org/counter',why:'Tests a disputed causal mechanism'};
      sample.articles[0].correction={
        corrected_at:'2026-10-29T12:00:00+01:00',
        previous_summary:'Falsche ursprüngliche Zusammenfassung',
@@ -78,6 +82,14 @@ const fs=require('node:fs');
    assert.equal(await page.locator('.value-proposition').count(),0,'Classic reader has no promotional introduction');
    assert.doesNotMatch(await page.locator('#publication-status').innerText(),/Archivierte Beispielausgabe|keine neue Recherche|kein Nachweis für das neue Lernkonzept/);
    assert.equal(await page.locator('#feedback').isVisible(),true,'Open feedback is always visible');
+   await page.locator('#tab-discoveries').click();
+   assert.equal(await page.locator('#discoveries').isVisible(),true);
+   assert.equal(await page.locator('#discovery-count').innerText(),'2');
+   assert.equal(await page.locator('#discoveries .source-trials li').count(),2);
+   assert.doesNotMatch(await page.locator('#discoveries').innerText(),/A substantial alternative argument/);
+   assert.equal(await page.locator('#feedback-section').isVisible(),false,'Read-only discovery tab does not post synthetic ratings');
+   await page.locator('#tab-headlines').click();
+   assert.equal(await page.locator('#feedback-section').isVisible(),true,'Returning to articles restores normal feedback');
    await page.locator('#tab-blogs').click();
    await page.waitForSelector('#blogs .blog-entry');
    assert.equal(await page.locator('#blogs .blog-entry').count(),5);
@@ -106,6 +118,9 @@ const fs=require('node:fs');
    await page.locator('#tab-articles').click();
    assert.equal(await page.locator('#articles').isVisible(),true);
    assert.equal(await page.locator('#articles .article-correction').count(),1);
+   assert.equal(await page.locator('#articles .alternative-view').count(),1);
+   assert.match(await page.locator('#articles .alternative-view').innerText(),/A substantial alternative argument/);
+   assert.equal(await page.locator('#headlines .alternative-view').count(),0,'Counterarguments are only attached to deep dives');
    assert.match(await page.locator('#articles .article-correction').innerText(),/unzutreffende Behauptung wurde berichtigt/);
    assert.equal(await page.getByRole('link',{name:'Beleg zur Berichtigung'}).getAttribute('href'),'https://example.org/evidence');
    await page.locator('#articles .correction-history summary').first().click();
