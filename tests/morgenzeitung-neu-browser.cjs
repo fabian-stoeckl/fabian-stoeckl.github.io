@@ -51,6 +51,10 @@ const fs=require('node:fs');
      const sample=await response.json();
      sample.articles[0].related_article={title:'Independent follow-up',source:'Another publisher',url:'https://example.org/follow-up'};
      sample.preview=false; // Synthetic real-edition correction fixture.
+     sample.new_topics=[{name:'New research area',why:'Previously overlooked question and original evidence',example_url:'https://example.org/topic'}];
+     sample.new_sources=[{name:'Independent specialist source',why:'Different original dataset',example_url:'https://example.org/source'}];
+     sample.counterpositions=[{article_id:sample.articles[0].id,counter_title:'A substantial alternative argument',
+       counter_source:'Independent analysis',counter_url:'https://example.org/counter',why:'Tests a disputed causal mechanism'}];
      sample.articles[0].correction={
        corrected_at:'2026-10-29T12:00:00+01:00',
        previous_summary:'Falsche ursprüngliche Zusammenfassung',
@@ -78,6 +82,14 @@ const fs=require('node:fs');
    assert.equal(await page.locator('.value-proposition').count(),0,'Classic reader has no promotional introduction');
    assert.doesNotMatch(await page.locator('#publication-status').innerText(),/Archivierte Beispielausgabe|keine neue Recherche|kein Nachweis für das neue Lernkonzept/);
    assert.equal(await page.locator('#feedback').isVisible(),true,'Open feedback is always visible');
+   await page.locator('#tab-discoveries').click();
+   assert.equal(await page.locator('#discoveries').isVisible(),true);
+   assert.equal(await page.locator('#discovery-count').innerText(),'3');
+   assert.equal(await page.locator('#discoveries .source-trials li').count(),3);
+   assert.match(await page.locator('#discoveries').innerText(),/A substantial alternative argument/);
+   assert.equal(await page.locator('#feedback-section').isVisible(),false,'Read-only discovery tab does not post synthetic ratings');
+   await page.locator('#tab-headlines').click();
+   assert.equal(await page.locator('#feedback-section').isVisible(),true,'Returning to articles restores normal feedback');
    await page.locator('#tab-blogs').click();
    await page.waitForSelector('#blogs .blog-entry');
    assert.equal(await page.locator('#blogs .blog-entry').count(),5);
