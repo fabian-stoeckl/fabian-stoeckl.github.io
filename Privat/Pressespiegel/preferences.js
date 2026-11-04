@@ -71,7 +71,7 @@ byId('preference-comment-form').onsubmit=async e=>{
   // silently attach today's feedback to yesterday's publication.
   const index=await GitHubPaper.json('./data/index.json');
   const currentDate=index?.dates?.[0];
-  if(typeof currentDate!=='string'||!/^\\d{4}-\\d{2}-\\d{2}$/.test(currentDate))
+  if(typeof currentDate!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(currentDate))
     throw Error('Die aktuelle Ausgabe konnte nicht sicher bestimmt werden.');
   await DirectFeedback.appendComment(currentDate,comment,token,localStorage,fetch,
     {commentSuggestions:FeedbackSuggestions.getSelected(field)});
