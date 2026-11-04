@@ -64,6 +64,9 @@ def check(base=BASE, root=INDEX.parent, opener=urlopen, require_today=False, loc
     # Both the newspaper and its separate private-preferences page are active UI.
     # Previously the post-merge check omitted direct-feedback.js entirely.
     asset_root = Path(assets_root) if assets_root is not None else root.parent
+    expected_config = json.loads((asset_root / "config.json").read_text(encoding="utf-8"))
+    if read_json(base + "/config.json", opener) != expected_config:
+        raise RuntimeError("Public feedback configuration differs from merged main")
     for page_name, url_path in (("index.html", "/"),
                                 ("praeferenzen.html", "/praeferenzen.html")):
         with opener(Request(base + url_path, headers=HEADERS), timeout=12) as response:
