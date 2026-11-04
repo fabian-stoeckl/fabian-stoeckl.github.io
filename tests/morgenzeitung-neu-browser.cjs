@@ -302,8 +302,10 @@ const fs=require('node:fs');
    await refreshedGroup.locator('input[type=radio][value="Sehr relevant"]').check();
    await page.locator('#feedback').fill(storedBody.comment+'\nNeue eigene Ergänzung nach erneutem Laden.');
    await page.locator('#feedback-form button[type=submit]').click();
-   await page.waitForFunction(()=>document.querySelector('#feedback-status').textContent.includes('gespeichert.')||document.querySelector('#feedback-status').textContent.includes('bleiben im Tab erhalten.'));
-   assert.match(await page.locator('#feedback-status').innerText(),/gespeichert\./);
+   await page.waitForTimeout(1500);
+   const crossDeviceStatus=await page.locator('#feedback-status').innerText();
+   console.log('Cross-device regression save status:',crossDeviceStatus);
+   assert.match(crossDeviceStatus,/gespeichert\./);
    const refreshedPayload=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
    assert.equal(refreshedPayload.ratings.find(r=>r.id===correctedId).rating,'Sehr relevant',
      'Editing a freshly restored rating must use the new remote baseline, not an old one');
