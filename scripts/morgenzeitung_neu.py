@@ -74,6 +74,19 @@ def validate(ed):
                 raise ValueError("Missing source evidence level")
             if level is not None and level not in ("headline","teaser","read","unknown"):
                 raise ValueError("Invalid source evidence level")
+            alternative=a.get("alternative_view")
+            if alternative is not None:
+                if section!="articles":
+                    raise ValueError("Alternative views are only allowed for deep dives")
+                if not isinstance(alternative,dict) or any(
+                    not isinstance(alternative.get(key),str) or not alternative[key].strip()
+                    for key in ("title","source","url","why")
+                ):
+                    raise ValueError("Incomplete alternative view")
+                if len(alternative["title"])>300 or len(alternative["source"])>160 or len(alternative["why"])>850:
+                    raise ValueError("Alternative view text too long")
+                if canonical(alternative["url"])==canonical(a["url"]):
+                    raise ValueError("Alternative view must link to a different original article")
             url=canonical(a["url"])
             # Existing editions already have feedback linked to their published IDs.
             # Enforce reproducible URL identities only on new editions, not retroactively.
@@ -99,23 +112,6 @@ def validate(ed):
             u=canonical(entry["example_url"])
             if u in links: raise ValueError(f"{field}: duplicate discovery URL")
             links.add(u)
-    counter=ed.get("counterpositions",[])
-    if not isinstance(counter,list) or len(counter)>4:
-        raise ValueError("counterpositions: expected at most four")
-    referenced=set()
-    for entry in counter:
-        keys=("article_id","counter_title","counter_source","counter_url","why")
-        if not isinstance(entry,dict) or any(
-            not isinstance(entry.get(key),str) or not entry[key].strip() for key in keys
-        ):
-            raise ValueError("Incomplete counterposition")
-        if entry["article_id"] not in ids or entry["article_id"] in referenced:
-            raise ValueError("Counterposition must reference one unique published article ID")
-        referenced.add(entry["article_id"])
-        if len(entry["counter_title"])>300 or len(entry["counter_source"])>160 or len(entry["why"])>850:
-            raise ValueError("Counterposition text too long")
-        if canonical(entry["counter_url"]) in urls:
-            raise ValueError("Counterposition must link to a different original article")
 
 def editorial_warnings(ed):
     """Advisory newsroom signals; not a semantic classifier or publication veto."""
