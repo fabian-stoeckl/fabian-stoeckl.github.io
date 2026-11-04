@@ -127,5 +127,32 @@ async function transport(url,opt={}){
     /Mehrere gültige Feedback-Issues/,
     'First-time issue creation must detect a same-date second issue');
   duplicateIssue=null;
-  console.log('PASS: prompted vs independently authored feedback, edits, duplicate issue detection, private persistence');
+  // Bad original fields must block writes, not disappear from the reader
+  // and then be silently lost on a later PATCH.
+  const originalBody=issue.body;
+  const makeBad=transform=>{
+    const v=JSON.parse(originalBody.slice(PREFIX.length));
+    transform(v);
+    issue.body=PREFIX+JSON.stringify(v);
+  };
+  makeBad(v=>{v.ratings[0].section='Unbekannte Rubrik';});
+  await assert.rejects(Feedback.feedbackHistory('token',transport),
+    /nicht eindeutig lesbar.*Ungültige Artikelbewertung/,
+    'Invalid source section must stop reading instead of being changed to Vertiefungen');
+  await assert.rejects(Feedback.submit('2026-10-30',[row],'','token',storage,transport,{comparisonOnly:true}),
+    /nicht eindeutig lesbar/,
+    'Cannot overwrite a malformed canonical issue');
+  makeBad(v=>{v.ratings.push({...v.ratings[0]});});
+  await assert.rejects(Feedback.feedbackHistory('token',transport),/Doppelte Artikel-ID/,
+    'Duplicate source article IDs must not collapse silently into one vote');
+  makeBad(v=>{v.version=2;});
+  await assert.rejects(Feedback.feedbackHistory('token',transport),/Ungültiges Format, Datum oder Version/);
+  issue.body=originalBody;
+  await assert.rejects(Feedback.submit('2026-10-30',[row,row],'','token',storage,transport),
+    /doppelte Artikel-ID/,
+    'Duplicate IDs in an outgoing draft must be rejected rather than overwritten');
+  await assert.rejects(Feedback.submit('2026-10-30',[{...row,section:'Falsch'}],'','token',storage,transport),
+    /Ungültige oder doppelte Artikel-ID/,
+    'Outgoing drafts cannot silently change unknown sections into Vertiefungen');
+  console.log('PASS: prompted vs independent feedback, malformed-issue fail-closed, duplicate protection and private persistence');
 })().catch(e=>{console.error(e);process.exitCode=1;});

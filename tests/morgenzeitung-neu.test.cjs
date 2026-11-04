@@ -16,6 +16,8 @@ assert.match(page,/id="tab-headlines"/);
 assert.match(page,/id="tab-articles"/);
 assert.match(page,/id="tab-blogs"/);
 assert.match(page,/id="tab-discoveries"/);
+assert.match(page,/id="github-disconnect"/);
+assert.doesNotMatch(page,/Hier erscheinen überprüfte Entdeckungen und gelegentlich fundierte Gegenpositionen/);
 assert.match(page,/id="discoveries" aria-label="Neue Themen und Quellen"/);
 assert.match(page,/<title>Pressespiegel<\/title>/);
 assert.match(page,/DEIN PRESSESPIEGEL/);
