@@ -179,6 +179,23 @@ const fs=require('node:fs');
    assert.equal(await earlyGroup.locator('input[type=radio][value="Teilweise relevant"]').isChecked(),true);
    assert.match(await earlyGroup.locator('textarea').inputValue(),/Zu juristisch für ein Randthema/,
      'A quick radio click cannot clear the previously saved article reason');
+   // Reverse race: writing only a new explanation must retain the already
+   // selected relevance value until the delayed issue state arrives.
+   let notifySecondRead;
+   const secondReadStarted=new Promise(resolve=>{notifySecondRead=resolve;});
+   notifyHeldRead=notifySecondRead;
+   holdIssueRead=true;
+   await page.reload();
+   await page.waitForSelector('#feedback-section:not([hidden])');
+   await secondReadStarted;
+   await page.locator('#tab-articles').click();
+   const reasonOnlyGroup=page.locator('#articles .ratings').first();
+   await reasonOnlyGroup.locator('textarea').fill('Neue eigene Erläuterung.');
+   holdIssueRead=false;releaseHeldRead();
+   await page.waitForFunction(()=>document.querySelector('#articles .ratings input[type=radio][value="Sehr relevant"]').checked);
+   assert.equal(await reasonOnlyGroup.locator('textarea').inputValue(),'Neue eigene Erläuterung.');
+   assert.equal(await reasonOnlyGroup.locator('input[type=radio][value="Sehr relevant"]').isChecked(),true,
+     'A quick explanation edit cannot clear the previously saved relevance value');
    await page.waitForFunction(()=>document.querySelector('#feedback').value.includes('Eigenständiger Hinweis von der Präferenzseite.'));
    const datePicker=page.locator('#date'),originalDate=await datePicker.inputValue();
    const secondDate=await datePicker.locator('option').nth(1).getAttribute('value');
