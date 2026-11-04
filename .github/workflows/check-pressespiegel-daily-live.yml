@@ -1,0 +1,32 @@
+name: Check daily Pressespiegel public delivery
+on:
+  schedule:
+    # 08:20 CET / 09:20 CEST. Always after the 07:45 Europe/Vienna publication target.
+    - cron: '20 7 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pressespiegel-daily-delivery-check
+  cancel-in-progress: false
+jobs:
+  live-check:
+    if: github.repository == 'fabian-stoeckl/fabian-stoeckl.github.io'
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify readback tests
+        run: python3 -m unittest discover -s tests -p test_pressespiegel_readback.py -v
+      - name: Check today's Vienna edition is live and matches main
+        run: python3 scripts/check_pressespiegel_live.py --require-today --attempts 8 --delay 20
+      - name: Record successful public readback
+        if: success()
+        run: |
+          echo "### Public Pressespiegel delivery verified" >> "$GITHUB_STEP_SUMMARY"
+          echo "Today's Vienna-local edition and reader are publicly accessible and match main." >> "$GITHUB_STEP_SUMMARY"

@@ -1,5 +1,6 @@
 """Deterministic tests for public HTTPS readback (no external requests)."""
 import io
+from datetime import date
 import json
 import tempfile
 import unittest
@@ -39,6 +40,16 @@ class ReadbackTests(unittest.TestCase):
     def test_matching_live_edition(self):
         base, pages = self.payloads()
         self.assertEqual(check(base, self.root, self.opener(pages)), "2026-11-04")
+    def test_daily_check_accepts_today_in_vienna(self):
+        base, pages = self.payloads()
+        self.assertEqual(check(base, self.root, self.opener(pages),
+                               require_today=True, local_today=date(2026, 11, 4)), "2026-11-04")
+    def test_daily_check_rejects_stale_date_even_when_site_matches(self):
+        base, pages = self.payloads()
+        with self.assertRaisesRegex(RuntimeError, "No edition for local Vienna date"):
+            check(base, self.root, self.opener(pages),
+                  require_today=True, local_today=date(2026, 11, 5))
+
     def test_stale_index_is_failure(self):
         base, pages = self.payloads()
         pages[base + "/data/index.json"] = {"dates": ["2026-11-03"]}
