@@ -312,6 +312,28 @@ const fs=require('node:fs');
    storedBody.comment=refreshedPayload.comment;
    targetRow.rating='Sehr relevant';
 
+   // Explicitly deleting the original GitHub feedback must clear clean,
+   // cached ratings/comments when the reader returns to the edition.
+   const removedIssue=issues.splice(0,1)[0];
+   assert.ok(removedIssue,'Expected feedback issue to test remote removal');
+   await page.locator('#date').selectOption(second);
+   await page.waitForFunction(d=>document.querySelector('#edition-meta').textContent.includes(
+     new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'})
+     .format(new Date(d+'T12:00:00Z'))),second);
+   await page.locator('#date').selectOption(first);
+   await page.waitForFunction(()=>document.querySelector('#feedback').value===''&&
+     !document.querySelector('#articles .ratings input[type=radio]:checked'));
+   assert.equal(await page.locator('#articles .ratings').first()
+     .locator('input[type=radio]:checked').count(),0,
+     'Deleted remote feedback must not remain selected locally');
+   issues.unshift(removedIssue);
+   await page.locator('#date').selectOption(second);
+   await page.waitForFunction(d=>document.querySelector('#edition-meta').textContent.includes(
+     new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'})
+     .format(new Date(d+'T12:00:00Z'))),second);
+   await page.locator('#date').selectOption(first);
+   await page.waitForFunction(()=>document.querySelector('#articles .ratings input[type=radio][value="Sehr relevant"]').checked);
+
    // A well-formed but semantically wrong rubric must not hydrate the story.
    targetRow.section='Heute wichtig';
    issues[0].body='MORGENZEITUNG_NEU_FEEDBACK_V1\n'+JSON.stringify(storedBody);
