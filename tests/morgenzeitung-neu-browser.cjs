@@ -158,6 +158,19 @@ const fs=require('node:fs');
    assert.ok(payload.ratings.some(r=>r.id===noteOnlyId&&r.rating===''&&
      r.reason==='Bitte hier mehr konkrete wirtschaftliche Folgen erklären.'),
      'Qualitative-only article text is saved without falsely choosing a relevance level');
+   // A clicked phrase is a suggested reason only while it is retained
+   // verbatim on its own line. Rewriting it as original prose removes the
+   // provenance tag instead of misclassifying the user's words as a click.
+   await group.locator('.rating-reason textarea').fill(
+     'Eigene Formulierung: Zu juristisch für ein Randthema gilt hier nur als Teil eines eigenen Satzes.');
+   await page.locator('#feedback-form button[type=submit]').click();
+   await page.waitForFunction(()=>document.querySelector('#feedback-status').textContent.includes('aktualisiert.'));
+   const rewritten=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
+   const rewrittenRow=rewritten.ratings.find(r=>r.id===correctedId);
+   assert.ok(rewrittenRow.reason.includes('Zu juristisch für ein Randthema'));
+   assert.ok(!rewrittenRow.suggested_reasons?.includes('Zu juristisch für ein Randthema'),
+     'Rewritten free prose must not retain a clicked-template marker');
+
    await page.getByRole('link',{name:/Meine Präferenzen/}).first().click();
    await page.waitForURL(/praeferenzen.html/);
    await page.waitForSelector('#profile-text:not([hidden])');
