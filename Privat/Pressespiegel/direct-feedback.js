@@ -167,11 +167,19 @@ const DirectFeedback=(()=>{
           throw Error('Diese Artikelbewertung wurde auf einem anderen Gerät geändert. Bitte den aktuellen Stand neu laden und deine Änderung erneut auswählen.');
         byId.set(id,row);
       }
+      // An explicitly edited empty comment means "remove my prose", not "keep the old text".
+      // Rating-only saves must still preserve existing prose from other sessions.
+      if(options.replaceComment===true&&typeof options.baselineComment==='string'&&
+         String(base?.feedback||'').trim()!==options.baselineComment.trim()&&
+         String(base?.feedback||'').trim()!==comment)
+        throw Error('Dein allgemeiner Kommentar wurde auf einem anderen Gerät geändert. Bitte den aktuellen Stand neu laden.');
       const mergedComment=appendText?appendOnce(base?.feedback,appendText):
         options.comparisonOnly?mergeComparisonOnly(base?.feedback,comment):
+        options.replaceComment===true?preserveComparisonNotes(base?.feedback,comment):
         comment?preserveComparisonNotes(base?.feedback,comment):(base?.feedback||'');
       if(mergedComment.length>4000)throw Error('Der gespeicherte Kommentar überschreitet 4000 Zeichen. Bitte kürzen.');
-      if(!byId.size&&!mergedComment)throw Error('Bitte mindestens eine Bewertung oder Feedback eingeben.');
+      if(!byId.size&&!mergedComment&&options.replaceComment!==true)
+        throw Error('Bitte mindestens eine Bewertung oder Feedback eingeben.');
       const freshPhraseSource=appendText||comment;
       const newSuggestions=(appendText&&mergedComment===(base?.feedback||''))||options.comparisonOnly
         ?[]:commentSuggestions(options.commentSuggestions,freshPhraseSource);
