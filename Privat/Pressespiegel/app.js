@@ -277,7 +277,9 @@ async function restoreSavedRatings(){
       readerState.commentBaselines[date]=saved.feedback||'';
     if(!Object.hasOwn(readerState.commentSuggestionDrafts,date))
       readerState.commentSuggestionDrafts[date]=saved.comment_suggestions||[];
-    if(!$('feedback').value&&saved.feedback){
+    // An intentionally emptied local draft must survive date changes/reloads.
+    // Only hydrate from GitHub when this edition has no local draft at all.
+    if(!Object.hasOwn(readerState.commentDrafts,date)&&!$('feedback').value&&saved.feedback){
       $('feedback').value=saved.feedback;
       readerState.commentDrafts[date]=saved.feedback;
       FeedbackSuggestions.setSelected($('feedback'),readerState.commentSuggestionDrafts[date]);
