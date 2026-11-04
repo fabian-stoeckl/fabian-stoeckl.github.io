@@ -1,8 +1,7 @@
 name: Check daily Pressespiegel public delivery
+# Manual-only diagnostic. Post-merge live readback already validates every
+# published change; do not schedule a second daily delivery monitor.
 on:
-  schedule:
-    # 08:20 CET / 09:20 CEST. Always after the 07:45 Europe/Vienna publication target.
-    - cron: '20 7 * * *'
   workflow_dispatch:
 permissions:
   contents: read
