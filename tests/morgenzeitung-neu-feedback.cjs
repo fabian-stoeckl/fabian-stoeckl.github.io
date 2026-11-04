@@ -148,6 +148,17 @@ async function transport(url,opt={}){
   makeBad(v=>{v.version=2;});
   await assert.rejects(Feedback.feedbackHistory('token',transport),/Ungültiges Format, Datum oder Version/);
   issue.body=originalBody;
+  // Even manually renamed GitHub Issues must be reported, never silently
+  // dropped from the dataset and overwritten by a newly created same-day issue.
+  const originalTitle=issue.title;
+  issue.title='[Pressespiegel] Feedback renumbered';
+  await assert.rejects(Feedback.feedbackHistory('token',transport),
+    /nicht eindeutig lesbar.*Ungültiges Format, Datum oder Version/,
+    'Renamed valid feedback must fail closed, not be treated as nonexistent');
+  await assert.rejects(Feedback.submit('2026-10-30',[row],'','token',storage,transport,{comparisonOnly:true}),
+    /nicht eindeutig lesbar/,
+    'Browser must not create a new issue when the original was renamed');
+  issue.title=originalTitle;
   await assert.rejects(Feedback.submit('2026-10-30',[row,row],'','token',storage,transport),
     /doppelte Artikel-ID/,
     'Duplicate IDs in an outgoing draft must be rejected rather than overwritten');
