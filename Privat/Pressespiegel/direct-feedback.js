@@ -71,21 +71,19 @@ const DirectFeedback=(()=>{
     try{const v=JSON.parse(store.getItem(RECEIPTS_KEY)||'{}');return v&&typeof v==='object'?v:{};}
     catch(_){return {};}
   }
+  function uniqueFeedbackForDate(items,date){
+    const current=items.filter(x=>x.date===date);
+    if(current.length>1)
+      throw Error('Mehrere gültige Feedback-Issues für '+date+' gefunden ('+
+        current.map(x=>'#'+x.number).join(', ')+
+        '). Die getrennten Rückmeldungen müssen zuerst zusammengeführt werden; es wurde nichts überschrieben.');
+    return current[0]||null;
+  }
   async function savedFeedback(date,token,store=localStorage,transport=fetch){
-    // Fast path: use the recorded private issue number. Still GET the canonical
-    // issue from GitHub, not a potentially stale browser cache.
-    const receipt=readReceipts(store)[date];
-    if(receipt && Number.isSafeInteger(receipt.number) && receipt.number>0){
-      try{
-        const current=parse(await request(token,'/issues/'+receipt.number,'GET',undefined,transport));
-        if(current?.date===date)return current;
-      }catch(err){
-        // Authorization failures must not be silently swallowed.
-        if(/ungültig oder abgelaufen|verweigert Zugriff/.test(err.message))throw err;
-      }
-    }
-    const items=await feedbackHistory(token,transport);
-    return items.find(x=>x.date===date)||null;
+    // A local receipt only identifies this browser's issue. Another device
+    // might have created a second valid issue for the same edition, so always
+    // inspect all canonical issues before selecting an editable issue.
+    return uniqueFeedbackForDate(await feedbackHistory(token,transport),date);
   }
   const COMPARISON_NOTE=/^\[V3-Vergleich (\d{4}-\d{2}-\d{2} [a-zA-Z0-9_-]{1,90}): (?:published|alternative|equal)\]$/;
   function preserveComparisonNotes(previous,incoming){
@@ -202,6 +200,10 @@ const DirectFeedback=(()=>{
         receipts[date]=receipt;store.setItem(RECEIPTS_KEY,JSON.stringify(receipts));
       }catch(_){}
       const confirmed=await request(token,'/issues/'+result.number,'GET',undefined,transport);
+      // Two browsers may simultaneously observe no issue and both POST.
+      // GitHub Issues has no unique constraint; detect that race before
+      // reporting a confirmed first-time save.
+      if(!existing)uniqueFeedbackForDate(await feedbackHistory(token,transport),date);
       const verified=parse(confirmed);
       if(!verified)throw Error('Gespeichertes GitHub-Feedback konnte nicht nachgelesen werden.');
       const found=new Map(verified.ratings.map(row=>[row.id,row]));
