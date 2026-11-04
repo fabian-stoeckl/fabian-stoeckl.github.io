@@ -111,6 +111,36 @@ class EditorialEventTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"Duplicate"):
             mod.validate(ed)
 
+    def test_discovery_rejects_missing_original_source(self):
+        ed=self.edition()
+        ed["new_sources"]=[{"name":"New outlet","why":"New data access","example_url":"http://bad.example/story"}]
+        with self.assertRaisesRegex(ValueError,"HTTPS"):
+            mod.validate(ed)
+
+    def test_counterposition_must_reference_real_article(self):
+        ed=self.edition()
+        ed["counterpositions"]=[{"article_id":"f"*16,"counter_title":"A strong counterargument",
+            "counter_source":"Original publisher","counter_url":"https://example.org/different",
+            "why":"Distinct, verified argument"}]
+        with self.assertRaisesRegex(ValueError,"unique published article"):
+            mod.validate(ed)
+        ed["counterpositions"][0]["article_id"]="a"*16
+        mod.validate(ed)
+        ed["counterpositions"][0]["counter_url"]="https://a.example/a"
+        with self.assertRaisesRegex(ValueError,"different original"):
+            mod.validate(ed)
+
+    def test_future_ids_match_url_hash_without_changing_historic_ratings(self):
+        import hashlib
+        ed=self.edition()
+        ed["date"]="2026-11-05"
+        for row in ed["headlines"]:
+            row["id"]=hashlib.sha256(mod.canonical(row["url"]).encode()).hexdigest()[:16]
+        mod.validate(ed)
+        ed["headlines"][0]["id"]="a"*16
+        with self.assertRaisesRegex(ValueError,"SHA-256"):
+            mod.validate(ed)
+
 
 if __name__=="__main__":
     unittest.main()
