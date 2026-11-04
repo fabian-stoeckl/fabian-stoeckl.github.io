@@ -101,15 +101,15 @@ function githubRating(a,section='Vertiefungen') {
   const key=draftKey(a);
   box.dataset.ratingKey=key;
   box.dataset.reasonCodes=JSON.stringify(readerState.ratingDrafts[key]?.reason_codes||[]);
-  box.addEventListener('reasoncodes',e=>{readerState.ratingDrafts[key]={value:'',reason:'',section,...readerState.ratingDrafts[key],reason_codes:e.detail,dirty:true};feedbackStatus('Begründung vorgemerkt.');});
+  box.addEventListener('reasoncodes',e=>{readerState.ratingDrafts[key]={value:'',reason:'',section,...readerState.ratingDrafts[key],reason_codes:e.detail,codesEdited:true,dirty:true};feedbackStatus('Begründung vorgemerkt.');});
   box.addEventListener('suggestionclick',e=>{
     const old=readerState.ratingDrafts[key]||{};
-    readerState.ratingDrafts[key]={...old,section,suggested_reasons:[...new Set([...(old.suggested_reasons||[]),e.detail])],dirty:true};
+    readerState.ratingDrafts[key]={...old,section,suggested_reasons:[...new Set([...(old.suggested_reasons||[]),e.detail])],reasonEdited:true,dirty:true};
   });
   for(const value of ['Sehr relevant','Teilweise relevant','Nicht relevant']) {
     const label=el('label');const input=el('input');input.type='radio';input.name='rating-'+key;
     input.value=value;input.checked=readerState.ratingDrafts[key]?.value===value;
-    input.onchange=()=>{readerState.ratingDrafts[key]={...readerState.ratingDrafts[key],value,reason:readerState.ratingDrafts[key]?.reason||'',section,dirty:true};feedbackStatus('Auswahl vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};
+    input.onchange=()=>{readerState.ratingDrafts[key]={...readerState.ratingDrafts[key],value,reason:readerState.ratingDrafts[key]?.reason||'',section,ratingEdited:true,dirty:true};feedbackStatus('Auswahl vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');};
     label.append(input,el('span',value));box.append(label);
   }
   const details=el('details',undefined,'rating-reason');
@@ -121,7 +121,7 @@ function githubRating(a,section='Vertiefungen') {
   reason.oninput=()=>{
     const old=readerState.ratingDrafts[key]||{};
     readerState.ratingDrafts[key]={...old,value:old.value||'',reason:reason.value,section,
-      suggested_reasons:(old.suggested_reasons||[]).filter(t=>reason.value.includes(t)),dirty:true};
+      suggested_reasons:(old.suggested_reasons||[]).filter(t=>reason.value.includes(t)),reasonEdited:true,dirty:true};
     feedbackStatus('Änderung vorgemerkt · beide Rubriken werden gemeinsam gespeichert.');
   };
   wrapper.append(reason);details.append(wrapper);box.append(details);
@@ -262,15 +262,30 @@ async function restoreSavedRatings(){
       if(edition.date!==date)return;
       const savedRow=byId.get(id),key=draftKey(item);
       if(!Object.hasOwn(readerState.ratingBaselines,key))readerState.ratingBaselines[key]=savedRow||null;
-      if(!savedRow||readerState.ratingDrafts[key]?.dirty)continue;
-      readerState.ratingDrafts[key]={value:savedRow.value,reason:savedRow.reason,section:savedRow.section,reason_codes:savedRow.reason_codes||[],suggested_reasons:savedRow.suggested_reasons||[],dirty:false};
+      if(!savedRow)continue;
+      const draft=readerState.ratingDrafts[key];
+      if(draft?.dirty){
+        // A user can start editing before GitHub has returned the prior values.
+        // Merge only fields they have NOT explicitly edited, preventing a radio
+        // click from deleting an older free-text reason (or vice versa).
+        if(!draft.ratingEdited)draft.value=savedRow.value;
+        if(!draft.reasonEdited){
+          draft.reason=savedRow.reason;
+          draft.suggested_reasons=savedRow.suggested_reasons||[];
+        }
+        if(!draft.codesEdited)draft.reason_codes=savedRow.reason_codes||[];
+        draft.section=savedRow.section;
+      }else{
+        readerState.ratingDrafts[key]={value:savedRow.value,reason:savedRow.reason,section:savedRow.section,reason_codes:savedRow.reason_codes||[],suggested_reasons:savedRow.suggested_reasons||[],dirty:false};
+      }
+      const active=readerState.ratingDrafts[key];
       const field=[...document.querySelectorAll('.rating-dots')].find(x=>x.dataset.ratingKey===key);
       if(!field)continue;
-      field.dataset.reasonCodes=JSON.stringify(savedRow.reason_codes||[]);
+      field.dataset.reasonCodes=JSON.stringify(active.reason_codes||[]);
       RatingReasons.sync(field);
-      for(const input of field.querySelectorAll('input[type=radio]'))input.checked=input.value===savedRow.value;
+      for(const input of field.querySelectorAll('input[type=radio]'))input.checked=input.value===active.value;
       const note=field.querySelector('textarea');
-      if(note)note.value=savedRow.reason;
+      if(note)note.value=active.reason||'';
       const disclosure=field.querySelector('.rating-reason');if(disclosure)disclosure.open=true;
     }
     if(!Object.hasOwn(readerState.commentBaselines,date))
