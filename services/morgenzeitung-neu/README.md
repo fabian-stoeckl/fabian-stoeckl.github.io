@@ -25,7 +25,7 @@ Bei einem echten **nachträglich erkannten Fehler** den betreffenden Artikel im 
 
 ## Veröffentlichungsweg
 
-Der **eine bereits existierende** tägliche Automationsauftrag lädt den aktuellen Hauptbranch und führt `INTERESSEN.md` gefolgt von `RECHERCHE.md` aus. Er beginnt um 04:45 Uhr Europe/Vienna mit Ziel-Veröffentlichung 07:45 Uhr. Private Belege vor öffentlichem PR sichern; passende Struktur-, Unit- und Browser-Tests/CI prüfen, mergen, Pages-Deployment kontrollieren und nach Möglichkeit öffentliche HTTPS-Ausgabe zurücklesen. Scheitert ein Schritt, letzte gültige Ausgabe behalten und Hindernis ehrlich melden. Keine zweite parallele Produktion, Link-Test-Wache oder automatisch erfundene Erfolgsanalyse.
+Der **eine bereits existierende** tägliche Automationsauftrag lädt den aktuellen Hauptbranch und führt `INTERESSEN.md` gefolgt von `RECHERCHE.md` aus. Er beginnt um 04:45 Uhr Europe/Vienna mit Ziel-Veröffentlichung 07:45 Uhr. Private Belege vor öffentlichem PR sichern; passende Struktur-, Unit- und Browser-Tests/CI prüfen, mergen, Pages-Deployment kontrollieren und nach Möglichkeit öffentliche HTTPS-Ausgabe zurücklesen. Scheitert ein Schritt, letzte gültige Ausgabe behalten und Hindernis ehrlich melden. Keine zweite parallele Produktion, zeitgesteuerte tägliche Link-Test-Wache oder automatisch erfundene Erfolgsanalyse. Der frühere tägliche GitHub-Workflow `check-pressespiegel-daily-live.yml` ist nur noch manuell aufrufbar; nach jeder relevanten Änderung an `main` läuft die automatische Live-Rücklesung bereits im bestehenden Veröffentlichungsprüfworkflow.
 
 ## Neu: Post-Merge-Auslieferungskontrolle (04.11.2026)
 
