@@ -1,0 +1,70 @@
+"""Post-merge public HTTPS readback: never equate a Git commit with live publication."""
+import argparse
+import json
+from pathlib import Path
+import sys
+import time
+from urllib.error import URLError, HTTPError
+from urllib.request import Request, urlopen
+
+BASE = "https://fabian-stoeckl.com/Privat/Pressespiegel"
+INDEX = Path("Privat/Pressespiegel/data/index.json")
+HEADERS = {"User-Agent": "Pressespiegel-public-readback/1.0", "Cache-Control": "no-cache"}
+
+
+def read_json(url, opener=urlopen):
+    with opener(Request(url, headers=HEADERS), timeout=12) as response:
+        if response.status != 200:
+            raise RuntimeError(f"Unexpected HTTP {response.status} for {url}")
+        return json.load(response)
+
+
+def check(base=BASE, root=INDEX.parent, opener=urlopen):
+    """Verify that the newest committed edition is actually publicly readable."""
+    expected = json.loads((root / "index.json").read_text(encoding="utf-8"))
+    days = expected["dates"]
+    if not days or days != sorted(set(days), reverse=True):
+        raise ValueError("Invalid local edition index")
+    day = days[0]
+    public_index = read_json(base + "/data/index.json", opener)
+    if public_index.get("dates") != days:
+        raise RuntimeError("Public index is stale or differs from the verified main branch")
+    public_issue = read_json(base + "/data/" + day + ".json", opener)
+    local_issue = json.loads((root / (day + ".json")).read_text(encoding="utf-8"))
+    if public_issue != local_issue:
+        raise RuntimeError("Public edition differs from the merged main branch")
+    if public_issue.get("preview") is not False or public_issue.get("date") != day:
+        raise RuntimeError("Published edition date/preview invalid")
+    with opener(Request(base + "/", headers=HEADERS), timeout=12) as response:
+        if response.status != 200:
+            raise RuntimeError("Reader HTML is not publicly accessible")
+        html = response.read(1_000_000).decode("utf-8", errors="replace")
+        if "Pressespiegel" not in html:
+            raise RuntimeError("Reader HTML lacks Pressespiegel marker")
+    return day
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--attempts", type=int, default=12)
+    p.add_argument("--delay", type=int, default=20)
+    a = p.parse_args()
+    if a.attempts < 1 or a.delay < 0:
+        p.error("attempts must be >= 1 and delay >= 0")
+    last = ""
+    for attempt in range(1, a.attempts + 1):
+        try:
+            day = check()
+            print(f"LIVE VERIFIED: reader, index and full {day} edition match merged main.")
+            return 0
+        except (OSError, ValueError, TypeError, KeyError, RuntimeError, HTTPError, URLError) as e:
+            last = str(e)
+            print(f"Readback {attempt}/{a.attempts} not confirmed: {last}", flush=True)
+            if attempt != a.attempts:
+                time.sleep(a.delay)
+    print(f"LIVE NOT VERIFIED after {a.attempts} tries: {last}", file=sys.stderr)
+    return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
