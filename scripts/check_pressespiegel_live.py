@@ -22,6 +22,24 @@ def read_json(url, opener=urlopen):
         return json.load(response)
 
 
+RESOURCE = re.compile(r'(?:src|href)="\\./([a-zA-Z0-9_-]+\\.(?:js|css))(\\?v=[a-zA-Z0-9_-]+)?"')
+
+
+def local_resources(html):
+    """Exactly enumerate every local JS/CSS dependency, without silent exclusions."""
+    matches = RESOURCE.findall(html)
+    if not matches:
+        raise RuntimeError("Reader HTML contains no local scripts or stylesheets")
+    versions = {}
+    for filename, suffix in matches:
+        if not suffix:
+            raise RuntimeError("Unversioned local JS/CSS dependency: " + filename)
+        if filename in versions and versions[filename] != suffix:
+            raise RuntimeError("Conflicting asset versions for " + filename)
+        versions[filename] = suffix
+    return versions
+
+
 def check(base=BASE, root=INDEX.parent, opener=urlopen, require_today=False, local_today=None,
           assets_root=None):
     """Verify that the newest committed edition is actually publicly readable."""
@@ -46,11 +64,8 @@ def check(base=BASE, root=INDEX.parent, opener=urlopen, require_today=False, loc
     # Both the newspaper and its separate private-preferences page are active UI.
     # Previously the post-merge check omitted direct-feedback.js entirely.
     asset_root = Path(assets_root) if assets_root is not None else root.parent
-    for page_name, url_path, assets in (
-        ("index.html", "/", ("app.js", "style.css", "direct-feedback.js")),
-        ("praeferenzen.html", "/praeferenzen.html",
-         ("preferences.js", "style.css", "direct-feedback.js")),
-    ):
+    for page_name, url_path in (("index.html", "/"),
+                                ("praeferenzen.html", "/praeferenzen.html")):
         with opener(Request(base + url_path, headers=HEADERS), timeout=12) as response:
             if response.status != 200:
                 raise RuntimeError("Pressespiegel page is not publicly accessible: " + page_name)
@@ -58,14 +73,12 @@ def check(base=BASE, root=INDEX.parent, opener=urlopen, require_today=False, loc
             if "Pressespiegel" not in live_html:
                 raise RuntimeError("Reader HTML lacks Pressespiegel marker: " + page_name)
         local_html = (asset_root / page_name).read_text(encoding="utf-8")
-        for filename in assets:
-            pattern = r"(?:\./)?" + re.escape(filename) + r"\?v=([a-zA-Z0-9_-]+)"
-            local = re.search(pattern, local_html)
-            remote = re.search(pattern, live_html)
-            if not local or not remote or local.group(1) != remote.group(1):
-                raise RuntimeError("Public reader asset version is stale: " +
-                                   page_name + " / " + filename)
-            url = base + "/" + filename + "?v=" + local.group(1)
+        local_assets = local_resources(local_html)
+        remote_assets = local_resources(live_html)
+        if remote_assets != local_assets:
+            raise RuntimeError("Public reader asset version is stale: " + page_name)
+        for filename, suffix in local_assets.items():
+            url = base + "/" + filename + suffix
             with opener(Request(url, headers=HEADERS), timeout=12) as response:
                 if response.status != 200:
                     raise RuntimeError("Reader asset not accessible: " + filename)
@@ -88,7 +101,7 @@ def main():
     for attempt in range(1, a.attempts + 1):
         try:
             day = check(require_today=a.require_today)
-            print(f"LIVE VERIFIED: reader, preferences, feedback scripts, CSS, index and full {day} edition match merged main.")
+            print(f"LIVE VERIFIED: all reader/preferences JS and CSS, index and full {day} edition match merged main.")
             return 0
         except (OSError, ValueError, TypeError, KeyError, RuntimeError, HTTPError, URLError) as e:
             last = str(e)
