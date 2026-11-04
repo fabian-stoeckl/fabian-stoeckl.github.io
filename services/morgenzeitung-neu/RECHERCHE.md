@@ -1,6 +1,6 @@
 # Prompt 2 – Journalistischer Recherche- und Veröffentlichungsauftrag
 
-**Reihenfolge:** Nach `INTERESSEN.md` den **tatsächlich privat gespeicherten** Stand `morgenzeitung-neu/interessen.md` frisch laden. Nur bestätigte Version verwenden; bei Fehlern den letzten belegten Stand und die Unsicherheit benennen. Kein Rankingalgorithmus oder numerisches Punktesystem. Das individuelle Profil beeinflusst vor allem **Vertiefungen**, nicht den unabhängigen Nachrichtenwert.
+**Reihenfolge:** Nach `INTERESSEN.md` den **tatsächlich privat gespeicherten** Stand `morgenzeitung-neu/interessen.md` frisch laden. Nur bestätigte Version verwenden; bei Fehlern den letzten belegten Stand und die Unsicherheit benennen. **Profilversion eindeutig belegen:** Im Tagesdossier die konkrete bestätigte Git-Commit-ID oder Datei-Blob-SHA des gelesenen privaten Interessenprofils notieren; ein bloßes Änderungsdatum aus `state.json` reicht nicht, weil das Profil am selben Tag mehrfach aktualisiert werden kann. Bei Unklarheit noch einmal aus `main` lesen, statt eine ältere Tagesversion als aktuell zu behandeln. Kein Rankingalgorithmus oder numerisches Punktesystem. Das individuelle Profil beeinflusst vor allem **Vertiefungen**, nicht den unabhängigen Nachrichtenwert.
 
 ## Recherche und Zeitfenster
 
