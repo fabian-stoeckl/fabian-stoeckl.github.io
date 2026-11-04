@@ -4,7 +4,7 @@ on:
     paths: ['Privat/Pressespiegel/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'scripts/check_pressespiegel_live.py', 'scripts/pressespiegel_quality_report.py', 'tests/test_pressespiegel_readback.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
   push:
     branches: [main]
-    paths: ['Privat/Pressespiegel/**', 'Privat/Morgenzeitung-Neu/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'scripts/check_pressespiegel_live.py', 'scripts/pressespiegel_quality_report.py', 'tests/test_pressespiegel_readback.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
+    paths: ['Privat/Pressespiegel/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'scripts/check_pressespiegel_live.py', 'scripts/pressespiegel_quality_report.py', 'tests/test_pressespiegel_readback.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
 permissions: {contents: read}
 jobs:
   verify:
