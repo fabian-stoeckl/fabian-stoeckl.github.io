@@ -114,6 +114,10 @@ async function transport(url,opt={}){
       {comparisonOnly:true}),
     /Mehrere gültige Feedback-Issues/,
     'Do not overwrite a same-date duplicate until feedback is reconciled');
+  duplicateIssue={...issue,number:issue.number};
+  const deduped=await Feedback.feedbackHistory('token',transport);
+  assert.equal(deduped.filter(x=>x.date==='2026-10-29').length,1,
+    'A repeated page-row for the SAME issue number must not count as a second issue');
   duplicateIssue=null;
   // Race during a first POST: the second issue can appear after the initial
   // discovery check. Read back the full index before reporting success.
