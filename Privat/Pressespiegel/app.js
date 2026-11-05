@@ -30,6 +30,39 @@ function saveHiddenBlogPosts(hidden){
   try{localStorage.setItem(BLOG_HIDDEN_KEY,JSON.stringify([...hidden]));return true;}
   catch(_){return false;}
 }
+function openHiddenBlogDialog(data,stale=false){
+  const hidden=readHiddenBlogPosts();
+  const entries=data.posts.filter(post=>post&&typeof post.title==='string'&&typeof post.url==='string'&&hidden.has(blogPostKey(post.url)));
+  const dialog=el('dialog',undefined,'blog-hidden-dialog');
+  dialog.setAttribute('aria-labelledby','blog-hidden-title');
+  const head=el('div',undefined,'blog-hidden-head');
+  const title=el('h2','Gelöschte Beiträge');title.id='blog-hidden-title';
+  const close=el('button','Schließen','blog-hidden-close');close.type='button';close.onclick=()=>dialog.close();
+  head.append(title,close);dialog.append(head);
+  const description=el('p','Nur einzeln wiederhergestellte Beiträge erscheinen erneut in deiner Blogliste.','small');dialog.append(description);
+  const list=el('div',undefined,'blog-hidden-list');
+  for(const post of entries){
+    const key=blogPostKey(post.url);
+    const item=el('div',undefined,'blog-hidden-entry');
+    const name=el('div');name.append(link(post.title,post.url));
+    const restore=el('button','Wiederherstellen','blog-restore');restore.type='button';
+    restore.setAttribute('aria-label','Wiederherstellen: '+post.title);
+    restore.onclick=()=>{
+      const current=readHiddenBlogPosts();current.delete(key);
+      if(!saveHiddenBlogPosts(current)){window.alert('Wiederherstellung konnte auf diesem Gerät nicht gespeichert werden.');return;}
+      item.remove();renderBlogPosts(data,stale);
+      if(!list.children.length)list.append(el('p','Keine gelöschten Beiträge aus dem aktuellen Feed mehr vorhanden.','small'));
+    };
+    item.append(name,restore);list.append(item);
+  }
+  if(!entries.length)list.append(el('p','Keine gelöschten Beiträge aus dem aktuellen Feed vorhanden.','small'));
+  const missing=hidden.size-entries.length;
+  if(missing>0)dialog.append(el('p',missing+' weitere ausgeblendete Beiträge sind im aktuellen Feed nicht mehr enthalten. Sie bleiben ausgeblendet und werden nicht zurückgesetzt.','small'));
+  dialog.append(list);
+  document.body.append(dialog);
+  dialog.addEventListener('close',()=>dialog.remove(),{once:true});
+  dialog.showModal();
+}
 function renderBlogPosts(data,stale=false){
   if(!data||!Array.isArray(data.posts))throw Error('Ungültige Blogdaten');
   const root=$('blogs');root.replaceChildren();
@@ -41,13 +74,10 @@ function renderBlogPosts(data,stale=false){
   const hidden=readHiddenBlogPosts();
   const posts=data.posts.filter(post=>post&&typeof post.title==='string'&&typeof post.url==='string'&&blogPostKey(post.url)&&!hidden.has(blogPostKey(post.url)));
   if(hidden.size){
-    const restore=el('button','Ausgeblendete Beiträge wieder anzeigen','blog-restore');
-    restore.type='button';
-    restore.onclick=()=>{
-      if(saveHiddenBlogPosts(new Set()))renderBlogPosts(data,stale);
-      else window.alert('Die Ausblendungen konnten auf diesem Gerät nicht zurückgesetzt werden.');
-    };
-    heading.append(restore);
+    const manage=el('button','Gelöschte Beiträge ('+hidden.size+')','blog-restore');
+    manage.type='button';
+    manage.onclick=()=>openHiddenBlogDialog(data,stale);
+    heading.append(manage);
   }
   root.append(heading);
   const list=el('div',undefined,'blog-list');
