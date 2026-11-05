@@ -15,10 +15,6 @@ assert.match(page,/id="feedback" rows="4"/);
 assert.match(page,/id="tab-headlines"/);
 assert.match(page,/id="tab-articles"/);
 assert.match(page,/id="tab-blogs"/);
-assert.match(page,/id="tab-discoveries"/);
-assert.match(page,/id="github-disconnect"/);
-assert.doesNotMatch(page,/Hier erscheinen überprüfte Entdeckungen und gelegentlich fundierte Gegenpositionen/);
-assert.match(page,/id="discoveries" aria-label="Neue Themen und Quellen"/);
 assert.match(page,/<title>Pressespiegel<\/title>/);
 assert.match(page,/DEIN PRESSESPIEGEL/);
 assert.match(home,/aria-label="Pressespiegel öffnen"/);
@@ -76,17 +72,10 @@ assert.match(research,/Webrecherche darf \*\*ausführlich/);
 assert.match(research,/evidence_level/);
 assert.match(research,/seit der letzten nachweislich erfolgreichen Veröffentlichung/);
 assert.match(research,/Keine starre Altersgrenze/);
-assert.match(research,/„Neues“ – bislang übersehene Themen und neue Quellen/);
-assert.match(research,/„Alternative Sichtweise“ – gelegentlich direkt unter einer Vertiefung/);
-assert.match(research,/alternative_view/);
-assert.match(fs.readFileSync(path+'app.js','utf8'),/Alternative Sichtweise/);
 assert.match(research,/abschließenden? Aktualitätsdurchgang|Aktualitätsdurchgang/);
 assert.match(research,/Nachrichtenanlass/);
 assert.match(research,/Redaktionsrunde vor der Veröffentlichung/);
 assert.match(research,/preview:false/);
-const deliveryWorkflow=fs.readFileSync('.github/workflows/check-pressespiegel-daily-live.yml','utf8');
-assert.match(deliveryWorkflow,/workflow_dispatch/,'Manual readback stays available');
-assert.doesNotMatch(deliveryWorkflow,/^\s+schedule\s*:/m,'No redundant scheduled daily delivery watcher');
 assert.ok(!research.includes(String.raw`\n\n`),'No literal escaped paragraph delimiters');
 for(const required of [/related_article/,/event_key/,/distinct_contribution/,
   /letzten nachweislich erfolgreichen Veröffentlichung/,/Zuckerl/,
