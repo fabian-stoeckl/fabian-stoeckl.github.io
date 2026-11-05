@@ -91,7 +91,7 @@ assert.doesNotMatch(fs.readFileSync(path+'app.js','utf8'),/heutige Persönliche 
 const app=fs.readFileSync(path+'app.js','utf8');
 assert.match(app,/alternative-perspective/,'Optional counter-perspective box is rendered');
 assert.match(app,/discovery-section/,'Optional Neues section is rendered at end');
-assert.match(app,/filter\\(a=>!a.discovery\\)/,'Regular features remain ahead of discoveries');
+assert.match(app,/filter\(a=>!a.discovery\)/,'Regular features remain ahead of discoveries');
 assert.match(research,/maximal zwei/,'Editorial discovery cap');
 assert.match(research,/Themenfit vor Medienverteilung/,'No publisher quota');
 assert.match(engine,/Offen lernen statt Filterblase/,'Feedback exploration safeguards');
