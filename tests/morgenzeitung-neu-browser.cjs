@@ -18,7 +18,7 @@ const fs=require('node:fs');
      await route.fulfill({status:404,json:{message:'Not Found'}});return;
     }
     if(url.pathname.includes('/contents/morgenzeitung-neu/')){
-     const responseText=url.pathname.endsWith('lernmonitoring.md')?'Lernbilanz · Morgenzeitung Neu\nNoch nicht beurteilbar.':url.pathname.endsWith('begruendungsvorschlaege.json')?JSON.stringify({version:1,suggestions:['Zu juristisch für ein Randthema']}):url.pathname.endsWith('interessen.md')?'Ich interessiere mich für gut belegte Analysen und neue wirtschaftliche Erkenntnisse.':'28.10.2026: Startbeschreibung aus früherem Feedback übernommen.';
+     const responseText=url.pathname.endsWith('lernmonitoring.md')?'Lernbilanz · Morgenzeitung Neu\nNoch nicht beurteilbar.':url.pathname.endsWith('begruendungsvorschlaege.json')?JSON.stringify({version:1,suggestions:['Zu juristisch für ein Randthema'],general_suggestions:['Mehr internationale Wirtschaftspolitik']}):url.pathname.endsWith('interessen.md')?'Ich interessiere mich für gut belegte Analysen und neue wirtschaftliche Erkenntnisse.':'28.10.2026: Startbeschreibung aus früherem Feedback übernommen.';
      response={content:Buffer.from(responseText).toString('base64')};
     }else if(req.method()==='POST'&&url.pathname.endsWith('/issues')){
      const body=req.postDataJSON();
@@ -100,6 +100,7 @@ const fs=require('node:fs');
    assert.equal(await page.locator('#blogs .blog-entry').count(),28,'Expanded archive persists across tabs');
    await page.locator('#tab-headlines').click();
    assert.ok(await page.locator('.feedback-suggestions button').count()>=4);
+   assert.equal(await page.locator('.feedback-suggestions button').first().innerText(),'Mehr internationale Wirtschaftspolitik');
    const suggestion=await page.locator('.feedback-suggestions button').first().innerText();
    await page.locator('.feedback-suggestions button').first().click();
    const general=page.locator('#feedback');
