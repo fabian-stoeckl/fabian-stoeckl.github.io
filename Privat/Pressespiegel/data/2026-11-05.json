@@ -1,0 +1,186 @@
+{
+  "date": "2026-11-05",
+  "researched_at": "2026-11-05T10:10:00+01:00",
+  "preview": false,
+  "editorial_note": "Nachholausgabe vom 5. November. Auswahl bewusst nicht mit ungeprüften Beiträgen aufgefüllt. Zugriffsstand und Grenzen der Originallektüre je Beitrag ausgewiesen; ältere Vertiefungen tragen ihr Originaldatum.",
+  "articles": [
+    {
+      "id": "806fd4811804d7b2",
+      "title": "UK 'dangerously reliant' on China for critical minerals",
+      "url": "https://www.theguardian.com/world/2026/nov/05/uk-dangerously-reliant-on-china-critical-minerals-military-ai-renewable-energy",
+      "source": "The Guardian",
+      "published_at": "2026-11-05",
+      "summary": "Ein britischer Parlamentsausschuss warnt vor der Abhängigkeit von Chinas Verarbeitung kritischer Rohstoffe für Rüstung, KI und erneuerbare Energien. Der Ausschuss fordert zusätzliche Finanzierung und Diversifizierung; die Regierung verweist auf bestehende Maßnahmen.",
+      "article_type": "analysis",
+      "topic": "Rohstoffe und Industriepolitik",
+      "evidence_level": "read"
+    },
+    {
+      "id": "ba76912ce6468733",
+      "title": "How could the US midterms affect the global economy?",
+      "url": "https://www.theguardian.com/us-news/2026/nov/04/explainer-midterms-trump-us-global-economy-markets",
+      "source": "The Guardian",
+      "published_at": "2026-11-04",
+      "summary": "Der Erklärbeitrag untersucht mögliche Folgen der US-Zwischenwahlen für Handel, Staatsausgaben und Weltwirtschaft. Politische Blockaden und veränderte Verhandlungsspielräume sind Szenarien, keine bereits feststehenden wirtschaftlichen Effekte.",
+      "article_type": "analysis",
+      "topic": "Weltwirtschaft und US-Politik",
+      "evidence_level": "read"
+    },
+    {
+      "id": "7a0e45ab8eebd299",
+      "title": "The RBA says there is excess demand in the economy. Households doing it tough might disagree",
+      "url": "https://www.theguardian.com/business/grogonomics/2026/nov/04/the-rba-says-there-is-excess-demand-in-the-economy-households-doing-it-tough-might-disagree",
+      "source": "The Guardian",
+      "published_at": "2026-11-04",
+      "summary": "Der wirtschaftspolitische Kommentar diskutiert, wie Zentralbanken auf einen energiepreisbedingten Angebotsschock reagieren sollten. Er stellt die Belastung der Haushalte der Inflationsbekämpfung durch höhere Zinsen gegenüber; dies ist eine argumentierende Position.",
+      "article_type": "analysis",
+      "topic": "Geldpolitik und Inflation",
+      "evidence_level": "read"
+    },
+    {
+      "id": "54d1d39c51399a50",
+      "title": "Uralte DNA verrät Ursprünge",
+      "url": "https://science.orf.at/stories/3238009/",
+      "source": "ORF Science",
+      "published_at": "2026-11-04",
+      "summary": "DNA-Daten von mehr als 4.500 Menschen liefern Hinweise auf alte Wanderungsbewegungen und die Verbreitung germanischer Sprachen. Die Forschenden kombinieren Genetik, Archäologie und Sprachwissenschaft: Aus DNA allein lässt sich die gesprochene Sprache nicht ablesen.",
+      "article_type": "analysis",
+      "topic": "Wissenschaft und Geschichte",
+      "evidence_level": "read"
+    },
+    {
+      "id": "3025b0e63d2a5499",
+      "title": "COP31 will show up folly of cleantech tariffs",
+      "url": "https://www.reuters.com/commentary/breakingviews/cop31-will-show-up-folly-cleantech-tariffs-2026-11-03/",
+      "source": "Reuters Breakingviews",
+      "published_at": "2026-11-03",
+      "summary": "Ein Kommentar argumentiert gegen Handelsbarrieren für chinesische Klimatechnologien und thematisiert den Zielkonflikt zwischen günstiger Dekarbonisierung und dem Schutz heimischer Industrien. Die Bewertung ist eine Autorenposition, kein feststehendes Ergebnis.",
+      "article_type": "analysis",
+      "topic": "Klima und Welthandel",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "141b2bd343b7f669",
+      "title": "ECB says AI, greener economy help euro zone weather energy shock",
+      "url": "https://www.reuters.com/business/finance/ecb-says-ai-greener-economy-help-euro-zone-weather-energy-shock-2026-10-21/",
+      "source": "Reuters",
+      "published_at": "2026-10-21",
+      "summary": "EZB-Ökonomen erörtern, wie geringere fossile Abhängigkeit und Produktivitätsfortschritte die Widerstandsfähigkeit des Euroraums gegen Energiepreisschocks stärken könnten. Der ältere Beitrag ist eine strukturelle Einordnung, keine neue Entscheidung.",
+      "article_type": "analysis",
+      "topic": "Energie und makroökonomische Resilienz",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "cd9dd490cf946a0d",
+      "title": "Should Hitler's Eagle's Nest retreat be rebuilt after an arson attack?",
+      "url": "https://www.theguardian.com/world/2026/nov/01/hitler-eagles-nest-retreat-arson-attack-should-it-be-rebuilt",
+      "source": "The Guardian",
+      "published_at": "2026-11-01",
+      "summary": "Die Reportage behandelt den Umgang mit einem durch Brand beschädigten NS-Erinnerungsort am Obersalzberg. Im Mittelpunkt steht die Frage, wie historische Täterorte bewahrt, erklärt oder verändert werden sollten.",
+      "article_type": "analysis",
+      "topic": "Geschichtspolitik und Erinnerungskultur",
+      "evidence_level": "teaser"
+    }
+  ],
+  "headlines": [
+    {
+      "id": "86527142d1177df5",
+      "title": "Zulagen für Gewerkschafter: Ermittlungen eingeleitet",
+      "url": "https://orf.at/stories/3447240/",
+      "source": "ORF",
+      "published_at": "2026-11-05",
+      "summary": "Die Staatsanwaltschaft Wien ermittelt nach einer anonymen Anzeige zu Zulagen für freigestellte Personalvertreter im öffentlichen Dienst. Die Vorwürfe der Untreue und des Amtsmissbrauchs sind nicht gerichtlich festgestellt.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read"
+    },
+    {
+      "id": "47e387d8e53e16f2",
+      "title": "WKO will 2027 ausgeglichen bilanzieren",
+      "url": "https://orf.at/stories/3447206/",
+      "source": "ORF",
+      "published_at": "2026-11-04",
+      "summary": "Die Wirtschaftskammer erwartet 2027 Kammerumlagen von 262,3 Millionen Euro und plant ein ausgeglichenes Ergebnis. Im Zuge ihres Sparkurses sollen 200 Stellen wegfallen.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read"
+    },
+    {
+      "id": "15c01771e1880b0b",
+      "title": "Kein Regierungspersonal für Parteikanäle",
+      "url": "https://orf.at/stories/3447232/",
+      "source": "ORF",
+      "published_at": "2026-11-04",
+      "summary": "Der Verfassungsgerichtshof hebt eine Ausnahmeregel für die Betreuung parteinaher Social-Media-Accounts durch Kabinettsmitarbeiter auf. Er begründet dies mit der Chancengleichheit der Parteien; die Ausnahme für Parlamentsklubs bleibt bestehen.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read"
+    },
+    {
+      "id": "bbd878f49730f071",
+      "title": "Demokraten kontrollieren beide Kongresskammern",
+      "url": "https://orf.at/stories/3447167/",
+      "source": "ORF",
+      "published_at": "2026-11-04",
+      "summary": "Der ORF erläutert die erweiterten Kontrollmöglichkeiten der Demokraten nach den US-Zwischenwahlen. Auch bei Mehrheiten bleiben das Vetorecht des Präsidenten und parlamentarische Verfahrenshürden relevant.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "17d4d5e62a93cecf",
+      "title": "Van der Bellen reist zu Weltklimakonferenz",
+      "url": "https://orf.at/stories/3447245/",
+      "source": "ORF",
+      "published_at": "2026-11-05",
+      "summary": "Bundespräsident Alexander Van der Bellen kündigt seine Teilnahme an der COP31 in Antalya vom 10. bis 12. November an. Er will dort für verstärkte internationale Klimaschutzanstrengungen werben.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read"
+    },
+    {
+      "id": "08c2d17d1269d208",
+      "title": "Euro zone economic growth slows to four-month low, October PMI shows",
+      "url": "https://www.reuters.com/world/europe/euro-zone-economic-growth-slows-four-month-low-october-pmi-shows-2026-11-04/",
+      "source": "Reuters",
+      "published_at": "2026-11-04",
+      "summary": "Der zusammengesetzte Einkaufsmanagerindex für den Euroraum fiel im Oktober laut Reuters von 53,1 auf 51,7 Punkte. Werte über 50 deuten weiterhin auf Expansion hin; der Index ist kein direktes BIP-Maß.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "a143994be5486339",
+      "title": "Ukraine: EU, Russia and war – latest developments",
+      "url": "https://www.theguardian.com/world/live/2026/nov/04/eu-ukraine-russia-france-germany-us-nato-europe-latest-news",
+      "source": "The Guardian",
+      "published_at": "2026-11-04",
+      "summary": "In einem Liveticker berichtet der Guardian über neue Angriffe in der Ukraine. Opferzahlen werden unter Berufung auf ukrainische Behörden wiedergegeben und können sich im weiteren Verlauf ändern.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "9c455ce2ff52b145",
+      "title": "Most EU citizens back an urgent transition to greener fuel, survey shows",
+      "url": "https://www.reuters.com/sustainability/cop/most-eu-citizens-back-an-urgent-transition-greener-fuel-survey-shows-2026-11-05/",
+      "source": "Reuters",
+      "published_at": "2026-11-05",
+      "summary": "Eine von der Europäischen Investitionsbank berichtete Umfrage unter rund 23.000 Menschen zeigt breite Zustimmung zu einem raschen Übergang zu CO₂-ärmerer Energie. Umfrageantworten sind nicht mit tatsächlichem Verhalten gleichzusetzen.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "9c88c8b1dc64fbdc",
+      "title": "Global markets react to US midterm results",
+      "url": "https://www.reuters.com/business/energy/global-markets-global-markets-2026-11-05/",
+      "source": "Reuters",
+      "published_at": "2026-11-05",
+      "summary": "Reuters beschreibt Marktbewegungen bei Öl, Anleihen und Aktien nach den US-Zwischenwahlen und im Umfeld geopolitischer Risiken. Kursstände sind Momentaufnahmen; eine einzelne Ursache lässt sich daraus nicht sicher ableiten.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser"
+    }
+  ]
+}
