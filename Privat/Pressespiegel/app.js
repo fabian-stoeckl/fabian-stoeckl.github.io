@@ -55,7 +55,15 @@ function renderBlogPosts(data,stale=false){
   for(const post of posts.slice(0,blogVisibleCount)){
     const key=blogPostKey(post.url);
     const item=el('div',undefined,'blog-entry');
-    const remove=el('button','×','blog-remove');
+    const remove=el('button',undefined,'blog-remove');
+    const removeIcon=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    removeIcon.setAttribute('viewBox','0 0 24 24');
+    removeIcon.setAttribute('aria-hidden','true');
+    removeIcon.setAttribute('focusable','false');
+    const removePath=document.createElementNS('http://www.w3.org/2000/svg','path');
+    removePath.setAttribute('d','M5 5L19 19M19 5L5 19');
+    removeIcon.append(removePath);
+    remove.append(removeIcon);
     remove.type='button';remove.title='Löschen';remove.setAttribute('aria-label','Beitrag löschen: '+post.title);
     remove.onclick=()=>{
       const updated=readHiddenBlogPosts();
