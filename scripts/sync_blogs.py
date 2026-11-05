@@ -7,10 +7,6 @@ from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
-try:
-    from scripts.summarize_blogs import enrich
-except ModuleNotFoundError:
-    from summarize_blogs import enrich  # Direct script execution: python3 scripts/sync_blogs.py
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 from xml.etree import ElementTree as ET
@@ -141,7 +137,6 @@ def main():
     if args.output.exists():
         previous = json.loads(args.output.read_text(encoding="utf-8"))
         data = merge_archive(data, previous)
-    data = enrich(data)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Updated Noahpinion archive: {len(data['posts'])} posts; "
