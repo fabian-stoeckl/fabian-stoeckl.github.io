@@ -70,7 +70,7 @@ const fs=require('node:fs');
        url:'https://www.noahpinion.blog/p/test-archive-'+n,
        published_at:'2026-10-20',
        author:n%2?'Guest Contributor':'Noah Smith',
-       description:'Feed summary for item '+n
+       description:'Feed summary for item '+n+' with additional background, the main argument, and why it matters for readers.'
      });
      await route.fulfill({status:200,json:payload});
    });
@@ -94,10 +94,17 @@ const fs=require('node:fs');
    assert.equal(await page.locator('#blogs .rating-dots').count(),0,'Blogs must never have article ratings');
    assert.equal(await page.locator('#feedback-section').isVisible(),false,'Blogs have no feedback controls');
    assert.equal(await page.locator('#blogs .blog-entry a').first().getAttribute('href'),'https://www.noahpinion.blog/p/anthropics-moat-is-claude');
+   assert.equal(await page.locator('#blogs .blog-remove').count(),28,'Every blog post has a remove button');
+   await page.locator('#blogs .blog-remove').first().click();
+   assert.equal(await page.locator('#blogs .blog-entry').count(),27,'Removing a post compacts the list');
+   assert.notEqual(await page.locator('#blogs .blog-entry a').first().getAttribute('href'),'https://www.noahpinion.blog/p/anthropics-moat-is-claude');
+   assert.equal(await page.locator('#blogs .blog-restore').count(),1,'Hidden posts can be restored');
+   assert.ok((await page.evaluate(()=>JSON.parse(localStorage.getItem('pressespiegel-hidden-blog-posts-v1')))).length===1);
+
    await page.locator('#tab-headlines').click();
    assert.equal(await page.locator('#feedback-section').isVisible(),true,'Newspaper ratings remain available');
    await page.locator('#tab-blogs').click();
-   assert.equal(await page.locator('#blogs .blog-entry').count(),28,'Expanded archive persists across tabs');
+   assert.equal(await page.locator('#blogs .blog-entry').count(),27,'Expanded filtered archive persists across tabs');
    await page.locator('#tab-headlines').click();
    assert.ok(await page.locator('.feedback-suggestions button').count()>=4);
    assert.equal(await page.locator('.feedback-suggestions button').first().innerText(),'Mehr internationale Wirtschaftspolitik');

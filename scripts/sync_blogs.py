@@ -14,6 +14,7 @@ from xml.etree import ElementTree as ET
 FEED = "https://www.noahpinion.blog/feed"
 DC = "{http://purl.org/dc/elements/1.1/}creator"
 DEFAULT = Path("Privat/Pressespiegel/data/blogs.json")
+CONTENT = "{http://purl.org/rss/1.0/modules/content/}encoded"
 
 
 class PlainText(HTMLParser):
@@ -29,13 +30,18 @@ class PlainText(HTMLParser):
         self.parts.append(value)
 
 
-def excerpt(value):
+def excerpt(value, limit=620):
+    """A readable feed-based preview, never a claim of independent article analysis."""
     parser = PlainText()
     parser.feed(value or "")
-    cleaned = re.sub(r"\s+", " ", unescape("".join(parser.parts))).strip()
-    if len(cleaned) > 230:
-        cleaned = cleaned[:227].rsplit(" ", 1)[0].rstrip(" ,.;:") + "…"
-    return cleaned
+    cleaned = re.sub(r"\\s+", " ", unescape("".join(parser.parts))).strip()
+    if len(cleaned) <= limit:
+        return cleaned
+    prefix = cleaned[:limit]
+    sentence_end = max(prefix.rfind(". "), prefix.rfind("? "), prefix.rfind("! "))
+    if sentence_end >= int(limit * 0.6):
+        return prefix[:sentence_end + 1].strip()
+    return prefix.rsplit(" ", 1)[0].rstrip(" ,.;:") + "…"
 
 
 def parse_feed(raw):
@@ -59,7 +65,7 @@ def parse_feed(raw):
             continue
         candidates.append((published, {
             "title": title, "url": url, "published_at": published.date().isoformat(),
-            "author": creator, "description": excerpt(item.findtext("description") or ""),
+            "author": creator, "description": excerpt(item.findtext(CONTENT) or item.findtext("description") or ""),
             "published_time": published.astimezone(timezone.utc).isoformat(timespec="seconds")
         }))
     candidates.sort(key=lambda pair: pair[0], reverse=True)

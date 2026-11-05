@@ -56,6 +56,28 @@ class BlogFeedTests(unittest.TestCase):
         self.assertEqual(merged["posts"][-1]["title"], "Older post")
         self.assertEqual(merged["posts"][0]["title"], "Recent 0")
 
+    def test_longer_preview_uses_article_feed_content(self):
+        from scripts.sync_blogs import CONTENT
+        text = ("A detailed first point explains the issue and why it matters. "
+                "A second point describes the mechanism and gives context. "
+                "A third point examines consequences for the economy. ") * 6
+        dates = ["Mon, 02 Nov 2026 10:00:00 +0000", "Sat, 31 Oct 2026 10:00:00 +0000",
+                 "Thu, 29 Oct 2026 10:00:00 +0000", "Tue, 27 Oct 2026 10:00:00 +0000",
+                 "Sun, 25 Oct 2026 10:00:00 +0000"]
+        content = "".join(
+            entry("Post " + str(i), "Noah Smith", date, "long-" + str(i)).replace(
+                "</item>", "<content:encoded><![CDATA[<p>" + text +
+                "</p>]]></content:encoded></item>")
+            for i, date in enumerate(dates))
+        xml = ('<rss xmlns:dc="http://purl.org/dc/elements/1.1/" '
+               'xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel>'
+               + content + "</channel></rss>").encode()
+        posts = parse_feed(xml)["posts"]
+        self.assertGreater(len(posts[0]["description"]), 230)
+        self.assertLessEqual(len(posts[0]["description"]), 620)
+        self.assertIn("second point", posts[0]["description"])
+        self.assertTrue(CONTENT.endswith("encoded"))
+
     def test_html_stripping(self):
         self.assertEqual(excerpt("<p>One <em>two</em></p>"), "One two")
 
