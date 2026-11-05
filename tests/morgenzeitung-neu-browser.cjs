@@ -43,6 +43,15 @@ const fs=require('node:fs');
      const response=await route.fetch();
      const sample=await response.json();
      sample.articles[0].related_article={title:'Independent follow-up',source:'Another publisher',url:'https://example.org/follow-up'};
+     // Synthetic, in-memory editorial fixture: never published or saved.
+     sample.articles[0].alternative_perspective={
+       summary:'Eine andere ökonomische Bewertung hebt die möglichen Zielkonflikte hervor.',
+       source:'Independent analysis',url:'https://example.org/alternative'
+     };
+     if(sample.articles.length>=3){
+       sample.articles.at(-1).discovery=true;
+       sample.articles.at(-2).discovery=true;
+     }
      sample.preview=false; // Synthetic real-edition correction fixture.
      sample.articles[0].correction={
        corrected_at:'2026-10-29T12:00:00+01:00',
@@ -98,6 +107,13 @@ const fs=require('node:fs');
    assert.match(await general.inputValue(),/Thema interessiert/);
    await page.locator('#tab-articles').click();
    assert.equal(await page.locator('#articles').isVisible(),true);
+   assert.equal(await page.locator('#articles .discovery-section').count(),1,'Neues appears only within features');
+   assert.equal(await page.locator('#articles .discovery-section article').count(),2,'Exactly two optional discoveries');
+   assert.equal(await page.locator('#articles > .discovery-section').count(),1,'Neues is a final section');
+   assert.equal(await page.locator('#articles > .discovery-section').evaluate(el=>el.previousElementSibling?.className),'article-list','Neues follows regular feature list');
+   assert.equal(await page.locator('#articles .alternative-perspective').count(),1,'One optional counter-perspective');
+   assert.match(await page.locator('#articles .alternative-perspective').innerText(),/Andere Perspektive/);
+   assert.equal(await page.getByRole('link',{name:'Quelle: Independent analysis'}).getAttribute('href'),'https://example.org/alternative');
    assert.equal(await page.locator('#articles .article-correction').count(),1);
    assert.match(await page.locator('#articles .article-correction').innerText(),/unzutreffende Behauptung wurde berichtigt/);
    assert.equal(await page.getByRole('link',{name:'Beleg zur Berichtigung'}).getAttribute('href'),'https://example.org/evidence');

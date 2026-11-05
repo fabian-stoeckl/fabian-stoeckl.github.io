@@ -174,6 +174,17 @@ function article(a,index,section='Vertiefungen'){
       body.append(more);
     }catch(_){/* Invalid optional link cannot displace the original article. */}
   }
+  if(!isHeadline&&a.alternative_perspective){
+    const p=a.alternative_perspective;
+    if(typeof p.summary==='string'&&typeof p.source==='string'&&typeof p.url==='string'){
+      try{
+        const aside=el('aside',undefined,'alternative-perspective');
+        aside.append(el('strong','Andere Perspektive'),el('p',p.summary));
+        aside.append(link('Quelle: '+p.source,p.url));
+        body.append(aside);
+      }catch(_){/* Optional perspective must never hide the original article. */}
+    }
+  }
   if(!isHeadline&&typeof a.novelty_explanation==='string'&&a.novelty_explanation.trim())
     body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty_explanation,'novelty'));
   body.append(githubRating(a,section));node.append(intro,body);return node;
@@ -192,8 +203,17 @@ function render(){
   readerState.visibleHeadlines=selection.headlines;
   $('articles').replaceChildren();
   const lead=el('div',undefined,'lead-grid'),rest=el('div',undefined,'article-list');
-  readerState.visibleArticles.forEach((a,i)=>(i<3&&!a.treat?lead:rest).append(article(a,i)));
+  const regular=readerState.visibleArticles.filter(a=>!a.discovery);
+  const discoveries=readerState.visibleArticles.filter(a=>a.discovery).slice(0,2);
+  regular.forEach((a,i)=>(i<3&&!a.treat?lead:rest).append(article(a,i)));
   $('articles').append(lead,rest);
+  if(discoveries.length){
+    const newSection=el('section',undefined,'discovery-section');
+    newSection.append(el('h2','Neues'));
+    const newList=el('div',undefined,'article-list');
+    discoveries.forEach(a=>newList.append(article(a,undefined)));
+    newSection.append(newList);$('articles').append(newSection);
+  }
   $('article-count').textContent=readerState.visibleArticles.length;
   $('headline-count').textContent=readerState.visibleHeadlines.length;
   $('headlines').replaceChildren();

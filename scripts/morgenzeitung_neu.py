@@ -27,6 +27,8 @@ def validate(ed):
     if len(ed["articles"])>15 or len(ed["headlines"])>20:
         raise ValueError("Too many articles")
     if not ed["articles"] and not ed["headlines"]: raise ValueError("Empty edition")
+    if sum(a.get("discovery") is True for a in ed["articles"])>2:
+        raise ValueError("At most two discovery features")
     ids,urls=set(),set()
     for section in ("articles","headlines"):
         for a in ed[section]:
@@ -44,6 +46,19 @@ def validate(ed):
             distinct=a.get("distinct_contribution")
             if distinct is not None and (not isinstance(distinct,str) or not distinct.strip() or len(distinct)>400):
                 raise ValueError("Invalid editorial distinct contribution")
+            if a.get("discovery") is not None:
+                if section!="articles" or type(a["discovery"]) is not bool:
+                    raise ValueError("Discovery marker only allowed on features")
+            perspective=a.get("alternative_perspective")
+            if perspective is not None:
+                if section!="articles" or not isinstance(perspective,dict) or any(
+                    not isinstance(perspective.get(k),str) or not perspective[k].strip()
+                    for k in ("summary","source","url")
+                ):
+                    raise ValueError("Incomplete alternative perspective")
+                if len(perspective["summary"])>900: raise ValueError("Alternative perspective too long")
+                if canonical(perspective["url"])==canonical(a["url"]):
+                    raise ValueError("Alternative perspective requires independent source")
             related=a.get("related_article")
             if related is not None:
                 if not isinstance(related,dict) or any(

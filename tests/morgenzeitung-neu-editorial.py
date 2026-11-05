@@ -100,6 +100,47 @@ class EditorialEventTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"real edition"):
             mod.validate(ed)
 
+    def test_optional_discoveries_and_counterposition_are_valid(self):
+        ed=self.edition()
+        ed["articles"]=[
+            {**story("c"*16,"https://c.example/c"),"topic":"Economics","discovery":True,
+             "alternative_perspective":{"summary":"A defensible alternative interpretation.",
+               "source":"Independent outlet","url":"https://other.example/analysis"}},
+            {**story("d"*16,"https://d.example/d"),"topic":"Science","discovery":True},
+        ]
+        mod.validate(ed)
+        self.assertEqual(sum(a.get("discovery",False) for a in ed["articles"]),2)
+
+    def test_discovery_limit_and_headline_protection(self):
+        ed=self.edition()
+        ed["articles"]=[
+            {**story(ch*16,f"https://{ch}.example/story"),"topic":"Economics","discovery":True}
+            for ch in ("c","d","e")
+        ]
+        with self.assertRaisesRegex(ValueError,"At most two"):
+            mod.validate(ed)
+        ed["articles"]=[]
+        ed["headlines"][0]["discovery"]=True
+        with self.assertRaisesRegex(ValueError,"only allowed on features"):
+            mod.validate(ed)
+
+    def test_counterposition_requires_distinct_source_and_complete_fields(self):
+        ed=self.edition()
+        a={**story("c"*16,"https://c.example/c"),"topic":"Economics"}
+        ed["articles"]=[a]
+        a["alternative_perspective"]={"summary":"A different interpretation",
+            "source":"Independent outlet","url":a["url"]}
+        with self.assertRaisesRegex(ValueError,"independent source"):
+            mod.validate(ed)
+        a["alternative_perspective"]={"summary":"A different interpretation"}
+        with self.assertRaisesRegex(ValueError,"Incomplete alternative"):
+            mod.validate(ed)
+        ed["articles"]=[]
+        ed["headlines"][0]["alternative_perspective"]={"summary":"Another view",
+            "source":"Independent outlet","url":"https://other.example/analysis"}
+        with self.assertRaisesRegex(ValueError,"Incomplete alternative"):
+            mod.validate(ed)
+
     def test_preview_stays_historical_without_new_editorial_requirements(self):
         ed=self.edition()
         ed["preview"]=True

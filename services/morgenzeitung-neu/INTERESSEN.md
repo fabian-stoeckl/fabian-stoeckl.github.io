@@ -21,6 +21,10 @@ Auch ohne erklärende Kommentare in gleichartigen Positiv-/Negativurteilen vorsi
 
 `suggested_reasons` (Artikel) und `comment_suggestions` (allgemeine Texte) markieren **angeklickte Vorlagen**, nicht unabhängig spontan formulierte Rückmeldungen. Im Kommentar nur die gekennzeichneten exakten Zeilen als Prompt-Vorschläge behandeln; übrige erkennbare Eigenformulierungen gesondert lesen. Angezeigte Vorlagen und wiederholte Klicks dürfen keine selbstbestätigende Schleife ergeben. Bei historischen Daten ohne Provenienz die Herkunft nicht rückwirkend erfinden.
 
+## Offen lernen statt Filterblase
+
+Prüfe bei jeder echten Profiländerung, ob sie eine Artikelpräferenz präzisiert oder unbeabsichtigt ganze Themen, Länder, Quellen oder Denkansätze ausschließt. Eine positive Reaktion auf Handelsblatt-Wirtschaftsanalysen ist zunächst ein Signal für den **konkreten Themenfit**, kein Verlagsbonus. Die echte Rückmeldung „Australien nicht so relevant“ betrifft zunächst die damalige Zinsmeldung, kein Länder-Verbot. Beziehe nach Möglichkeit Gegenbeispiele aus anderen Quellen und Themen ein; bei unklarer Ursache Hypothese offenlassen. „Neues“ ist eine kleine, freiwillige Entdeckungsfläche innerhalb der Vertiefungen (höchstens zwei Artikel), kein Ersatz für die Hauptauswahl und keine neue Rubrik für Gegenpositionen. Keine künstliche Vielfalt oder festgelegten Explorationsquoten.
+
 ## Lernerfolg beobachten – keine Selbstbestätigung
 
 Nutze **dieselbe tägliche Aufgabe**, **dieselben echten Feedback-Issues** und die **bereits veröffentlichten echten Ausgaben** für eine kleine qualitative Lernbilanz in der privaten Datei `morgenzeitung-neu/lernmonitoring.md`. Sie erscheint auf „Meine Präferenzen“. Keine zweite Automation, kein Score-Dashboard und keine neuen Feedbackfragen. Die Lernbilanz ist **keine** Erweiterung von `aenderungen.md`: Dort steht, *was am Interessenprofil geändert wurde*; hier steht, *ob die geänderte Artikelauswahl später nachweislich hilfreicher war*.
