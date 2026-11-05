@@ -1,10 +1,10 @@
 name: Verify Pressespiegel (aktuell)
 on:
   pull_request:
-    paths: ['Privat/Pressespiegel/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'scripts/check_pressespiegel_live.py', 'scripts/pressespiegel_quality_report.py', 'tests/test_pressespiegel_readback.py', 'tests/test_pressespiegel_quality_report.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
+    paths: ['Privat/Pressespiegel/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'scripts/check_pressespiegel_live.py', 'scripts/pressespiegel_quality_report.py', 'tests/test_pressespiegel_readback.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
   push:
     branches: [main]
-    paths: ['Privat/Pressespiegel/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'scripts/check_pressespiegel_live.py', 'scripts/pressespiegel_quality_report.py', 'tests/test_pressespiegel_readback.py', 'tests/test_pressespiegel_quality_report.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
+    paths: ['Privat/Pressespiegel/**', 'Privat/Morgenzeitung-Neu/**', 'Privat/index.html', 'services/morgenzeitung-neu/**', 'scripts/morgenzeitung_neu.py', 'scripts/check_pressespiegel_live.py', 'scripts/pressespiegel_quality_report.py', 'tests/test_pressespiegel_readback.py', 'tests/morgenzeitung-neu*', '.github/workflows/verify-morgenzeitung-neu.yml']
 permissions: {contents: read}
 jobs:
   verify:
@@ -18,8 +18,6 @@ jobs:
         with: {python-version: '3.12'}
       - run: python3 scripts/morgenzeitung_neu.py verify
       - run: python3 tests/morgenzeitung-neu-editorial.py
-      - name: Check source-diversity advisory within editorial sections
-        run: python3 -m unittest discover -s tests -p test_pressespiegel_quality_report.py -v
       - name: Regression-test public readback logic (offline)
         run: python3 -m unittest discover -s tests -p test_pressespiegel_readback.py -v
       - name: Document editorial source/evidence distribution
@@ -39,7 +37,6 @@ jobs:
           done
           node tests/morgenzeitung-neu-browser.cjs
           node tests/morgenzeitung-neu-resilience.cjs
-          node tests/morgenzeitung-neu-audit.cjs
 
   live-readback:
     name: Verify deployed public reader and edition

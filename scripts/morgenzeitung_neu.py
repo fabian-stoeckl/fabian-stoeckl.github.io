@@ -1,6 +1,5 @@
 """Structural checks only for Pressespiegel: journalistic truth requires human/AI source review."""
 import argparse
-import hashlib
 import json
 import re
 from datetime import date, datetime
@@ -74,44 +73,9 @@ def validate(ed):
                 raise ValueError("Missing source evidence level")
             if level is not None and level not in ("headline","teaser","read","unknown"):
                 raise ValueError("Invalid source evidence level")
-            alternative=a.get("alternative_view")
-            if alternative is not None:
-                if section!="articles":
-                    raise ValueError("Alternative views are only allowed for deep dives")
-                if not isinstance(alternative,dict) or any(
-                    not isinstance(alternative.get(key),str) or not alternative[key].strip()
-                    for key in ("title","source","url","why")
-                ):
-                    raise ValueError("Incomplete alternative view")
-                if len(alternative["title"])>300 or len(alternative["source"])>160 or len(alternative["why"])>850:
-                    raise ValueError("Alternative view text too long")
-                if canonical(alternative["url"])==canonical(a["url"]):
-                    raise ValueError("Alternative view must link to a different original article")
             url=canonical(a["url"])
-            # Existing editions already have feedback linked to their published IDs.
-            # Enforce reproducible URL identities only on new editions, not retroactively.
-            if ed["date"] >= "2026-11-05":
-                expected=hashlib.sha256(url.encode("utf-8")).hexdigest()[:16]
-                if a["id"] != expected:
-                    raise ValueError(f"Article ID must equal SHA-256(canonical URL)[:16]: {a['id']}")
             if a["id"] in ids or url in urls: raise ValueError("Duplicate ID/URL")
             ids.add(a["id"]);urls.add(url)
-    for field in ("new_topics","new_sources"):
-        entries=ed.get(field,[])
-        if not isinstance(entries,list) or len(entries)>5:
-            raise ValueError(f"{field}: expected at most five discoveries")
-        links=set()
-        for entry in entries:
-            if not isinstance(entry,dict) or any(
-                not isinstance(entry.get(key),str) or not entry[key].strip()
-                for key in ("name","why","example_url")
-            ):
-                raise ValueError(f"{field}: incomplete discovery")
-            if len(entry["name"])>160 or len(entry["why"])>650:
-                raise ValueError(f"{field}: discovery text too long")
-            u=canonical(entry["example_url"])
-            if u in links: raise ValueError(f"{field}: duplicate discovery URL")
-            links.add(u)
 
 def editorial_warnings(ed):
     """Advisory newsroom signals; not a semantic classifier or publication veto."""
@@ -147,14 +111,9 @@ def verify(root=ROOT):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument("action",choices=("verify","id"))
+    p.add_argument("action",choices=("verify",))
     p.add_argument("--root",type=Path,default=ROOT)
-    p.add_argument("--url",help="Original HTTPS article URL for canonical SHA-256 ID")
     args=p.parse_args()
-    if args.action=="id":
-        if not args.url: p.error("id requires --url")
-        print(hashlib.sha256(canonical(args.url).encode("utf-8")).hexdigest()[:16])
-        return
     count,warnings=verify(args.root)
     print(f"PASS: {count} edition(s); structural test only. Source evidence needs editorial review.")
     for note in warnings:

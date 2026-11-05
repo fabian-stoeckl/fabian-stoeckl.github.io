@@ -27,7 +27,7 @@ const DirectFeedback=(()=>{
   }
   async function request(token,path,method='GET',body,transport=fetch){
     if(!/^(?:|\/issues(?:\/\d+)?|\/issues\?state=all&per_page=100&page=(?:[1-9]|1[0-9]|20))$/.test(path))throw Error('Unzulässiger GitHub-Pfad.');
-    const r=await transport(API+path,{signal:AbortSignal.timeout(15000),method,credentials:'omit',cache:'no-store',redirect:'error',referrerPolicy:'no-referrer',
+    const r=await transport(API+path,{method,credentials:'omit',cache:'no-store',redirect:'error',referrerPolicy:'no-referrer',
       headers:{'Accept':'application/vnd.github+json','Authorization':'Bearer '+token,...(body?{'Content-Type':'application/json'}:{})},
       ...(body?{body:JSON.stringify(body)}:{})});
     if(!r.ok){
@@ -43,79 +43,49 @@ const DirectFeedback=(()=>{
     return true;
   }
   function parse(issue){
-    if(!issue||typeof issue.body!=='string'||!issue.body.startsWith(MARKER)||
-       issue.pull_request)return null;
-    // Once an issue claims to be genuine feedback, never silently discard a
-    // malformed row: the next PATCH would otherwise erase that original signal.
+    if(!issue||typeof issue.body!=='string'||!issue.body.startsWith(MARKER)||![PREFIX,LEGACY_PREFIX].some(p=>issue.title?.startsWith(p))||issue.pull_request)return null;
     try{
       const x=JSON.parse(issue.body.slice(MARKER.length));
-      if(x.origin!=='website-explicit'||x.test===true)return null;
-      if(x.version!==1||!/^\d{4}-\d{2}-\d{2}$/.test(x.date)||
-         ![PREFIX,LEGACY_PREFIX].some(p=>issue.title===p+x.date)||
-         !Array.isArray(x.ratings)||x.ratings.length>100)
-        throw Error('Ungültiges Format, Datum oder Version');
-      if(x.comment!==undefined&&typeof x.comment!=='string')
-        throw Error('Ungültiger allgemeiner Kommentar');
-      const seen=new Set();
-      const ratings=x.ratings.map(r=>{
-        if(!r||typeof r!=='object'||!/^[a-f0-9]{16}$/.test(r.id)||
-           !VALID.includes(r.rating??'')||
-           !['Heute wichtig','Vertiefungen'].includes(r.section)||
-           (r.reason!==undefined&&(typeof r.reason!=='string'||r.reason.length>600))||
-           (r.reason_codes!==undefined&&(!Array.isArray(r.reason_codes)||
-              r.reason_codes.some(code=>!CODES.includes(code))))||
-           (r.suggested_reasons!==undefined&&(!Array.isArray(r.suggested_reasons)||
-              r.suggested_reasons.some(v=>typeof v!=='string'||v.length>120))))
-          throw Error('Ungültige Artikelbewertung oder Rubrik');
-        if(seen.has(r.id))throw Error('Doppelte Artikel-ID');
-        seen.add(r.id);
-        return {id:r.id,value:r.rating||'',reason:r.reason||'',section:r.section,
-                reason_codes:codes(r),suggested_reasons:suggested(r)};
-      });
-      const feedback=x.comment||'';
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(x.date)||![PREFIX,LEGACY_PREFIX].some(p=>issue.title===p+x.date)||
+         !Array.isArray(x.ratings)||x.origin!=='website-explicit'||x.test===true)return null;
+      const ratings=x.ratings.filter(r=>r&&/^[a-f0-9]{16}$/.test(r.id)&&VALID.includes(r.rating||'')).map(r=>({
+        id:r.id,value:r.rating||'',reason:String(r.reason||'').slice(0,600),
+        section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen',reason_codes:codes(r),suggested_reasons:suggested(r)
+      }));
+      const feedback=typeof x.comment==='string'?x.comment:'';
       return {date:x.date,ratings,feedback,comment_suggestions:commentSuggestions(x.comment_suggestions,feedback),
         number:issue.number,updated_at:issue.updated_at||''};
-    }catch(e){
-      throw Error('Original-Feedback-Issue #'+issue.number+' ist nicht eindeutig lesbar: '+e.message+
-        '. Es wurde nichts stillschweigend verworfen.');
-    }
+    }catch(_){return null;}
   }
   async function feedbackHistory(token,transport=fetch){
-    const byIssue=new Map();
+    const out=[];
     for(let page=1;page<=20;page++){
       const rows=await request(token,'/issues?state=all&per_page=100&page='+page,'GET',undefined,transport);
       if(!Array.isArray(rows))throw Error('Ungültige GitHub-Feedback-Antwort');
-      for(const row of rows){
-        const v=parse(row);
-        if(!v)continue;
-        const previous=byIssue.get(v.number);
-        if(!previous||v.updated_at>=previous.updated_at)byIssue.set(v.number,v);
-      }
+      for(const row of rows){const v=parse(row);if(v)out.push(v);}
       if(rows.length<100)break;
-      if(page===20)throw Error('Feedback-Historie umfasst zu viele Seiten. Bitte Paginierung prüfen.');
     }
-    return [...byIssue.values()].sort((a,b)=>b.updated_at.localeCompare(a.updated_at));
+    return out.sort((a,b)=>b.updated_at.localeCompare(a.updated_at));
   }
   function readReceipts(store=localStorage){
     try{const v=JSON.parse(store.getItem(RECEIPTS_KEY)||'{}');return v&&typeof v==='object'?v:{};}
     catch(_){return {};}
   }
-  function uniqueFeedbackForDate(items,date){
-    // Pagination may repeat a record during concurrent updates; only
-    // different GitHub issue numbers constitute a real duplicate.
-    const current=[...new Map(items.filter(x=>x.date===date)
-      .map(x=>[x.number,x])).values()];
-    if(current.length>1)
-      throw Error('Mehrere gültige Feedback-Issues für '+date+' gefunden ('+
-        current.map(x=>'#'+x.number).join(', ')+
-        '). Die getrennten Rückmeldungen müssen zuerst zusammengeführt werden; es wurde nichts überschrieben.');
-    return current[0]||null;
-  }
   async function savedFeedback(date,token,store=localStorage,transport=fetch){
-    // A local receipt only identifies this browser's issue. Another device
-    // might have created a second valid issue for the same edition, so always
-    // inspect all canonical issues before selecting an editable issue.
-    return uniqueFeedbackForDate(await feedbackHistory(token,transport),date);
+    // Fast path: use the recorded private issue number. Still GET the canonical
+    // issue from GitHub, not a potentially stale browser cache.
+    const receipt=readReceipts(store)[date];
+    if(receipt && Number.isSafeInteger(receipt.number) && receipt.number>0){
+      try{
+        const current=parse(await request(token,'/issues/'+receipt.number,'GET',undefined,transport));
+        if(current?.date===date)return current;
+      }catch(err){
+        // Authorization failures must not be silently swallowed.
+        if(/ungültig oder abgelaufen|verweigert Zugriff/.test(err.message))throw err;
+      }
+    }
+    const items=await feedbackHistory(token,transport);
+    return items.find(x=>x.date===date)||null;
   }
   const COMPARISON_NOTE=/^\[V3-Vergleich (\d{4}-\d{2}-\d{2} [a-zA-Z0-9_-]{1,90}): (?:published|alternative|equal)\]$/;
   function preserveComparisonNotes(previous,incoming){
@@ -170,10 +140,8 @@ const DirectFeedback=(()=>{
       if(!r||typeof r.id!=='string'||!/^[a-f0-9]{16}$/.test(r.id)||
          !VALID.includes(r.value||'')||typeof r.reason!=='string'||r.reason.length>600)
         throw Error('Ungültige Artikelbewertung');
-      if(!['Heute wichtig','Vertiefungen'].includes(r.section)||intended.has(r.id))
-        throw Error('Ungültige oder doppelte Artikel-ID/Rubrik im Bewertungsentwurf');
       intended.set(r.id,{id:r.id,value:r.value||'',reason:r.reason,
-                         section:r.section,reason_codes:codes(r),suggested_reasons:suggested(r)});
+                         section:r.section==='Heute wichtig'?'Heute wichtig':'Vertiefungen',reason_codes:codes(r),suggested_reasons:suggested(r)});
     }
     const comment=feedback.trim();
     const appendText=options?.appendComment===undefined?'':String(options.appendComment).trim();
@@ -199,19 +167,11 @@ const DirectFeedback=(()=>{
           throw Error('Diese Artikelbewertung wurde auf einem anderen Gerät geändert. Bitte den aktuellen Stand neu laden und deine Änderung erneut auswählen.');
         byId.set(id,row);
       }
-      // An explicitly edited empty comment means "remove my prose", not "keep the old text".
-      // Rating-only saves must still preserve existing prose from other sessions.
-      if(options.replaceComment===true&&typeof options.baselineComment==='string'&&
-         String(base?.feedback||'').trim()!==options.baselineComment.trim()&&
-         String(base?.feedback||'').trim()!==comment)
-        throw Error('Dein allgemeiner Kommentar wurde auf einem anderen Gerät geändert. Bitte den aktuellen Stand neu laden.');
       const mergedComment=appendText?appendOnce(base?.feedback,appendText):
         options.comparisonOnly?mergeComparisonOnly(base?.feedback,comment):
-        options.replaceComment===true?preserveComparisonNotes(base?.feedback,comment):
         comment?preserveComparisonNotes(base?.feedback,comment):(base?.feedback||'');
       if(mergedComment.length>4000)throw Error('Der gespeicherte Kommentar überschreitet 4000 Zeichen. Bitte kürzen.');
-      if(!byId.size&&!mergedComment&&options.replaceComment!==true)
-        throw Error('Bitte mindestens eine Bewertung oder Feedback eingeben.');
+      if(!byId.size&&!mergedComment)throw Error('Bitte mindestens eine Bewertung oder Feedback eingeben.');
       const freshPhraseSource=appendText||comment;
       const newSuggestions=(appendText&&mergedComment===(base?.feedback||''))||options.comparisonOnly
         ?[]:commentSuggestions(options.commentSuggestions,freshPhraseSource);
@@ -234,10 +194,6 @@ const DirectFeedback=(()=>{
         receipts[date]=receipt;store.setItem(RECEIPTS_KEY,JSON.stringify(receipts));
       }catch(_){}
       const confirmed=await request(token,'/issues/'+result.number,'GET',undefined,transport);
-      // Two browsers may simultaneously observe no issue and both POST.
-      // GitHub Issues has no unique constraint; detect that race before
-      // reporting a confirmed first-time save.
-      if(!existing)uniqueFeedbackForDate(await feedbackHistory(token,transport),date);
       const verified=parse(confirmed);
       if(!verified)throw Error('Gespeichertes GitHub-Feedback konnte nicht nachgelesen werden.');
       const found=new Map(verified.ratings.map(row=>[row.id,row]));

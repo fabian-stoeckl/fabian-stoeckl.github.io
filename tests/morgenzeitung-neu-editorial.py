@@ -111,44 +111,6 @@ class EditorialEventTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"Duplicate"):
             mod.validate(ed)
 
-    def test_discovery_rejects_missing_original_source(self):
-        ed=self.edition()
-        ed["new_sources"]=[{"name":"New outlet","why":"New data access","example_url":"http://bad.example/story"}]
-        with self.assertRaisesRegex(ValueError,"HTTPS"):
-            mod.validate(ed)
-
-    def test_alternative_view_only_for_deep_dive_and_independent_url(self):
-        ed=self.edition()
-        alt={"title":"A strong alternative case","source":"Independent original",
-             "url":"https://example.org/other","why":"Different evidence for disputed mechanism"}
-        ed["headlines"][0]["alternative_view"]=alt
-        with self.assertRaisesRegex(ValueError,"only allowed for deep dives"):
-            mod.validate(ed)
-        del ed["headlines"][0]["alternative_view"]
-        feature=story("c"*16,"https://c.example/report")
-        feature.pop("region")
-        feature["topic"]="Economics"
-        feature["alternative_view"]=alt
-        ed["articles"]=[feature]
-        mod.validate(ed)
-        feature["alternative_view"]["url"]=feature["url"]
-        with self.assertRaisesRegex(ValueError,"different original"):
-            mod.validate(ed)
-        feature["alternative_view"]["url"]="http://bad.example/other"
-        with self.assertRaisesRegex(ValueError,"HTTPS"):
-            mod.validate(ed)
-
-    def test_future_ids_match_url_hash_without_changing_historic_ratings(self):
-        import hashlib
-        ed=self.edition()
-        ed["date"]="2026-11-05"
-        for row in ed["headlines"]:
-            row["id"]=hashlib.sha256(mod.canonical(row["url"]).encode()).hexdigest()[:16]
-        mod.validate(ed)
-        ed["headlines"][0]["id"]="a"*16
-        with self.assertRaisesRegex(ValueError,"SHA-256"):
-            mod.validate(ed)
-
 
 if __name__=="__main__":
     unittest.main()
