@@ -203,8 +203,17 @@ function render(){
   readerState.visibleHeadlines=selection.headlines;
   $('articles').replaceChildren();
   const lead=el('div',undefined,'lead-grid'),rest=el('div',undefined,'article-list');
-  readerState.visibleArticles.forEach((a,i)=>(i<3&&!a.treat?lead:rest).append(article(a,i)));
+  const regular=readerState.visibleArticles.filter(a=>!a.discovery);
+  const discoveries=readerState.visibleArticles.filter(a=>a.discovery).slice(0,2);
+  regular.forEach((a,i)=>(i<3&&!a.treat?lead:rest).append(article(a,i)));
   $('articles').append(lead,rest);
+  if(discoveries.length){
+    const newSection=el('section',undefined,'discovery-section');
+    newSection.append(el('h2','Neues'));
+    const newList=el('div',undefined,'article-list');
+    discoveries.forEach(a=>newList.append(article(a,undefined)));
+    newSection.append(newList);$('articles').append(newSection);
+  }
   $('article-count').textContent=readerState.visibleArticles.length;
   $('headline-count').textContent=readerState.visibleHeadlines.length;
   $('headlines').replaceChildren();
