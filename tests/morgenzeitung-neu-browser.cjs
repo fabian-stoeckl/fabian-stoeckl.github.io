@@ -110,7 +110,7 @@ const fs=require('node:fs');
    assert.equal(await page.locator('#articles .discovery-section').count(),1,'Neues appears only within features');
    assert.equal(await page.locator('#articles .discovery-section article').count(),2,'Exactly two optional discoveries');
    assert.equal(await page.locator('#articles > .discovery-section').count(),1,'Neues is a final section');
-   assert.equal(await page.locator('#articles').locator(':scope > :last-child').getAttribute('class'),'discovery-section','Neues follows regular features');
+   assert.equal(await page.locator('#articles > .discovery-section').evaluate(el=>el.previousElementSibling?.className),'article-list','Neues follows regular feature list');
    assert.equal(await page.locator('#articles .alternative-perspective').count(),1,'One optional counter-perspective');
    assert.match(await page.locator('#articles .alternative-perspective').innerText(),/Andere Perspektive/);
    assert.equal(await page.getByRole('link',{name:'Quelle: Independent analysis'}).getAttribute('href'),'https://example.org/alternative');
