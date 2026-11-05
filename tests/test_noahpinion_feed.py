@@ -78,6 +78,24 @@ class BlogFeedTests(unittest.TestCase):
         self.assertIn("second point", posts[0]["description"])
         self.assertTrue(CONTENT.endswith("encoded"))
 
+    def test_article_text_extraction_and_no_key_fallback(self):
+        from scripts.summarize_blogs import ArticleParser, enrich
+        from unittest.mock import patch
+        parser = ArticleParser()
+        parser.feed('<html><nav>Ignore menu</nav><article><h2>Main thesis</h2>'
+                    '<p>First argument with supporting evidence.</p>'
+                    '<script>ignore this script</script>'
+                    '<p>Second argument.</p></article></html>')
+        text = ' '.join(parser.parts)
+        self.assertIn('Main thesis', text)
+        self.assertIn('Second argument', text)
+        self.assertNotIn('Ignore menu', text)
+        self.assertNotIn('ignore this script', text)
+        data = {'posts': [{'title': 'Existing', 'description': 'Short excerpt'}]}
+        with patch.dict('os.environ', {'OPENAI_API_KEY': ''}):
+            self.assertEqual(enrich(data), data)
+            self.assertNotIn('summary_de', data['posts'][0])
+
     def test_html_stripping(self):
         self.assertEqual(excerpt("<p>One <em>two</em></p>"), "One two")
 
