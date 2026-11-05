@@ -65,6 +65,8 @@ const fs=require('node:fs');
      const payload=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/blogs.json','utf8'));
      // Simulate a retained RSS archive with 28 posts, including guest authors.
      payload.posts=payload.posts.slice(0,5);
+     payload.posts[0].summary_de='Der Beitrag untersucht die Wettbewerbsposition von Anthropic und die langfristigen Chancen sowie Risiken einer hohen Bewertung.';
+     payload.posts[0].summary_source='article';
      for(let n=5;n<28;n++)payload.posts.push({
        title:'Older Noahpinion entry '+n,
        url:'https://www.noahpinion.blog/p/test-archive-'+n,
@@ -83,6 +85,7 @@ const fs=require('node:fs');
    await page.locator('#tab-blogs').click();
    await page.waitForSelector('#blogs .blog-entry');
    assert.equal(await page.locator('#blogs .blog-entry').count(),5);
+   assert.match(await page.locator('#blogs .blog-entry .blog-description').first().innerText(),/Wettbewerbsposition von Anthropic/);
    assert.equal(await page.locator('#blogs .blog-more').count(),1);
    await page.locator('#blogs .blog-more').click();
    assert.equal(await page.locator('#blogs .blog-entry').count(),15);
