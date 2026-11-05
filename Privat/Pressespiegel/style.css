@@ -241,3 +241,8 @@ body.preferences-view .topline #profile-toggle{display:none!important}
 #blogs .blog-more{display:block;margin:24px auto 12px;padding:10px 20px;border:1px solid var(--accent);font-weight:650;color:var(--accent);background:transparent;border-radius:5px}
 #blogs .blog-more:hover,#blogs .blog-more:focus-visible{background:var(--ink);color:var(--paper)}
 #blogs .blog-end{text-align:center;margin:24px 0}
+
+/* Optional editorial enrichment; existing editions remain unchanged. */
+.alternative-perspective{margin:14px 0;padding:12px 16px;border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:5px;background:#234f6308;font-size:.9rem}
+.alternative-perspective p{margin:5px 0}.alternative-perspective a{font-size:.82rem}
+.discovery-section{margin-top:36px;border-top:2px solid var(--line);padding-top:12px}.discovery-section>h2{font-size:26px}
