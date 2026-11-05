@@ -82,7 +82,10 @@ def enrich(data):
     if not key:
         print("No OPENAI_API_KEY: retaining existing excerpts; no generated summaries.")
         return data
+    generated = 0
     for post in data.get("posts", []):
+        if generated >= 5:
+            break
         if post.get("summary_de") and post.get("summary_source") == "article":
             continue
         try:
@@ -95,6 +98,7 @@ def enrich(data):
             post["summary_de"] = summary
             post["summary_source"] = "article"
             post["summary_access"] = "visible_text_only"
+            generated += 1
             print("Summarized:", post["url"])
         except Exception as exc:
             print("Summary unavailable for", post.get("url"), type(exc).__name__)
