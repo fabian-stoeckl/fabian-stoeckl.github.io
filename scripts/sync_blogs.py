@@ -7,7 +7,10 @@ from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
-from scripts.summarize_blogs import enrich
+try:
+    from scripts.summarize_blogs import enrich
+except ModuleNotFoundError:
+    from summarize_blogs import enrich  # Direct script execution: python3 scripts/sync_blogs.py
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 from xml.etree import ElementTree as ET
