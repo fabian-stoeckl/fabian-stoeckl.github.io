@@ -28,7 +28,7 @@ const FeedbackSuggestions=(()=>{
       button.type='button';button.textContent=phrase;
       button.onclick=()=>{
         if(containsLine(field.value,phrase)||field.value.length+phrase.length+1>field.maxLength)return;
-        field.value+=(field.value.trim()?'\\n':'')+phrase;
+        field.value+=(field.value.trim()?'\n':'')+phrase;
         setSelected(field,[...getSelected(field),phrase]);
         field.dispatchEvent(new Event('input',{bubbles:true}));field.focus();
       };
@@ -65,7 +65,7 @@ const FeedbackSuggestions=(()=>{
       if(!response.ok)return;
       const file=await response.json();
       const data=JSON.parse(new TextDecoder().decode(
-        Uint8Array.from(atob(file.content.replace(/\\s/g,'')),x=>x.charCodeAt(0))));
+        Uint8Array.from(atob(file.content.replace(/\s/g,'')),x=>x.charCodeAt(0))));
       if(version!==request||DirectFeedback.readToken()!==token)return;
       if(data.version!==1||!Array.isArray(data.general_suggestions))return;
       personalized=[...new Set(data.general_suggestions.filter(x=>typeof x==='string')
