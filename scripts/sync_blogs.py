@@ -90,6 +90,7 @@ def merge_archive(fresh, previous):
     """Keep every valid previously collected post when it falls off the RSS window."""
     if not isinstance(previous, dict) or not isinstance(previous.get("posts"), list):
         raise ValueError("Stored blog archive is invalid; refusing to overwrite it")
+    old_summaries = {p.get('url'): p for p in previous['posts'] if isinstance(p, dict) and p.get('summary_source') == 'article' and p.get('summary_de')}
     seen = set()
     combined = []
     for post in [*fresh["posts"], *previous["posts"]]:
@@ -112,6 +113,9 @@ def merge_archive(fresh, previous):
                 not re.fullmatch(r"\d{4}-\d{2}-\d{2}", post["published_at"])):
             continue
         seen.add(key)
+        if url in old_summaries and not post.get('summary_de'):
+            post = {**post, 'summary_de': old_summaries[url]['summary_de'],
+                    'summary_source': 'article', 'summary_access': 'visible_text_only'}
         combined.append(post)
     combined.sort(key=lambda p: (p["published_at"], p.get("published_time", "")), reverse=True)
     fresh["posts"] = combined
