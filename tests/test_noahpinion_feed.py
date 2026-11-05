@@ -56,6 +56,23 @@ class BlogFeedTests(unittest.TestCase):
         self.assertEqual(merged["posts"][-1]["title"], "Older post")
         self.assertEqual(merged["posts"][0]["title"], "Recent 0")
 
+    def test_summary_metadata_survives_rss_refresh(self):
+        url = "https://www.noahpinion.blog/p/existing"
+        previous = {"posts": [{
+            "title": "Existing", "url": url, "published_at": "2026-11-01",
+            "summary_de": "English article summary.",
+            "summary_source": "article",
+            "summary_access": "visible_text_only",
+            "summary_generated_at": "2026-11-05T13:20:00Z"
+        }]}
+        fresh = {"posts": [{"title": "Existing updated", "url": url,
+                            "published_at": "2026-11-01", "description": "New RSS text"}]}
+        result = merge_archive(fresh, previous)["posts"][0]
+        self.assertEqual(result["summary_de"], "English article summary.")
+        self.assertEqual(result["summary_generated_at"], "2026-11-05T13:20:00Z")
+        self.assertEqual(result["summary_source"], "article")
+        self.assertEqual(result["description"], "New RSS text")
+
     def test_longer_preview_uses_article_feed_content(self):
         from scripts.sync_blogs import CONTENT
         text = ("A detailed first point explains the issue and why it matters. "

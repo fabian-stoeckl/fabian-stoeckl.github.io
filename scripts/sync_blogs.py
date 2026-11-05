@@ -113,8 +113,10 @@ def merge_archive(fresh, previous):
             continue
         seen.add(key)
         if url in old_summaries and not post.get('summary_de'):
-            post = {**post, 'summary_de': old_summaries[url]['summary_de'],
-                    'summary_source': 'article', 'summary_access': 'visible_text_only'}
+            original = old_summaries[url]
+            post = {**post, **{field: original[field] for field in (
+                'summary_de', 'summary_source', 'summary_access', 'summary_generated_at'
+            ) if field in original}}
         combined.append(post)
     combined.sort(key=lambda p: (p["published_at"], p.get("published_time", "")), reverse=True)
     fresh["posts"] = combined
