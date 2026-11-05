@@ -17,7 +17,7 @@ function blogPostKey(url){
   try{
     const target=new URL(url);
     if(target.protocol!=='https:'||!['www.noahpinion.blog','noahpinion.blog','noahpinion.substack.com'].includes(target.hostname))return null;
-    return target.pathname.replace(/\\/$/,'').toLowerCase();
+    return target.pathname.replace(/\/$/,'').toLowerCase();
   }catch(_){return null;}
 }
 function readHiddenBlogPosts(){
@@ -66,7 +66,7 @@ function renderBlogPosts(data,stale=false){
     item.append(remove);
     const h=el('h3');h.append(link(post.title,post.url));item.append(h);
     const details=[];
-    if(typeof post.published_at==='string'&&/^\\d{4}-\\d{2}-\\d{2}/.test(post.published_at))
+    if(typeof post.published_at==='string'&&/^\d{4}-\d{2}-\d{2}/.test(post.published_at))
       details.push(fmt(post.published_at.slice(0,10)));
     if(typeof post.author==='string'&&post.author.trim())
       details.push('Von '+post.author.trim().slice(0,110));
