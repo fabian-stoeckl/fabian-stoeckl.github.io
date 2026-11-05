@@ -71,8 +71,14 @@ function renderBlogPosts(data,stale=false){
     if(typeof post.author==='string'&&post.author.trim())
       details.push('Von '+post.author.trim().slice(0,110));
     if(details.length)item.append(el('p',details.join(' · '),'meta'));
-    if(typeof post.description==='string'&&post.description.trim())
+    const verifiedSummary=post.summary_source==='article'&&typeof post.summary_de==='string'&&post.summary_de.trim();
+    if(verifiedSummary){
+      item.append(el('p',post.summary_de.slice(0,1600),'blog-description'));
+      item.append(el('p','Zusammenfassung des zugänglichen Originaltexts · ggf. nur öffentlich sichtbarer Teil','small'));
+    }else if(typeof post.description==='string'&&post.description.trim()){
       item.append(el('p',post.description.slice(0,750),'blog-description'));
+      item.append(el('p','Automatischer RSS-Auszug · keine vollständige Inhaltsanalyse','small'));
+    }
     list.append(item);count++;
   }
   $('blog-count').textContent=count;
