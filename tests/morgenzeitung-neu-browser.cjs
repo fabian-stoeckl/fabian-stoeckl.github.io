@@ -197,11 +197,11 @@ const fs=require('node:fs');
    assert.equal(prefSuggestion,suggestion);
    assert.ok(revised.comment.includes('Eigenständiger Hinweis von der Präferenzseite.'));
    // Submit again after a new edition appears while the preferences page stays open.
-   overrideLatestDate='2026-11-05';
+   overrideLatestDate='2026-11-06';
    await pref.fill('Rückmeldung nach neuer Ausgabe ohne Neuladen der Präferenzseite.');
    await page.locator('#preference-comment-form button[type=submit]').click();
-   await page.waitForFunction(()=>document.querySelector('#preference-comment-status').textContent.includes('2026-11-05'));
-   const newIssue=issues.find(i=>i.title.endsWith('2026-11-05'));
+   await page.waitForFunction(()=>document.querySelector('#preference-comment-status').textContent.includes('2026-11-06'));
+   const newIssue=issues.find(i=>i.title.endsWith('2026-11-06'));
    assert.ok(newIssue,'The newest edition must receive the newly submitted preference comment');
    assert.match(newIssue.body,/Rückmeldung nach neuer Ausgabe ohne Neuladen/);
    assert.ok(!issues[0].body.includes('Rückmeldung nach neuer Ausgabe ohne Neuladen'),
