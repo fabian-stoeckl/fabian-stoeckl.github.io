@@ -441,7 +441,7 @@ const index=await GitHubPaper.json('./data/index.json');latestDate=index.dates[0
 for(const d of index.dates){const o=el('option',d);o.value=d;$('date').append(o);}
 $('operating-state').textContent='Ausgaben aus GitHub · Feedback wird nach einmaliger Verbindung direkt auf GitHub gespeichert.';
 if(!latestDate){status('Noch keine veröffentlichte Ausgabe verfügbar.');return;}
-edition=await GitHubPaper.edition(latestDate);render();void loadBlogs();await RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken());await restoreSavedRatings();return;
+edition=await GitHubPaper.edition(latestDate);render();void loadBlogs();await RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken());await FeedbackSuggestions.loadPrivateSuggestions(DirectFeedback.readToken());await restoreSavedRatings();return;
 }catch(e){status('Pressespiegel nicht erreichbar. '+e.message);}})();
 
 $('feedback').addEventListener('input',()=>{
@@ -473,7 +473,7 @@ $('github-setup-form').onsubmit=async e=>{
     $('github-setup-status').textContent='';
     refreshGitHubConnection();
     feedbackStatus('GitHub verbunden. Dein nächstes Feedback lässt sich mit einem Klick speichern.');
-    await RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken());
+    await RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken());await FeedbackSuggestions.loadPrivateSuggestions(DirectFeedback.readToken());
     await restoreSavedRatings();
   }catch(err){
     $('github-setup-status').textContent=err.message+' Kein Token gespeichert.';
@@ -483,6 +483,7 @@ const disconnect=$('github-disconnect');
 if(disconnect)disconnect.onclick=()=>{
   DirectFeedback.clearToken();
   RatingReasons.loadPrivateSuggestions('');
+  FeedbackSuggestions.loadPrivateSuggestions('');
   refreshGitHubConnection();
   feedbackStatus('GitHub-Verbindung auf diesem Gerät entfernt. Bereits gespeicherte GitHub-Rückmeldungen bleiben erhalten.');
 };
