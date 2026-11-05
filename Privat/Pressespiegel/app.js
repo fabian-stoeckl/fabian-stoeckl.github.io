@@ -174,6 +174,17 @@ function article(a,index,section='Vertiefungen'){
       body.append(more);
     }catch(_){/* Invalid optional link cannot displace the original article. */}
   }
+  if(!isHeadline&&a.alternative_perspective){
+    const p=a.alternative_perspective;
+    if(typeof p.summary==='string'&&typeof p.source==='string'&&typeof p.url==='string'){
+      try{
+        const aside=el('aside',undefined,'alternative-perspective');
+        aside.append(el('strong','Andere Perspektive'),el('p',p.summary));
+        aside.append(link('Quelle: '+p.source,p.url));
+        body.append(aside);
+      }catch(_){/* Optional perspective must never hide the original article. */}
+    }
+  }
   if(!isHeadline&&typeof a.novelty_explanation==='string'&&a.novelty_explanation.trim())
     body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty_explanation,'novelty'));
   body.append(githubRating(a,section));node.append(intro,body);return node;
