@@ -87,3 +87,9 @@ Eigenständige neue Zeitung: `Privat/Pressespiegel/`. Die vertraute klassische V
 ## 06.11.2026 – Ausfalltoleranz bei Quellenzugriffen
 - Ausdrückliche Nutzerentscheidung: einzelne nicht erreichbare Originalartikel dürfen keinen sofortigen Abbruch der gesamten Zeitung auslösen. Zunächst erneut versuchen, Original über kanonische Verlagsseite/Feed/Suche identifizieren, getrennte verifizierbare Kontextquellen prüfen, Zugriffstiefe ehrlich begrenzen, Kandidat gegebenenfalls ersetzen und mit der restlichen Recherche/Publikation fortfahren.
 - Bei GitHub-/CI-/Netzfehlern kontrollierte Wiederholungen mit Zustandsprüfung; kein Umgehen fehlgeschlagener Tests und keine Scheinveröffentlichung. Bestehende valide Ausgabe, echtes Feedback und Artikel-IDs bleiben geschützt.
+
+## 06.11.2026 – Phase 2: Belegbasierte Blog-Zusammenfassungen
+- 100–150 Wörter in Originalsprache EN/DE (andere DE), nur nach Sichtung des zugänglichen Originaltexts. Kein API-Zwang, kein künstliches Verlängern von RSS-Auszügen.
+- Nach erfolgreicher Zeitungsveröffentlichung darf die bestehende Redaktion bis zu fünf noch nicht bearbeitete Blogbeiträge (inklusive Gastautoren) sorgfältig lesen und zusammenfassen. Bei Zugriffsproblemen neue Zugriffe/alternativen Nachweis und dann nächsten Kandidaten bearbeiten; keinen gesamten Produktionslauf abbrechen.
+- Ausschließlich Datenbranch `blogs-live` mit Feldern `summary_text`, `summary_source`, `summary_access`, `summary_language`, `summary_evidence_url`, `summary_generated_at` ergänzen; bestehender RSS-Updater erhält geprüfte Texte und archivierte Posts.
+- Leser zeigt geprüfte Zusammenfassung und RSS-Auszug getrennt an. Löschliste, Rückholfenster, Zeitung, echtes Feedback und andere Website-Bereiche unverändert.

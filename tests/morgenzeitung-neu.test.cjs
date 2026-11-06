@@ -37,6 +37,8 @@ assert.match(page,/id="blog-trash-list"/);
 assert.match(fs.readFileSync(path+'app.js','utf8'),/pressespiegel:deleted-blog-posts:v1/);
 assert.match(fs.readFileSync(path+'app.js','utf8'),/blogCrossIcon/);
 assert.match(fs.readFileSync(path+'style.css','utf8'),/place-items:center/);
+assert.match(fs.readFileSync(path+'app.js','utf8'),/blog-summary-origin/);
+assert.match(fs.readFileSync('scripts/sync_blogs.py','utf8'),/prior_summaries/);
 assert.match(fs.readFileSync(path+'rating-reasons.js','utf8'),/begruendungsvorschlaege.json/);
 assert.match(fs.readFileSync(path+'app.js','utf8'),/details.open=true/);
 assert.match(pref,/id="profile-text"/);

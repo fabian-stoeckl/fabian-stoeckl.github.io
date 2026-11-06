@@ -151,8 +151,26 @@ function renderBlogPosts(data,stale=false){
     if(typeof post.author==='string'&&post.author.trim())
       details.push('Von '+post.author.trim().slice(0,110));
     if(details.length)item.append(el('p',details.join(' · '),'meta'));
-    if(typeof post.description==='string'&&post.description.trim())
+    const verifiedText=(typeof post.summary_text==='string'&&post.summary_text.trim())||
+      (typeof post.summary_de==='string'&&post.summary_de.trim())||'';
+    const verifiedWords=verifiedText.trim().split(/\s+/).length;
+    const verifiedLang=post.summary_language||
+      (typeof post.summary_de==='string'?'de':null);
+    const verified=post.summary_source==='article'&&
+      post.summary_access==='visible_text_only'&&
+      (verifiedLang==='en'||verifiedLang==='de')&&
+      verifiedWords>=100&&verifiedWords<=150&&
+      typeof post.summary_generated_at==='string'&&
+      Number.isFinite(Date.parse(post.summary_generated_at))&&
+      (!post.summary_evidence_url||blogPostKey(post.summary_evidence_url)===blogPostKey(post.url));
+    if(verified){
+      const description=el('p',verifiedText.slice(0,2400),'blog-description blog-summary');
+      description.lang=verifiedLang;item.append(description);
+      item.append(el('p','Redaktionelle Zusammenfassung des zugänglichen Originaltexts · ggf. nur öffentlich sichtbarer Teil','small blog-summary-origin'));
+    }else if(typeof post.description==='string'&&post.description.trim()){
       item.append(el('p',post.description.slice(0,320),'blog-description'));
+      item.append(el('p','RSS-Auszug · keine geprüfte Zusammenfassung des Originalartikels','small blog-summary-origin'));
+    }
     list.append(item);count++;
   }
   $('blog-count').textContent=count;

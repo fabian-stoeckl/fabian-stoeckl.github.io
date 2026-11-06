@@ -264,3 +264,7 @@ body.preferences-view .topline #profile-toggle{display:none!important}
 .blog-trash-entry .blog-trash-name{margin:0 0 6px;font:18px/1.35 Georgia,serif}
 .blog-trash-entry .small{margin:4px 0 10px}
 @media(max-width:480px){.blog-trash-dialog{padding:18px}.blog-entry{padding-right:42px}}
+
+/* Phase 2: distinguish source-checked original-language summary from RSS preview. */
+#blogs .blog-summary{font-size:15px;line-height:1.7;max-width:68ch}
+#blogs .blog-summary-origin{margin:8px 0 0;font-size:12px;color:var(--muted)}
