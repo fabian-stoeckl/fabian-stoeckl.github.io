@@ -1,8 +1,8 @@
 {
   "date": "2026-11-06",
-  "researched_at": "2026-11-06T09:51:00+01:00",
+  "researched_at": "2026-11-06T11:23:04+01:00",
   "preview": false,
-  "editorial_note": "Kontrollierter vollständiger Produktions-Rerun nach dem Rollback auf den stabilen Stand vom 5. November. Die Ausgabe wurde von Grund auf neu zusammengestellt; bereits geprüfte Originalbelege im privaten Dossier wurden erneut redaktionell bewertet. Bei Reuters, FT und AP beruht die Zusammenfassung teilweise auf zugänglichen Vorschauen (evidence_level: teaser); kein ungelesener Volltext wird behauptet. Nachrichten und Marktstände können sich ändern. Die Auswahl verzichtet bewusst auf Füllartikel.",
+  "editorial_note": "Vollständiger Phase-1-Neulauf mit erneuter Quellenprüfung und Alternativrecherche. Drei nicht ausreichend verifizierbare AP-Artikel wurden einzeln entfernt und durch überprüfbare Reuters-Originale ersetzt. Fünf neue Nachrichten und drei Vertiefungen ergänzt. ORF und Guardian direkt gelesen; Reuters und FT nur mit tatsächlich zugänglichen Vorschauen, als teaser markiert. Intraday-Marktstände sind keine Schlusskurse. Keine künstlichen Bewertungen oder Füllartikel.",
   "articles": [
     {
       "id": "5e82ffe12693a038",
@@ -80,19 +80,52 @@
       "article_type": "analysis",
       "topic": "Energy security and European industry",
       "evidence_level": "teaser"
+    },
+    {
+      "id": "0227ec5204c93bdc",
+      "title": "Cop31 will expose the conflicts and contradictions of the world’s fossil fuel reliance",
+      "url": "https://www.theguardian.com/environment/2026/nov/06/cop31-coal-turkey-fossil-fuel-reliance",
+      "published_at": "2026-11-06",
+      "summary": "Fiona Harvey examines the tensions surrounding COP31: Turkey hosts while Australia chairs negotiations, and both remain tied to coal. The analysis explores electrification, climate finance and just transition conflicts, not outcomes of a conference yet to begin.",
+      "source": "The Guardian",
+      "topic": "Climate policy and political economy",
+      "evidence_level": "read",
+      "article_type": "analysis"
+    },
+    {
+      "id": "42ecab1da9eab3bd",
+      "title": "‘Countries are defying gravity’: how much longer can global economy resist chaos?",
+      "url": "https://www.theguardian.com/business/2026/oct/17/imf-warns-scale-subsidies-weather-global-chaos-untenable",
+      "published_at": "2026-10-17",
+      "summary": "The Guardian examines the IMF warning that economic resilience is costly: emergency energy support amounts to roughly 0.5% of global GDP while rising debts and deficits leave less room for the next shock.",
+      "source": "The Guardian",
+      "topic": "Global economy and fiscal sustainability",
+      "evidence_level": "read",
+      "article_type": "analysis"
+    },
+    {
+      "id": "40f25ce6cdf9268f",
+      "title": "China to raise FX reserve requirement to slow yuan's rally",
+      "url": "https://www.reuters.com/world/asia-pacific/china-raise-forex-deposit-reserve-ratio-6-starting-november-15-2026-11-03/",
+      "published_at": "2026-11-03",
+      "summary": "China's central bank plans to increase the foreign-exchange deposit reserve ratio from 4% to 6% on 15 November, a measure intended to manage currency liquidity and temper yuan appreciation.",
+      "source": "Reuters",
+      "topic": "China and international monetary policy",
+      "evidence_level": "teaser",
+      "article_type": "analysis"
     }
   ],
   "headlines": [
     {
       "id": "a2b8ff2a3bf33454",
-      "title": "Stocker in China: Gespräche über Wirtschaftsbeziehungen",
+      "title": "Stocker trifft Chinas Premier Li; Gespräch mit Xi angekündigt",
       "url": "https://orf.at/stories/3447374/",
       "source": "ORF",
       "published_at": "2026-11-06",
-      "summary": "Bundeskanzler Stocker besucht China; Gespräche über Wirtschaftsbeziehungen stehen im Mittelpunkt. Das Treffen mit Staatspräsident Xi war zum Berichtszeitpunkt angekündigt und wird nicht als bereits erfolgt dargestellt.",
+      "summary": "Bundeskanzler Stocker wurde in Peking von Premier Li Qiang empfangen. Die Wirtschaftsbeziehungen stehen im Mittelpunkt; das Gespräch mit Staatspräsident Xi war zum Berichtszeitpunkt für den Nachmittag angekündigt.",
       "article_type": "report",
       "region": "Österreich",
-      "evidence_level": "teaser"
+      "evidence_level": "read"
     },
     {
       "id": "a2b5df2a3bf0c81d",
@@ -166,29 +199,7 @@
       "url": "https://www.reuters.com/markets/europe/european-shares-set-fall-global-ai-rout-gathers-pace-2026-11-06/",
       "source": "Reuters",
       "published_at": "2026-11-06",
-      "summary": "The STOXX 600 fell about 1.6% early on Friday as the global tech sell-off reached Europe. European indexes have less direct exposure to AI stocks than US and Asian markets; market levels may change.",
-      "article_type": "report",
-      "region": "International",
-      "evidence_level": "teaser"
-    },
-    {
-      "id": "4a1d11d6bf79a764",
-      "title": "Ukraine und Russland setzen Luftangriffe fort; Diplomatie läuft",
-      "url": "https://apnews.com/article/0b975a30f862731346e7e1d098a8d538",
-      "source": "Associated Press",
-      "published_at": "2026-11-06",
-      "summary": "Russia and Ukraine exchanged further air attacks as negotiators discussed Ukraine's reconstruction, financing and security guarantees. Some casualty and drone figures come from the warring parties and should be treated as attributed claims.",
-      "article_type": "report",
-      "region": "International",
-      "evidence_level": "teaser"
-    },
-    {
-      "id": "1463094b91f1f6cd",
-      "title": "COP31: Klimafinanzierung und Energiesicherheit im Fokus",
-      "url": "https://apnews.com/article/6ce625b0e3d4ed0ab093df4e5f9c86ad",
-      "source": "Associated Press",
-      "published_at": "2026-11-06",
-      "summary": "Ahead of COP31 in Antalya, climate finance, implementation of earlier pledges and the transition away from fossil fuels are key issues. Energy-price shocks and geopolitical tensions complicate negotiations; no conference outcome is implied.",
+      "summary": "European shares fell on Friday as the global technology sell-off spread to Europe. Reuters reported the STOXX 600 down around 1% at 09:19 GMT, an intraday snapshot rather than a closing price.",
       "article_type": "report",
       "region": "International",
       "evidence_level": "teaser"
@@ -205,12 +216,56 @@
       "evidence_level": "teaser"
     },
     {
-      "id": "4627122377ca4b1b",
-      "title": "Demokratischer Wahlerfolg verändert Machtbalance in Washington",
-      "url": "https://apnews.com/article/f1e19f47b21ec9dc57d0c4929b29b002",
-      "source": "Associated Press",
+      "id": "9ba84324cf5ae9b5",
+      "title": "Bank of England raises interest rates to 4%",
+      "url": "https://www.reuters.com/world/uk/view-bank-england-delivers-first-rate-hike-three-years-gilt-yields-rise-2026-11-05/",
+      "source": "Reuters",
+      "published_at": "2026-11-05",
+      "summary": "The Bank of England raised rates by 25 basis points to 4%, its first increase in more than three years, by an 8–1 vote. Persistent energy-driven inflation remains a concern.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "357db913eea583e9",
+      "title": "High debt and non-banks could constrain ECB, Schnabel warns",
+      "url": "https://www.reuters.com/legal/transactional/high-debt-rise-non-banks-risk-tying-ecbs-hands-schnabel-says-2026-11-05/",
+      "source": "Reuters",
+      "published_at": "2026-11-05",
+      "summary": "ECB board member Isabel Schnabel warned that high public debt and leveraged non-bank investors could amplify financial instability and complicate monetary policy.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "28edf2eb357abf1a",
+      "title": "Global equity funds post seventh straight week of inflows",
+      "url": "https://www.reuters.com/world/china/global-markets-flows-graphic-2026-11-06/",
+      "source": "Reuters",
       "published_at": "2026-11-06",
-      "summary": "The Democratic midterm victories have shifted the balance of power in Congress and increased opportunities for oversight. Inflation, energy costs and the Iran war shaped the election; future policy outcomes remain uncertain.",
+      "summary": "Global equity funds attracted $38.63 billion in the week to 4 November. The reporting period precedes the latest sharp tech-stock sell-off.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "3fe98824876c131d",
+      "title": "Tech selloff wipes out hedge fund gains",
+      "url": "https://www.reuters.com/world/china/tech-selloff-wipes-out-hedge-fund-gains-prompting-risk-cuts-layoffs-2026-11-06/",
+      "source": "Reuters",
+      "published_at": "2026-11-06",
+      "summary": "Technology-focused equity long-short hedge funds fell more than 4% on Thursday, Reuters reports. Some managers are cutting risk and staff after the market reversal.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "9c5e4b28b9bc8646",
+      "title": "Central banks diverge as inflation risks persist",
+      "url": "https://www.reuters.com/world/asia-pacific/global-markets-central-banks-graphic-2026-11-05/",
+      "source": "Reuters",
+      "published_at": "2026-11-05",
+      "summary": "The Bank of England raised rates while the Federal Reserve and ECB held steady. Reuters compares how major central banks weigh persistent inflation against growth risks.",
       "article_type": "report",
       "region": "International",
       "evidence_level": "teaser"
