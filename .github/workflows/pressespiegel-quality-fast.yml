@@ -1,0 +1,24 @@
+name: Pressespiegel quality guard (fast)
+on:
+  pull_request:
+    paths:
+      - 'scripts/morgenzeitung_neu.py'
+      - 'tests/morgenzeitung-neu-editorial.py'
+      - 'Privat/Pressespiegel/data/**'
+      - '.github/workflows/pressespiegel-quality-fast.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate published edition structure and research diagnostics
+        run: python scripts/morgenzeitung_neu.py verify
+      - name: Regression tests without browser installation
+        run: python tests/morgenzeitung-neu-editorial.py -v
