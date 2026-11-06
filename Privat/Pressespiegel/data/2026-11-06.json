@@ -2,7 +2,7 @@
   "date": "2026-11-06",
   "researched_at": "2026-11-07T00:08:00+01:00",
   "preview": false,
-  "editorial_note": "Kontrollierter vollständiger Morgen-Neubau der Ausgabe vom 6. November, tatsächlich recherchiert nach Mitternacht am 7. November (Wien). Die bisherige Auswahl wurde neu redaktionell abgewogen: eine veraltete Stocker-Xi-Ankündigung und zwei redundante internationale Finanzmarkt-Meldungen wurden gestrichen, zwei aktuelle Statistik-Austria-Originalmeldungen aufgenommen. Eine ältere allgemeine Guardian-Analyse wurde durch eine aktuelle Reuters-Analyse zur EU-Klimaresilienz und Finanzierung ersetzt. 19 Nachrichten und 15 Vertiefungen, darunter eine begründete Neues-Perspektive und eine eigenständig belegte Gegenposition. Vorhandene Artikel-IDs/URLs unverändert bei übernommenen Stücken; neue IDs nur für neue Originalartikel. Keine privaten Bewertungen, Kommentare oder Profilangaben in der Ausgabe. Echte Originalbelege, redaktionelle Auswahl und Zugriffsgrenzen im privaten Dossier PR #93. Der ausgefallene additive PR #339 wurde nicht als Basis benutzt. Quelle Statistik Austria direkt gelesen; Reuters-Klimaresilienz über verifizierten indexierten Auszug, daher evidence_level teaser. Kein vorgetäuschter Frühmorgenzeitpunkt.",
+  "editorial_note": "Kontrollierter vollständiger Morgen-Neubau der Ausgabe vom 6. November, tatsächlich recherchiert nach Mitternacht am 7. November (Wien). Die bisherige Auswahl wurde neu redaktionell abgewogen: eine veraltete Stocker-Xi-Ankündigung und zwei redundante internationale Finanzmarkt-Meldungen wurden gestrichen, zwei aktuelle Statistik-Austria-Originalmeldungen aufgenommen. Eine ältere allgemeine Guardian-Analyse wurde durch eine aktuelle Reuters-Analyse zur EU-Klimaresilienz und Finanzierung ersetzt. 19 Nachrichten und 15 Vertiefungen, darunter eine begründete Neues-Perspektive und eine eigenständig belegte Gegenposition. Vorhandene Artikel-IDs/URLs unverändert bei übernommenen Stücken; neue IDs nur für neue Originalartikel. Keine privaten Bewertungen, Kommentare oder Profilangaben in der Ausgabe. Echte Originalbelege, redaktionelle Auswahl und Zugriffsgrenzen im privaten Dossier PR #93. Der ausgefallene additive PR #339 wurde nicht als Basis benutzt. Statistik-Austria-Großhandelspreisindex direkt gelesen; Stellen-PDF selbst nicht abrufbar, Kennzahlen durch aktuelle Statistik-Austria-Veröffentlichungsübersicht und weitere Berichterstattung verifiziert, daher teaser. Reuters-Klimaresilienz über verifizierten indexierten Auszug, daher teaser. Kein vorgetäuschter Frühmorgenzeitpunkt.",
   "articles": [
     {
       "id": "5e82ffe12693a038",
@@ -425,7 +425,7 @@
       "summary": "Laut Statistik Austria waren im dritten Quartal 2026 durchschnittlich 121.900 Stellen unbesetzt, um 11,8 Prozent weniger als ein Jahr zuvor und um 1,2 Prozent weniger als im Vorquartal. Die Offene-Stellen-Quote sank auf 2,8 Prozent. Die Zahlen messen die Arbeitskräftenachfrage und sind nicht mit der Arbeitslosenquote gleichzusetzen.",
       "article_type": "report",
       "region": "Österreich",
-      "evidence_level": "read",
+      "evidence_level": "teaser",
       "event_key": "austria-job-vacancies-q3-2026"
     }
   ]
