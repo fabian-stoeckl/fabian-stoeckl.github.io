@@ -1,8 +1,8 @@
 {
   "date": "2026-11-06",
-  "researched_at": "2026-11-06T15:00:00Z",
+  "researched_at": "2026-11-06T15:57:00Z",
   "preview": false,
-  "editorial_note": "Kontrollierter E2E-Produktionsneulauf nach unabhängiger Nachrecherche: Fünf zusätzliche belegte Originalmeldungen (österreichische Einkommenslücke, Copernicus-Temperaturbilanz, EU-Ratsposition zu Methan, US-Arbeitsmarktdaten, Ukraine-Diplomatie) und eine zusätzliche Reuters-Vertiefung zum Ölmarkt. Vorherige 14 Nachrichten/10 Vertiefungen und sämtliche alten Artikel-IDs/URLs bleiben erhalten; gemeinsame Marktanlässe sind redaktionell mit event_key und eigenständigen Beiträgen gekennzeichnet. Keine endgültigen Beschlüsse aus Ankündigungen oder Ratspositionen abgeleitet. Originalsprachige Zusammenfassungen. Keine künstlichen Bewertungen und keine Themenausschlüsse. Vollständige Originalbelege für die neuen Beiträge im privaten Dossier PR #76; zu älteren Beiträgen gelten deren dokumentierte ursprüngliche Zugriffsgrenzen. Unbeaufsichtigter redaktioneller Nachmittags-Rerun: neues bestätigtes Xi-Treffen (ORF ZIB 13:00) als eigenständige Nachmittagsentwicklung; die Vormittagsmeldung und ihre Identität bleiben unverändert. Neue Quelle im privaten Dossier PR #78. Keine künstlichen Bewertungen; keine Änderungen an anderen Bereichen. Phase-4-Neulauf: unabhängige Recherche über IEA/Reuters-Erneuerbaren-Prognosen und Eurozonen-Einzelhandelsdaten des Wall Street Journal (Originalauszug). Zwei eigenständige Vertiefungen mit Originalsprachen und ausgewiesenen Zugriffsgrenzen hinzugefügt; Reuters-Makroanalyse nach redaktioneller Dublettenabwägung nicht aufgenommen. Quellenhäufungen sind Warnhinweise, keine Quoten. Privates Recherche-/Quellendossier PR #79, keine Änderung an authentischem Feedback oder anderen Bereichen.",
+  "editorial_note": "Kontrollierter E2E-Produktionsneulauf nach unabhängiger Nachrecherche: Fünf zusätzliche belegte Originalmeldungen (österreichische Einkommenslücke, Copernicus-Temperaturbilanz, EU-Ratsposition zu Methan, US-Arbeitsmarktdaten, Ukraine-Diplomatie) und eine zusätzliche Reuters-Vertiefung zum Ölmarkt. Vorherige 14 Nachrichten/10 Vertiefungen und sämtliche alten Artikel-IDs/URLs bleiben erhalten; gemeinsame Marktanlässe sind redaktionell mit event_key und eigenständigen Beiträgen gekennzeichnet. Keine endgültigen Beschlüsse aus Ankündigungen oder Ratspositionen abgeleitet. Originalsprachige Zusammenfassungen. Keine künstlichen Bewertungen und keine Themenausschlüsse. Vollständige Originalbelege für die neuen Beiträge im privaten Dossier PR #76; zu älteren Beiträgen gelten deren dokumentierte ursprüngliche Zugriffsgrenzen. Unbeaufsichtigter redaktioneller Nachmittags-Rerun: neues bestätigtes Xi-Treffen (ORF ZIB 13:00) als eigenständige Nachmittagsentwicklung; die Vormittagsmeldung und ihre Identität bleiben unverändert. Neue Quelle im privaten Dossier PR #78. Keine künstlichen Bewertungen; keine Änderungen an anderen Bereichen. Phase-4-Neulauf: unabhängige Recherche über IEA/Reuters-Erneuerbaren-Prognosen und Eurozonen-Einzelhandelsdaten des Wall Street Journal (Originalauszug). Zwei eigenständige Vertiefungen mit Originalsprachen und ausgewiesenen Zugriffsgrenzen hinzugefügt; Reuters-Makroanalyse nach redaktioneller Dublettenabwägung nicht aufgenommen. Quellenhäufungen sind Warnhinweise, keine Quoten. Privates Recherche-/Quellendossier PR #79, keine Änderung an authentischem Feedback oder anderen Bereichen. Phase-5-Kontrolllauf: IEA-Primärbericht zu Netzanschluss-Warteschlangen nach Originalsichtung ergänzt; überraschende Speicher-/Hybrid-Dynamik als genau ein Neues-Beitrag mit regulärer Vertiefungs-ID markiert. Private Belege PR #81, Backup-Branches erhalten; keine alten Artikel oder Feedback-Stimmen verändert.",
   "articles": [
     {
       "id": "5e82ffe12693a038",
@@ -159,6 +159,20 @@
       "topic": "Eurozone consumer demand and economic growth",
       "evidence_level": "teaser",
       "event_key": "eurozone-retail-sales-september-2026"
+    },
+    {
+      "id": "7e299ca7c1d8d177",
+      "title": "Executive summary – Renewables 2026",
+      "url": "https://www.iea.org/reports/renewables-2026/executive-summary",
+      "source": "International Energy Agency",
+      "published_at": "2026-11-06",
+      "summary": "The IEA reports that advanced-stage renewable grid connection queues rose 60% to 3,000 GW over the past year, with battery and hybrid applications accounting for the entire increase. At the same time, stricter queue management in India, the UK and the US removed almost half of early-stage standalone wind and solar projects from queues. The surprising combination suggests that queue growth alone can obscure changes in project mix and regulatory screening; the report does not imply that grid bottlenecks have disappeared.",
+      "article_type": "analysis",
+      "topic": "Electricity grids, investment incentives and regulatory design",
+      "evidence_level": "read",
+      "event_key": "iea-renewables-outlook-2026-2031",
+      "distinct_contribution": "Unlike the Reuters capacity forecast overview, this primary-source analysis isolates the unexpected shift in grid-queue composition and the effects of screening speculative projects.",
+      "new_perspective": "A 60% rise in renewable grid queues sounds like worsening wind and solar congestion, yet the IEA finds the entire increase came from storage and hybrid projects while queue reforms removed early-stage wind/solar applications. That changes how infrastructure bottlenecks and regulatory investment signals should be interpreted."
     }
   ],
   "headlines": [
