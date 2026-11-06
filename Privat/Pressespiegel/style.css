@@ -241,3 +241,26 @@ body.preferences-view .topline #profile-toggle{display:none!important}
 #blogs .blog-more{display:block;margin:24px auto 12px;padding:10px 20px;border:1px solid var(--accent);font-weight:650;color:var(--accent);background:transparent;border-radius:5px}
 #blogs .blog-more:hover,#blogs .blog-more:focus-visible{background:var(--ink);color:var(--paper)}
 #blogs .blog-end{text-align:center;margin:24px 0}
+
+/* Phase 1: compact accessible X button and independent deleted-post dialog. */
+.blog-heading{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
+.blog-heading h2{flex:1 1 200px}
+.blog-heading>p{flex-basis:100%;order:3}
+#blogs .blog-trash-open{margin-left:auto;border:1px solid var(--line);border-radius:18px;background:transparent;color:var(--muted);font:inherit;font-size:.83rem;padding:7px 11px;cursor:pointer}
+#blogs .blog-trash-open:hover,#blogs .blog-trash-open:focus-visible{border-color:var(--ink);color:var(--ink)}
+.blog-entry{position:relative;padding-right:46px}
+.blog-entry .blog-delete{position:absolute;top:19px;right:0;display:grid;place-items:center;width:34px;height:34px;padding:0;margin:0;border:1px solid var(--line);border-radius:50%;background:transparent;color:var(--muted);cursor:pointer;line-height:0}
+.blog-entry .blog-delete svg{display:block;flex:none}
+.blog-entry .blog-delete:hover,.blog-entry .blog-delete:focus-visible{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+#blogs button:focus-visible,.blog-trash-dialog button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.blog-trash-dialog{width:min(580px,calc(100vw - 28px));max-height:min(80vh,720px);overflow-y:auto;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);box-shadow:0 18px 60px #0004}
+.blog-trash-dialog::backdrop{background:rgba(25,22,18,.55)}
+.blog-trash-header{display:flex;justify-content:space-between;align-items:start;gap:12px}
+.blog-trash-header h2{margin:0;font:clamp(21px,4vw,28px)/1.25 Georgia,serif}
+.blog-trash-header button,.blog-restore{padding:7px 12px;border-radius:6px;border:1px solid var(--accent);background:transparent;color:var(--accent);font:inherit;cursor:pointer}
+.blog-trash-header button:hover,.blog-restore:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.blog-trash-list{margin-top:15px}
+.blog-trash-entry{padding:16px 0;border-top:1px solid var(--line)}
+.blog-trash-entry .blog-trash-name{margin:0 0 6px;font:18px/1.35 Georgia,serif}
+.blog-trash-entry .small{margin:4px 0 10px}
+@media(max-width:480px){.blog-trash-dialog{padding:18px}.blog-entry{padding-right:42px}}
