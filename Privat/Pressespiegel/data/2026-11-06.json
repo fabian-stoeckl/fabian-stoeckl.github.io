@@ -1,8 +1,8 @@
 {
   "date": "2026-11-06",
-  "researched_at": "2026-11-06T13:52:58.155Z",
+  "researched_at": "2026-11-06T14:25:00Z",
   "preview": false,
-  "editorial_note": "Kontrollierter E2E-Produktionsneulauf nach unabhängiger Nachrecherche: Fünf zusätzliche belegte Originalmeldungen (österreichische Einkommenslücke, Copernicus-Temperaturbilanz, EU-Ratsposition zu Methan, US-Arbeitsmarktdaten, Ukraine-Diplomatie) und eine zusätzliche Reuters-Vertiefung zum Ölmarkt. Vorherige 14 Nachrichten/10 Vertiefungen und sämtliche alten Artikel-IDs/URLs bleiben erhalten; gemeinsame Marktanlässe sind redaktionell mit event_key und eigenständigen Beiträgen gekennzeichnet. Keine endgültigen Beschlüsse aus Ankündigungen oder Ratspositionen abgeleitet. Originalsprachige Zusammenfassungen. Keine künstlichen Bewertungen und keine Themenausschlüsse. Vollständige Originalbelege für die neuen Beiträge im privaten Dossier PR #76; zu älteren Beiträgen gelten deren dokumentierte ursprüngliche Zugriffsgrenzen.",
+  "editorial_note": "Kontrollierter E2E-Produktionsneulauf nach unabhängiger Nachrecherche: Fünf zusätzliche belegte Originalmeldungen (österreichische Einkommenslücke, Copernicus-Temperaturbilanz, EU-Ratsposition zu Methan, US-Arbeitsmarktdaten, Ukraine-Diplomatie) und eine zusätzliche Reuters-Vertiefung zum Ölmarkt. Vorherige 14 Nachrichten/10 Vertiefungen und sämtliche alten Artikel-IDs/URLs bleiben erhalten; gemeinsame Marktanlässe sind redaktionell mit event_key und eigenständigen Beiträgen gekennzeichnet. Keine endgültigen Beschlüsse aus Ankündigungen oder Ratspositionen abgeleitet. Originalsprachige Zusammenfassungen. Keine künstlichen Bewertungen und keine Themenausschlüsse. Vollständige Originalbelege für die neuen Beiträge im privaten Dossier PR #76; zu älteren Beiträgen gelten deren dokumentierte ursprüngliche Zugriffsgrenzen. Unbeaufsichtigter redaktioneller Nachmittags-Rerun: neues bestätigtes Xi-Treffen (ORF ZIB 13:00) als eigenständige Nachmittagsentwicklung; die Vormittagsmeldung und ihre Identität bleiben unverändert. Neue Quelle im privaten Dossier PR #78. Keine künstlichen Bewertungen; keine Änderungen an anderen Bereichen.",
   "articles": [
     {
       "id": "5e82ffe12693a038",
@@ -368,6 +368,19 @@
       "region": "International",
       "evidence_level": "read",
       "event_key": "ukraine-europe-russia-security-talks-2026-11-06"
+    },
+    {
+      "id": "ea2c6d1f8b5309ac",
+      "title": "Stocker traf Xi Jinping: Wirtschaftsbeziehungen im Mittelpunkt",
+      "url": "https://on.orf.at/video/14346321/16182446/siebenhofer-stockers-china-besuch-stand-im-zeichen-der-wirtschaft-zib-1300-vom-06112026",
+      "source": "ORF",
+      "published_at": "2026-11-06",
+      "summary": "Bundeskanzler Stocker hat Chinas Staatspräsident Xi Jinping in Peking getroffen. Die ORF-China-Korrespondentin berichtete in der ZIB 13:00 von einer freundschaftlichen Atmosphäre; im Zentrum standen wirtschaftliche Beziehungen. Das tatsächlich stattgefundene Treffen ist eine Aktualisierung gegenüber der zuvor bloß angekündigten Begegnung. Konkrete neue Vereinbarungen werden durch den verfügbaren ORF-Beleg nicht bestätigt.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "teaser",
+      "event_key": "austria-china-stocker-visit-2026-11-06",
+      "distinct_contribution": "Afternoon follow-up confirming the actual Xi meeting, whereas the morning ORF story had only announced it."
     }
   ]
 }
