@@ -261,12 +261,13 @@ function githubRating(a,section='Vertiefungen') {
 }
 function article(a,index,section='Vertiefungen'){
   const isHeadline=section==='Heute wichtig';
-  const node=el('article',undefined,isHeadline?'news-item':(a.treat?'treat':''));
+  const isNewPerspective=!isHeadline&&typeof a.new_perspective==='string'&&a.new_perspective.trim().length>0;
+  const node=el('article',undefined,isHeadline?'news-item':(isNewPerspective?'new-perspective-article':(a.treat?'treat':'')));
   // Stable identity for editorial enrichment, regardless of lead/rest ordering.
   node.dataset.articleId=String(a.id||'');
   node.dataset.section=section;
   const intro=el('div');
-  intro.append(el('span',isHeadline?'NACHRICHT':(a.treat?'DAS ZUCKERL':a.topic),'eyebrow'));
+  intro.append(el('span',isHeadline?'NACHRICHT':(isNewPerspective?'UNGEWÖHNLICHER BLICKWINKEL':(a.treat?'DAS ZUCKERL':a.topic)),'eyebrow'));
   const details=[a.source];
   if(!isHeadline&&a.kind)details.push(a.kind);
   details.push(fmt(a.published_at));
@@ -306,6 +307,8 @@ function article(a,index,section='Vertiefungen'){
       body.append(more);
     }catch(_){/* Invalid optional link cannot displace the original article. */}
   }
+  if(isNewPerspective)
+    body.append(el('p','Was daran überraschend ist: '+a.new_perspective.trim(),'new-perspective-rationale'));
   if(!isHeadline&&typeof a.novelty_explanation==='string'&&a.novelty_explanation.trim())
     body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty_explanation,'novelty'));
   body.append(githubRating(a,section));node.append(intro,body);return node;
@@ -324,8 +327,24 @@ function render(){
   readerState.visibleHeadlines=selection.headlines;
   $('articles').replaceChildren();
   const lead=el('div',undefined,'lead-grid'),rest=el('div',undefined,'article-list');
-  readerState.visibleArticles.forEach((a,i)=>(i<3&&!a.treat?lead:rest).append(article(a,i)));
+  // Only editorially flagged, source-verified unusual angles appear in "Neues".
+  // Keep them in visibleArticles, exactly once, with original IDs and the
+  // existing "Vertiefungen" rating/feedback pipeline.
+  const standard=readerState.visibleArticles.filter(a=>!a.new_perspective);
+  const unusual=readerState.visibleArticles.filter(a=>a.new_perspective);
+  standard.forEach((a,i)=>(i<3&&!a.treat?lead:rest).append(article(a,i)));
   $('articles').append(lead,rest);
+  if(unusual.length){
+    const section=el('section',undefined,'new-perspectives');
+    section.id='neues';
+    section.setAttribute('aria-label','Neues – ungewöhnliche Perspektiven');
+    section.append(el('h2','Neues','new-perspectives-title'));
+    section.append(el('p','Überraschende Blickwinkel auf Fragen, die dich interessieren – mit neuen Argumenten und unerwarteten Verbindungen.','new-perspectives-intro'));
+    const list=el('div',undefined,'article-list new-perspectives-list');
+    for(const item of unusual)list.append(article(item,undefined,'Vertiefungen'));
+    section.append(list);
+    $('articles').append(section);
+  }
   $('article-count').textContent=readerState.visibleArticles.length;
   $('headline-count').textContent=readerState.visibleHeadlines.length;
   $('headlines').replaceChildren();

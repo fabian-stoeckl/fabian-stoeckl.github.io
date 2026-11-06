@@ -29,6 +29,12 @@ Bevor eine Änderung der privaten Interessenbeschreibung beschlossen wird, unter
 
 **Rückkopplung:** Nach folgenden echten Ausgaben echte freie Rückmeldungen und Gegenbeispiele abwarten. Falls ein Thema ohne nachvollziehbare freie Begründung verschwunden ist, die Auswahlentscheidung prüfen und die Engführung korrigieren. Die Redaktion führt ohnehin einen unabhängigen Rechercheblick auf Überraschungen und Perspektiven durch; daraus keine fiktiven Lerngewinne ableiten. Das separate spätere Vorhaben *adaptiv lernende Feedback-Vorschläge* bleibt unverändert und wird hier nicht vorweggenommen.
 
+## Phase 5 – „Neues“ aus echtem Leserinteresse, aber mit Überraschung
+
+Die Zeitung enthält künftig optional bis zu zwei eigens gekennzeichnete **unorthodoxe, interessennahe Vertiefungen**. Das Profil soll dafür Verbindungslinien liefern (z. B. Wirtschaft, Politik, Innovation, Energie oder andere aus tatsächlichem Feedback erkennbare Themen), **keine neue Pflicht-Themenliste**. Die Auswahllogik sucht nicht nach möglichst fremden Zufallsthemen, sondern nach hochwertigen Originalanalysen, die eine geläufige Annahme in Frage stellen, überraschende Daten einbringen oder einen neuen Zusammenhang sichtbar machen.
+
+Bewertungen der „Neues“-Artikel sind **normale Bewertungen derselben Original-IDs in der Rubrik „Vertiefungen“**; keine zusätzlichen Feedback-Stimmen oder künstlichen Personalisierungsbelege. Ein positiver Klick auf eine ungewöhnliche Sicht ist **nicht** automatisch eine Zustimmung zur gesamten vertretenen These; ein negativer Klick ist **kein** dauerhaftes Verbot ungewöhnlicher Blickwinkel. Echte Freitexte und plausible alternative Erklärungen zu Neuigkeit, Tiefe, Belegqualität und Relevanz prüfen. Nicht bewertete Stücke bleiben neutral, gerade in einer Rubrik, die bewusst kleine Experimente mit Blickwinkeln zulässt.
+
 ## Lernerfolg beobachten – keine Selbstbestätigung
 
 Nutze **dieselbe tägliche Aufgabe**, **dieselben echten Feedback-Issues** und die **bereits veröffentlichten echten Ausgaben** für eine kleine qualitative Lernbilanz in der privaten Datei `morgenzeitung-neu/lernmonitoring.md`. Sie erscheint auf „Meine Präferenzen“. Keine zweite Automation, kein Score-Dashboard und keine neuen Feedbackfragen. Die Lernbilanz ist **keine** Erweiterung von `aenderungen.md`: Dort steht, *was am Interessenprofil geändert wurde*; hier steht, *ob die geänderte Artikelauswahl später nachweislich hilfreicher war*.

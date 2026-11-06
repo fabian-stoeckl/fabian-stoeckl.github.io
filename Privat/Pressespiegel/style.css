@@ -268,3 +268,11 @@ body.preferences-view .topline #profile-toggle{display:none!important}
 /* Phase 2: distinguish source-checked original-language summary from RSS preview. */
 #blogs .blog-summary{font-size:15px;line-height:1.7;max-width:68ch}
 #blogs .blog-summary-origin{margin:8px 0 0;font-size:12px;color:var(--muted)}
+
+/* Phase 5: unusual interest-adjacent perspectives, editorially separate from 'Neue Quellen'. */
+#articles .new-perspectives{margin:38px 0 4px;padding:24px 0 0;border-top:2px solid var(--ink)}
+#articles .new-perspectives-title{font:clamp(28px,5vw,35px)/1.18 Georgia,serif;margin:2px 0 6px}
+#articles .new-perspectives-intro{font-size:14px;line-height:1.65;color:var(--muted);margin:0 0 14px;max-width:70ch}
+#articles .new-perspectives-list .new-perspective-article{border-bottom:1px solid var(--line);padding:24px 0 27px}
+#articles .new-perspective-rationale{font-size:13px;line-height:1.6;color:var(--ink);border-inline-start:2px solid var(--accent);padding:4px 0 4px 13px;margin:14px 0 12px;max-width:75ch}
+@media(max-width:760px){#articles .new-perspectives{margin-top:25px;padding-top:20px}#articles .new-perspectives-list .new-perspective-article{padding:22px 0}}
