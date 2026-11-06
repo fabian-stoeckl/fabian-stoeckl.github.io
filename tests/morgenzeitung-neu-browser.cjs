@@ -56,6 +56,16 @@ const fs=require('node:fs');
      const payload=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/blogs.json','utf8'));
      // Simulate a retained RSS archive with 28 posts, including guest authors.
      payload.posts=payload.posts.slice(0,5);
+     // Test-only 108-word fixture, never published.
+     const fixtureText=Array.from({length:12},
+       ()=> 'The article examines economic mechanisms and describes practical tradeoffs.'
+     ).join(' ');
+     payload.posts[0].summary_text=fixtureText;
+     payload.posts[0].summary_source='article';
+     payload.posts[0].summary_language='en';
+     payload.posts[0].summary_access='visible_text_only';
+     payload.posts[0].summary_generated_at='2026-11-06T12:00:00+01:00';
+     payload.posts[0].summary_evidence_url=payload.posts[0].url;
      for(let n=5;n<28;n++)payload.posts.push({
        title:'Older Noahpinion entry '+n,
        url:'https://www.noahpinion.blog/p/test-archive-'+n,
@@ -74,6 +84,13 @@ const fs=require('node:fs');
    await page.locator('#tab-blogs').click();
    await page.waitForSelector('#blogs .blog-entry');
    assert.equal(await page.locator('#blogs .blog-entry').count(),5);
+   assert.match(await page.locator('#blogs .blog-entry').first().locator('.blog-description').innerText(),
+     /economic mechanisms/,'Article-checked English summary is displayed');
+   assert.equal(await page.locator('#blogs .blog-entry').first().locator('.blog-summary').getAttribute('lang'),'en');
+   assert.match(await page.locator('#blogs .blog-entry').first().locator('.blog-summary-origin').innerText(),/Redaktionelle Zusammenfassung/);
+   assert.match(await page.locator('#blogs .blog-entry').nth(1).locator('.blog-summary-origin').innerText(),/RSS-Auszug/);
+   assert.equal(await page.locator('#blogs .blog-entry').nth(1).locator('.blog-summary').count(),0,
+     'Unverified RSS excerpt must not be called article summary');
    const firstBlogUrl=await page.locator('#blogs .blog-entry h3 a').first().getAttribute('href');
    const cross=page.locator('#blogs .blog-delete').first();
    assert.equal(await cross.locator('svg path').count(),1,'Delete is a centered SVG icon, not a font glyph');
