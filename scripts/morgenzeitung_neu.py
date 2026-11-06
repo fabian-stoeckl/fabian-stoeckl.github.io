@@ -116,6 +116,18 @@ def verify(root=ROOT):
     if set(days)!={f.stem for f in root.glob("????-??-??.json")}:
         raise ValueError("Index must match all edition files")
     warnings=[]
+    # The latest real edition must not silently masquerade as a full issue.
+    # Historical editions remain untouched; scarcity never authorizes fake stories.
+    if days:
+        latest=json.loads((root/(days[0]+'.json')).read_text())
+        if not latest.get('preview'):
+            count=len(latest.get('articles',[]))+len(latest.get('headlines',[]))
+            sparse=count<10 or not latest.get('articles')
+            if sparse:
+                note=latest.get('editorial_note')
+                if not isinstance(note,str) or len(note.strip())<60:
+                    raise ValueError('Latest limited edition needs an explicit editorial_note (at least 60 characters) explaining missing coverage; never pad with unverified stories')
+                warnings.append(f'{days[0]}: LIMITED EDITION: {count} item(s), {len(latest["articles"])} feature(s); editorial note required and present')
     for day in days:
         date.fromisoformat(day)
         ed=json.loads((root/(day+".json")).read_text())
