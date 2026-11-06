@@ -289,10 +289,11 @@ class EditorialEventTests(unittest.TestCase):
         item["topic"]="Economics and institutional design"
         item["article_type"]="commentary"
         item["counterposition"]={
-            "responds_to":"The opinion argues that one particular subsidy is universally efficient.",
-            "argument":"An independently sourced analysis finds this can depend on demand elasticity and the administrative design, making the conclusion conditional rather than universal.",
+            "title":"Why the proposed tax may work with a more careful design",
+            "summary":"An independently published analysis describes alternative tax designs and the possible gains for public finance, while noting that implementation and avoidance risks require care.",
             "source":"Research Institute",
-            "source_title":"A competing evidence-based economic assessment",
+            "kind":"Analysis",
+            "published_at":"2024-05-09",
             "url":"https://research.example.org/alternate-study",
             "evidence_level":"read"
         }
@@ -309,7 +310,7 @@ class EditorialEventTests(unittest.TestCase):
         ed["articles"][0].pop("counterposition")
         mod.validate(ed)
 
-    def test_counterposition_requires_original_text_and_independent_link(self):
+    def test_counterposition_requires_real_article_metadata_and_separate_original(self):
         ed=self.counterposition_fixture()
         other=ed["articles"][0]["counterposition"]
         other["url"]=ed["articles"][0]["url"]
@@ -321,8 +322,17 @@ class EditorialEventTests(unittest.TestCase):
             mod.validate(ed)
         other["evidence_level"]="teaser"
         mod.validate(ed)
-        other["argument"]="Too short"
-        with self.assertRaisesRegex(ValueError,"Invalid counterposition argument"):
+        other["summary"]="Too short"
+        with self.assertRaisesRegex(ValueError,"Invalid counterposition summary"):
+            mod.validate(ed)
+        other["summary"]="A second independently published article questions the general conclusion and discusses evidence, trade-offs and conditions."
+        other["published_at"]="not-a-date"
+        with self.assertRaises(ValueError):
+            mod.validate(ed)
+        other["published_at"]="2023-01-16"
+        mod.validate(ed)  # Older counter-articles are expressly welcome.
+        other["kind"]=" "
+        with self.assertRaisesRegex(ValueError,"Invalid counterposition kind"):
             mod.validate(ed)
 
     def test_counterposition_cannot_be_attached_to_headline_or_report(self):
@@ -344,21 +354,39 @@ class EditorialEventTests(unittest.TestCase):
     def test_counterposition_requires_complete_provenance_and_caps_frequency(self):
         ed=self.counterposition_fixture()
         original=ed["articles"][0]
-        missing=original["counterposition"].pop("source_title")
+        missing=original["counterposition"].pop("title")
         with self.assertRaisesRegex(ValueError,"Incomplete or unexpected"):
             mod.validate(ed)
-        original["counterposition"]["source_title"]=missing
+        original["counterposition"]["title"]=missing
         mod.validate(ed)
+        original["counterposition"]["argument"]="Unsupported assistant-authored long rebuttal"
+        with self.assertRaisesRegex(ValueError,"Incomplete or unexpected"):
+            mod.validate(ed)
+        original["counterposition"].pop("argument")
         for i in (2,3):
             clone=json.loads(json.dumps(original))
             clone["id"]=f"{i:016x}"
             clone["url"]=f"https://different.example/{i}"
+            clone["counterposition"]["url"]=f"https://research.example.org/alternate-study-{i}"
             clone["event_key"]=f"fresh-event-{i}"
             ed["articles"].append(clone)
         with self.assertRaisesRegex(ValueError,"No more than two sourced"):
             mod.validate(ed)
         ed["articles"].pop()
         mod.validate(ed)
+
+    def test_counterposition_url_cannot_repeat_a_primary_article_or_other_counterposition(self):
+        ed=self.counterposition_fixture()
+        ed["articles"][0]["counterposition"]["url"]=ed["headlines"][0]["url"]
+        with self.assertRaisesRegex(ValueError,"must not duplicate another article URL"):
+            mod.validate(ed)
+        ed["articles"][0]["counterposition"]["url"]="https://research.example.org/alternate-study"
+        dupe=json.loads(json.dumps(ed["articles"][0]))
+        dupe["id"]="9876543210abcdef"
+        dupe["url"]="https://different.example/another-article"
+        ed["articles"].append(dupe)
+        with self.assertRaisesRegex(ValueError,"must not duplicate another article URL"):
+            mod.validate(ed)
 
     def test_invalid_event_key_is_an_actual_structural_error(self):
         ed=self.edition()

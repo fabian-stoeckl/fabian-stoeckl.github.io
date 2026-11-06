@@ -2,7 +2,7 @@
   "date": "2026-11-06",
   "researched_at": "2026-11-07T00:08:00+01:00",
   "preview": false,
-  "editorial_note": "Kontrollierter vollständiger Morgen-Neubau der Ausgabe vom 6. November, tatsächlich recherchiert nach Mitternacht am 7. November (Wien). Die bisherige Auswahl wurde neu redaktionell abgewogen: eine veraltete Stocker-Xi-Ankündigung und zwei redundante internationale Finanzmarkt-Meldungen wurden gestrichen, zwei aktuelle Statistik-Austria-Originalmeldungen aufgenommen. Eine ältere allgemeine Guardian-Analyse wurde durch eine aktuelle Reuters-Analyse zur EU-Klimaresilienz und Finanzierung ersetzt. 19 Nachrichten und 15 Vertiefungen, darunter eine begründete Neues-Perspektive und eine eigenständig belegte Gegenposition. Vorhandene Artikel-IDs/URLs unverändert bei übernommenen Stücken; neue IDs nur für neue Originalartikel. Keine privaten Bewertungen, Kommentare oder Profilangaben in der Ausgabe. Echte Originalbelege, redaktionelle Auswahl und Zugriffsgrenzen im privaten Dossier PR #93. Der ausgefallene additive PR #339 wurde nicht als Basis benutzt. Statistik-Austria-Großhandelspreisindex direkt gelesen; Stellen-PDF selbst nicht abrufbar, Kennzahlen durch aktuelle Statistik-Austria-Veröffentlichungsübersicht und weitere Berichterstattung verifiziert, daher teaser. Reuters-Klimaresilienz über verifizierten indexierten Auszug, daher teaser. Kein vorgetäuschter Frühmorgenzeitpunkt.",
+  "editorial_note": "Kontrollierter vollständiger Morgen-Neubau der Ausgabe vom 6. November, tatsächlich recherchiert nach Mitternacht am 7. November (Wien). Die bisherige Auswahl wurde neu redaktionell abgewogen: eine veraltete Stocker-Xi-Ankündigung und zwei redundante internationale Finanzmarkt-Meldungen wurden gestrichen, zwei aktuelle Statistik-Austria-Originalmeldungen aufgenommen. Eine ältere allgemeine Guardian-Analyse wurde durch eine aktuelle Reuters-Analyse zur EU-Klimaresilienz und Finanzierung ersetzt. 19 Nachrichten und 15 Vertiefungen, darunter eine begründete Neues-Perspektive und eine eigenständig belegte Gegenposition. Vorhandene Artikel-IDs/URLs unverändert bei übernommenen Stücken; neue IDs nur für neue Originalartikel. Keine privaten Bewertungen, Kommentare oder Profilangaben in der Ausgabe. Echte Originalbelege, redaktionelle Auswahl und Zugriffsgrenzen im privaten Dossier PR #93. Der ausgefallene additive PR #339 wurde nicht als Basis benutzt. Statistik-Austria-Großhandelspreisindex direkt gelesen; Stellen-PDF selbst nicht abrufbar, Kennzahlen durch aktuelle Statistik-Austria-Veröffentlichungsübersicht und weitere Berichterstattung verifiziert, daher teaser. Reuters-Klimaresilienz über verifizierten indexierten Auszug, daher teaser. Kein vorgetäuschter Frühmorgenzeitpunkt. Gegenposition als eigenständigen Originalartikel präzisiert: Der bis dahin verwendete OECD-Argumentationsblock wurde durch den am 03.11.2026 publizierten Artikel des Momentum Instituts ersetzt (Originaltext gelesen; 9,2 Mrd. EUR nur grobes rechnerisches Beispiel, keine Einnahmenprognose). Hauptartikel-ID und Original-URL bleiben erhalten; keine zusätzliche Bewertung. Ehemaliger OECD-Beleg bleibt ausschließlich in der dokumentierten früheren Recherche: https://www.oecd.org/en/publications/the-role-and-design-of-net-wealth-taxes-in-the-oecd_9789264290303-en/full-report/component-8.html.",
   "articles": [
     {
       "id": "5e82ffe12693a038",
@@ -16,11 +16,12 @@
       "evidence_level": "read",
       "event_key": "tax-policy-wealth-flight-california-austria-2026",
       "counterposition": {
-        "responds_to": "Aus dem Scheitern konkreter Milliardärssteuer- und Flugabgabepläne lassen sich erhebliche Probleme bei der praktischen Konstruktion solcher Steuern ableiten.",
-        "argument": "Die OECD unterscheidet zwischen misslungenen Einzelmodellen und der grundsätzlichen Eignung einer Vermögensbesteuerung. Wo umfassende Kapitalertrag- und Erbschaftsteuern fehlen, kann eine gezielt gestaltete Vermögenssteuer eine ergänzende Rolle spielen; hohe Freibeträge und begrenzte Ausnahmen können ihre Verteilungswirkung verbessern. Zugleich bestätigt die OECD erhebliche Bewertungs-, Ausweich- und Vollzugsprobleme. Der Befund relativiert eine Verallgemeinerung aus Einzelfällen, widerlegt aber nicht die Kritik an diesen konkreten Plänen.",
-        "source": "OECD",
-        "source_title": "The Role and Design of Net Wealth Taxes in the OECD – Conclusions and policy implications",
-        "url": "https://www.oecd.org/en/publications/the-role-and-design-of-net-wealth-taxes-in-the-oecd_9789264290303-en/full-report/component-8.html",
+        "title": "Kaliforniens Milliardärssteuer kann 9,2 Milliarden Euro für Österreich bringen",
+        "source": "Momentum Institut",
+        "kind": "Analyse",
+        "published_at": "2026-11-03",
+        "summary": "Das Momentum Institut argumentiert, eine einmalige Milliardärssteuer nach kalifornischem Vorbild könne erhebliche Einnahmen bringen. Die genannten 9,2 Milliarden Euro für Österreich sind eine grobe Modellrechnung, keine belastbare Einnahmenprognose.",
+        "url": "https://www.momentum-institut.at/news/kaliforniens-milliardaerssteuer-kann-92-milliarden-euro-fuer-oesterreich-bringen/",
         "evidence_level": "read"
       }
     },
