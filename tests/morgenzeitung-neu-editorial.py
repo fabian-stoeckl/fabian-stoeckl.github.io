@@ -146,6 +146,86 @@ class EditorialEventTests(unittest.TestCase):
                hashlib.sha256(edition.read_bytes()).hexdigest())
         self.assertEqual(before,after,"Review must never mutate public editions")
 
+    def test_publisher_diversity_advisory_detects_source_clumping_without_deletion(self):
+        ed=self.edition()
+        ed["headlines"]=[]
+        for i in range(9):
+            a=story(f"{i:016x}",f"https://distinct.example/{i}",f"test-event-{i}")
+            a["source"]="Reuters" if i<6 else ("ORF Science" if i==6 else "ORF")
+            ed["headlines"].append(a)
+        original=json.dumps(ed,sort_keys=True)
+        snapshot=mod.diversity_snapshot(ed)
+        total=snapshot["sections"]["Gesamtausgabe"]
+        self.assertEqual(total["total"],9)
+        self.assertEqual(total["distinct_source_groups"],2)
+        self.assertEqual(total["sources"][0],{"source":"Reuters","count":6})
+        self.assertEqual(total["sources"][1],{"source":"ORF","count":3})
+        self.assertTrue(any(a["source"]=="Reuters" for a in snapshot["alerts"]))
+        self.assertEqual(json.dumps(ed,sort_keys=True),original)
+        mod.validate(ed)
+
+    def test_source_diversity_does_not_reject_a_legitimate_single_publisher(self):
+        ed=self.edition()
+        ed["headlines"]=[]
+        for i in range(7):
+            a=story(f"{i:016x}",f"https://independent.example/{i}",f"independent-event-{i}")
+            a["source"]="Financial Times"
+            ed["headlines"].append(a)
+        self.assertTrue(mod.diversity_snapshot(ed)["alerts"])
+        self.assertEqual(len(ed["headlines"]),7)
+        mod.validate(ed)
+        self.assertEqual(len(mod.cluster_candidates(ed)["explicit_event_groups"]),0,
+                         "Source concentration does not prove identical events")
+
+    def test_different_outlets_same_group_never_assumed_independent_confirmation(self):
+        ed=self.edition()
+        ed["headlines"][0]["source"]="ORF"
+        ed["headlines"][1]["source"]="ORF Science"
+        snap=mod.diversity_snapshot(ed)
+        self.assertEqual(snap["sections"]["Heute wichtig"]["distinct_source_groups"],1)
+        self.assertEqual(snap["all_sources"][0]["source"],"ORF")
+        self.assertEqual(snap["all_sources"][0]["count"],2)
+
+    def test_historical_signals_use_only_real_nonidentical_issues(self):
+        ed=self.edition()
+        ed["headlines"]=[]
+        for i in range(6):
+            ed["headlines"].append(story(f"{i:016x}",f"https://new.example/{i}",f"event-{i}"))
+        past=json.loads(json.dumps(ed))
+        past["date"]="2026-10-28"
+        past["headlines"][0]["id"]="f"*16
+        past["headlines"][0]["url"]="https://new.example/replacement"
+        self.assertEqual(len(mod.recurring_concentration(ed,[past])),1)
+        self.assertEqual(mod.recurring_concentration(ed,[{**past,"preview":True}]),[])
+        self.assertEqual(mod.recurring_concentration(ed,[{**past,"date":ed["date"]}]),[])
+        self.assertEqual(len(ed["headlines"]),6)
+
+    def test_diversity_review_never_rewrites_original_or_index(self):
+        folder=root/"Privat/Pressespiegel/data"
+        idx=folder/"index.json"
+        latest=json.loads(idx.read_text(encoding="utf-8"))["dates"][0]
+        edition=folder/(latest+".json")
+        before=(hashlib.sha256(idx.read_bytes()).hexdigest(),
+                hashlib.sha256(edition.read_bytes()).hexdigest())
+        proc=subprocess.run(
+            [sys.executable,str(root/"scripts/morgenzeitung_neu.py"),"diversity-review",
+             "--root",str(folder),"--date",latest,"--previous-days","3"],
+            cwd=root,capture_output=True,text=True,check=True
+        )
+        self.assertIn("DIVERSITY REVIEW "+latest,proc.stdout)
+        self.assertIn("NO AUTOMATIC ACTION:",proc.stdout)
+        self.assertIn("PERSONALIZATION SAFEGUARD:",proc.stdout)
+        self.assertIn("PUBLICATION SOURCES Vertiefungen",proc.stdout)
+        after=(hashlib.sha256(idx.read_bytes()).hexdigest(),
+               hashlib.sha256(edition.read_bytes()).hexdigest())
+        self.assertEqual(before,after)
+
+    def test_imported_preview_does_not_create_bubble_conclusions(self):
+        ed=self.edition()
+        ed["preview"]=True
+        self.assertFalse(mod.diversity_snapshot(ed)["alerts"])
+        self.assertFalse(mod.recurring_concentration(ed,[]))
+
     def test_invalid_event_key_is_an_actual_structural_error(self):
         ed=self.edition()
         ed["headlines"][0]["event_key"]="Bad Event With Spaces"
