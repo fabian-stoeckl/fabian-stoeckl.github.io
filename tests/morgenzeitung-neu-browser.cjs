@@ -42,6 +42,13 @@ const fs=require('node:fs');
    await page.route(/\/Privat\/Pressespiegel\/data\/\d{4}-\d{2}-\d{2}\.json(?:\?.*)?$/,async route=>{
      const response=await route.fetch();
      const sample=await response.json();
+     // Browser feature tests require synthetic feature fixtures even when a valid
+     // production issue has only headlines. Never write these fixtures to disk.
+     if(!sample.articles.length){
+       const seeds=sample.headlines.slice(0,3);
+       assert.equal(seeds.length,3,'Headline-only issues need three fixture seeds');
+       sample.articles=seeds.map((h,i)=>({...h,id:'f'+String(i).padStart(15,'0'),topic:'Test fixture',article_type:'analysis'}));
+     }
      sample.articles[0].related_article={title:'Independent follow-up',source:'Another publisher',url:'https://example.org/follow-up'};
      // Synthetic, in-memory editorial fixture: never published or saved.
      sample.articles[0].alternative_perspective={

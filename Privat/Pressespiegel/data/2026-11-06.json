@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-06",
+  "researched_at": "2026-11-06T08:01:24+01:00",
+  "preview": false,
+  "editorial_note": "Kontrollierte Nachholausgabe. Nur fünf vollständig nachgeprüfte ORF-Originalartikel aufgenommen. Weitere Kandidaten aus dem privaten Dossier wegen unzureichend verifizierter Volltexte nicht übernommen. Keine künstliche Füllpflicht. Die Vertiefungsrubrik bleibt in dieser Ausgabe leer; journalistische Vollständigkeit ist eingeschränkt.",
+  "articles": [],
+  "headlines": [
+    {
+      "id": "6daed4779d9ae6a7",
+      "title": "Betrug: Weiterer Schuldspruch für Rene Benko",
+      "url": "https://orf.at/stories/3447315/",
+      "source": "ORF",
+      "published_at": "2026-11-05",
+      "summary": "Der frühere Signa-Chef Rene Benko wurde am Landesgericht Innsbruck wegen schweren Betrugs zu einer Zusatzstrafe von zwei Jahren verurteilt. Das Gericht sah eine irreführende Garantie gegenüber der Privatstiftung von Hans Peter Haselsteiner als erwiesen an; Benko bestreitet den Vorwurf. Das Urteil ist nicht rechtskräftig.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read"
+    },
+    {
+      "id": "54994a70a725274c",
+      "title": "Zweite Runde zu IT-Kollektivvertrag ohne Ergebnis",
+      "url": "https://orf.at/stories/3447349/",
+      "source": "ORF",
+      "published_at": "2026-11-05",
+      "summary": "Die Verhandlungen für rund 90.000 Beschäftigte der IT-Branche blieben auch in der zweiten Runde ohne Einigung. Die Arbeitgeber bieten 1,2 Prozent Ist-Lohnerhöhung und 2,0 Prozent KV-Plus; die GPA fordert 3,9 Prozent. Die nächste Runde ist für den 23. November geplant.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read"
+    },
+    {
+      "id": "2135a893d0c799c3",
+      "title": "Auslandsschulden der Entwicklungsländer auf Rekordniveau",
+      "url": "https://orf.at/stories/3447355/",
+      "source": "ORF",
+      "published_at": "2026-11-05",
+      "summary": "Die Auslandsschulden der Entwicklungsländer stiegen laut Weltbank 2025 um 5,5 Prozent auf 9,4 Billionen Dollar. Private Kapitalgeber kehren zurück, doch hohe Zinsen verteuern die Finanzierung insbesondere für ärmere Länder.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "21312b65e399c6fd",
+      "title": "Türkei plant 450 Milliarden Euro für Energieversorgung bis 2040",
+      "url": "https://orf.at/stories/3447357/",
+      "source": "ORF",
+      "published_at": "2026-11-05",
+      "summary": "Die Türkei will bis 2040 umgerechnet rund 450 Milliarden Euro in ihre Energieversorgung investieren. Erneuerbare Energien und Atomkraft sollen ausgebaut werden, um die Importabhängigkeit zu reduzieren. Die Beträge beziehen sich auf geplante, nicht bereits realisierte Investitionen.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "aed43f4e2a6419b2",
+      "title": "US-Technologieaktien brechen nach Sorgen über KI-Regulierung ein",
+      "url": "https://orf.at/stories/3447365/",
+      "source": "ORF",
+      "published_at": "2026-11-05",
+      "summary": "Nach den US-Zwischenwahlen belasteten Sorgen über strengere KI-Regeln die Technologiebörse. Der Nasdaq 100 verlor an einem Handelstag 6,36 Prozent, der S&P 500 4,36 Prozent. Die Kursbewegung beschreibt einen Handelstag, keine längerfristige Wertentwicklung.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    }
+  ]
+}
