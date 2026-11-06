@@ -11,58 +11,7 @@ function stashComment(date){
 }
 
 const BLOGS_FEED='https://raw.githubusercontent.com/fabian-stoeckl/fabian-stoeckl.github.io/blogs-live/Privat/Pressespiegel/data/blogs.json';
-const BLOG_HIDDEN_KEY='pressespiegel-hidden-blog-posts-v1';
 let blogLastCheck=0,blogLoading=false,blogVisibleCount=5;
-function blogPostKey(url){
-  try{
-    const target=new URL(url);
-    if(target.protocol!=='https:'||!['www.noahpinion.blog','noahpinion.blog','noahpinion.substack.com'].includes(target.hostname))return null;
-    return target.pathname.replace(/\/$/,'').toLowerCase();
-  }catch(_){return null;}
-}
-function readHiddenBlogPosts(){
-  try{
-    const stored=JSON.parse(localStorage.getItem(BLOG_HIDDEN_KEY)||'[]');
-    return new Set(Array.isArray(stored)?stored.filter(x=>typeof x==='string'&&x.startsWith('/')).slice(0,5000):[]);
-  }catch(_){return new Set();}
-}
-function saveHiddenBlogPosts(hidden){
-  try{localStorage.setItem(BLOG_HIDDEN_KEY,JSON.stringify([...hidden]));return true;}
-  catch(_){return false;}
-}
-function openHiddenBlogDialog(data,stale=false){
-  const hidden=readHiddenBlogPosts();
-  const entries=data.posts.filter(post=>post&&typeof post.title==='string'&&typeof post.url==='string'&&hidden.has(blogPostKey(post.url)));
-  const dialog=el('dialog',undefined,'blog-hidden-dialog');
-  dialog.setAttribute('aria-labelledby','blog-hidden-title');
-  const head=el('div',undefined,'blog-hidden-head');
-  const title=el('h2','Gelöschte Beiträge');title.id='blog-hidden-title';
-  const close=el('button','Schließen','blog-hidden-close');close.type='button';close.onclick=()=>dialog.close();
-  head.append(title,close);dialog.append(head);
-  const description=el('p','Nur einzeln wiederhergestellte Beiträge erscheinen erneut in deiner Blogliste.','small');dialog.append(description);
-  const list=el('div',undefined,'blog-hidden-list');
-  for(const post of entries){
-    const key=blogPostKey(post.url);
-    const item=el('div',undefined,'blog-hidden-entry');
-    const name=el('div');name.append(link(post.title,post.url));
-    const restore=el('button','Wiederherstellen','blog-restore');restore.type='button';
-    restore.setAttribute('aria-label','Wiederherstellen: '+post.title);
-    restore.onclick=()=>{
-      const current=readHiddenBlogPosts();current.delete(key);
-      if(!saveHiddenBlogPosts(current)){window.alert('Wiederherstellung konnte auf diesem Gerät nicht gespeichert werden.');return;}
-      item.remove();renderBlogPosts(data,stale);
-      if(!list.children.length)list.append(el('p','Keine gelöschten Beiträge aus dem aktuellen Feed mehr vorhanden.','small'));
-    };
-    item.append(name,restore);list.append(item);
-  }
-  if(!entries.length)list.append(el('p','Keine gelöschten Beiträge aus dem aktuellen Feed vorhanden.','small'));
-  const missing=hidden.size-entries.length;
-  if(missing>0)dialog.append(el('p',missing+' weitere ausgeblendete Beiträge sind im aktuellen Feed nicht mehr enthalten. Sie bleiben ausgeblendet und werden nicht zurückgesetzt.','small'));
-  dialog.append(list);
-  document.body.append(dialog);
-  dialog.addEventListener('close',()=>dialog.remove(),{once:true});
-  dialog.showModal();
-}
 function renderBlogPosts(data,stale=false){
   if(!data||!Array.isArray(data.posts))throw Error('Ungültige Blogdaten');
   const root=$('blogs');root.replaceChildren();
@@ -71,69 +20,43 @@ function renderBlogPosts(data,stale=false){
   heading.append(title);
   if(data.checked_at&&Number.isFinite(Date.parse(data.checked_at)))
     heading.append(el('p','Feed zuletzt geprüft: '+fmt(data.checked_at)+(stale?' · letzte gespeicherte Liste':''),'small'));
-  const hidden=readHiddenBlogPosts();
-  const posts=data.posts.filter(post=>post&&typeof post.title==='string'&&typeof post.url==='string'&&blogPostKey(post.url)&&!hidden.has(blogPostKey(post.url)));
-  if(hidden.size){
-    const manage=el('button','Gelöschte Beiträge ('+hidden.size+')','blog-restore');
-    manage.type='button';
-    manage.onclick=()=>openHiddenBlogDialog(data,stale);
-    heading.append(manage);
-  }
   root.append(heading);
   const list=el('div',undefined,'blog-list');
   let count=0;
-  for(const post of posts.slice(0,blogVisibleCount)){
-    const key=blogPostKey(post.url);
+  for(const post of data.posts.slice(0,blogVisibleCount)){
+    if(!post||typeof post.title!=='string'||typeof post.url!=='string')continue;
+    let target;
+    try{
+      target=new URL(post.url);
+      if(target.protocol!=='https:'||!['www.noahpinion.blog','noahpinion.blog','noahpinion.substack.com'].includes(target.hostname))continue;
+    }catch(_){continue;}
     const item=el('div',undefined,'blog-entry');
-    const remove=el('button',undefined,'blog-remove');
-    const removeIcon=document.createElementNS('http://www.w3.org/2000/svg','svg');
-    removeIcon.setAttribute('viewBox','0 0 24 24');
-    removeIcon.setAttribute('aria-hidden','true');
-    removeIcon.setAttribute('focusable','false');
-    const removePath=document.createElementNS('http://www.w3.org/2000/svg','path');
-    removePath.setAttribute('d','M5 5L19 19M19 5L5 19');
-    removeIcon.append(removePath);
-    remove.append(removeIcon);
-    remove.type='button';remove.title='Löschen';remove.setAttribute('aria-label','Beitrag löschen: '+post.title);
-    remove.onclick=()=>{
-      const updated=readHiddenBlogPosts();
-      updated.add(key);
-      if(!saveHiddenBlogPosts(updated)){window.alert('Löschen konnte auf diesem Gerät nicht gespeichert werden.');return;}
-      renderBlogPosts(data,stale);
-    };
-    item.append(remove);
-    const h=el('h3');h.append(link(post.title,post.url));item.append(h);
+    const h=el('h3');h.append(link(post.title,target.href));item.append(h);
     const details=[];
     if(typeof post.published_at==='string'&&/^\d{4}-\d{2}-\d{2}/.test(post.published_at))
       details.push(fmt(post.published_at.slice(0,10)));
     if(typeof post.author==='string'&&post.author.trim())
       details.push('Von '+post.author.trim().slice(0,110));
     if(details.length)item.append(el('p',details.join(' · '),'meta'));
-    const verifiedSummary=post.summary_source==='article'&&typeof post.summary_de==='string'&&post.summary_de.trim();
-    if(verifiedSummary){
-      item.append(el('p',post.summary_de.slice(0,1600),'blog-description'));
-      item.append(el('p','Zusammenfassung des zugänglichen Originaltexts · ggf. nur öffentlich sichtbarer Teil','small'));
-    }else if(typeof post.description==='string'&&post.description.trim()){
-      item.append(el('p',post.description.slice(0,750),'blog-description'));
-      item.append(el('p','Automatischer RSS-Auszug · keine vollständige Inhaltsanalyse','small'));
-    }
+    if(typeof post.description==='string'&&post.description.trim())
+      item.append(el('p',post.description.slice(0,320),'blog-description'));
     list.append(item);count++;
   }
   $('blog-count').textContent=count;
   root.append(list);
-  if(!count)root.append(el('p','Aktuell sind keine Beiträge in deiner Liste.','small'));
-  if(posts.length>blogVisibleCount){
+  if(!count)root.append(el('p','Aktuell sind keine Beiträge verfügbar.','small'));
+  if(data.posts.length>blogVisibleCount){
     const more=el('button','Weitere 10 Beiträge anzeigen','blog-more');
     more.type='button';
     more.onclick=()=>{
       const previous=blogVisibleCount;
-      blogVisibleCount=Math.min(posts.length,blogVisibleCount+10);
+      blogVisibleCount=Math.min(data.posts.length,blogVisibleCount+10);
       renderBlogPosts(data,stale);
       const firstAdded=$('blogs').querySelectorAll('.blog-entry')[previous];
       if(firstAdded)firstAdded.scrollIntoView({behavior:'smooth',block:'start'});
     };
     root.append(more);
-  }else if(posts.length>5){
+  }else if(data.posts.length>5){
     root.append(el('p','Alle derzeit verfügbaren Beiträge angezeigt.','small blog-end'));
   }
 }
@@ -251,17 +174,6 @@ function article(a,index,section='Vertiefungen'){
       body.append(more);
     }catch(_){/* Invalid optional link cannot displace the original article. */}
   }
-  if(!isHeadline&&a.alternative_perspective){
-    const p=a.alternative_perspective;
-    if(typeof p.summary==='string'&&typeof p.source==='string'&&typeof p.url==='string'){
-      try{
-        const aside=el('aside',undefined,'alternative-perspective');
-        aside.append(el('strong','Andere Perspektive'),el('p',p.summary));
-        aside.append(link('Quelle: '+p.source,p.url));
-        body.append(aside);
-      }catch(_){/* Optional perspective must never hide the original article. */}
-    }
-  }
   if(!isHeadline&&typeof a.novelty_explanation==='string'&&a.novelty_explanation.trim())
     body.append(el('p','Neu gegenüber der bisherigen Berichterstattung: '+a.novelty_explanation,'novelty'));
   body.append(githubRating(a,section));node.append(intro,body);return node;
@@ -280,17 +192,8 @@ function render(){
   readerState.visibleHeadlines=selection.headlines;
   $('articles').replaceChildren();
   const lead=el('div',undefined,'lead-grid'),rest=el('div',undefined,'article-list');
-  const regular=readerState.visibleArticles.filter(a=>!a.discovery);
-  const discoveries=readerState.visibleArticles.filter(a=>a.discovery).slice(0,2);
-  regular.forEach((a,i)=>(i<3&&!a.treat?lead:rest).append(article(a,i)));
+  readerState.visibleArticles.forEach((a,i)=>(i<3&&!a.treat?lead:rest).append(article(a,i)));
   $('articles').append(lead,rest);
-  if(discoveries.length){
-    const newSection=el('section',undefined,'discovery-section');
-    newSection.append(el('h2','Neues'));
-    const newList=el('div',undefined,'article-list');
-    discoveries.forEach(a=>newList.append(article(a,undefined)));
-    newSection.append(newList);$('articles').append(newSection);
-  }
   $('article-count').textContent=readerState.visibleArticles.length;
   $('headline-count').textContent=readerState.visibleHeadlines.length;
   $('headlines').replaceChildren();
@@ -518,7 +421,7 @@ const index=await GitHubPaper.json('./data/index.json');latestDate=index.dates[0
 for(const d of index.dates){const o=el('option',d);o.value=d;$('date').append(o);}
 $('operating-state').textContent='Ausgaben aus GitHub · Feedback wird nach einmaliger Verbindung direkt auf GitHub gespeichert.';
 if(!latestDate){status('Noch keine veröffentlichte Ausgabe verfügbar.');return;}
-edition=await GitHubPaper.edition(latestDate);render();void loadBlogs();await RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken());await FeedbackSuggestions.loadPrivateSuggestions(DirectFeedback.readToken());await restoreSavedRatings();return;
+edition=await GitHubPaper.edition(latestDate);render();void loadBlogs();await RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken());await restoreSavedRatings();return;
 }catch(e){status('Pressespiegel nicht erreichbar. '+e.message);}})();
 
 $('feedback').addEventListener('input',()=>{
@@ -550,7 +453,7 @@ $('github-setup-form').onsubmit=async e=>{
     $('github-setup-status').textContent='';
     refreshGitHubConnection();
     feedbackStatus('GitHub verbunden. Dein nächstes Feedback lässt sich mit einem Klick speichern.');
-    await RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken());await FeedbackSuggestions.loadPrivateSuggestions(DirectFeedback.readToken());
+    await RatingReasons.loadPrivateSuggestions(DirectFeedback.readToken());
     await restoreSavedRatings();
   }catch(err){
     $('github-setup-status').textContent=err.message+' Kein Token gespeichert.';
@@ -560,7 +463,6 @@ const disconnect=$('github-disconnect');
 if(disconnect)disconnect.onclick=()=>{
   DirectFeedback.clearToken();
   RatingReasons.loadPrivateSuggestions('');
-  FeedbackSuggestions.loadPrivateSuggestions('');
   refreshGitHubConnection();
   feedbackStatus('GitHub-Verbindung auf diesem Gerät entfernt. Bereits gespeicherte GitHub-Rückmeldungen bleiben erhalten.');
 };

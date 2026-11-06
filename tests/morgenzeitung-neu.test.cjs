@@ -88,12 +88,5 @@ assert.match(fs.readFileSync(path+'app.js','utf8'),/Weiterer Beitrag zum Thema/)
 assert.doesNotMatch(page,/Bereiche der Persönlichen Zeitung/);
 assert.doesNotMatch(pref,/Zur Persönlichen Zeitung|Wie gut lernt meine Pressespiegel/);
 assert.doesNotMatch(fs.readFileSync(path+'app.js','utf8'),/heutige Persönliche Zeitung/);
-const app=fs.readFileSync(path+'app.js','utf8');
-assert.match(app,/alternative-perspective/,'Optional counter-perspective box is rendered');
-assert.match(app,/discovery-section/,'Optional Neues section is rendered at end');
-assert.match(app,/filter\(a=>!a.discovery\)/,'Regular features remain ahead of discoveries');
-assert.match(research,/maximal zwei/,'Editorial discovery cap');
-assert.match(research,/Themenfit vor Medienverteilung/,'No publisher quota');
-assert.match(engine,/Offen lernen statt Filterblase/,'Feedback exploration safeguards');
 console.log('PASS: Pressespiegel reader, genuine editions and feedback continuity');
 
