@@ -1,8 +1,8 @@
 {
   "date": "2026-11-06",
-  "researched_at": "2026-11-06T23:29:28+01:00",
+  "researched_at": "2026-11-07T00:08:00+01:00",
   "preview": false,
-  "editorial_note": "Kontrollierter E2E-Produktionsneulauf nach unabhängiger Nachrecherche: Fünf zusätzliche belegte Originalmeldungen (österreichische Einkommenslücke, Copernicus-Temperaturbilanz, EU-Ratsposition zu Methan, US-Arbeitsmarktdaten, Ukraine-Diplomatie) und eine zusätzliche Reuters-Vertiefung zum Ölmarkt. Vorherige 14 Nachrichten/10 Vertiefungen und sämtliche alten Artikel-IDs/URLs bleiben erhalten; gemeinsame Marktanlässe sind redaktionell mit event_key und eigenständigen Beiträgen gekennzeichnet. Keine endgültigen Beschlüsse aus Ankündigungen oder Ratspositionen abgeleitet. Originalsprachige Zusammenfassungen. Keine künstlichen Bewertungen und keine Themenausschlüsse. Vollständige Originalbelege für die neuen Beiträge im privaten Dossier PR #76; zu älteren Beiträgen gelten deren dokumentierte ursprüngliche Zugriffsgrenzen. Unbeaufsichtigter redaktioneller Nachmittags-Rerun: neues bestätigtes Xi-Treffen (ORF ZIB 13:00) als eigenständige Nachmittagsentwicklung; die Vormittagsmeldung und ihre Identität bleiben unverändert. Neue Quelle im privaten Dossier PR #78. Keine künstlichen Bewertungen; keine Änderungen an anderen Bereichen. Phase-4-Neulauf: unabhängige Recherche über IEA/Reuters-Erneuerbaren-Prognosen und Eurozonen-Einzelhandelsdaten des Wall Street Journal (Originalauszug). Zwei eigenständige Vertiefungen mit Originalsprachen und ausgewiesenen Zugriffsgrenzen hinzugefügt; Reuters-Makroanalyse nach redaktioneller Dublettenabwägung nicht aufgenommen. Quellenhäufungen sind Warnhinweise, keine Quoten. Privates Recherche-/Quellendossier PR #79, keine Änderung an authentischem Feedback oder anderen Bereichen. Phase-5-Kontrolllauf: IEA-Primärbericht zu Netzanschluss-Warteschlangen nach Originalsichtung ergänzt; überraschende Speicher-/Hybrid-Dynamik als genau ein Neues-Beitrag mit regulärer Vertiefungs-ID markiert. Private Belege PR #81, Backup-Branches erhalten; keine alten Artikel oder Feedback-Stimmen verändert. Redaktioneller Nachtrag am 6. November, 22:19 Uhr: Die Originaltexte zu globalen Fondsflüssen und Japans Notenbank-ETF-Verkäufen wurden erneut geprüft; die Einordnung präzisiert den Zeitraum der Fondsflüsse vor dem Technologieabverkauf und die Unsicherheit weiterer Zinsschritte. Bestehende Artikelidentitäten und die belegte OECD-Gegenposition bleiben unverändert. Phase-7-Drittversuch 23:29 CET: neue ACER-Originalvertiefung vom 06.11. zu Stromnetzinvestitionen, Engpasskosten und zurückgelegten Erlösen nach tatsächlich gelesenem ACER-Primärtext ergänzt; unabhängiger Erkenntnisgegenstand gegenüber IEA-Warteschlangenbericht, kein zusätzliches künstliches Neues oder zweite Gegenposition. Privates Originaldossier PR #90, unveränderte 20 Nachrichten und 14 alten Vertiefungen mit allen IDs/URLs; 0 unabhängige neue Feedbackvorlagenwünsche, private Vorschlagsdatei bewusst unverändert.",
+  "editorial_note": "Kontrollierter vollständiger Morgen-Neubau der Ausgabe vom 6. November, tatsächlich recherchiert nach Mitternacht am 7. November (Wien). Die bisherige Auswahl wurde neu redaktionell abgewogen: eine veraltete Stocker-Xi-Ankündigung und zwei redundante internationale Finanzmarkt-Meldungen wurden gestrichen, zwei aktuelle Statistik-Austria-Originalmeldungen aufgenommen. Eine ältere allgemeine Guardian-Analyse wurde durch eine aktuelle Reuters-Analyse zur EU-Klimaresilienz und Finanzierung ersetzt. 19 Nachrichten und 15 Vertiefungen, darunter eine begründete Neues-Perspektive und eine eigenständig belegte Gegenposition. Vorhandene Artikel-IDs/URLs unverändert bei übernommenen Stücken; neue IDs nur für neue Originalartikel. Keine privaten Bewertungen, Kommentare oder Profilangaben in der Ausgabe. Echte Originalbelege, redaktionelle Auswahl und Zugriffsgrenzen im privaten Dossier PR #93. Der ausgefallene additive PR #339 wurde nicht als Basis benutzt. Statistik-Austria-Großhandelspreisindex direkt gelesen; Stellen-PDF selbst nicht abrufbar, Kennzahlen durch aktuelle Statistik-Austria-Veröffentlichungsübersicht und weitere Berichterstattung verifiziert, daher teaser. Reuters-Klimaresilienz über verifizierten indexierten Auszug, daher teaser. Kein vorgetäuschter Frühmorgenzeitpunkt.",
   "articles": [
     {
       "id": "5e82ffe12693a038",
@@ -109,18 +109,6 @@
       "event_key": "cop31-antalya-electrification-agenda-2026"
     },
     {
-      "id": "42ecab1da9eab3bd",
-      "title": "‘Countries are defying gravity’: how much longer can global economy resist chaos?",
-      "url": "https://www.theguardian.com/business/2026/oct/17/imf-warns-scale-subsidies-weather-global-chaos-untenable",
-      "published_at": "2026-10-17",
-      "summary": "The Guardian examines the IMF warning that economic resilience is costly: emergency energy support amounts to roughly 0.5% of global GDP while rising debts and deficits leave less room for the next shock.",
-      "source": "The Guardian",
-      "topic": "Global economy and fiscal sustainability",
-      "evidence_level": "read",
-      "article_type": "analysis",
-      "event_key": "imf-global-resilience-subsidies-2026"
-    },
-    {
       "id": "40f25ce6cdf9268f",
       "title": "China to raise FX reserve requirement to slow yuan's rally",
       "url": "https://www.reuters.com/world/asia-pacific/china-raise-forex-deposit-reserve-ratio-6-starting-november-15-2026-11-03/",
@@ -194,21 +182,21 @@
       "evidence_level": "read",
       "event_key": "acer-energy-infrastructure-monitoring-2026",
       "distinct_contribution": "ACER's original infrastructure-monitoring report quantifies transmission investment, congestion costs and unused revenues; the existing IEA Renewables 2026 analysis instead examines the changing composition of grid-connection queues."
+    },
+    {
+      "id": "fa6700d0a0b01108",
+      "title": "EU climate plan falls short without dedicated funding, lawmaker says",
+      "url": "https://www.reuters.com/sustainability/cop/eu-climate-plan-falls-short-without-dedicated-funding-lawmaker-says-2026-11-06/",
+      "source": "Reuters",
+      "published_at": "2026-11-06",
+      "summary": "The European Commission's proposed climate-resilience framework and law seek to shift policy towards managing climate risks before disasters occur. Critics warn that risk assessments without dedicated funding and binding budget integration may leave governments underprepared, while the Commission points to existing and proposed EU budget support. The debate exposes the gap between resilience planning and financing implementation.",
+      "article_type": "analysis",
+      "topic": "Climate adaptation, EU fiscal policy and public investment",
+      "evidence_level": "teaser",
+      "event_key": "eu-climate-resilience-framework-financing-2026"
     }
   ],
   "headlines": [
-    {
-      "id": "a2b8ff2a3bf33454",
-      "title": "Stocker trifft Chinas Premier Li; Gespräch mit Xi angekündigt",
-      "url": "https://orf.at/stories/3447374/",
-      "source": "ORF",
-      "published_at": "2026-11-06",
-      "summary": "Bundeskanzler Stocker wurde in Peking von Premier Li Qiang empfangen. Die Wirtschaftsbeziehungen stehen im Mittelpunkt; das Gespräch mit Staatspräsident Xi war zum Berichtszeitpunkt für den Nachmittag angekündigt.",
-      "article_type": "report",
-      "region": "Österreich",
-      "evidence_level": "read",
-      "event_key": "austria-china-stocker-visit-2026-11-06"
-    },
     {
       "id": "a2b5df2a3bf0c81d",
       "title": "Innenministerium berichtet über Islamismus-Ermittlungen",
@@ -331,31 +319,6 @@
       "event_key": "ecb-schnabel-debt-nonbanks-risks-2026-11-05"
     },
     {
-      "id": "28edf2eb357abf1a",
-      "title": "Global equity funds post seventh straight week of inflows",
-      "url": "https://www.reuters.com/world/china/global-markets-flows-graphic-2026-11-06/",
-      "source": "Reuters",
-      "published_at": "2026-11-06",
-      "summary": "Global equity funds received $38.63 billion in net inflows in the week through November 4, including $13.25 billion in Europe, $14.81 billion in the US and $8.34 billion in Asia, according to LSEG Lipper data. Money market funds drew another $172.71 billion. Crucially, these flows were measured before the sharp November 5–6 technology selloff, so they do not establish how investors responded to the later rout.",
-      "article_type": "report",
-      "region": "International",
-      "evidence_level": "read",
-      "event_key": "global-equity-fund-flows-week-2026-11-04"
-    },
-    {
-      "id": "3fe98824876c131d",
-      "title": "Tech selloff wipes out hedge fund gains",
-      "url": "https://www.reuters.com/world/china/tech-selloff-wipes-out-hedge-fund-gains-prompting-risk-cuts-layoffs-2026-11-06/",
-      "source": "Reuters",
-      "published_at": "2026-11-06",
-      "summary": "Technology-focused equity long-short hedge funds fell more than 4% on Thursday, Reuters reports. Some managers are cutting risk and staff after the market reversal.",
-      "article_type": "report",
-      "region": "International",
-      "evidence_level": "teaser",
-      "event_key": "us-tech-market-selloff-2026-11-05",
-      "distinct_contribution": "Different transmission channel: losses, risk cuts and staffing effects inside technology-focused hedge funds."
-    },
-    {
       "id": "9c5e4b28b9bc8646",
       "title": "Central banks diverge as inflation risks persist",
       "url": "https://www.reuters.com/world/asia-pacific/global-markets-central-banks-graphic-2026-11-05/",
@@ -440,6 +403,30 @@
       "evidence_level": "teaser",
       "event_key": "austria-china-stocker-visit-2026-11-06",
       "distinct_contribution": "Afternoon follow-up confirming the actual Xi meeting, whereas the morning ORF story had only announced it."
+    },
+    {
+      "id": "fa6700d0a0b01106",
+      "title": "Statistik Austria: Großhandelspreise im Oktober um 10,0 Prozent höher",
+      "url": "https://www.statistik.at/en/statistics/national-economy-and-public-finance/prices-and-price-indices/wholesale-price-index",
+      "source": "Statistik Austria",
+      "published_at": "2026-11-06",
+      "summary": "Die österreichischen Großhandelspreise lagen im Oktober 2026 laut vorläufigen Daten um 10,0 Prozent über dem Vorjahreswert, gegenüber September sanken sie leicht um 0,2 Prozent. Besonders stark verteuerten sich andere flüssige und gasförmige Brennstoffe (+70,6 Prozent im Jahresvergleich). Der Index misst Großhandelsverkaufspreise ohne Umsatzsteuer, nicht die Verbraucherpreisinflation.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read",
+      "event_key": "austria-wholesale-prices-october-2026"
+    },
+    {
+      "id": "fa6700d0a0b01107",
+      "title": "Österreich: Zahl offener Stellen sinkt im dritten Quartal auf 121.900",
+      "url": "https://www.statistik.at/fileadmin/announcement/2026/11/20261105OffeneStellen2026Q3.pdf",
+      "source": "Statistik Austria",
+      "published_at": "2026-11-05",
+      "summary": "Laut Statistik Austria waren im dritten Quartal 2026 durchschnittlich 121.900 Stellen unbesetzt, um 11,8 Prozent weniger als ein Jahr zuvor und um 1,2 Prozent weniger als im Vorquartal. Die Offene-Stellen-Quote sank auf 2,8 Prozent. Die Zahlen messen die Arbeitskräftenachfrage und sind nicht mit der Arbeitslosenquote gleichzusetzen.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "teaser",
+      "event_key": "austria-job-vacancies-q3-2026"
     }
   ]
 }
