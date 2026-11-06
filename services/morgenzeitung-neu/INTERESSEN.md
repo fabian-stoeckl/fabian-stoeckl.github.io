@@ -36,10 +36,9 @@ Die Zeitung enthält künftig optional bis zu zwei eigens gekennzeichnete **unor
 Bewertungen der „Neues“-Artikel sind **normale Bewertungen derselben Original-IDs in der Rubrik „Vertiefungen“**; keine zusätzlichen Feedback-Stimmen oder künstlichen Personalisierungsbelege. Ein positiver Klick auf eine ungewöhnliche Sicht ist **nicht** automatisch eine Zustimmung zur gesamten vertretenen These; ein negativer Klick ist **kein** dauerhaftes Verbot ungewöhnlicher Blickwinkel. Echte Freitexte und plausible alternative Erklärungen zu Neuigkeit, Tiefe, Belegqualität und Relevanz prüfen. Nicht bewertete Stücke bleiben neutral, gerade in einer Rubrik, die bewusst kleine Experimente mit Blickwinkeln zulässt.
 
 
-## Phase 6 – Gegenpositionen ohne Lern-Selbstbestätigung
+## Phase 6 – Einen echten anderen Artikel zeigen und Feedback unabhängig halten
 
-Gelegentliche belegte Gegenpositionen sind redaktionelle Einordnung, **keine** vom Nutzer verlangten oder befürworteten Gegenmeinungen. Die normale Bewertung bleibt allein dem angezeigten Hauptartikel zugeordnet, einschließlich einer etwaigen Gegenpositionsbox. Aus dem Rating lässt sich **nicht** ableiten, ob die Gegenthese überzeugte oder ob ein individueller Leser jede Position teilt. Positive und negative Artikelurteile, Stille und anklickbare Standardbegründungen dürfen **keine** harte Perspektivensperre erzeugen. Nur ausdrücklich verfasstes Feedback, vor allem über die Argumentqualität, darf mit alternativen Erklärungen vorsichtig zur Verbesserung der redaktionellen Auswahl beitragen.
-
+Eine Gegenposition ist **immer ein überprüfter, eigenständig veröffentlichter Gegenartikel** zu einer konkreten These des Hauptartikels, keine vom Assistenten erzeugte lange Widerrede und kein allgemeiner Faktenblock. Seine Leservorschau führt den tatsächlichen **anklickbaren Originaltitel**, Medium, Datum und eine **kurze Originalsprachen-Zusammenfassung** wie bei einem normalen Artikel; ein deutlich älterer, sachlich noch relevanter Beitrag ist ausdrücklich zulässig. Keine Pflicht, täglich Gegenthesen zu finden, keine künstliche politische Symmetrie. Die reguläre Bewertung bleibt **nur dem Hauptartikel** mit seiner bisherigen ID zugeordnet; aus ihr keine Zustimmung oder Ablehnung zum Gegenartikel ableiten. Die Redaktion darf spätere Artikelentscheidungen nur aus echten ausdrücklichen Freitexten mit Alternativhypothesen ableiten, nicht aus Vorlagenklicks oder Stille.
 
 ## Phase 7 – Private Vorschläge lernen nur aus eigenständig formuliertem Feedback
 
