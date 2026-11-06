@@ -88,7 +88,7 @@ assert.match(fs.readFileSync(path+'app.js','utf8'),/new_perspective/);
 assert.match(fs.readFileSync(path+'app.js','utf8'),/section.id='neues'/);
 assert.match(fs.readFileSync(path+'style.css','utf8'),/new-perspectives-list/);
 assert.match(research,/Phase 5 – „Neues“/);
-assert.match(research,/interessennah/);
+assert.match(research,/Interessenanschluss/);
 assert.match(fs.readFileSync('scripts/morgenzeitung_neu.py','utf8'),/new_perspective_count/);
 
 assert.match(fs.readFileSync('services/morgenzeitung-neu/INTERESSEN.md','utf8'),/Anti-Filterblasen-Prüfung/);
