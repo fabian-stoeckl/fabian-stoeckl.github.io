@@ -19,7 +19,7 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
      await route.fulfill({status:404,json:{message:'Not Found'}});return;
     }
     if(url.pathname.includes('/contents/morgenzeitung-neu/')){
-     const responseText=url.pathname.endsWith('lernmonitoring.md')?'Lernbilanz · Morgenzeitung Neu\nNoch nicht beurteilbar.':url.pathname.endsWith('begruendungsvorschlaege.json')?JSON.stringify({version:1,suggestions:['Zu juristisch für ein Randthema']}):url.pathname.endsWith('interessen.md')?'Ich interessiere mich für gut belegte Analysen und neue wirtschaftliche Erkenntnisse.':'28.10.2026: Startbeschreibung aus früherem Feedback übernommen.';
+     const responseText=url.pathname.endsWith('lernmonitoring.md')?'Lernbilanz · Morgenzeitung Neu\nNoch nicht beurteilbar.':url.pathname.endsWith('begruendungsvorschlaege.json')?JSON.stringify({version:1,suggestions:['Zu juristisch für ein Randthema'],general_suggestions:['Beim Thema Klima interessieren mich Investitionssignale statt bloßer Zielvorgaben.','Bitte mehr empirische Vergleiche zu europäischen Industriemaßnahmen.']}):url.pathname.endsWith('interessen.md')?'Ich interessiere mich für gut belegte Analysen und neue wirtschaftliche Erkenntnisse.':'28.10.2026: Startbeschreibung aus früherem Feedback übernommen.';
      response={content:Buffer.from(responseText).toString('base64')};
     }else if(req.method()==='POST'&&url.pathname.endsWith('/issues')){
      const body=req.postDataJSON();
@@ -155,10 +155,20 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
 
    await page.locator('#tab-headlines').click();
    assert.ok(await page.locator('.feedback-suggestions button').count()>=4);
+   await page.waitForSelector('#feedback-form .feedback-suggestions-private button');
+   assert.equal(await page.locator('#feedback-form .feedback-suggestions-private button').count(),2,
+     'Two adaptive templates from the mocked private config are displayed');
    const suggestion=await page.locator('.feedback-suggestions button').first().innerText();
    await page.locator('.feedback-suggestions button').first().click();
    const general=page.locator('#feedback');
-   await general.fill((await general.inputValue())+'\nFreie eigene Begründung zur Artikelwahl.');
+   const privateChoice=page.locator('#feedback-form .feedback-suggestions-private button').first();
+   const adaptiveText=await privateChoice.innerText();
+   await privateChoice.click();
+   assert.ok((await general.inputValue()).includes(adaptiveText));
+   await general.fill((await general.inputValue()).replace(adaptiveText,
+     adaptiveText+' Dafür wünsche ich mir eine konkrete Vergleichszahl.')
+     +'\nFreie eigene Begründung zur Artikelwahl.');
+   assert.match(await general.inputValue(),/Vergleichszahl/);
    assert.match(await general.inputValue(),/Thema interessiert/);
    await page.locator('#tab-articles').click();
    assert.equal(await page.locator('#articles').isVisible(),true);
@@ -212,6 +222,18 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
    assert.deepEqual(payload.comment_suggestions,[suggestion]);
    assert.ok(payload.comment.includes('Freie eigene Begründung zur Artikelwahl.'));
    assert.ok(payload.ratings.some(r=>r.suggested_reasons?.includes('Zu juristisch für ein Randthema')));
+   // A selected article template edited substantially is no longer tagged as
+   // an exact template line. The authored addition remains in the issue.
+   const quotedReason=await group.locator('.personal-reason-choice').first().innerText();
+   const reasonField=group.locator('.rating-reason textarea');
+   await reasonField.fill((await reasonField.inputValue()).replace(quotedReason,
+     quotedReason+' und mit einer konkreten rechtlichen Einordnung.'));
+   await page.locator('#feedback-form button[type=submit]').click();
+   await page.waitForFunction(()=>document.querySelector('#feedback-status').textContent.includes('aktualisiert.'));
+   const revisedRating=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
+   assert.ok(revisedRating.ratings.find(r=>r.id===correctedId)?.reason.includes('konkreten rechtlichen Einordnung'));
+   assert.ok(!revisedRating.ratings.find(r=>r.id===correctedId)?.suggested_reasons?.includes(quotedReason),
+     'Edited article explanation is not saved as an exact clicked template');
    // Older genuine editions lack the optional Neues markers; no empty section.
    const older=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/index.json','utf8')).dates[1];
    await page.locator('#date').selectOption(older);
@@ -239,16 +261,30 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
      width===390?/Noch keine Lernbilanz vorhanden/:/Noch nicht beurteilbar/);
    assert.equal(await page.locator('#learning-monitor').isVisible(),true);
 
+   await page.waitForSelector('#preference-comment-form .feedback-suggestions-private button');
+   assert.equal(await page.locator('#preference-comment-form .feedback-suggestions-private button').count(),2,
+     'Authenticated user sees private personal suggestions also on preferences page');
    const prefSuggestion=await page.locator('.feedback-suggestions button').first().innerText();
    await page.locator('.feedback-suggestions button').first().click();
+   const prefPrivate=page.locator('#preference-comment-form .feedback-suggestions-private button').first();
+   await prefPrivate.click();
    const pref=page.locator('#preference-comment');
    await pref.fill((await pref.inputValue())+'\nEigenständiger Hinweis von der Präferenzseite.');
    await page.locator('#preference-comment-form button[type=submit]').click();
    await page.waitForFunction(()=>document.querySelector('#preference-comment-status').textContent.startsWith('Gespeichert.'));
    const revised=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
-   assert.deepEqual(revised.comment_suggestions,[suggestion]);
+   assert.deepEqual(revised.comment_suggestions,[suggestion,adaptiveText],
+     'Private suggestion click is tagged but independently written line remains untagged');
    assert.equal(prefSuggestion,suggestion);
    assert.ok(revised.comment.includes('Eigenständiger Hinweis von der Präferenzseite.'));
+   await page.evaluate(async()=>{
+     DirectFeedback.clearToken();
+     await FeedbackSuggestions.loadPrivateSuggestions('');
+   });
+   assert.equal(await page.locator('#preference-comment-form .feedback-suggestions-private button').count(),0,
+     'Disconnect removes all personalized template buttons');
+   assert.ok(await page.locator('#preference-comment-form .feedback-suggestions > button').count()>=6,
+     'Default templates and free input remain usable without a private GitHub token');
    // Prior release stored hidden URL paths under a different localStorage key.
    // The restored selection must survive upgrading to the new independent dialog.
    await page.evaluate(()=>{
