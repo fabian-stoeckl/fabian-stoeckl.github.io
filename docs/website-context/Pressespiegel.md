@@ -83,3 +83,7 @@ Eigenständige neue Zeitung: `Privat/Pressespiegel/`. Die vertraute klassische V
 - Fünf sichtbare Einträge initial und +10 sichtbare pro Klick, selbst wenn dazwischen Beiträge entfernt wurden. Tests auf 390px/1440px, Tastaturzugänglichkeit der nativen Dialog-Steuerelemente, SVG-Zentrierung, Rücksortierung, Reload- und Tab-Persistenz.
 
 - Kompatibilität mit dem vor dem Rollback verwendeten localStorage-Schlüssel `pressespiegel-hidden-blog-posts-v1`: alte ausgeblendete URL-Pfade werden beim ersten Öffnen einmalig übernommen und bleiben auch nach Wiederherstellung dauerhaft entsperrt. Für aktuell nicht mehr im RSS enthaltene Beiträge bleibt ein wiederherstellbarer Archiveintrag mit Pfad-Referenz bestehen.
+
+## 06.11.2026 – Ausfalltoleranz bei Quellenzugriffen
+- Ausdrückliche Nutzerentscheidung: einzelne nicht erreichbare Originalartikel dürfen keinen sofortigen Abbruch der gesamten Zeitung auslösen. Zunächst erneut versuchen, Original über kanonische Verlagsseite/Feed/Suche identifizieren, getrennte verifizierbare Kontextquellen prüfen, Zugriffstiefe ehrlich begrenzen, Kandidat gegebenenfalls ersetzen und mit der restlichen Recherche/Publikation fortfahren.
+- Bei GitHub-/CI-/Netzfehlern kontrollierte Wiederholungen mit Zustandsprüfung; kein Umgehen fehlgeschlagener Tests und keine Scheinveröffentlichung. Bestehende valide Ausgabe, echtes Feedback und Artikel-IDs bleiben geschützt.
