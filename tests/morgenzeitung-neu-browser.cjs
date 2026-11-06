@@ -191,7 +191,7 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
    const payload=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
    assert.ok(payload.ratings.length>=1&&payload.comment.includes('Thema interessiert'));
    assert.ok(payload.ratings.some(r=>r.id===correctedId),'Correction retains same article rating identity');
-   assert.ok(payload.ratings.some(r=>r.id===firstNovelId&&r.section==='Vertiefungen'&&r.value==='Teilweise relevant'),
+   assert.ok(payload.ratings.some(r=>r.id===firstNovelId&&r.section==='Vertiefungen'&&r.rating==='Teilweise relevant'),
      'Neues feedback must persist under original article ID and same Vertiefungen section');
    assert.deepEqual(payload.comment_suggestions,[suggestion]);
    assert.ok(payload.comment.includes('Freie eigene Begründung zur Artikelwahl.'));
