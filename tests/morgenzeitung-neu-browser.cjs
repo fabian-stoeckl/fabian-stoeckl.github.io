@@ -160,7 +160,7 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
    assert.equal(await page.locator('#neues > h2').innerText(),'Neues');
    assert.equal(await page.locator('#neues article').count(),2,'Only the selected two articles appear under Neues');
    assert.equal(await page.locator('#articles article').count(),published.articles.length,'No duplicated or lost article');
-   assert.equal(await page.locator('#articles > .article-list article').count(),published.articles.length-2,
+   assert.equal(await page.locator('#articles > .lead-grid article, #articles > .article-list article').count(),published.articles.length-2,
      'Neues items must not reappear in the ordinary article list');
    assert.equal(await page.locator('#neues article .new-perspective-rationale').count(),2);
    assert.equal(await page.locator('#neues').evaluate(el=>el.nextElementSibling.classList.contains('section-save')),true,
