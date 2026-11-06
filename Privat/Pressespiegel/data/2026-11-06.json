@@ -1,6 +1,6 @@
 {
   "date": "2026-11-06",
-  "researched_at": "2026-11-06T15:57:00Z",
+  "researched_at": "2026-11-06T21:58:00+01:00",
   "preview": false,
   "editorial_note": "Kontrollierter E2E-Produktionsneulauf nach unabhängiger Nachrecherche: Fünf zusätzliche belegte Originalmeldungen (österreichische Einkommenslücke, Copernicus-Temperaturbilanz, EU-Ratsposition zu Methan, US-Arbeitsmarktdaten, Ukraine-Diplomatie) und eine zusätzliche Reuters-Vertiefung zum Ölmarkt. Vorherige 14 Nachrichten/10 Vertiefungen und sämtliche alten Artikel-IDs/URLs bleiben erhalten; gemeinsame Marktanlässe sind redaktionell mit event_key und eigenständigen Beiträgen gekennzeichnet. Keine endgültigen Beschlüsse aus Ankündigungen oder Ratspositionen abgeleitet. Originalsprachige Zusammenfassungen. Keine künstlichen Bewertungen und keine Themenausschlüsse. Vollständige Originalbelege für die neuen Beiträge im privaten Dossier PR #76; zu älteren Beiträgen gelten deren dokumentierte ursprüngliche Zugriffsgrenzen. Unbeaufsichtigter redaktioneller Nachmittags-Rerun: neues bestätigtes Xi-Treffen (ORF ZIB 13:00) als eigenständige Nachmittagsentwicklung; die Vormittagsmeldung und ihre Identität bleiben unverändert. Neue Quelle im privaten Dossier PR #78. Keine künstlichen Bewertungen; keine Änderungen an anderen Bereichen. Phase-4-Neulauf: unabhängige Recherche über IEA/Reuters-Erneuerbaren-Prognosen und Eurozonen-Einzelhandelsdaten des Wall Street Journal (Originalauszug). Zwei eigenständige Vertiefungen mit Originalsprachen und ausgewiesenen Zugriffsgrenzen hinzugefügt; Reuters-Makroanalyse nach redaktioneller Dublettenabwägung nicht aufgenommen. Quellenhäufungen sind Warnhinweise, keine Quoten. Privates Recherche-/Quellendossier PR #79, keine Änderung an authentischem Feedback oder anderen Bereichen. Phase-5-Kontrolllauf: IEA-Primärbericht zu Netzanschluss-Warteschlangen nach Originalsichtung ergänzt; überraschende Speicher-/Hybrid-Dynamik als genau ein Neues-Beitrag mit regulärer Vertiefungs-ID markiert. Private Belege PR #81, Backup-Branches erhalten; keine alten Artikel oder Feedback-Stimmen verändert.",
   "articles": [
@@ -14,7 +14,15 @@
       "article_type": "commentary",
       "topic": "Steuerpolitik und politische Ökonomie",
       "evidence_level": "read",
-      "event_key": "tax-policy-wealth-flight-california-austria-2026"
+      "event_key": "tax-policy-wealth-flight-california-austria-2026",
+      "counterposition": {
+        "responds_to": "Aus dem Scheitern konkreter Milliardärssteuer- und Flugabgabepläne lassen sich erhebliche Probleme bei der praktischen Konstruktion solcher Steuern ableiten.",
+        "argument": "Die OECD unterscheidet zwischen misslungenen Einzelmodellen und der grundsätzlichen Eignung einer Vermögensbesteuerung. Wo umfassende Kapitalertrag- und Erbschaftsteuern fehlen, kann eine gezielt gestaltete Vermögenssteuer eine ergänzende Rolle spielen; hohe Freibeträge und begrenzte Ausnahmen können ihre Verteilungswirkung verbessern. Zugleich bestätigt die OECD erhebliche Bewertungs-, Ausweich- und Vollzugsprobleme. Der Befund relativiert eine Verallgemeinerung aus Einzelfällen, widerlegt aber nicht die Kritik an diesen konkreten Plänen.",
+        "source": "OECD",
+        "source_title": "The Role and Design of Net Wealth Taxes in the OECD – Conclusions and policy implications",
+        "url": "https://www.oecd.org/en/publications/the-role-and-design-of-net-wealth-taxes-in-the-oecd_9789264290303-en/full-report/component-8.html",
+        "evidence_level": "read"
+      }
     },
     {
       "id": "48ad21ef383bc69d",
