@@ -23,6 +23,14 @@ Bei einem echten **nachträglich erkannten Fehler** den betreffenden Artikel im 
 
 Der **eine bereits existierende** tägliche Automationsauftrag lädt den aktuellen Hauptbranch und führt `INTERESSEN.md` gefolgt von `RECHERCHE.md` aus. Er beginnt um 04:45 Uhr Europe/Vienna mit Ziel-Veröffentlichung 07:45 Uhr. Private Belege vor öffentlichem PR sichern; passende Struktur-, Unit- und Browser-Tests/CI prüfen, mergen, Pages-Deployment kontrollieren und nach Möglichkeit öffentliche HTTPS-Ausgabe zurücklesen. Scheitert ein Schritt, letzte gültige Ausgabe behalten und Hindernis ehrlich melden. Keine zweite parallele Produktion, Link-Test-Wache oder automatisch erfundene Erfolgsanalyse.
 
+## Fehlertoleranz und Wiederaufnahme (verbindlich seit 06.11.2026)
+
+Ein einzelner fehlgeschlagener Quellenabruf (403/404, Paywall, Timeout, Parser-/Netzfehler) ist **kein** Grund, die gesamte Recherche oder Produktion abzubrechen. Erst den konkreten Abruf mit einer begrenzten Anzahl neuer Versuche (in der Regel bis zu drei, kurze Abstände), kanonischem Verlagslink, Verlagssuche/RSS, und bei Bedarf neuen Suchanfragen prüfen. Keine endlose Wiederholung derselben Fehlermeldung. Fehlende Zugänglichkeit nicht mit einem widerlegten Sachverhalt verwechseln.
+
+Lässt sich ein Original nach diesen Versuchen nicht ausreichend belegen, nur dessen tatsächlich sichtbare Überschrift bzw. Vorschau mit zutreffendem \`evidence_level\` verwenden oder den **einzelnen** Kandidaten durch einen eigenständig belegten anderen Beitrag ersetzen; ungesicherte Inhalte streichen. Unabhängige Sekundärquellen dürfen Fakten zum Anlass bestätigen, jedoch niemals ungelesenen Originaltext vortäuschen. Den **übrigen** Nachrichten-/Vertiefungsprozess aktiv fortsetzen, auch wenn einzelne Artikel entfallen. Richtzahlen sind keine Füllpflicht.
+
+Bei technischen GitHub-/Netzwerk-/CI-/HTTPS-Problemen ebenfalls erst begrenzt erneut versuchen, Stand und Rechte überprüfen, alternative zulässige Abrufwege und GitHub-Actions-Details auswerten und danach bei weiterhin **tatsächlich blockierter** Datensicherung/Publikation den letzten gültigen Stand unverändert belassen. Fehlgeschlagene Sicherheits-/Strukturtests niemals umgehen oder Tests als bestanden melden. Bei erneuten Versuchen bereits gesicherte echte Belege, Feedbackstände und Artikel-IDs erhalten; keine doppelten Updates, keine Scheinveröffentlichung. Am Ende offen zwischen echtem Blocker, nur teilweise zugänglichen Quellen, bestandenem CI und separat bestätigtem HTTPS-Readback unterscheiden.
+
 ## Prüfen
 
 `python3 scripts/morgenzeitung_neu.py verify`, `python3 tests/morgenzeitung-neu-editorial.py`, `node tests/morgenzeitung-neu.test.cjs`, `node tests/morgenzeitung-neu-feedback.cjs` sowie die vorhandenen GitHub-Browser- und allgemeinen Website-Prüfungen. Diese Tests bestätigen Struktur und Abläufe, **nicht** die Qualität der journalistischen Auswahl.
