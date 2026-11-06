@@ -1,0 +1,219 @@
+{
+  "date": "2026-11-06",
+  "researched_at": "2026-11-06T09:51:00+01:00",
+  "preview": false,
+  "editorial_note": "Kontrollierter vollständiger Produktions-Rerun nach dem Rollback auf den stabilen Stand vom 5. November. Die Ausgabe wurde von Grund auf neu zusammengestellt; bereits geprüfte Originalbelege im privaten Dossier wurden erneut redaktionell bewertet. Bei Reuters, FT und AP beruht die Zusammenfassung teilweise auf zugänglichen Vorschauen (evidence_level: teaser); kein ungelesener Volltext wird behauptet. Nachrichten und Marktstände können sich ändern. Die Auswahl verzichtet bewusst auf Füllartikel.",
+  "articles": [
+    {
+      "id": "5e82ffe12693a038",
+      "title": "Gescheiterte Steuerideen: Auch Milliardäre „rupfen“ will gelernt sein",
+      "url": "https://www.diepresse.com/41418912/gescheiterte-steuerideen-auch-milliardaere-rupfen-will-gelernt-sein",
+      "source": "Die Presse",
+      "published_at": "2026-11-06",
+      "summary": "Josef Urschitz argumentiert in seiner Kolumne, dass die gescheiterte kalifornische Milliardärssteuer und die österreichische Flugticketabgabe Beispiele für schlecht konstruierte Steuerpolitik seien. Die Bewertung ist ausdrücklich eine Meinung des Autors, kein unabhängiger Wirkungsnachweis.",
+      "article_type": "commentary",
+      "topic": "Steuerpolitik und politische Ökonomie",
+      "evidence_level": "read"
+    },
+    {
+      "id": "48ad21ef383bc69d",
+      "title": "German government close to buying half of tank maker KNDS",
+      "url": "https://www.ft.com/content/198d3d9d-b7d4-4c3a-884e-ad7b4e359dfa",
+      "source": "Financial Times",
+      "published_at": "2026-11-06",
+      "summary": "Germany is reportedly close to acquiring the German shareholders' 50% stake in the Franco-German defence group KNDS. The negotiations raise questions about state ownership, industrial sovereignty and future capital-market financing; no completed acquisition is reported.",
+      "article_type": "analysis",
+      "topic": "Industrial policy and defence",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "ddd372623c00dd75",
+      "title": "Chinas Yuan-Dilemma: international zu schwach, im Inland zu stark?",
+      "url": "https://www.reuters.com/world/asia-pacific/chinas-yuan-dilemma-too-weak-abroad-too-strong-home-2026-11-05/",
+      "source": "Reuters",
+      "published_at": "2026-11-05",
+      "summary": "Eine Reuters-Analyse beleuchtet den Zielkonflikt zwischen internationaler Kritik am Yuan-Kurs und dem Druck auf chinesische Exporteure bei einer Aufwertung. Der Wechselkurs ist damit zugleich eine Frage der Binnenkonjunktur und der Handelsbeziehungen.",
+      "article_type": "analysis",
+      "topic": "Globale Wirtschaft und Wechselkurse",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "84d3d6d03911fa17",
+      "title": "Europas Abhängigkeit von kritischen Rohstoffen",
+      "url": "https://www.reuters.com/world/china/europe-must-stockpile-critical-raw-materials-germanys-merz-says-2026-11-05/",
+      "source": "Reuters",
+      "published_at": "2026-11-05",
+      "summary": "Bundeskanzler Merz fordert europäische Vorräte an kritischen Rohstoffen, mehr Recycling und diversifizierte Bezugsquellen. Dahinter steht der Zielkonflikt zwischen kostengünstiger globaler Beschaffung und strategischer Versorgungssicherheit.",
+      "article_type": "analysis",
+      "topic": "Industriepolitik und Lieferketten",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "033031ef19474542",
+      "title": "Did US data centre backlash help Democrats?",
+      "url": "https://www.reuters.com/sustainability/did-us-data-centre-backlash-help-democrats-2026-11-05/",
+      "source": "Reuters",
+      "published_at": "2026-11-05",
+      "summary": "Reuters examines whether local opposition to data centres, including their electricity and water demands, played a role in the US midterms. The article explores a possible political mechanism rather than establishing a single cause for the election result.",
+      "article_type": "analysis",
+      "topic": "AI infrastructure and politics",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "911f02d091bb4ca1",
+      "title": "Argentiniens Sparpolitik vor neuer wirtschaftlicher Bewährungsprobe",
+      "url": "https://www.reuters.com/world/americas/argentinas-austerity-hit-economy-reels-towards-recession-testing-milei-ahead-2026-11-02/",
+      "source": "Reuters",
+      "published_at": "2026-11-02",
+      "summary": "Eine Reuters-Analyse beschreibt die Spannungen zwischen sinkender Inflation, harter Haushaltskonsolidierung und schwacher Binnennachfrage in Argentinien. Die längerfristige Frage ist, ob Stabilisierung ohne anhaltende Wachstumsschwäche gelingt.",
+      "article_type": "analysis",
+      "topic": "Fiskalpolitik und Wirtschaftsentwicklung",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "05f621ceafdf6063",
+      "title": "Germany lags EU neighbours with gas storage refill as winter starts",
+      "url": "https://www.reuters.com/business/energy/germany-lags-eu-neighbours-with-gas-storage-refill-winter-starts-2026-11-03/",
+      "source": "Reuters",
+      "published_at": "2026-11-03",
+      "summary": "Germany entered winter with gas storage at 61.05% on 2 November, below the EU average of 74.56%. The report explores how high LNG prices, storage incentives and the Iran conflict affect Europe's energy-security risks.",
+      "article_type": "analysis",
+      "topic": "Energy security and European industry",
+      "evidence_level": "teaser"
+    }
+  ],
+  "headlines": [
+    {
+      "id": "a2b8ff2a3bf33454",
+      "title": "Stocker in China: Gespräche über Wirtschaftsbeziehungen",
+      "url": "https://orf.at/stories/3447374/",
+      "source": "ORF",
+      "published_at": "2026-11-06",
+      "summary": "Bundeskanzler Stocker besucht China; Gespräche über Wirtschaftsbeziehungen stehen im Mittelpunkt. Das Treffen mit Staatspräsident Xi war zum Berichtszeitpunkt angekündigt und wird nicht als bereits erfolgt dargestellt.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "a2b5df2a3bf0c81d",
+      "title": "Innenministerium berichtet über Islamismus-Ermittlungen",
+      "url": "https://orf.at/stories/3447375/",
+      "source": "ORF",
+      "published_at": "2026-11-06",
+      "summary": "Laut Innenministerium gab es neun Hausdurchsuchungen und 17 Einvernahmen im Zuge eines Islamismus-Schwerpunkts. Es handelt sich um Ermittlungsmaßnahmen, nicht um Schuldsprüche.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "898c042a2deb9d10",
+      "title": "IT-Kollektivvertrag: zweite Verhandlungsrunde ohne Ergebnis",
+      "url": "https://orf.at/stories/3447349/",
+      "source": "ORF",
+      "published_at": "2026-11-05",
+      "summary": "Die zweite KV-Runde für rund 90.000 IT-Beschäftigte blieb ergebnislos. Die Gewerkschaft GPA fordert 3,9 Prozent mehr Gehalt, die Arbeitgeber bieten 1,2 Prozent auf Ist-Gehälter und 2,0 Prozent auf KV-Gehälter.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read"
+    },
+    {
+      "id": "701e692a1fad11f7",
+      "title": "Benko wegen schweren Betrugs erneut schuldig gesprochen",
+      "url": "https://orf.at/stories/3447315/",
+      "source": "ORF",
+      "published_at": "2026-11-05",
+      "summary": "Das Landesgericht Innsbruck verhängte wegen schweren Betrugs eine Zusatzstrafe von zwei Jahren. Im weiteren Anklagepunkt betrügerischer Krida wurde Benko freigesprochen; das Urteil ist nicht rechtskräftig.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read"
+    },
+    {
+      "id": "92a90d2a3335ca93",
+      "title": "Entwicklungsländer: Auslandsverschuldung auf Rekordhoch",
+      "url": "https://orf.at/stories/3447355/",
+      "source": "ORF",
+      "published_at": "2026-11-05",
+      "summary": "Die Weltbank beziffert die Auslandsverschuldung der Entwicklungsländer 2025 auf 9,4 Billionen Dollar, 5,5 Prozent mehr als im Vorjahr. Hohe Finanzierungskosten verschärfen die Belastung.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "92a20d2a332fabe5",
+      "title": "Türkei legt milliardenschwere Energiestrategie vor",
+      "url": "https://orf.at/stories/3447357/",
+      "source": "ORF",
+      "published_at": "2026-11-05",
+      "summary": "Die Türkei plant bis 2040 Investitionen von etwa 450 Milliarden Euro in ihr Energiesystem. Erneuerbare Energien und Kernkraft sollen wachsen, um Energieimporte zu verringern; es handelt sich um Pläne.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "9b74562a383a5aae",
+      "title": "US-Techwerte brechen nach Midterms ein",
+      "url": "https://orf.at/stories/3447365/",
+      "source": "ORF",
+      "published_at": "2026-11-05",
+      "summary": "Der Nasdaq-100 verlor am Donnerstag 6,36 Prozent und der S&P 500 4,36 Prozent. Investoren fürchten stärkere KI-Regulierung nach den Wahlerfolgen der Demokraten; dies ist eine Markterklärung, keine feststehende politische Entscheidung.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read"
+    },
+    {
+      "id": "11e0289a61568926",
+      "title": "Europäische Aktien folgen globaler Verkaufswelle",
+      "url": "https://www.reuters.com/markets/europe/european-shares-set-fall-global-ai-rout-gathers-pace-2026-11-06/",
+      "source": "Reuters",
+      "published_at": "2026-11-06",
+      "summary": "Der STOXX 600 verlor am Freitagmorgen zeitweise rund 1,6 Prozent. Die Verkaufswelle erfasst auch Europa, obwohl die europäischen Indizes weniger stark von KI-Aktien geprägt sind; Börsenstände können sich ändern.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "4a1d11d6bf79a764",
+      "title": "Ukraine und Russland setzen Luftangriffe fort; Diplomatie läuft",
+      "url": "https://apnews.com/article/0b975a30f862731346e7e1d098a8d538",
+      "source": "Associated Press",
+      "published_at": "2026-11-06",
+      "summary": "Nach erneuten Angriffen berichten Unterhändler von Gesprächen über den Wiederaufbau, die Finanzierung der Ukraine und Sicherheitsgarantien. Angaben zu Opfern und abgeschossenen Drohnen stammen teilweise von Kriegsparteien.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "1463094b91f1f6cd",
+      "title": "COP31: Klimafinanzierung und Energiesicherheit im Fokus",
+      "url": "https://apnews.com/article/6ce625b0e3d4ed0ab093df4e5f9c86ad",
+      "source": "Associated Press",
+      "published_at": "2026-11-06",
+      "summary": "Vor der Klimakonferenz in Antalya stehen die Umsetzung bisheriger Zusagen, Klimafinanzierung und der Ausstieg aus fossilen Energien im Mittelpunkt. Energiepreisschocks und geopolitische Konflikte erschweren die Verhandlungen.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "1bb6553a2553c563",
+      "title": "Japan will Erlöse aus Notenbank-ETF-Verkäufen investieren",
+      "url": "https://www.reuters.com/world/asia-pacific/japan-vigilant-market-moves-will-focus-boosting-economy-pm-takaichi-says-2026-11-06/",
+      "source": "Reuters",
+      "published_at": "2026-11-06",
+      "summary": "Premierministerin Takaichi will zusätzliche Erlöse aus ETF-Verkäufen der japanischen Notenbank für strategische Wachstumsbereiche nutzen. Der Börseneinbruch erhöht zugleich die fiskalischen Risiken.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "4627122377ca4b1b",
+      "title": "Demokratischer Wahlerfolg verändert Machtbalance in Washington",
+      "url": "https://apnews.com/article/f1e19f47b21ec9dc57d0c4929b29b002",
+      "source": "Associated Press",
+      "published_at": "2026-11-06",
+      "summary": "Nach den US-Zwischenwahlen verfügen die Demokraten über stärkere Kontrollmöglichkeiten im Kongress. Inflation, Energiepreise und die Iran-Politik gehörten zu den prägenden Wahlthemen; konkrete Politikfolgen bleiben offen.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser"
+    }
+  ]
+}
