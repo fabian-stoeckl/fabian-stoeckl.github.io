@@ -21,4 +21,4 @@ jobs:
       - name: Validate published edition structure and research diagnostics
         run: python scripts/morgenzeitung_neu.py verify
       - name: Regression tests without browser installation
-        run: python -m unittest discover -s tests -p 'morgenzeitung-neu-editorial.py' -v
+        run: python tests/morgenzeitung-neu-editorial.py -v
