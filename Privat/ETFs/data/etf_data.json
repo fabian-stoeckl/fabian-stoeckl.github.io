@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T14:55:52.972236+00:00",
+  "generated_at": "2026-11-06T01:47:01.287254+00:00",
   "last_successful_update_at": "2026-11-05T14:55:52.972236+00:00",
   "first_year": 2025,
   "years": [
@@ -1550,8 +1550,9 @@
         ]
       },
       "status": "ok",
+      "update_error": "Quelle liefert ältere Daten als der gespeicherte Stand",
       "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     },
@@ -3103,8 +3104,9 @@
         ]
       },
       "status": "ok",
+      "update_error": "Quelle liefert ältere Daten als der gespeicherte Stand",
       "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     },
@@ -4650,8 +4652,9 @@
         ]
       },
       "status": "ok",
+      "update_error": "Quelle liefert ältere Daten als der gespeicherte Stand",
       "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     },
@@ -6197,8 +6200,9 @@
         ]
       },
       "status": "ok",
+      "update_error": "Quelle liefert ältere Daten als der gespeicherte Stand",
       "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     },
@@ -7744,8 +7748,9 @@
         ]
       },
       "status": "ok",
+      "update_error": "Quelle liefert ältere Daten als der gespeicherte Stand",
       "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     },
@@ -9291,8 +9296,9 @@
         ]
       },
       "status": "ok",
+      "update_error": "Quelle liefert ältere Daten als der gespeicherte Stand",
       "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     },
@@ -10838,8 +10844,9 @@
         ]
       },
       "status": "ok",
+      "update_error": "Quelle liefert ältere Daten als der gespeicherte Stand",
       "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     },
@@ -12391,8 +12398,9 @@
         ]
       },
       "status": "ok",
+      "update_error": "Quelle liefert ältere Daten als der gespeicherte Stand",
       "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     }
@@ -13977,14 +13985,20 @@
           {
             "date": "2026-11-05",
             "day": 309,
-            "price": 1.1222084760665894,
-            "performance": 4.70841268962785
+            "price": 1.1234945058822632,
+            "performance": 4.588556170556601
+          },
+          {
+            "date": "2026-11-06",
+            "day": 310,
+            "price": 1.1218308210372925,
+            "performance": 4.743661907175101
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "last_price_date": "2026-11-06",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     },
@@ -15567,14 +15581,20 @@
           {
             "date": "2026-11-05",
             "day": 309,
-            "price": 177.41000366210938,
-            "performance": 3.806431758785056
+            "price": 177.90899658203125,
+            "performance": 3.515279116225445
+          },
+          {
+            "date": "2026-11-06",
+            "day": 310,
+            "price": 177.02099609375,
+            "performance": 4.034548696829865
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "last_price_date": "2026-11-06",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     },
@@ -17157,14 +17177,20 @@
           {
             "date": "2026-11-05",
             "day": 309,
-            "price": 0.8325999975204468,
-            "performance": 4.738168377752849
+            "price": 0.8336099982261658,
+            "performance": 4.611267759715232
+          },
+          {
+            "date": "2026-11-06",
+            "day": 310,
+            "price": 0.833869993686676,
+            "performance": 4.57865061922369
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "last_price_date": "2026-11-06",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     },
@@ -18747,14 +18773,20 @@
           {
             "date": "2026-11-05",
             "day": 309,
-            "price": 0.9150199890136719,
-            "performance": 1.7037892352845585
+            "price": 0.9172599911689758,
+            "performance": 1.455422676966367
+          },
+          {
+            "date": "2026-11-06",
+            "day": 310,
+            "price": 0.9158400297164917,
+            "performance": 1.6127239355621104
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "last_price_date": "2026-11-06",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     },
@@ -20337,14 +20369,20 @@
           {
             "date": "2026-11-05",
             "day": 309,
-            "price": 1.6070799827575684,
-            "performance": 9.474330258129049
+            "price": 1.6039600372314453,
+            "performance": 9.687274433162063
+          },
+          {
+            "date": "2026-11-06",
+            "day": 310,
+            "price": 1.6184099912643433,
+            "performance": 8.707932930014994
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "last_price_date": "2026-11-06",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     },
@@ -21927,14 +21965,20 @@
           {
             "date": "2026-11-05",
             "day": 309,
-            "price": 7.482999801635742,
-            "performance": 9.853139504089349
+            "price": 7.49828577041626,
+            "performance": 9.629193429971107
+          },
+          {
+            "date": "2026-11-06",
+            "day": 310,
+            "price": 7.478499889373779,
+            "performance": 9.919239590574858
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "last_price_date": "2026-11-06",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     },
@@ -23517,14 +23561,20 @@
           {
             "date": "2026-11-05",
             "day": 309,
-            "price": 1511.5,
-            "performance": 11.908037726389352
+            "price": 1505.260009765625,
+            "performance": 12.371947654262527
+          },
+          {
+            "date": "2026-11-06",
+            "day": 310,
+            "price": 1519.199951171875,
+            "performance": 11.340840218537362
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "last_price_date": "2026-11-06",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     },
@@ -25107,19 +25157,25 @@
           {
             "date": "2026-11-05",
             "day": 309,
-            "price": 37.02899932861328,
-            "performance": -0.6711390728067479
+            "price": 36.87361145019531,
+            "performance": -0.2525605729492786
+          },
+          {
+            "date": "2026-11-06",
+            "day": 310,
+            "price": 37.08100128173828,
+            "performance": -0.810436680512916
           }
         ]
       },
       "status": "ok",
-      "last_price_date": "2026-11-05",
-      "expected_price_date": "2026-11-04",
+      "last_price_date": "2026-11-06",
+      "expected_price_date": "2026-11-05",
       "lag_sessions": 0,
       "stale": false
     }
   ],
-  "expected_etf_date": "2026-11-04",
+  "expected_etf_date": "2026-11-05",
   "stale_tolerance_sessions": 2,
   "xetra_session_closes": [
     {
