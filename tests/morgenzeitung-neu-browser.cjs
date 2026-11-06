@@ -46,9 +46,9 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
      sample.articles[0].related_article={title:'Independent follow-up',source:'Another publisher',url:'https://example.org/follow-up'};
      // Only the latest test edition gets an injected counterposition.
      if(sample.date===latestFixtureDay)sample.articles[0].counterposition={
-       responds_to:'The main commentary argues that taxing wealthy residents cannot be designed efficiently.',
-       argument:'A separately sourced economic analysis instead finds that tax incidence, avoidance and administrative design can materially alter the effect, so universal claims are not warranted.',
-       source:'Independent Institute',source_title:'Evidence on tax design and economic behaviour',
+       title:'Alternative study: properly designed wealth taxes can work',
+       summary:'An independent original analysis argues that carefully designed wealth taxes can fund public priorities, while noting that avoidance and administrative difficulties require concrete safeguards.',
+       source:'Independent Institute',kind:'Analysis',published_at:'2024-03-01',
        url:'https://evidence.example.org/independent-analysis',evidence_level:'read'
      };
      sample.preview=false; // Synthetic real-edition correction fixture.
@@ -196,9 +196,13 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
    assert.equal(await page.getByRole('link',{name:'Independent follow-up'}).getAttribute('href'),'https://example.org/follow-up');
    const opposing=page.locator('#articles article').first().locator('.article-counterposition');
    assert.equal(await opposing.count(),1,'Only one counterposition is shown under its parent article');
-   assert.equal(await opposing.locator('h3').innerText(),'Eine andere Perspektive');
-   assert.match(await opposing.innerText(),/tax incidence, avoidance and administrative design/);
-   assert.equal(await opposing.locator('a').getAttribute('href'),'https://evidence.example.org/independent-analysis');
+   assert.equal(await opposing.locator('h3 a').innerText(),'Alternative study: properly designed wealth taxes can work');
+   assert.equal(await opposing.locator('h3 a').getAttribute('href'),'https://evidence.example.org/independent-analysis');
+   assert.match(await opposing.locator('.counterposition-summary').innerText(),/carefully designed wealth taxes/);
+   assert.match(await opposing.locator('.counterposition-meta').innerText(),/Independent Institute/);
+   assert.match(await opposing.locator('.counterposition-meta').innerText(),/2024/);
+   assert.equal(await opposing.locator('.counterposition-claim,.counterposition-argument').count(),0,
+     'No assistant-authored rebuttal paragraphs should be rendered');
    assert.equal(await opposing.evaluate(el=>el.nextElementSibling.classList.contains('ratings')),true,
      'Contrary source must appear below the article but directly before the single rating');
    assert.equal(await page.locator('#articles .article-counterposition').count(),1,
