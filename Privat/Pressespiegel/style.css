@@ -284,3 +284,8 @@ body.preferences-view .topline #profile-toggle{display:none!important}
 .article-counterposition .counterposition-source{font-size:12px!important;line-height:1.5;margin:12px 0 0;color:var(--muted)}
 .article-counterposition .counterposition-source a{text-decoration:underline}
 @media(max-width:760px){.article-counterposition{margin:18px 0;padding:15px 16px}.article-counterposition .counterposition-heading{font-size:21px}}
+
+/* Phase 7: optional private suggestions; built-in choices and free text remain. */
+.feedback-suggestions-private{display:flex;flex-wrap:wrap;gap:7px;flex:1 1 100%;width:100%;border-top:1px solid var(--line);padding-top:9px;margin-top:3px}
+.feedback-suggestions-private .small{flex:1 1 100%;width:100%;margin:0 0 4px}
+.feedback-suggestions-private button{max-width:100%;white-space:normal;text-align:left}
