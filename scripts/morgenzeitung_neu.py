@@ -2,6 +2,8 @@
 import argparse
 import json
 import re
+import unicodedata
+from collections import Counter
 from datetime import date, datetime
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qsl, urlencode, urlunsplit
@@ -77,6 +79,133 @@ def validate(ed):
             if a["id"] in ids or url in urls: raise ValueError("Duplicate ID/URL")
             ids.add(a["id"]);urls.add(url)
 
+
+# Conservative, non-destructive editorial candidate detection. A shared subject
+# is not evidence that two original reports describe the same specific event.
+NEWS_STOPWORDS=frozenset("""
+the a an and or but of in on for to with by from after as at is are was were be
+has have had will says said over under amid around about how why what which this
+that its it into more less than new now yet first second one two today yesterday
+der die das den dem des ein eine einer einem eines und oder aber von vom im in
+auf am an um zu zur zum fur für mit nach bei aus als ist sind hat haben wird
+war werden gegen durch wegen über ueber unter seit auch noch nun neue neuer
+neuen neue entwicklung bericht berichtet sollen könnte koennte
+""".split())
+
+# Equivalences are search hints only, not assertions of one identical event.
+TOKEN_EQUIVALENTS={
+    "aktien":"stock","aktie":"stock","stocks":"stock","equities":"stock",
+    "shares":"stock","techwerte":"tech","technologieaktien":"tech",
+    "technology":"tech","technologie":"tech","ai":"ki",
+    "selloff":"verkaufswelle","ausverkauf":"verkaufswelle",
+    "sell":"verkaufswelle","einbruch":"verkaufswelle",
+    "central":"zentral","banks":"bank","banken":"bank",
+    "inflationary":"inflation","rates":"zins","interest":"zins",
+}
+TOKEN_RE=re.compile(r"[a-z0-9]+",re.ASCII)
+
+def news_terms(value):
+    """Fuzzy word anchors from *public* text, never proof of same event."""
+    normal=unicodedata.normalize("NFKD",str(value).casefold().replace("ß","ss"))
+    plain="".join(ch for ch in normal if not unicodedata.combining(ch))
+    return {TOKEN_EQUIVALENTS.get(t,t) for t in TOKEN_RE.findall(plain)
+            if len(t)>=3 and t not in NEWS_STOPWORDS and not t.isdigit()}
+
+def cluster_candidates(ed):
+    """Advisory pairs; no mutation, automatic grouping, deletion or censorship.
+
+    Explicit event keys are precise editorial annotations. Other candidates
+    use conservative public-title+summary overlap and require human review.
+    """
+    entries=[("headlines",a) for a in ed["headlines"]]+[
+        ("articles",a) for a in ed["articles"]]
+    groups={}
+    for section,a in entries:
+        if a.get("event_key"):
+            groups.setdefault(a["event_key"],[]).append((section,a))
+    named=[{"event_key":key,"articles":[{"id":a["id"],"title":a["title"],"section":section,
+            "distinct_contribution":a.get("distinct_contribution")}
+            for section,a in rows]} for key,rows in sorted(groups.items())
+            if len(rows)>1]
+    document_frequency=Counter(t for _,a in entries for t in news_terms(a["title"]))
+    limit=max(3,len(entries)//3)
+    possible=[]
+    for i,(section_a,a) in enumerate(entries):
+        for section_b,b in entries[i+1:]:
+            if a.get("event_key") and a.get("event_key")==b.get("event_key"):
+                continue
+            title_a={x for x in news_terms(a["title"]) if document_frequency[x]<=limit}
+            title_b={x for x in news_terms(b["title"]) if document_frequency[x]<=limit}
+            shared=title_a & title_b
+            if not shared:
+                continue
+            union=title_a | title_b
+            denom=min(len(title_a),len(title_b))
+            title_sim=len(shared)/len(union) if union else 0
+            containment=len(shared)/denom if denom else 0
+            a_summary=news_terms(a["summary"]);b_summary=news_terms(b["summary"])
+            body_common=a_summary & b_summary
+            body_overlap=len(body_common)/len(a_summary|b_summary) if a_summary|b_summary else 0
+            similar_titles=len(shared)>=3 and (title_sim>=0.40 or containment>=0.75)
+            similar_story=(len(shared)>=2 and len(body_common)>=5 and body_overlap>=0.32)
+            if not (similar_titles or similar_story):
+                continue
+            possible.append({
+                "first":{"id":a["id"],"title":a["title"],"section":section_a},
+                "second":{"id":b["id"],"title":b["title"],"section":section_b},
+                "shared_title_terms":sorted(shared),
+                "hint":"similar_titles" if similar_titles else "overlapping_descriptions",
+            })
+    # Use IDs and titles, not arbitrary article positions, for reproducible logs.
+    possible.sort(key=lambda x:(x["first"]["id"],x["second"]["id"]))
+    return {"explicit_event_groups":named,"possible_same_event":possible,
+            "without_event_key":sum(not a.get("event_key") for _,a in entries),
+            "total":len(entries)}
+
+def historical_overlap(ed,prior_editions):
+    """Flag exact URL reruns or already curated event keys across real editions.
+
+    Re-use might be justified by a new angle or factual update: *never* delete.
+    """
+    current=[("headlines",a) for a in ed["headlines"]]+[
+        ("articles",a) for a in ed["articles"]]
+    earlier={}
+    for old in prior_editions:
+        if old.get("preview") or old.get("date")==ed.get("date"):
+            continue
+        for a in old.get("headlines",[])+old.get("articles",[]):
+            earlier.setdefault(canonical(a["url"]),[]).append((old["date"],a))
+    notes=[]
+    for section,a in current:
+        for day,previous in earlier.get(canonical(a["url"]),[]):
+            notes.append({"date":day,"id":a["id"],"title":a["title"],
+                          "section":section,"prior_id":previous["id"],"reason":"same_original_url"})
+    return sorted(notes,key=lambda x:(x["date"],x["id"]))
+
+def print_cluster_review(ed,prior_editions=()):
+    """Human-readable prepublication report; this is not a publish gate."""
+    report=cluster_candidates(ed)
+    print(f"CLUSTER REVIEW {ed['date']}: {report['total']} articles; "
+          f"{report['without_event_key']} without event_key.")
+    for group in report["explicit_event_groups"]:
+        print("KNOWN EVENT",group["event_key"],":")
+        for row in group["articles"]:
+            extra=" (independent angle recorded)" if row["distinct_contribution"] else " (compare contribution)"
+            print(f"  {row['section']} / {row['id']}: {row['title']}{extra}")
+    for row in report["possible_same_event"]:
+        print(f"CHECK POTENTIAL OVERLAP {row['first']['id']} / {row['second']['id']}: "
+              f"{row['first']['title']} | {row['second']['title']}; "
+              f"hint={row['hint']}; shared={', '.join(row['shared_title_terms'])}")
+    for row in historical_overlap(ed,prior_editions):
+        print(f"CHECK REPEATED ORIGINAL from {row['date']}: {row['title']} ({row['id']})")
+    print("EDITORIAL DECISION REQUIRED: verify specific event, timing, primary "
+          "report vs independent angle; preserve substantive counterpositions. "
+          "No article removed or event_key inferred automatically.")
+    if not report["possible_same_event"] and not report["explicit_event_groups"]:
+        print("No strong lexical candidate found; manual cross-language and "
+              "same-event review is still essential.")
+    return report
+
 def editorial_warnings(ed):
     """Advisory newsroom signals; not a semantic classifier or publication veto."""
     if ed["preview"]: return []
@@ -111,11 +240,27 @@ def verify(root=ROOT):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument("action",choices=("verify",))
+    p.add_argument("action",choices=("verify","cluster-review"))
     p.add_argument("--root",type=Path,default=ROOT)
+    p.add_argument("--date",help="Date YYYY-MM-DD to review; latest if omitted")
+    p.add_argument("--previous-days",type=int,default=3,
+                   help="Number of prior published issues for exact-URL repeat checks")
     args=p.parse_args()
-    count,warnings=verify(args.root)
-    print(f"PASS: {count} edition(s); structural test only. Source evidence needs editorial review.")
-    for note in warnings:
-        print("EDITORIAL REVIEW (non-blocking): "+note)
+    if args.action=="verify":
+        count,warnings=verify(args.root)
+        print(f"PASS: {count} edition(s); structural test only. Source evidence needs editorial review.")
+        for note in warnings:
+            print("EDITORIAL REVIEW (non-blocking): "+note)
+    else:
+        if not 0<=args.previous_days<=30:
+            p.error("--previous-days must be 0..30")
+        days=json.loads((args.root/"index.json").read_text())["dates"]
+        selected=args.date or (days[0] if days else None)
+        if selected not in days:
+            p.error("--date must refer to a published indexed issue")
+        ed=json.loads((args.root/(selected+".json")).read_text())
+        validate(ed)
+        older=[json.loads((args.root/(day+".json")).read_text())
+               for day in days if day<selected][:args.previous_days]
+        print_cluster_review(ed,older)
 if __name__=="__main__": main()
