@@ -41,6 +41,88 @@ class EditorialEventTests(unittest.TestCase):
         mod.validate(ed)
         self.assertTrue(any("no event_key" in x for x in mod.editorial_warnings(ed)))
 
+    def test_cluster_report_recognizes_equivalent_headlines_without_deleting(self):
+        ed=self.edition()
+        first,second=ed["headlines"]
+        first["title"]="Austrian government announces wind power funding after talks"
+        second["title"]="Government announces wind power funding after talks in Austria"
+        first["summary"]="The cabinet announced new wind power funding today. Details include financing."
+        second["summary"]="After talks the government announced wind power funding. The report discusses politics."
+        first.pop("event_key");second.pop("event_key")
+        before=[dict(a) for a in ed["headlines"]]
+        report=mod.cluster_candidates(ed)
+        self.assertEqual(len(report["possible_same_event"]),1)
+        self.assertIn("funding",report["possible_same_event"][0]["shared_title_terms"])
+        self.assertEqual(ed["headlines"],before,"Clustering must NEVER rewrite or drop articles")
+        mod.validate(ed)
+
+    def test_shared_subject_without_same_event_is_not_automatically_clustered(self):
+        ed=self.edition()
+        first,second=ed["headlines"]
+        first["title"]="EU parliament considers new battery recycling law"
+        second["title"]="EU parliament hosts conference on battery manufacturing"
+        first["summary"]="The draft regulation would change collection and material recovery quotas."
+        second["summary"]="Researchers presented manufacturing methods and investment plans."
+        first.pop("event_key");second.pop("event_key")
+        self.assertEqual(mod.cluster_candidates(ed)["possible_same_event"],[])
+        self.assertEqual(len(ed["headlines"]),2)
+
+    def test_explicit_group_recognizes_independent_views_across_sections(self):
+        ed=self.edition()
+        second=ed["headlines"].pop()
+        second.pop("region");second["topic"]="Wirtschaft"
+        second["title"]="Economic analysis on climate costs"
+        second["distinct_contribution"]="Independent cost analysis supported by the original report"
+        ed["articles"].append(second)
+        mod.validate(ed)
+        report=mod.cluster_candidates(ed)
+        self.assertEqual(len(report["explicit_event_groups"]),1)
+        self.assertEqual(set(row["section"] for row in report["explicit_event_groups"][0]["articles"]),
+                         {"headlines","articles"})
+        self.assertFalse(any("document what is genuinely new" in x for x in mod.editorial_warnings(ed)))
+        self.assertEqual(len(ed["headlines"])+len(ed["articles"]),2)
+
+    def test_missing_distinct_angle_is_a_warning_not_a_publication_failure(self):
+        ed=self.edition()
+        mod.validate(ed)
+        report=mod.cluster_candidates(ed)
+        self.assertEqual(len(report["explicit_event_groups"]),1)
+        self.assertEqual(len(report["explicit_event_groups"][0]["articles"]),2)
+        self.assertTrue(any("document what is genuinely new" in x for x in mod.editorial_warnings(ed)))
+        self.assertEqual(len(ed["headlines"]),2)
+
+    def test_different_event_keys_do_not_suppress_obvious_possible_overlap(self):
+        ed=self.edition()
+        ed["headlines"][0]["title"]="Finance minister announces carbon tariff reform today"
+        ed["headlines"][1]["title"]="Minister announces carbon tariff reform after negotiations"
+        ed["headlines"][1]["event_key"]="other-tariff-policy-2026"
+        report=mod.cluster_candidates(ed)
+        self.assertEqual(len(report["explicit_event_groups"]),0)
+        self.assertEqual(len(report["possible_same_event"]),1)
+
+    def test_historical_repeat_checks_only_exact_original_from_real_prior_editions(self):
+        ed=self.edition()
+        past=self.edition()
+        past["date"]="2026-10-28"
+        past["headlines"][1]["url"]="https://unrelated.example/story"
+        past["headlines"][0]["id"]="c"*16
+        old=mod.historical_overlap(ed,[past])
+        self.assertEqual(len(old),1)
+        self.assertEqual(old[0]["date"],"2026-10-28")
+        self.assertEqual(old[0]["reason"],"same_original_url")
+        past["preview"]=True
+        self.assertEqual(mod.historical_overlap(ed,[past]),[],
+                         "Imported previews must never be treated as genuine prior editions")
+
+    def test_cross_language_search_terms_are_hints_not_censorship(self):
+        terms=mod.news_terms("Techwerte und Aktien unter Verkaufswelle")
+        self.assertTrue({"tech","stock","verkaufswelle"}.issubset(terms))
+        self.assertNotIn("und",terms)
+        ed=self.edition()
+        ed["headlines"][1]["title"]="A completely independent story on research"
+        self.assertEqual(len(ed["headlines"]),2)
+        self.assertEqual(mod.cluster_candidates(ed)["possible_same_event"],[])
+
     def test_invalid_event_key_is_an_actual_structural_error(self):
         ed=self.edition()
         ed["headlines"][0]["event_key"]="Bad Event With Spaces"
