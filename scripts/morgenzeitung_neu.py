@@ -31,6 +31,7 @@ def validate(ed):
     if not ed["articles"] and not ed["headlines"]: raise ValueError("Empty edition")
     ids,urls=set(),set()
     new_perspective_count=0
+    counterposition_count=0
     for section in ("articles","headlines"):
         for a in ed[section]:
             if not ID.fullmatch(a.get("id","")): raise ValueError("Invalid ID")
@@ -66,6 +67,30 @@ def validate(ed):
                 related_url=canonical(related["url"])
                 if related_url==canonical(a["url"]):
                     raise ValueError("Related article must be a different original URL")
+            # Phase 6: source-backed argument attached to ONE original analysis,
+            # never an automatically generated false balance or a second article.
+            opposite=a.get("counterposition")
+            if opposite is not None:
+                if (section!="articles" or a.get("article_type",a.get("kind")) not in
+                    ("opinion","commentary","editorial","analysis")
+                    or not isinstance(opposite,dict)):
+                    raise ValueError("Counterposition requires an opinion or analysis article")
+                fields={"responds_to":(30,280),"argument":(65,850),
+                        "source":(2,120),"source_title":(8,240),
+                        "url":(12,1000),"evidence_level":(4,8)}
+                if set(opposite)!=set(fields):
+                    raise ValueError("Incomplete or unexpected counterposition fields")
+                for key,(minimum,maximum) in fields.items():
+                    value=opposite[key]
+                    if not isinstance(value,str) or not minimum<=len(value.strip())<=maximum:
+                        raise ValueError("Invalid counterposition "+key)
+                if opposite["evidence_level"] not in ("read","teaser"):
+                    raise ValueError("Counterposition needs actual readable original text or supporting teaser")
+                if canonical(opposite["url"])==canonical(a["url"]):
+                    raise ValueError("Counterposition must cite a different original URL")
+                if opposite["responds_to"].strip()==opposite["argument"].strip():
+                    raise ValueError("Counterposition must distinguish claim and answer")
+                counterposition_count+=1
             correction=a.get("correction")
             if correction is not None:
                 if ed["preview"] or not isinstance(correction,dict):
@@ -90,6 +115,8 @@ def validate(ed):
             ids.add(a["id"]);urls.add(url)
     if new_perspective_count>2:
         raise ValueError("No more than two unusual perspectives in Neues")
+    if counterposition_count>2:
+        raise ValueError("No more than two sourced counterpositions in one edition")
 
 
 # Conservative, non-destructive editorial candidate detection. A shared subject

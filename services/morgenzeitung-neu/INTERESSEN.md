@@ -35,6 +35,11 @@ Die Zeitung enthält künftig optional bis zu zwei eigens gekennzeichnete **unor
 
 Bewertungen der „Neues“-Artikel sind **normale Bewertungen derselben Original-IDs in der Rubrik „Vertiefungen“**; keine zusätzlichen Feedback-Stimmen oder künstlichen Personalisierungsbelege. Ein positiver Klick auf eine ungewöhnliche Sicht ist **nicht** automatisch eine Zustimmung zur gesamten vertretenen These; ein negativer Klick ist **kein** dauerhaftes Verbot ungewöhnlicher Blickwinkel. Echte Freitexte und plausible alternative Erklärungen zu Neuigkeit, Tiefe, Belegqualität und Relevanz prüfen. Nicht bewertete Stücke bleiben neutral, gerade in einer Rubrik, die bewusst kleine Experimente mit Blickwinkeln zulässt.
 
+
+## Phase 6 – Gegenpositionen ohne Lern-Selbstbestätigung
+
+Gelegentliche belegte Gegenpositionen sind redaktionelle Einordnung, **keine** vom Nutzer verlangten oder befürworteten Gegenmeinungen. Die normale Bewertung bleibt allein dem angezeigten Hauptartikel zugeordnet, einschließlich einer etwaigen Gegenpositionsbox. Aus dem Rating lässt sich **nicht** ableiten, ob die Gegenthese überzeugte oder ob ein individueller Leser jede Position teilt. Positive und negative Artikelurteile, Stille und anklickbare Standardbegründungen dürfen **keine** harte Perspektivensperre erzeugen. Nur ausdrücklich verfasstes Feedback, vor allem über die Argumentqualität, darf mit alternativen Erklärungen vorsichtig zur Verbesserung der redaktionellen Auswahl beitragen.
+
 ## Lernerfolg beobachten – keine Selbstbestätigung
 
 Nutze **dieselbe tägliche Aufgabe**, **dieselben echten Feedback-Issues** und die **bereits veröffentlichten echten Ausgaben** für eine kleine qualitative Lernbilanz in der privaten Datei `morgenzeitung-neu/lernmonitoring.md`. Sie erscheint auf „Meine Präferenzen“. Keine zweite Automation, kein Score-Dashboard und keine neuen Feedbackfragen. Die Lernbilanz ist **keine** Erweiterung von `aenderungen.md`: Dort steht, *was am Interessenprofil geändert wurde*; hier steht, *ob die geänderte Artikelauswahl später nachweislich hilfreicher war*.

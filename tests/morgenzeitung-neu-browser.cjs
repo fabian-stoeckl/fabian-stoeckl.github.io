@@ -44,6 +44,13 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
      const response=await route.fetch();
      const sample=await response.json();
      sample.articles[0].related_article={title:'Independent follow-up',source:'Another publisher',url:'https://example.org/follow-up'};
+     // Only the latest test edition gets an injected counterposition.
+     if(sample.date===latestFixtureDay)sample.articles[0].counterposition={
+       responds_to:'The main commentary argues that taxing wealthy residents cannot be designed efficiently.',
+       argument:'A separately sourced economic analysis instead finds that tax incidence, avoidance and administrative design can materially alter the effect, so universal claims are not warranted.',
+       source:'Independent Institute',source_title:'Evidence on tax design and economic behaviour',
+       url:'https://evidence.example.org/independent-analysis',evidence_level:'read'
+     };
      sample.preview=false; // Synthetic real-edition correction fixture.
      // Synthetic Neues example: tested only, NEVER written to public edition.
      if(sample.date===latestFixtureDay&&sample.articles.length>=3){
@@ -174,6 +181,15 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
    assert.equal(await page.getByText('Falsche ursprüngliche Zusammenfassung').count(),1);
    assert.equal(await page.getByText('Weiterer Beitrag zum Thema:').count(),1,'Related reporting is separately marked');
    assert.equal(await page.getByRole('link',{name:'Independent follow-up'}).getAttribute('href'),'https://example.org/follow-up');
+   const opposing=page.locator('#articles article').first().locator('.article-counterposition');
+   assert.equal(await opposing.count(),1,'Only one counterposition is shown under its parent article');
+   assert.equal(await opposing.locator('h3').innerText(),'Eine andere Perspektive');
+   assert.match(await opposing.innerText(),/tax incidence, avoidance and administrative design/);
+   assert.equal(await opposing.locator('a').getAttribute('href'),'https://evidence.example.org/independent-analysis');
+   assert.equal(await opposing.evaluate(el=>el.nextElementSibling.classList.contains('ratings')),true,
+     'Contrary source must appear below the article but directly before the single rating');
+   assert.equal(await page.locator('#articles .article-counterposition').count(),1,
+     'No detached second article or extra rating created');
    const correctedId=await page.locator('#articles article').first().getAttribute('data-article-id');
    const group=page.locator('#articles .ratings').first();
    await group.locator('input[type=radio][value="Sehr relevant"]').check();
@@ -205,9 +221,13 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
      return document.querySelector('#edition-meta').textContent.includes(formatted)&&!document.querySelector('#neues');
    },older);
    assert.equal(await page.locator('#neues').count(),0,'Historical editions without markers show no Neues section');
+   assert.equal(await page.locator('#articles .article-counterposition').count(),0,
+     'Historical issues without counterposition metadata show no stray alternative boxes');
    await page.locator('#date').selectOption(latestFixtureDay);
    await page.waitForSelector('#neues');
    assert.equal(await page.locator('#neues article').count(),2,'Switching back restores exactly the selected items');
+   assert.equal(await page.locator('#articles .article-counterposition').count(),1,
+     'Returning to the latest edition re-creates just the original linked counterposition');
    await page.getByRole('link',{name:/Meine Präferenzen/}).first().click();
    await page.waitForURL(/praeferenzen.html/);
    await page.waitForSelector('#profile-text:not([hidden])');

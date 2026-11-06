@@ -282,6 +282,84 @@ class EditorialEventTests(unittest.TestCase):
         ed["articles"].pop()
         mod.validate(ed)
 
+    def counterposition_fixture(self):
+        ed=self.edition()
+        item=ed["headlines"].pop()
+        item.pop("region")
+        item["topic"]="Economics and institutional design"
+        item["article_type"]="commentary"
+        item["counterposition"]={
+            "responds_to":"The opinion argues that one particular subsidy is universally efficient.",
+            "argument":"An independently sourced analysis finds this can depend on demand elasticity and the administrative design, making the conclusion conditional rather than universal.",
+            "source":"Research Institute",
+            "source_title":"A competing evidence-based economic assessment",
+            "url":"https://research.example.org/alternate-study",
+            "evidence_level":"read"
+        }
+        ed["articles"].append(item)
+        return ed
+
+    def test_counterposition_is_optional_and_keeps_original_rating_id(self):
+        ed=self.counterposition_fixture()
+        before=json.dumps(ed,sort_keys=True)
+        mod.validate(ed)
+        self.assertEqual(len(ed["articles"]),1)
+        self.assertEqual(len(ed["headlines"]),1)
+        self.assertEqual(json.dumps(ed,sort_keys=True),before)
+        ed["articles"][0].pop("counterposition")
+        mod.validate(ed)
+
+    def test_counterposition_requires_original_text_and_independent_link(self):
+        ed=self.counterposition_fixture()
+        other=ed["articles"][0]["counterposition"]
+        other["url"]=ed["articles"][0]["url"]
+        with self.assertRaisesRegex(ValueError,"different original URL"):
+            mod.validate(ed)
+        other["url"]="https://research.example.org/alternate-study"
+        other["evidence_level"]="headline"
+        with self.assertRaisesRegex(ValueError,"readable original text"):
+            mod.validate(ed)
+        other["evidence_level"]="teaser"
+        mod.validate(ed)
+        other["argument"]="Too short"
+        with self.assertRaisesRegex(ValueError,"Invalid counterposition argument"):
+            mod.validate(ed)
+
+    def test_counterposition_cannot_be_attached_to_headline_or_report(self):
+        ed=self.counterposition_fixture()
+        item=ed["articles"].pop()
+        item["article_type"]="report"
+        ed["articles"].append(item)
+        with self.assertRaisesRegex(ValueError,"opinion or analysis"):
+            mod.validate(ed)
+        item["article_type"]="analysis"
+        mod.validate(ed)
+        ed["articles"].pop()
+        item.pop("topic")
+        item["region"]="International"
+        ed["headlines"].append(item)
+        with self.assertRaisesRegex(ValueError,"opinion or analysis"):
+            mod.validate(ed)
+
+    def test_counterposition_requires_complete_provenance_and_caps_frequency(self):
+        ed=self.counterposition_fixture()
+        original=ed["articles"][0]
+        missing=original["counterposition"].pop("source_title")
+        with self.assertRaisesRegex(ValueError,"Incomplete or unexpected"):
+            mod.validate(ed)
+        original["counterposition"]["source_title"]=missing
+        mod.validate(ed)
+        for i in (2,3):
+            clone=json.loads(json.dumps(original))
+            clone["id"]=f"{i:016x}"
+            clone["url"]=f"https://different.example/{i}"
+            clone["event_key"]=f"fresh-event-{i}"
+            ed["articles"].append(clone)
+        with self.assertRaisesRegex(ValueError,"No more than two sourced"):
+            mod.validate(ed)
+        ed["articles"].pop()
+        mod.validate(ed)
+
     def test_invalid_event_key_is_an_actual_structural_error(self):
         ed=self.edition()
         ed["headlines"][0]["event_key"]="Bad Event With Spaces"
