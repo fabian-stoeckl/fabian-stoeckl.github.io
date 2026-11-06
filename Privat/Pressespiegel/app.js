@@ -11,27 +11,107 @@ function stashComment(date){
 }
 
 const BLOGS_FEED='https://raw.githubusercontent.com/fabian-stoeckl/fabian-stoeckl.github.io/blogs-live/Privat/Pressespiegel/data/blogs.json';
-let blogLastCheck=0,blogLoading=false,blogVisibleCount=5;
+const BLOG_TRASH_KEY='pressespiegel:deleted-blog-posts:v1';
+let blogLastCheck=0,blogLoading=false,blogVisibleCount=5,blogCurrentData=null,blogCurrentStale=false;
+const blogHiddenPosts=new Map();
+function validBlogURL(value){
+  if(typeof value!=='string')return null;
+  try{
+    const u=new URL(value);
+    return u.protocol==='https:'&&!u.username&&!u.password&&
+      ['www.noahpinion.blog','noahpinion.blog','noahpinion.substack.com'].includes(u.hostname)?u.href:null;
+  }catch(_){return null;}
+}
+try{
+  const saved=JSON.parse(localStorage.getItem(BLOG_TRASH_KEY)||'[]');
+  if(Array.isArray(saved))for(const entry of saved){
+    const url=entry&&validBlogURL(entry.url);
+    if(url&&typeof entry.title==='string')
+      blogHiddenPosts.set(url,{url,title:entry.title.slice(0,250),
+        author:typeof entry.author==='string'?entry.author.slice(0,110):'',
+        published_at:typeof entry.published_at==='string'?entry.published_at.slice(0,10):''});
+  }
+}catch(_){/* Private browsing may disable storage; in-session actions still work. */}
+function saveBlogTrash(){
+  try{localStorage.setItem(BLOG_TRASH_KEY,JSON.stringify([...blogHiddenPosts.values()]));}
+  catch(_){/* Do not interrupt reading when local storage is blocked. */}
+}
+function blogCrossIcon(){
+  const icon=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  icon.setAttribute('viewBox','0 0 24 24');
+  icon.setAttribute('width','16');icon.setAttribute('height','16');
+  icon.setAttribute('aria-hidden','true');icon.setAttribute('focusable','false');
+  const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+  path.setAttribute('d','M18 6 6 18 M6 6l12 12');
+  path.setAttribute('fill','none');path.setAttribute('stroke','currentColor');
+  path.setAttribute('stroke-width','2');path.setAttribute('stroke-linecap','round');
+  icon.append(path);return icon;
+}
+function renderBlogTrash(){
+  const list=$('blog-trash-list');
+  list.replaceChildren();
+  $('blog-trash-open-count').textContent=String(blogHiddenPosts.size);
+  $('blog-trash-title-count').textContent=String(blogHiddenPosts.size);
+  if(!blogHiddenPosts.size){
+    list.append(el('p','Keine gelöschten Beiträge.','small'));
+    return;
+  }
+  for(const post of blogHiddenPosts.values()){
+    const entry=el('div',undefined,'blog-trash-entry');
+    const heading=el('p',undefined,'blog-trash-name');
+    heading.append(link(post.title,post.url));entry.append(heading);
+    const details=[post.published_at,post.author].filter(Boolean).join(' · ');
+    if(details)entry.append(el('p',details,'small'));
+    const restore=el('button','Wiederherstellen','blog-restore');
+    restore.type='button';
+    restore.setAttribute('aria-label','Wiederherstellen: '+post.title);
+    restore.onclick=()=>{
+      blogHiddenPosts.delete(post.url);saveBlogTrash();
+      renderBlogTrash();
+      if(blogCurrentData)renderBlogPosts(blogCurrentData,blogCurrentStale);
+    };
+    entry.append(restore);list.append(entry);
+  }
+}
 function renderBlogPosts(data,stale=false){
   if(!data||!Array.isArray(data.posts))throw Error('Ungültige Blogdaten');
+  blogCurrentData=data;blogCurrentStale=stale;
   const root=$('blogs');root.replaceChildren();
   const heading=el('div',undefined,'blog-heading');
   const title=el('h2');title.append(link('Noah Smith · Noahpinion','https://www.noahpinion.blog/'));
   heading.append(title);
+  const trash=el('button',undefined,'blog-trash-open');
+  trash.type='button';trash.id='blog-trash-open';
+  trash.append(document.createTextNode('Gelöschte Beiträge ('));
+  trash.append(el('span','0','blog-trash-number'));
+  trash.querySelector('.blog-trash-number').id='blog-trash-open-count';
+  trash.append(document.createTextNode(')'));
+  trash.setAttribute('aria-haspopup','dialog');
+  trash.onclick=()=>{renderBlogTrash();const dialog=$('blog-trash-dialog');if(!dialog.open)dialog.showModal();};
+  heading.append(trash);
   if(data.checked_at&&Number.isFinite(Date.parse(data.checked_at)))
     heading.append(el('p','Feed zuletzt geprüft: '+fmt(data.checked_at)+(stale?' · letzte gespeicherte Liste':''),'small'));
   root.append(heading);
+  $('blog-trash-close').onclick=()=>$('blog-trash-dialog').close();
+  const valid=data.posts.filter(p=>p&&typeof p.title==='string'&&validBlogURL(p.url));
+  const visible=valid.filter(p=>!blogHiddenPosts.has(validBlogURL(p.url)));
   const list=el('div',undefined,'blog-list');
   let count=0;
-  for(const post of data.posts.slice(0,blogVisibleCount)){
-    if(!post||typeof post.title!=='string'||typeof post.url!=='string')continue;
-    let target;
-    try{
-      target=new URL(post.url);
-      if(target.protocol!=='https:'||!['www.noahpinion.blog','noahpinion.blog','noahpinion.substack.com'].includes(target.hostname))continue;
-    }catch(_){continue;}
+  for(const post of visible.slice(0,blogVisibleCount)){
+    const url=validBlogURL(post.url);
     const item=el('div',undefined,'blog-entry');
-    const h=el('h3');h.append(link(post.title,target.href));item.append(h);
+    const h=el('h3');h.append(link(post.title,url));item.append(h);
+    const remove=el('button',undefined,'blog-delete');
+    remove.type='button';remove.title='Löschen';
+    remove.setAttribute('aria-label','Beitrag löschen: '+post.title);
+    remove.append(blogCrossIcon());
+    remove.onclick=()=>{
+      blogHiddenPosts.set(url,{url,title:post.title.slice(0,250),
+        author:typeof post.author==='string'?post.author.trim().slice(0,110):'',
+        published_at:typeof post.published_at==='string'?post.published_at.slice(0,10):''});
+      saveBlogTrash();renderBlogPosts(data,stale);
+    };
+    item.append(remove);
     const details=[];
     if(typeof post.published_at==='string'&&/^\d{4}-\d{2}-\d{2}/.test(post.published_at))
       details.push(fmt(post.published_at.slice(0,10)));
@@ -44,20 +124,21 @@ function renderBlogPosts(data,stale=false){
   }
   $('blog-count').textContent=count;
   root.append(list);
-  if(!count)root.append(el('p','Aktuell sind keine Beiträge verfügbar.','small'));
-  if(data.posts.length>blogVisibleCount){
+  renderBlogTrash();
+  if(!count)root.append(el('p','Aktuell sind keine sichtbaren Beiträge verfügbar.','small'));
+  if(visible.length>blogVisibleCount){
     const more=el('button','Weitere 10 Beiträge anzeigen','blog-more');
     more.type='button';
     more.onclick=()=>{
       const previous=blogVisibleCount;
-      blogVisibleCount=Math.min(data.posts.length,blogVisibleCount+10);
+      blogVisibleCount=Math.min(visible.length,blogVisibleCount+10);
       renderBlogPosts(data,stale);
       const firstAdded=$('blogs').querySelectorAll('.blog-entry')[previous];
       if(firstAdded)firstAdded.scrollIntoView({behavior:'smooth',block:'start'});
     };
     root.append(more);
-  }else if(data.posts.length>5){
-    root.append(el('p','Alle derzeit verfügbaren Beiträge angezeigt.','small blog-end'));
+  }else if(valid.length>5){
+    root.append(el('p','Alle derzeit sichtbaren Beiträge angezeigt.','small blog-end'));
   }
 }
 async function loadBlogs(){

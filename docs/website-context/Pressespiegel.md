@@ -75,3 +75,9 @@ Eigenständige neue Zeitung: `Privat/Pressespiegel/`. Die vertraute klassische V
 - Die importierte `preview:true`-Vorschau vom 28.10.2026 ist auf Nutzerwunsch gelöscht und aus dem Ausgabenindex entfernt. Die fünf echten Ausgaben vom 29.10. bis 02.11.2026 bleiben unverändert; private Feedback-Issues wurden nicht angefasst.
 - Veraltete sichtbare Oberflächenbeschriftungen ersetzt; die Reader-Konfiguration enthält nur noch den verwendeten `mode: github`. Frühere Abschnitte bleiben als Entscheidungshistorie, nicht als aktiver Datenstand.
 - Nicht mehr benutzte private Test- und Vorgängerdateien können getrennt bereinigt werden; das operative Feedbackverzeichnis `morgenzeitung-neu/` mit den darin tatsächlich genutzten Daten bleibt bestehen.
+
+## 06.11.2026 – Phase 1 nach kontrolliertem Rollback: Blog-Design
+- Kreisrunder, per SVG mittig gesetzter X-Löschbutton bei jedem Blogbeitrag (auch Tastatur-/Screenreader-Beschriftung).
+- Entfernte Blogbeiträge verschwinden ausschließlich aus der lokalen Blogliste. Ein eigenständiger Dialog „Gelöschte Beiträge“ zeigt alle entfernten Artikel und erlaubt die einzelne Wiederherstellung an der ursprünglichen Feed-Position, ohne die aufgeklappte Liste zurückzusetzen.
+- Löschzustand wird ausschließlich im Browser-localStorage `pressespiegel:deleted-blog-posts:v1` gespeichert; keine Änderung des RSS-Feeds, des privaten Feedbacksystems oder der journalistischen Artikelauswahl. Auf einem anderen Gerät sind lokale Löschungen nicht synchronisiert.
+- Fünf sichtbare Einträge initial und +10 sichtbare pro Klick, selbst wenn dazwischen Beiträge entfernt wurden. Tests auf 390px/1440px, Tastaturzugänglichkeit der nativen Dialog-Steuerelemente, SVG-Zentrierung, Rücksortierung, Reload- und Tab-Persistenz.
