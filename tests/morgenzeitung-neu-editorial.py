@@ -226,6 +226,62 @@ class EditorialEventTests(unittest.TestCase):
         self.assertFalse(mod.diversity_snapshot(ed)["alerts"])
         self.assertFalse(mod.recurring_concentration(ed,[]))
 
+    def test_neues_editorial_selection_stays_inside_vertiefungen(self):
+        ed=self.edition()
+        ed["articles"]=[ed["headlines"].pop()]
+        ed["articles"][0].pop("region")
+        ed["articles"][0]["topic"]="Economics and technology"
+        ed["articles"][0]["new_perspective"]=(
+            "Challenges a conventional economics assumption with new research, "
+            "while linking closely to productivity and competition."
+        )
+        before=json.dumps(ed,sort_keys=True)
+        mod.validate(ed)
+        self.assertEqual(len(ed["articles"]),1)
+        self.assertEqual(len(ed["headlines"]),1)
+        self.assertEqual(json.dumps(ed,sort_keys=True),before,
+                         "Editorial classification must not mutate article identities")
+
+    def test_neues_is_optional_and_imported_issues_remain_compatible(self):
+        ed=self.edition()
+        mod.validate(ed)
+        self.assertFalse(any("new_perspective" in a for a in ed["headlines"]))
+        ed["preview"]=True
+        mod.validate(ed)
+
+    def test_neues_requires_a_substantive_original_specific_rationale(self):
+        ed=self.edition()
+        ed["articles"]=[ed["headlines"].pop()]
+        ed["articles"][0].pop("region")
+        ed["articles"][0]["topic"]="Technology"
+        for rationale in [True,"", "Interesting", "x"*401]:
+            ed["articles"][0]["new_perspective"]=rationale
+            with self.assertRaisesRegex(ValueError,"Invalid Neues perspective"):
+                mod.validate(ed)
+        ed["articles"][0]["new_perspective"]="A source-based surprising economic angle linking innovation and society."
+        mod.validate(ed)
+        ed["articles"][0]["treat"]=True
+        with self.assertRaisesRegex(ValueError,"Invalid Neues perspective"):
+            mod.validate(ed)
+
+    def test_neues_is_never_a_headline_or_more_than_two_articles(self):
+        ed=self.edition()
+        ed["headlines"][0]["new_perspective"]="Surprising but well argued perspective about policy choices and innovation."
+        with self.assertRaisesRegex(ValueError,"Invalid Neues perspective"):
+            mod.validate(ed)
+        ed["headlines"][0].pop("new_perspective")
+        ed["articles"]=[]
+        for i in range(3):
+            a=story(f"{i+1:016x}",f"https://strong-original.example/{i}",f"novel-event-{i}")
+            a.pop("region")
+            a["topic"]="Political economy"
+            a["new_perspective"]="Unexpected, verified argument about incentives and market institutions."
+            ed["articles"].append(a)
+        with self.assertRaisesRegex(ValueError,"No more than two"):
+            mod.validate(ed)
+        ed["articles"].pop()
+        mod.validate(ed)
+
     def test_invalid_event_key_is_an_actual_structural_error(self):
         ed=self.edition()
         ed["headlines"][0]["event_key"]="Bad Event With Spaces"
