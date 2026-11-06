@@ -157,7 +157,7 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
    assert.equal(await page.locator('#articles').isVisible(),true);
    const published=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/'+latestFixtureDay+'.json','utf8'));
    assert.equal(await page.locator('#neues').isVisible(),true,'Neues appears only with editorial selections');
-   assert.equal(await page.locator('#neues h2').innerText(),'Neues');
+   assert.equal(await page.locator('#neues > h2').innerText(),'Neues');
    assert.equal(await page.locator('#neues article').count(),2,'Only the selected two articles appear under Neues');
    assert.equal(await page.locator('#articles article').count(),published.articles.length,'No duplicated or lost article');
    assert.equal(await page.locator('#articles > .article-list article').count(),published.articles.length-2,
