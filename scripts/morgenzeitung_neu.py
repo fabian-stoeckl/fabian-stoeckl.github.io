@@ -128,6 +128,18 @@ def verify(root=ROOT):
                 if not isinstance(note,str) or len(note.strip())<60:
                     raise ValueError('Latest limited edition needs an explicit editorial_note (at least 60 characters) explaining missing coverage; never pad with unverified stories')
                 warnings.append(f'{days[0]}: LIMITED EDITION: {count} item(s), {len(latest["articles"])} feature(s); editorial note required and present')
+    if days:
+        latest=json.loads((root/(days[0]+'.json')).read_text())
+        if not latest.get('preview'):
+            entries=latest['headlines']+latest['articles']
+            sources={a['source'].strip().casefold() for a in entries}
+            fully_read=sum(a.get('evidence_level')=='read' for a in entries)
+            if len(sources)<3:
+                warnings.append(f'{days[0]}: SOURCE CONCENTRATION: {len(sources)} distinct publisher(s) across {len(entries)} items; review research breadth')
+            if fully_read<len(entries):
+                warnings.append(f'{days[0]}: SOURCE VERIFICATION: {fully_read}/{len(entries)} items marked read; verify summaries against available evidence')
+            if not latest['articles']:
+                warnings.append(f'{days[0]}: DEPTH GAP: no feature articles; review whether sufficient analysis was researched')
     for day in days:
         date.fromisoformat(day)
         ed=json.loads((root/(day+".json")).read_text())
