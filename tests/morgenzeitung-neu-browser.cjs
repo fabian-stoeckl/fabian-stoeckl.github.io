@@ -53,6 +53,9 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
      };
      sample.preview=false; // Synthetic real-edition correction fixture.
      // Synthetic Neues example: tested only, NEVER written to public edition.
+     // Clear real editorial selections in the in-memory fixture first: the published
+     // edition may already contain Neues items and this test must still create exactly two.
+     if(sample.date===latestFixtureDay)for(const item of sample.articles)delete item.new_perspective;
      if(sample.date===latestFixtureDay&&sample.articles.length>=3){
        sample.articles.at(-2).new_perspective='A source-based counterintuitive link between productive innovation and public policy.';
        sample.articles.at(-1).new_perspective='A documented unconventional perspective on familiar economic trade-offs and institutions.';
