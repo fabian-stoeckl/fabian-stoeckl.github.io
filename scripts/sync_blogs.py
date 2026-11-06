@@ -79,31 +79,82 @@ def parse_feed(raw):
     }
 
 
+
+SUMMARY_FIELDS = ("summary_text", "summary_de", "summary_source", "summary_language",
+                  "summary_access", "summary_generated_at", "summary_evidence_url")
+
+
+def canonical_post_key(url):
+    """Identity follows the allowed publisher and path; reject foreign links."""
+    if not isinstance(url, str):
+        return None
+    parsed = urlsplit(url)
+    if (parsed.scheme != "https" or parsed.hostname not in
+            ("www.noahpinion.blog", "noahpinion.blog", "noahpinion.substack.com")
+            or parsed.username or parsed.password or parsed.port):
+        return None
+    return parsed.hostname.removeprefix("www.") + parsed.path.rstrip("/").lower()
+
+
+def article_summary_valid(post):
+    """Check provenance/shape, not article truth. Never generate text from RSS."""
+    if post.get("summary_source") != "article" or post.get("summary_access") != "visible_text_only":
+        return False
+    text = post.get("summary_text") or post.get("summary_de")
+    if not isinstance(text, str) or not 100 <= len(text.split()) <= 150:
+        return False
+    language = post.get("summary_language")
+    if language is None and isinstance(post.get("summary_de"), str):
+        language = "de"  # Older explicitly German article summaries.
+    if language not in ("en", "de"):
+        return False
+    stamp = post.get("summary_generated_at")
+    if not isinstance(stamp, str):
+        return False
+    try:
+        dt = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+        if dt.tzinfo is None:
+            return False
+    except ValueError:
+        return False
+    evidence = post.get("summary_evidence_url")
+    if evidence and canonical_post_key(evidence) != canonical_post_key(post.get("url")):
+        return False
+    return True
+
+
 def merge_archive(fresh, previous):
     """Keep every valid previously collected post when it falls off the RSS window."""
     if not isinstance(previous, dict) or not isinstance(previous.get("posts"), list):
         raise ValueError("Stored blog archive is invalid; refusing to overwrite it")
+    # Preserve verified editorial summaries through repeated RSS refreshes.
+    prior_summaries = {}
+    for post in previous["posts"]:
+        if isinstance(post, dict) and article_summary_valid(post):
+            key = canonical_post_key(post.get("url"))
+            if key:
+                prior_summaries.setdefault(key, post)
     seen = set()
     combined = []
-    for post in [*fresh["posts"], *previous["posts"]]:
+    fresh_count = len(fresh["posts"])
+    for index, post in enumerate([*fresh["posts"], *previous["posts"]]):
         if not isinstance(post, dict):
             continue
         url = post.get("url")
         if not isinstance(url, str):
             continue
-        parsed = urlsplit(url)
-        if (parsed.scheme != "https" or
-                parsed.hostname not in ("www.noahpinion.blog", "noahpinion.blog",
-                                        "noahpinion.substack.com") or
-                parsed.username or parsed.password):
-            continue
-        key = parsed.hostname.removeprefix("www.") + parsed.path.rstrip("/").lower()
-        if key in seen:
+        key = canonical_post_key(url)
+        if key is None or key in seen:
             continue
         if (not isinstance(post.get("title"), str) or not post["title"].strip() or
                 not isinstance(post.get("published_at"), str) or
                 not re.fullmatch(r"\d{4}-\d{2}-\d{2}", post["published_at"])):
             continue
+        # RSS data remains authoritative for new title/date/teaser.
+        if index < fresh_count:
+            old = prior_summaries.get(key)
+            if old is not None and old.get("title", "").strip() == post["title"].strip():
+                post = {**post, **{f: old[f] for f in SUMMARY_FIELDS if f in old}}
         seen.add(key)
         combined.append(post)
     combined.sort(key=lambda p: (p["published_at"], p.get("published_time", "")), reverse=True)
