@@ -30,6 +30,7 @@ def validate(ed):
         raise ValueError("Too many articles")
     if not ed["articles"] and not ed["headlines"]: raise ValueError("Empty edition")
     ids,urls=set(),set()
+    new_perspective_count=0
     for section in ("articles","headlines"):
         for a in ed[section]:
             if not ID.fullmatch(a.get("id","")): raise ValueError("Invalid ID")
@@ -43,6 +44,15 @@ def validate(ed):
             event=a.get("event_key")
             if event is not None and (not isinstance(event,str) or not EVENT_KEY.fullmatch(event)):
                 raise ValueError("Invalid editorial event key")
+            # "Neues" is a selected subset of Vertiefungen, never an extra
+            # public article or a second rating. A concrete editorial rationale
+            # must say why the original offers an unexpected, well-backed angle.
+            perspective=a.get("new_perspective")
+            if perspective is not None:
+                if (section!="articles" or not isinstance(perspective,str)
+                    or not 35<=len(perspective.strip())<=400 or a.get("treat")):
+                    raise ValueError("Invalid Neues perspective: require a distinct, argued analysis in Vertiefungen")
+                new_perspective_count+=1
             distinct=a.get("distinct_contribution")
             if distinct is not None and (not isinstance(distinct,str) or not distinct.strip() or len(distinct)>400):
                 raise ValueError("Invalid editorial distinct contribution")
@@ -78,6 +88,8 @@ def validate(ed):
             url=canonical(a["url"])
             if a["id"] in ids or url in urls: raise ValueError("Duplicate ID/URL")
             ids.add(a["id"]);urls.add(url)
+    if new_perspective_count>2:
+        raise ValueError("No more than two unusual perspectives in Neues")
 
 
 # Conservative, non-destructive editorial candidate detection. A shared subject
