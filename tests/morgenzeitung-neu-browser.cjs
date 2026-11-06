@@ -44,8 +44,8 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
      const response=await route.fetch();
      const sample=await response.json();
      sample.articles[0].related_article={title:'Independent follow-up',source:'Another publisher',url:'https://example.org/follow-up'};
-     // Synthetic, explicitly independent opposing source (browser test only).
-     sample.articles[0].counterposition={
+     // Only the latest test edition gets an injected counterposition.
+     if(sample.date===latestFixtureDay)sample.articles[0].counterposition={
        responds_to:'The main commentary argues that taxing wealthy residents cannot be designed efficiently.',
        argument:'A separately sourced economic analysis instead finds that tax incidence, avoidance and administrative design can materially alter the effect, so universal claims are not warranted.',
        source:'Independent Institute',source_title:'Evidence on tax design and economic behaviour',
