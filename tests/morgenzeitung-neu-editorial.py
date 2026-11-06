@@ -1,5 +1,7 @@
 """Small editorial-metadata regression: no automated topical censorship."""
 import importlib.util
+import json
+import tempfile
 import pathlib
 import unittest
 
@@ -22,6 +24,20 @@ class EditorialEventTests(unittest.TestCase):
                 "preview":False,"articles":[],
                 "headlines":[story("a"*16,"https://a.example/a"),
                              story("b"*16,"https://b.example/b")]}
+
+    def test_latest_limited_edition_requires_disclosure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=pathlib.Path(directory)
+            ed=self.edition()
+            (root/"index.json").write_text(json.dumps({"dates":[ed["date"]]}))
+            (root/(ed["date"]+".json")).write_text(json.dumps(ed))
+            with self.assertRaisesRegex(ValueError,"editorial_note"):
+                mod.verify(root)
+            ed["editorial_note"]="Limited edition: verified source material was insufficient to produce ten reports or any full-length features."
+            (root/(ed["date"]+".json")).write_text(json.dumps(ed))
+            count,warnings=mod.verify(root)
+            self.assertEqual(count,1)
+            self.assertTrue(any("LIMITED EDITION" in warning for warning in warnings))
 
     def test_detects_shared_event_without_silently_dropping_a_source(self):
         ed=self.edition()
