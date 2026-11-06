@@ -199,7 +199,11 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
    // Older genuine editions lack the optional Neues markers; no empty section.
    const older=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/index.json','utf8')).dates[1];
    await page.locator('#date').selectOption(older);
-   await page.waitForFunction(date=>document.querySelector('#edition-meta').textContent.includes(date.split('-')[2])&&!document.querySelector('#neues'),older);
+   await page.waitForFunction(date=>{
+     const formatted=new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'})
+       .format(new Date(date+'T12:00:00Z'));
+     return document.querySelector('#edition-meta').textContent.includes(formatted)&&!document.querySelector('#neues');
+   },older);
    assert.equal(await page.locator('#neues').count(),0,'Historical editions without markers show no Neues section');
    await page.locator('#date').selectOption(latestFixtureDay);
    await page.waitForSelector('#neues');
