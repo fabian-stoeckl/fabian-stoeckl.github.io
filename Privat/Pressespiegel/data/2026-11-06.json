@@ -1,8 +1,8 @@
 {
   "date": "2026-11-06",
-  "researched_at": "2026-11-06T11:23:04+01:00",
+  "researched_at": "2026-11-06T13:52:58.155Z",
   "preview": false,
-  "editorial_note": "Vollständiger Phase-1-Neulauf mit erneuter Quellenprüfung und Alternativrecherche. Drei nicht ausreichend verifizierbare AP-Artikel wurden einzeln entfernt und durch überprüfbare Reuters-Originale ersetzt. Fünf neue Nachrichten und drei Vertiefungen ergänzt. ORF und Guardian direkt gelesen; Reuters und FT nur mit tatsächlich zugänglichen Vorschauen, als teaser markiert. Intraday-Marktstände sind keine Schlusskurse. Keine künstlichen Bewertungen oder Füllartikel.",
+  "editorial_note": "Kontrollierter E2E-Produktionsneulauf nach unabhängiger Nachrecherche: Fünf zusätzliche belegte Originalmeldungen (österreichische Einkommenslücke, Copernicus-Temperaturbilanz, EU-Ratsposition zu Methan, US-Arbeitsmarktdaten, Ukraine-Diplomatie) und eine zusätzliche Reuters-Vertiefung zum Ölmarkt. Vorherige 14 Nachrichten/10 Vertiefungen und sämtliche alten Artikel-IDs/URLs bleiben erhalten; gemeinsame Marktanlässe sind redaktionell mit event_key und eigenständigen Beiträgen gekennzeichnet. Keine endgültigen Beschlüsse aus Ankündigungen oder Ratspositionen abgeleitet. Originalsprachige Zusammenfassungen. Keine künstlichen Bewertungen und keine Themenausschlüsse. Vollständige Originalbelege für die neuen Beiträge im privaten Dossier PR #76; zu älteren Beiträgen gelten deren dokumentierte ursprüngliche Zugriffsgrenzen.",
   "articles": [
     {
       "id": "5e82ffe12693a038",
@@ -13,7 +13,8 @@
       "summary": "Josef Urschitz argumentiert in seiner Kolumne, dass die gescheiterte kalifornische Milliardärssteuer und die österreichische Flugticketabgabe Beispiele für schlecht konstruierte Steuerpolitik seien. Die Bewertung ist ausdrücklich eine Meinung des Autors, kein unabhängiger Wirkungsnachweis.",
       "article_type": "commentary",
       "topic": "Steuerpolitik und politische Ökonomie",
-      "evidence_level": "read"
+      "evidence_level": "read",
+      "event_key": "tax-policy-wealth-flight-california-austria-2026"
     },
     {
       "id": "48ad21ef383bc69d",
@@ -24,7 +25,8 @@
       "summary": "Germany is reportedly close to acquiring the German shareholders' 50% stake in the Franco-German defence group KNDS. The negotiations raise questions about state ownership, industrial sovereignty and future capital-market financing; no completed acquisition is reported.",
       "article_type": "analysis",
       "topic": "Industrial policy and defence",
-      "evidence_level": "teaser"
+      "evidence_level": "teaser",
+      "event_key": "germany-knds-state-stake-2026-11-06"
     },
     {
       "id": "ddd372623c00dd75",
@@ -35,7 +37,8 @@
       "summary": "A Reuters analysis explores the tension between international criticism of the yuan's exchange rate and the pressure that appreciation could place on Chinese exporters. Currency policy also affects domestic demand and trade relations.",
       "article_type": "analysis",
       "topic": "Globale Wirtschaft und Wechselkurse",
-      "evidence_level": "teaser"
+      "evidence_level": "teaser",
+      "event_key": "china-yuan-exchange-rate-debate-2026"
     },
     {
       "id": "84d3d6d03911fa17",
@@ -46,7 +49,8 @@
       "summary": "Chancellor Merz calls for European stockpiles of critical raw materials, more recycling and diversified sourcing. The proposal illustrates a trade-off between low-cost global procurement and strategic security of supply.",
       "article_type": "analysis",
       "topic": "Industriepolitik und Lieferketten",
-      "evidence_level": "teaser"
+      "evidence_level": "teaser",
+      "event_key": "eu-critical-minerals-stockpiling-plan-2026"
     },
     {
       "id": "033031ef19474542",
@@ -57,7 +61,8 @@
       "summary": "Reuters examines whether local opposition to data centres, including their electricity and water demands, played a role in the US midterms. The article explores a possible political mechanism rather than establishing a single cause for the election result.",
       "article_type": "analysis",
       "topic": "AI infrastructure and politics",
-      "evidence_level": "teaser"
+      "evidence_level": "teaser",
+      "event_key": "us-data-centre-electoral-backlash-2026"
     },
     {
       "id": "911f02d091bb4ca1",
@@ -68,7 +73,8 @@
       "summary": "Reuters examines the tension between falling inflation, fiscal austerity and weak domestic demand in Argentina. The longer-term question is whether stabilisation can be sustained without prolonged economic weakness.",
       "article_type": "analysis",
       "topic": "Fiskalpolitik und Wirtschaftsentwicklung",
-      "evidence_level": "teaser"
+      "evidence_level": "teaser",
+      "event_key": "argentina-austerity-growth-2026"
     },
     {
       "id": "05f621ceafdf6063",
@@ -79,7 +85,8 @@
       "summary": "Germany entered winter with gas storage at 61.05% on 2 November, below the EU average of 74.56%. The report explores how high LNG prices, storage incentives and the Iran conflict affect Europe's energy-security risks.",
       "article_type": "analysis",
       "topic": "Energy security and European industry",
-      "evidence_level": "teaser"
+      "evidence_level": "teaser",
+      "event_key": "germany-gas-storage-level-winter-2026"
     },
     {
       "id": "0227ec5204c93bdc",
@@ -90,7 +97,8 @@
       "source": "The Guardian",
       "topic": "Climate policy and political economy",
       "evidence_level": "read",
-      "article_type": "analysis"
+      "article_type": "analysis",
+      "event_key": "cop31-antalya-electrification-agenda-2026"
     },
     {
       "id": "42ecab1da9eab3bd",
@@ -101,7 +109,8 @@
       "source": "The Guardian",
       "topic": "Global economy and fiscal sustainability",
       "evidence_level": "read",
-      "article_type": "analysis"
+      "article_type": "analysis",
+      "event_key": "imf-global-resilience-subsidies-2026"
     },
     {
       "id": "40f25ce6cdf9268f",
@@ -112,7 +121,20 @@
       "source": "Reuters",
       "topic": "China and international monetary policy",
       "evidence_level": "teaser",
-      "article_type": "analysis"
+      "article_type": "analysis",
+      "event_key": "china-forex-deposit-reserve-increase-2026-11"
+    },
+    {
+      "id": "48a8ab19f296c656",
+      "title": "As high oil prices curb demand, fresh signs of glut appear",
+      "url": "https://www.reuters.com/business/energy/high-oil-prices-curb-demand-fresh-signs-glut-appear-2026-11-06/",
+      "source": "Reuters",
+      "published_at": "2026-11-06",
+      "summary": "Reuters examines why global oil supply may be moving back into surplus despite disruptions from the Iran war. JP Morgan estimates an excess of 1.1 million barrels per day in September and 1.4 million in October as Middle Eastern flows recover and high prices suppress demand. Those are bank estimates, not settled global production statistics; short-term physical supply tightness and a wider market surplus can coexist.",
+      "article_type": "analysis",
+      "topic": "Energy economics and oil markets",
+      "evidence_level": "read",
+      "event_key": "global-oil-demand-surplus-2026-11-06"
     }
   ],
   "headlines": [
@@ -125,7 +147,8 @@
       "summary": "Bundeskanzler Stocker wurde in Peking von Premier Li Qiang empfangen. Die Wirtschaftsbeziehungen stehen im Mittelpunkt; das Gespräch mit Staatspräsident Xi war zum Berichtszeitpunkt für den Nachmittag angekündigt.",
       "article_type": "report",
       "region": "Österreich",
-      "evidence_level": "read"
+      "evidence_level": "read",
+      "event_key": "austria-china-stocker-visit-2026-11-06"
     },
     {
       "id": "a2b5df2a3bf0c81d",
@@ -136,7 +159,8 @@
       "summary": "Laut Innenministerium gab es neun Hausdurchsuchungen und 17 Einvernahmen im Zuge eines Islamismus-Schwerpunkts. Es handelt sich um Ermittlungsmaßnahmen, nicht um Schuldsprüche.",
       "article_type": "report",
       "region": "Österreich",
-      "evidence_level": "teaser"
+      "evidence_level": "teaser",
+      "event_key": "austria-islamism-police-operations-2026-11-06"
     },
     {
       "id": "898c042a2deb9d10",
@@ -147,7 +171,8 @@
       "summary": "Die zweite KV-Runde für rund 90.000 IT-Beschäftigte blieb ergebnislos. Die Gewerkschaft GPA fordert 3,9 Prozent mehr Gehalt, die Arbeitgeber bieten 1,2 Prozent auf Ist-Gehälter und 2,0 Prozent auf KV-Gehälter.",
       "article_type": "report",
       "region": "Österreich",
-      "evidence_level": "read"
+      "evidence_level": "read",
+      "event_key": "austria-it-collective-bargaining-2026"
     },
     {
       "id": "701e692a1fad11f7",
@@ -158,7 +183,8 @@
       "summary": "Das Landesgericht Innsbruck verhängte wegen schweren Betrugs eine Zusatzstrafe von zwei Jahren. Im weiteren Anklagepunkt betrügerischer Krida wurde Benko freigesprochen; das Urteil ist nicht rechtskräftig.",
       "article_type": "report",
       "region": "Österreich",
-      "evidence_level": "read"
+      "evidence_level": "read",
+      "event_key": "austria-benko-fraud-judgment-2026-11-05"
     },
     {
       "id": "92a90d2a3335ca93",
@@ -169,7 +195,8 @@
       "summary": "Die Weltbank beziffert die Auslandsverschuldung der Entwicklungsländer 2025 auf 9,4 Billionen Dollar, 5,5 Prozent mehr als im Vorjahr. Hohe Finanzierungskosten verschärfen die Belastung.",
       "article_type": "report",
       "region": "International",
-      "evidence_level": "read"
+      "evidence_level": "read",
+      "event_key": "developing-countries-external-debt-2025"
     },
     {
       "id": "92a20d2a332fabe5",
@@ -180,7 +207,8 @@
       "summary": "Die Türkei plant bis 2040 Investitionen von etwa 450 Milliarden Euro in ihr Energiesystem. Erneuerbare Energien und Kernkraft sollen wachsen, um Energieimporte zu verringern; es handelt sich um Pläne.",
       "article_type": "report",
       "region": "International",
-      "evidence_level": "read"
+      "evidence_level": "read",
+      "event_key": "turkey-energy-investment-plan-2040"
     },
     {
       "id": "9b74562a383a5aae",
@@ -191,7 +219,8 @@
       "summary": "Der Nasdaq-100 verlor am Donnerstag 6,36 Prozent und der S&P 500 4,36 Prozent. Investoren fürchten stärkere KI-Regulierung nach den Wahlerfolgen der Demokraten; dies ist eine Markterklärung, keine feststehende politische Entscheidung.",
       "article_type": "report",
       "region": "International",
-      "evidence_level": "read"
+      "evidence_level": "read",
+      "event_key": "us-tech-market-selloff-2026-11-05"
     },
     {
       "id": "11e0289a61568926",
@@ -202,7 +231,9 @@
       "summary": "European shares fell on Friday as the global technology sell-off spread to Europe. Reuters reported the STOXX 600 down around 1% at 09:19 GMT, an intraday snapshot rather than a closing price.",
       "article_type": "report",
       "region": "International",
-      "evidence_level": "teaser"
+      "evidence_level": "teaser",
+      "event_key": "us-tech-market-selloff-2026-11-05",
+      "distinct_contribution": "Independent European market fallout on Friday, including an intraday regional index snapshot rather than the original US selloff."
     },
     {
       "id": "1bb6553a2553c563",
@@ -213,7 +244,8 @@
       "summary": "Prime Minister Takaichi plans to channel additional proceeds from Bank of Japan ETF sales into strategic growth sectors. A stock-market rout adds fiscal uncertainty to the proposal.",
       "article_type": "report",
       "region": "International",
-      "evidence_level": "teaser"
+      "evidence_level": "teaser",
+      "event_key": "japan-boj-etf-sales-investment-plan-2026"
     },
     {
       "id": "9ba84324cf5ae9b5",
@@ -224,7 +256,8 @@
       "summary": "The Bank of England raised rates by 25 basis points to 4%, its first increase in more than three years, by an 8–1 vote. Persistent energy-driven inflation remains a concern.",
       "article_type": "report",
       "region": "International",
-      "evidence_level": "teaser"
+      "evidence_level": "teaser",
+      "event_key": "boe-rate-hike-2026-11-05"
     },
     {
       "id": "357db913eea583e9",
@@ -235,7 +268,8 @@
       "summary": "ECB board member Isabel Schnabel warned that high public debt and leveraged non-bank investors could amplify financial instability and complicate monetary policy.",
       "article_type": "report",
       "region": "International",
-      "evidence_level": "teaser"
+      "evidence_level": "teaser",
+      "event_key": "ecb-schnabel-debt-nonbanks-risks-2026-11-05"
     },
     {
       "id": "28edf2eb357abf1a",
@@ -246,7 +280,8 @@
       "summary": "Global equity funds attracted $38.63 billion in the week to 4 November. The reporting period precedes the latest sharp tech-stock sell-off.",
       "article_type": "report",
       "region": "International",
-      "evidence_level": "teaser"
+      "evidence_level": "teaser",
+      "event_key": "global-equity-fund-flows-week-2026-11-04"
     },
     {
       "id": "3fe98824876c131d",
@@ -257,7 +292,9 @@
       "summary": "Technology-focused equity long-short hedge funds fell more than 4% on Thursday, Reuters reports. Some managers are cutting risk and staff after the market reversal.",
       "article_type": "report",
       "region": "International",
-      "evidence_level": "teaser"
+      "evidence_level": "teaser",
+      "event_key": "us-tech-market-selloff-2026-11-05",
+      "distinct_contribution": "Different transmission channel: losses, risk cuts and staffing effects inside technology-focused hedge funds."
     },
     {
       "id": "9c5e4b28b9bc8646",
@@ -268,7 +305,69 @@
       "summary": "The Bank of England raised rates while the Federal Reserve and ECB held steady. Reuters compares how major central banks weigh persistent inflation against growth risks.",
       "article_type": "report",
       "region": "International",
-      "evidence_level": "teaser"
+      "evidence_level": "teaser",
+      "event_key": "boe-rate-hike-2026-11-05",
+      "distinct_contribution": "Cross-central-bank policy comparison beyond the original Bank of England rate decision."
+    },
+    {
+      "id": "1b361d2f15131faf",
+      "title": "Equal Pay Day: Österreichs Lohnlücke beträgt noch 15,5 Prozent",
+      "url": "https://orf.at/stories/3446955/",
+      "source": "ORF",
+      "published_at": "2026-11-05",
+      "summary": "Die österreichische Einkommensdifferenz zwischen ganzjährig vollzeitbeschäftigten Frauen und Männern ist gegenüber dem Vorjahr von 16,3 auf 15,5 Prozent gesunken. Die Unterschiede zwischen Regionen bleiben erheblich; zugleich hat Österreich die EU-Richtlinie zur Lohntransparenz noch nicht umgesetzt, weil eine politische Einigung aussteht.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read",
+      "event_key": "austria-equal-pay-day-transparency-2026"
+    },
+    {
+      "id": "e2256bb51c67b3dc",
+      "title": "Copernicus: 2026 dürfte Jahresmittel über 1,5 Grad liegen",
+      "url": "https://science.orf.at/stories/3238087/",
+      "source": "ORF Science",
+      "published_at": "2026-11-06",
+      "summary": "Der EU-Klimadienst Copernicus hält eine globale Jahresmitteltemperatur 2026 von mehr als 1,5 Grad über dem vorindustriellen Niveau für nahezu sicher. Der Oktober war laut Copernicus weltweit der wärmste seit Messbeginn. Ein einzelnes Jahr oberhalb der Marke ist nicht automatisch gleichbedeutend mit einer dauerhaft bestätigten Überschreitung des Pariser Temperaturziels.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read",
+      "event_key": "copernicus-global-temperature-balance-2026"
+    },
+    {
+      "id": "9638c3e6a253d32a",
+      "title": "EU Council backs postponement of methane import reporting rules",
+      "url": "https://www.consilium.europa.eu/en/press/press-releases/2026/11/06/methane-regulation-council-agrees-to-postpone-monitoring-rules-for-one-year/",
+      "source": "Council of the EU",
+      "published_at": "2026-11-06",
+      "summary": "EU governments agreed a negotiating position to delay methane monitoring, reporting and verification requirements for fossil-fuel importers until January 2028, citing supply concerns. Later methane-intensity reporting and limits would also shift by one year. The changes are not yet enacted: agreement with the European Parliament is still required.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read",
+      "event_key": "eu-council-methane-import-rules-delay-2026"
+    },
+    {
+      "id": "77f85b57585e1380",
+      "title": "US job growth beats forecasts as unemployment falls to 4.1%",
+      "url": "https://www.reuters.com/business/us-job-growth-beats-expectations-october-unemployment-rate-falls-41-2026-11-06/",
+      "source": "Reuters",
+      "published_at": "2026-11-06",
+      "summary": "US employers added 165,000 jobs in October, above the 65,000 forecast by economists surveyed by Reuters; September's increase was revised to 60,000. The unemployment rate declined from 4.2% to 4.1%. Resilience in employment could influence the Federal Reserve's inflation assessment, but the figures do not determine the next rate decision.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read",
+      "event_key": "us-october-jobs-report-2026"
+    },
+    {
+      "id": "1129dfc9754bc661",
+      "title": "Kremlin says Europe must join eventual Ukraine security talks",
+      "url": "https://www.reuters.com/world/europe/kremlin-accuses-europe-struggling-decide-who-will-speak-it-at-future-ukraine-2026-11-06/",
+      "source": "Reuters",
+      "published_at": "2026-11-06",
+      "summary": "Kremlin spokesman Dmitry Peskov said European governments would eventually have to participate in negotiations on security guarantees involving Russia and Ukraine. He also alleged they had not agreed who should represent them. This is Moscow's characterisation of possible future talks, not evidence that a security settlement has been reached.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read",
+      "event_key": "ukraine-europe-russia-security-talks-2026-11-06"
     }
   ]
 }
