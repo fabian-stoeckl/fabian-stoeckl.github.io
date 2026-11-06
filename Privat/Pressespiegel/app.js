@@ -12,6 +12,7 @@ function stashComment(date){
 
 const BLOGS_FEED='https://raw.githubusercontent.com/fabian-stoeckl/fabian-stoeckl.github.io/blogs-live/Privat/Pressespiegel/data/blogs.json';
 const BLOG_TRASH_KEY='pressespiegel:deleted-blog-posts:v1';
+const LEGACY_BLOG_TRASH_KEY='pressespiegel-hidden-blog-posts-v1';
 let blogLastCheck=0,blogLoading=false,blogVisibleCount=5,blogCurrentData=null,blogCurrentStale=false;
 const blogHiddenPosts=new Map();
 function validBlogURL(value){
@@ -22,14 +23,34 @@ function validBlogURL(value){
       ['www.noahpinion.blog','noahpinion.blog','noahpinion.substack.com'].includes(u.hostname)?u.href:null;
   }catch(_){return null;}
 }
+function blogPostKey(value){
+  const url=validBlogURL(value);
+  return url?new URL(url).pathname.replace(/\/$/,'').toLowerCase():null;
+}
 try{
-  const saved=JSON.parse(localStorage.getItem(BLOG_TRASH_KEY)||'[]');
+  const current=localStorage.getItem(BLOG_TRASH_KEY);
+  const saved=JSON.parse(current||'[]');
   if(Array.isArray(saved))for(const entry of saved){
     const url=entry&&validBlogURL(entry.url);
     if(url&&typeof entry.title==='string')
-      blogHiddenPosts.set(url,{url,title:entry.title.slice(0,250),
+      blogHiddenPosts.set(blogPostKey(url),{url,title:entry.title.slice(0,250),
         author:typeof entry.author==='string'?entry.author.slice(0,110):'',
         published_at:typeof entry.published_at==='string'?entry.published_at.slice(0,10):''});
+  }
+  // Restore the exact browser-local hidden selections made before the rollback.
+  // The older app stored URL paths only. Import them ONCE when the new key is absent.
+  if(current===null){
+    const old=JSON.parse(localStorage.getItem(LEGACY_BLOG_TRASH_KEY)||'[]');
+    if(Array.isArray(old))for(const path of old){
+      if(typeof path!=='string'||!/^\/(?!\/)[a-z0-9/_-]+$/i.test(path))continue;
+      const url=validBlogURL('https://www.noahpinion.blog'+path);
+      const key=blogPostKey(url);
+      if(key&&!blogHiddenPosts.has(key))blogHiddenPosts.set(key,{
+        url,title:'Früher ausgeblendeter Beitrag ('+path.slice(0,180)+')',
+        author:'',published_at:''
+      });
+    }
+    if(blogHiddenPosts.size)saveBlogTrash();
   }
 }catch(_){/* Private browsing may disable storage; in-session actions still work. */}
 function saveBlogTrash(){
@@ -66,7 +87,7 @@ function renderBlogTrash(){
     restore.type='button';
     restore.setAttribute('aria-label','Wiederherstellen: '+post.title);
     restore.onclick=()=>{
-      blogHiddenPosts.delete(post.url);saveBlogTrash();
+      blogHiddenPosts.delete(blogPostKey(post.url));saveBlogTrash();
       renderBlogTrash();
       if(blogCurrentData)renderBlogPosts(blogCurrentData,blogCurrentStale);
     };
@@ -94,7 +115,19 @@ function renderBlogPosts(data,stale=false){
   root.append(heading);
   $('blog-trash-close').onclick=()=>$('blog-trash-dialog').close();
   const valid=data.posts.filter(p=>p&&typeof p.title==='string'&&validBlogURL(p.url));
-  const visible=valid.filter(p=>!blogHiddenPosts.has(validBlogURL(p.url)));
+  // Enrich older path-only deletions with the original title/author when RSS has them.
+  let metadataChanged=false;
+  for(const post of valid){
+    const key=blogPostKey(post.url),hidden=blogHiddenPosts.get(key);
+    if(hidden&&(hidden.title.startsWith('Früher ausgeblendeter Beitrag (')||hidden.url!==validBlogURL(post.url))){
+      blogHiddenPosts.set(key,{url:validBlogURL(post.url),title:post.title.slice(0,250),
+        author:typeof post.author==='string'?post.author.trim().slice(0,110):'',
+        published_at:typeof post.published_at==='string'?post.published_at.slice(0,10):''});
+      metadataChanged=true;
+    }
+  }
+  if(metadataChanged)saveBlogTrash();
+  const visible=valid.filter(p=>!blogHiddenPosts.has(blogPostKey(p.url)));
   const list=el('div',undefined,'blog-list');
   let count=0;
   for(const post of visible.slice(0,blogVisibleCount)){
@@ -106,7 +139,7 @@ function renderBlogPosts(data,stale=false){
     remove.setAttribute('aria-label','Beitrag löschen: '+post.title);
     remove.append(blogCrossIcon());
     remove.onclick=()=>{
-      blogHiddenPosts.set(url,{url,title:post.title.slice(0,250),
+      blogHiddenPosts.set(blogPostKey(url),{url,title:post.title.slice(0,250),
         author:typeof post.author==='string'?post.author.trim().slice(0,110):'',
         published_at:typeof post.published_at==='string'?post.published_at.slice(0,10):''});
       saveBlogTrash();renderBlogPosts(data,stale);

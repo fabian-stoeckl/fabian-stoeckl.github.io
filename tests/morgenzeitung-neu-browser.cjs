@@ -178,6 +178,28 @@ const fs=require('node:fs');
    assert.deepEqual(revised.comment_suggestions,[suggestion]);
    assert.equal(prefSuggestion,suggestion);
    assert.ok(revised.comment.includes('Eigenständiger Hinweis von der Präferenzseite.'));
+   // Prior release stored hidden URL paths under a different localStorage key.
+   // The restored selection must survive upgrading to the new independent dialog.
+   await page.evaluate(()=>{
+     localStorage.removeItem('pressespiegel:deleted-blog-posts:v1');
+     localStorage.setItem('pressespiegel-hidden-blog-posts-v1',JSON.stringify(['/p/anthropics-moat-is-claude']));
+   });
+   await page.goto(root);
+   await page.locator('#tab-blogs').click();
+   await page.waitForSelector('#blogs .blog-entry');
+   assert.notEqual(await page.locator('#blogs .blog-entry h3 a').first().getAttribute('href'),
+     'https://www.noahpinion.blog/p/anthropics-moat-is-claude','Legacy hidden posts must stay hidden');
+   await page.locator('#blog-trash-open').click();
+   assert.equal(await page.locator('#blog-trash-list .blog-trash-entry').count(),1,'Old hidden list migrates');
+   await page.locator('#blog-trash-list .blog-restore').click();
+   await page.locator('#blog-trash-close').click();
+   assert.equal(await page.locator('#blogs .blog-entry h3 a').first().getAttribute('href'),
+     'https://www.noahpinion.blog/p/anthropics-moat-is-claude','Legacy hide can be restored');
+   await page.reload();
+   await page.locator('#tab-blogs').click();
+   await page.waitForSelector('#blogs .blog-entry');
+   assert.equal(await page.locator('#blogs .blog-entry h3 a').first().getAttribute('href'),
+     'https://www.noahpinion.blog/p/anthropics-moat-is-claude','Legacy state is not imported twice');
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'No horizontal overflow');
    assert.deepEqual(errors,[],'No JS page errors');
    await context.close();
