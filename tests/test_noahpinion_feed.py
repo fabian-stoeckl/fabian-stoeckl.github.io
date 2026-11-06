@@ -1,6 +1,6 @@
 """No-network regression tests for Noahpinion feed extraction."""
 import unittest
-from scripts.sync_blogs import parse_feed, excerpt, merge_archive
+from scripts.sync_blogs import parse_feed, excerpt, merge_archive, article_summary_valid
 
 
 def entry(title, author, date, slug):
@@ -55,6 +55,57 @@ class BlogFeedTests(unittest.TestCase):
         self.assertEqual(len(merged["posts"]), 6)
         self.assertEqual(merged["posts"][-1]["title"], "Older post")
         self.assertEqual(merged["posts"][0]["title"], "Recent 0")
+
+
+    def test_source_summary_survives_refresh_and_archive(self):
+        dates = ["Mon, 02 Nov 2026 10:00:00 +0000", "Sat, 31 Oct 2026 10:00:00 +0000",
+                 "Thu, 29 Oct 2026 10:00:00 +0000", "Tue, 27 Oct 2026 10:00:00 +0000",
+                 "Sun, 25 Oct 2026 10:00:00 +0000"]
+        items = [entry("Recent " + str(i), "Noah Smith", date, "recent-" + str(i))
+                 for i, date in enumerate(dates)]
+        xml = ('<rss xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>'
+               + "".join(items) + "</channel></rss>").encode()
+        fresh = parse_feed(xml)
+        original = dict(fresh["posts"][0])
+        summary = " ".join(["Grounded editorial insight about economics and technology."] * 20)
+        original.update(summary_text=summary, summary_source="article",
+                        summary_language="en", summary_access="visible_text_only",
+                        summary_generated_at="2026-11-06T11:00:00+01:00",
+                        summary_evidence_url=original["url"])
+        self.assertTrue(article_summary_valid(original))
+        previous = {"posts": [original, {
+            "title": "Historic post", "url": "https://www.noahpinion.blog/p/historic",
+            "published_at": "2026-10-01", "description": "Old RSS teaser",
+            **{f: original[f] for f in ("summary_text", "summary_source",
+              "summary_language", "summary_access", "summary_generated_at")}
+        }]}
+        merged = merge_archive(fresh, previous)
+        self.assertEqual(len(merged["posts"]), 6)
+        self.assertEqual(merged["posts"][0]["summary_text"], summary)
+        self.assertEqual(merged["posts"][-1]["summary_text"], summary)
+        self.assertEqual(merged["posts"][0]["description"], "Short text & more.")
+        self.assertEqual(merged["posts"][0]["summary_evidence_url"], original["url"])
+        second = merge_archive(parse_feed(xml), merged)
+        self.assertEqual(len(second["posts"]), 6)
+        self.assertEqual(second["posts"][0]["summary_text"], summary)
+
+    def test_summary_provenance_and_length_restrictions(self):
+        sample = {"url": "https://www.noahpinion.blog/p/example",
+                  "summary_text": " ".join(["One"] * 115),
+                  "summary_source": "article", "summary_language": "en",
+                  "summary_access": "visible_text_only",
+                  "summary_evidence_url": "https://www.noahpinion.blog/p/example",
+                  "summary_generated_at": "2026-11-06T11:00:00+01:00"}
+        self.assertTrue(article_summary_valid(sample))
+        for changes in (
+            {"summary_text": "Short RSS blurb."},
+            {"summary_text": " ".join(["Long"] * 151)},
+            {"summary_source": "rss"},
+            {"summary_language": "fr"},
+            {"summary_generated_at": "not-a-timestamp"},
+            {"summary_evidence_url": "https://evil.example/p/example"},
+        ):
+            self.assertFalse(article_summary_valid({**sample, **changes}))
 
     def test_html_stripping(self):
         self.assertEqual(excerpt("<p>One <em>two</em></p>"), "One two")
