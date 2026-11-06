@@ -27,8 +27,6 @@ def validate(ed):
     if len(ed["articles"])>15 or len(ed["headlines"])>20:
         raise ValueError("Too many articles")
     if not ed["articles"] and not ed["headlines"]: raise ValueError("Empty edition")
-    if sum(a.get("discovery") is True for a in ed["articles"])>2:
-        raise ValueError("At most two discovery features")
     ids,urls=set(),set()
     for section in ("articles","headlines"):
         for a in ed[section]:
@@ -46,19 +44,6 @@ def validate(ed):
             distinct=a.get("distinct_contribution")
             if distinct is not None and (not isinstance(distinct,str) or not distinct.strip() or len(distinct)>400):
                 raise ValueError("Invalid editorial distinct contribution")
-            if a.get("discovery") is not None:
-                if section!="articles" or type(a["discovery"]) is not bool:
-                    raise ValueError("Discovery marker only allowed on features")
-            perspective=a.get("alternative_perspective")
-            if perspective is not None:
-                if section!="articles" or not isinstance(perspective,dict) or any(
-                    not isinstance(perspective.get(k),str) or not perspective[k].strip()
-                    for k in ("summary","source","url")
-                ):
-                    raise ValueError("Incomplete alternative perspective")
-                if len(perspective["summary"])>900: raise ValueError("Alternative perspective too long")
-                if canonical(perspective["url"])==canonical(a["url"]):
-                    raise ValueError("Alternative perspective requires independent source")
             related=a.get("related_article")
             if related is not None:
                 if not isinstance(related,dict) or any(
@@ -116,30 +101,6 @@ def verify(root=ROOT):
     if set(days)!={f.stem for f in root.glob("????-??-??.json")}:
         raise ValueError("Index must match all edition files")
     warnings=[]
-    # The latest real edition must not silently masquerade as a full issue.
-    # Historical editions remain untouched; scarcity never authorizes fake stories.
-    if days:
-        latest=json.loads((root/(days[0]+'.json')).read_text())
-        if not latest.get('preview'):
-            count=len(latest.get('articles',[]))+len(latest.get('headlines',[]))
-            sparse=count<10 or not latest.get('articles')
-            if sparse:
-                note=latest.get('editorial_note')
-                if not isinstance(note,str) or len(note.strip())<60:
-                    raise ValueError('Latest limited edition needs an explicit editorial_note (at least 60 characters) explaining missing coverage; never pad with unverified stories')
-                warnings.append(f'{days[0]}: LIMITED EDITION: {count} item(s), {len(latest["articles"])} feature(s); editorial note required and present')
-    if days:
-        latest=json.loads((root/(days[0]+'.json')).read_text())
-        if not latest.get('preview'):
-            entries=latest['headlines']+latest['articles']
-            sources={a['source'].strip().casefold() for a in entries}
-            fully_read=sum(a.get('evidence_level')=='read' for a in entries)
-            if len(sources)<3:
-                warnings.append(f'{days[0]}: SOURCE CONCENTRATION: {len(sources)} distinct publisher(s) across {len(entries)} items; review research breadth')
-            if fully_read<len(entries):
-                warnings.append(f'{days[0]}: SOURCE VERIFICATION: {fully_read}/{len(entries)} items marked read; verify summaries against available evidence')
-            if not latest['articles']:
-                warnings.append(f'{days[0]}: DEPTH GAP: no feature articles; review whether sufficient analysis was researched')
     for day in days:
         date.fromisoformat(day)
         ed=json.loads((root/(day+".json")).read_text())

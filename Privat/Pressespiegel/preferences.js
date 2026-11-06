@@ -56,7 +56,6 @@ let latestDate='';
  try{const index=await GitHubPaper.json('./data/index.json');latestDate=index.dates?.[0]||'';}
  catch(e){show('preference-comment-status','Ausgabenindex nicht erreichbar: '+e.message);}
  await refresh();
- await FeedbackSuggestions.loadPrivateSuggestions(DirectFeedback.readToken());
 })();
 byId('preference-comment-form').onsubmit=async e=>{
  e.preventDefault();const field=byId('preference-comment'),comment=field.value.trim(),status=byId('preference-comment-status'),button=e.submitter;

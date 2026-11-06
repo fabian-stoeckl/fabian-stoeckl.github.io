@@ -14,7 +14,6 @@ from xml.etree import ElementTree as ET
 FEED = "https://www.noahpinion.blog/feed"
 DC = "{http://purl.org/dc/elements/1.1/}creator"
 DEFAULT = Path("Privat/Pressespiegel/data/blogs.json")
-CONTENT = "{http://purl.org/rss/1.0/modules/content/}encoded"
 
 
 class PlainText(HTMLParser):
@@ -30,18 +29,13 @@ class PlainText(HTMLParser):
         self.parts.append(value)
 
 
-def excerpt(value, limit=620):
-    """A readable feed-based preview, never a claim of independent article analysis."""
+def excerpt(value):
     parser = PlainText()
     parser.feed(value or "")
-    cleaned = re.sub(r"\\s+", " ", unescape("".join(parser.parts))).strip()
-    if len(cleaned) <= limit:
-        return cleaned
-    prefix = cleaned[:limit]
-    sentence_end = max(prefix.rfind(". "), prefix.rfind("? "), prefix.rfind("! "))
-    if sentence_end >= int(limit * 0.6):
-        return prefix[:sentence_end + 1].strip()
-    return prefix.rsplit(" ", 1)[0].rstrip(" ,.;:") + "…"
+    cleaned = re.sub(r"\s+", " ", unescape("".join(parser.parts))).strip()
+    if len(cleaned) > 230:
+        cleaned = cleaned[:227].rsplit(" ", 1)[0].rstrip(" ,.;:") + "…"
+    return cleaned
 
 
 def parse_feed(raw):
@@ -65,7 +59,7 @@ def parse_feed(raw):
             continue
         candidates.append((published, {
             "title": title, "url": url, "published_at": published.date().isoformat(),
-            "author": creator, "description": excerpt(item.findtext(CONTENT) or item.findtext("description") or ""),
+            "author": creator, "description": excerpt(item.findtext("description") or ""),
             "published_time": published.astimezone(timezone.utc).isoformat(timespec="seconds")
         }))
     candidates.sort(key=lambda pair: pair[0], reverse=True)
@@ -89,7 +83,6 @@ def merge_archive(fresh, previous):
     """Keep every valid previously collected post when it falls off the RSS window."""
     if not isinstance(previous, dict) or not isinstance(previous.get("posts"), list):
         raise ValueError("Stored blog archive is invalid; refusing to overwrite it")
-    old_summaries = {p.get('url'): p for p in previous['posts'] if isinstance(p, dict) and p.get('summary_source') == 'article' and p.get('summary_de')}
     seen = set()
     combined = []
     for post in [*fresh["posts"], *previous["posts"]]:
@@ -112,11 +105,6 @@ def merge_archive(fresh, previous):
                 not re.fullmatch(r"\d{4}-\d{2}-\d{2}", post["published_at"])):
             continue
         seen.add(key)
-        if url in old_summaries and not post.get('summary_de'):
-            original = old_summaries[url]
-            post = {**post, **{field: original[field] for field in (
-                'summary_de', 'summary_source', 'summary_access', 'summary_generated_at'
-            ) if field in original}}
         combined.append(post)
     combined.sort(key=lambda p: (p["published_at"], p.get("published_time", "")), reverse=True)
     fresh["posts"] = combined

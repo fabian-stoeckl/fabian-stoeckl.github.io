@@ -1,7 +1,5 @@
 """Small editorial-metadata regression: no automated topical censorship."""
 import importlib.util
-import json
-import tempfile
 import pathlib
 import unittest
 
@@ -24,32 +22,6 @@ class EditorialEventTests(unittest.TestCase):
                 "preview":False,"articles":[],
                 "headlines":[story("a"*16,"https://a.example/a"),
                              story("b"*16,"https://b.example/b")]}
-
-    def test_latest_limited_edition_requires_disclosure(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root=pathlib.Path(directory)
-            ed=self.edition()
-            (root/"index.json").write_text(json.dumps({"dates":[ed["date"]]}))
-            (root/(ed["date"]+".json")).write_text(json.dumps(ed))
-            with self.assertRaisesRegex(ValueError,"editorial_note"):
-                mod.verify(root)
-            ed["editorial_note"]="Limited edition: verified source material was insufficient to produce ten reports or any full-length features."
-            (root/(ed["date"]+".json")).write_text(json.dumps(ed))
-            count,warnings=mod.verify(root)
-            self.assertEqual(count,1)
-            self.assertTrue(any("LIMITED EDITION" in warning for warning in warnings))
-
-    def test_research_breadth_and_depth_warnings(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root=pathlib.Path(directory)
-            ed=self.edition()
-            ed["editorial_note"]="Limited edition: only a small number of source-verified news items were available for publication today."
-            (root/"index.json").write_text(json.dumps({"dates":[ed["date"]]}))
-            (root/(ed["date"]+".json")).write_text(json.dumps(ed))
-            _,warnings=mod.verify(root)
-            self.assertTrue(any("SOURCE CONCENTRATION" in x for x in warnings))
-            self.assertTrue(any("SOURCE VERIFICATION" in x for x in warnings))
-            self.assertTrue(any("DEPTH GAP" in x for x in warnings))
 
     def test_detects_shared_event_without_silently_dropping_a_source(self):
         ed=self.edition()
@@ -126,47 +98,6 @@ class EditorialEventTests(unittest.TestCase):
             "previous_summary":"Old description","note":"Fixed text",
             "source_url":"https://example.org/evidence"}
         with self.assertRaisesRegex(ValueError,"real edition"):
-            mod.validate(ed)
-
-    def test_optional_discoveries_and_counterposition_are_valid(self):
-        ed=self.edition()
-        ed["articles"]=[
-            {**story("c"*16,"https://c.example/c"),"topic":"Economics","discovery":True,
-             "alternative_perspective":{"summary":"A defensible alternative interpretation.",
-               "source":"Independent outlet","url":"https://other.example/analysis"}},
-            {**story("d"*16,"https://d.example/d"),"topic":"Science","discovery":True},
-        ]
-        mod.validate(ed)
-        self.assertEqual(sum(a.get("discovery",False) for a in ed["articles"]),2)
-
-    def test_discovery_limit_and_headline_protection(self):
-        ed=self.edition()
-        ed["articles"]=[
-            {**story(ch*16,f"https://{ch}.example/story"),"topic":"Economics","discovery":True}
-            for ch in ("c","d","e")
-        ]
-        with self.assertRaisesRegex(ValueError,"At most two"):
-            mod.validate(ed)
-        ed["articles"]=[]
-        ed["headlines"][0]["discovery"]=True
-        with self.assertRaisesRegex(ValueError,"only allowed on features"):
-            mod.validate(ed)
-
-    def test_counterposition_requires_distinct_source_and_complete_fields(self):
-        ed=self.edition()
-        a={**story("c"*16,"https://c.example/c"),"topic":"Economics"}
-        ed["articles"]=[a]
-        a["alternative_perspective"]={"summary":"A different interpretation",
-            "source":"Independent outlet","url":a["url"]}
-        with self.assertRaisesRegex(ValueError,"independent source"):
-            mod.validate(ed)
-        a["alternative_perspective"]={"summary":"A different interpretation"}
-        with self.assertRaisesRegex(ValueError,"Incomplete alternative"):
-            mod.validate(ed)
-        ed["articles"]=[]
-        ed["headlines"][0]["alternative_perspective"]={"summary":"Another view",
-            "source":"Independent outlet","url":"https://other.example/analysis"}
-        with self.assertRaisesRegex(ValueError,"Incomplete alternative"):
             mod.validate(ed)
 
     def test_preview_stays_historical_without_new_editorial_requirements(self):

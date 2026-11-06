@@ -56,63 +56,6 @@ class BlogFeedTests(unittest.TestCase):
         self.assertEqual(merged["posts"][-1]["title"], "Older post")
         self.assertEqual(merged["posts"][0]["title"], "Recent 0")
 
-    def test_summary_metadata_survives_rss_refresh(self):
-        url = "https://www.noahpinion.blog/p/existing"
-        previous = {"posts": [{
-            "title": "Existing", "url": url, "published_at": "2026-11-01",
-            "summary_de": "English article summary.",
-            "summary_source": "article",
-            "summary_access": "visible_text_only",
-            "summary_generated_at": "2026-11-05T13:20:00Z"
-        }]}
-        fresh = {"posts": [{"title": "Existing updated", "url": url,
-                            "published_at": "2026-11-01", "description": "New RSS text"}]}
-        result = merge_archive(fresh, previous)["posts"][0]
-        self.assertEqual(result["summary_de"], "English article summary.")
-        self.assertEqual(result["summary_generated_at"], "2026-11-05T13:20:00Z")
-        self.assertEqual(result["summary_source"], "article")
-        self.assertEqual(result["description"], "New RSS text")
-
-    def test_longer_preview_uses_article_feed_content(self):
-        from scripts.sync_blogs import CONTENT
-        text = ("A detailed first point explains the issue and why it matters. "
-                "A second point describes the mechanism and gives context. "
-                "A third point examines consequences for the economy. ") * 6
-        dates = ["Mon, 02 Nov 2026 10:00:00 +0000", "Sat, 31 Oct 2026 10:00:00 +0000",
-                 "Thu, 29 Oct 2026 10:00:00 +0000", "Tue, 27 Oct 2026 10:00:00 +0000",
-                 "Sun, 25 Oct 2026 10:00:00 +0000"]
-        content = "".join(
-            entry("Post " + str(i), "Noah Smith", date, "long-" + str(i)).replace(
-                "</item>", "<content:encoded><![CDATA[<p>" + text +
-                "</p>]]></content:encoded></item>")
-            for i, date in enumerate(dates))
-        xml = ('<rss xmlns:dc="http://purl.org/dc/elements/1.1/" '
-               'xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel>'
-               + content + "</channel></rss>").encode()
-        posts = parse_feed(xml)["posts"]
-        self.assertGreater(len(posts[0]["description"]), 230)
-        self.assertLessEqual(len(posts[0]["description"]), 620)
-        self.assertIn("second point", posts[0]["description"])
-        self.assertTrue(CONTENT.endswith("encoded"))
-
-    def test_article_text_extraction_and_no_key_fallback(self):
-        from scripts.summarize_blogs import ArticleParser, enrich
-        from unittest.mock import patch
-        parser = ArticleParser()
-        parser.feed('<html><nav>Ignore menu</nav><article><h2>Main thesis</h2>'
-                    '<p>First argument with supporting evidence.</p>'
-                    '<script>ignore this script</script>'
-                    '<p>Second argument.</p></article></html>')
-        text = ' '.join(parser.parts)
-        self.assertIn('Main thesis', text)
-        self.assertIn('Second argument', text)
-        self.assertNotIn('Ignore menu', text)
-        self.assertNotIn('ignore this script', text)
-        data = {'posts': [{'title': 'Existing', 'description': 'Short excerpt'}]}
-        with patch.dict('os.environ', {'OPENAI_API_KEY': ''}):
-            self.assertEqual(enrich(data), data)
-            self.assertNotIn('summary_de', data['posts'][0])
-
     def test_html_stripping(self):
         self.assertEqual(excerpt("<p>One <em>two</em></p>"), "One two")
 

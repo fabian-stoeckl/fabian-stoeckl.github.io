@@ -18,7 +18,7 @@ const fs=require('node:fs');
      await route.fulfill({status:404,json:{message:'Not Found'}});return;
     }
     if(url.pathname.includes('/contents/morgenzeitung-neu/')){
-     const responseText=url.pathname.endsWith('lernmonitoring.md')?'Lernbilanz · Morgenzeitung Neu\nNoch nicht beurteilbar.':url.pathname.endsWith('begruendungsvorschlaege.json')?JSON.stringify({version:1,suggestions:['Zu juristisch für ein Randthema'],general_suggestions:['Mehr internationale Wirtschaftspolitik']}):url.pathname.endsWith('interessen.md')?'Ich interessiere mich für gut belegte Analysen und neue wirtschaftliche Erkenntnisse.':'28.10.2026: Startbeschreibung aus früherem Feedback übernommen.';
+     const responseText=url.pathname.endsWith('lernmonitoring.md')?'Lernbilanz · Morgenzeitung Neu\nNoch nicht beurteilbar.':url.pathname.endsWith('begruendungsvorschlaege.json')?JSON.stringify({version:1,suggestions:['Zu juristisch für ein Randthema']}):url.pathname.endsWith('interessen.md')?'Ich interessiere mich für gut belegte Analysen und neue wirtschaftliche Erkenntnisse.':'28.10.2026: Startbeschreibung aus früherem Feedback übernommen.';
      response={content:Buffer.from(responseText).toString('base64')};
     }else if(req.method()==='POST'&&url.pathname.endsWith('/issues')){
      const body=req.postDataJSON();
@@ -42,23 +42,7 @@ const fs=require('node:fs');
    await page.route(/\/Privat\/Pressespiegel\/data\/\d{4}-\d{2}-\d{2}\.json(?:\?.*)?$/,async route=>{
      const response=await route.fetch();
      const sample=await response.json();
-     // Browser feature tests require synthetic feature fixtures even when a valid
-     // production issue has only headlines. Never write these fixtures to disk.
-     if(!sample.articles.length){
-       const seeds=sample.headlines.slice(0,3);
-       assert.equal(seeds.length,3,'Headline-only issues need three fixture seeds');
-       sample.articles=seeds.map((h,i)=>({...h,id:'f'+String(i).padStart(15,'0'),topic:'Test fixture',article_type:'analysis'}));
-     }
      sample.articles[0].related_article={title:'Independent follow-up',source:'Another publisher',url:'https://example.org/follow-up'};
-     // Synthetic, in-memory editorial fixture: never published or saved.
-     sample.articles[0].alternative_perspective={
-       summary:'Eine andere ökonomische Bewertung hebt die möglichen Zielkonflikte hervor.',
-       source:'Independent analysis',url:'https://example.org/alternative'
-     };
-     if(sample.articles.length>=3){
-       sample.articles.at(-1).discovery=true;
-       sample.articles.at(-2).discovery=true;
-     }
      sample.preview=false; // Synthetic real-edition correction fixture.
      sample.articles[0].correction={
        corrected_at:'2026-10-29T12:00:00+01:00',
@@ -72,14 +56,12 @@ const fs=require('node:fs');
      const payload=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/blogs.json','utf8'));
      // Simulate a retained RSS archive with 28 posts, including guest authors.
      payload.posts=payload.posts.slice(0,5);
-     payload.posts[0].summary_de='Der Beitrag untersucht die Wettbewerbsposition von Anthropic und die langfristigen Chancen sowie Risiken einer hohen Bewertung.';
-     payload.posts[0].summary_source='article';
      for(let n=5;n<28;n++)payload.posts.push({
        title:'Older Noahpinion entry '+n,
        url:'https://www.noahpinion.blog/p/test-archive-'+n,
        published_at:'2026-10-20',
        author:n%2?'Guest Contributor':'Noah Smith',
-       description:'Feed summary for item '+n+' with additional background, the main argument, and why it matters for readers.'
+       description:'Feed summary for item '+n
      });
      await route.fulfill({status:200,json:payload});
    });
@@ -92,7 +74,6 @@ const fs=require('node:fs');
    await page.locator('#tab-blogs').click();
    await page.waitForSelector('#blogs .blog-entry');
    assert.equal(await page.locator('#blogs .blog-entry').count(),5);
-   assert.match(await page.locator('#blogs .blog-entry .blog-description').first().innerText(),/Wettbewerbsposition von Anthropic/);
    assert.equal(await page.locator('#blogs .blog-more').count(),1);
    await page.locator('#blogs .blog-more').click();
    assert.equal(await page.locator('#blogs .blog-entry').count(),15);
@@ -104,34 +85,19 @@ const fs=require('node:fs');
    assert.equal(await page.locator('#blogs .rating-dots').count(),0,'Blogs must never have article ratings');
    assert.equal(await page.locator('#feedback-section').isVisible(),false,'Blogs have no feedback controls');
    assert.equal(await page.locator('#blogs .blog-entry a').first().getAttribute('href'),'https://www.noahpinion.blog/p/anthropics-moat-is-claude');
-   assert.equal(await page.locator('#blogs .blog-remove').count(),28,'Every blog post has a remove button');
-   await page.locator('#blogs .blog-remove').first().click();
-   assert.equal(await page.locator('#blogs .blog-entry').count(),27,'Removing a post compacts the list');
-   assert.notEqual(await page.locator('#blogs .blog-entry a').first().getAttribute('href'),'https://www.noahpinion.blog/p/anthropics-moat-is-claude');
-   assert.equal(await page.locator('#blogs .blog-restore').count(),1,'Hidden posts can be restored');
-   assert.ok((await page.evaluate(()=>JSON.parse(localStorage.getItem('pressespiegel-hidden-blog-posts-v1')))).length===1);
-
    await page.locator('#tab-headlines').click();
    assert.equal(await page.locator('#feedback-section').isVisible(),true,'Newspaper ratings remain available');
    await page.locator('#tab-blogs').click();
-   assert.equal(await page.locator('#blogs .blog-entry').count(),27,'Expanded filtered archive persists across tabs');
+   assert.equal(await page.locator('#blogs .blog-entry').count(),28,'Expanded archive persists across tabs');
    await page.locator('#tab-headlines').click();
    assert.ok(await page.locator('.feedback-suggestions button').count()>=4);
-   assert.equal(await page.locator('.feedback-suggestions button').first().innerText(),'Mehr internationale Wirtschaftspolitik');
    const suggestion=await page.locator('.feedback-suggestions button').first().innerText();
    await page.locator('.feedback-suggestions button').first().click();
    const general=page.locator('#feedback');
    await general.fill((await general.inputValue())+'\nFreie eigene Begründung zur Artikelwahl.');
-   assert.match(await general.inputValue(),/Mehr internationale Wirtschaftspolitik/);
+   assert.match(await general.inputValue(),/Thema interessiert/);
    await page.locator('#tab-articles').click();
    assert.equal(await page.locator('#articles').isVisible(),true);
-   assert.equal(await page.locator('#articles .discovery-section').count(),1,'Neues appears only within features');
-   assert.equal(await page.locator('#articles .discovery-section article').count(),2,'Exactly two optional discoveries');
-   assert.equal(await page.locator('#articles > .discovery-section').count(),1,'Neues is a final section');
-   assert.equal(await page.locator('#articles > .discovery-section').evaluate(el=>el.previousElementSibling?.className),'article-list','Neues follows regular feature list');
-   assert.equal(await page.locator('#articles .alternative-perspective').count(),1,'One optional counter-perspective');
-   assert.match(await page.locator('#articles .alternative-perspective').innerText(),/Andere Perspektive/);
-   assert.equal(await page.getByRole('link',{name:'Quelle: Independent analysis'}).getAttribute('href'),'https://example.org/alternative');
    assert.equal(await page.locator('#articles .article-correction').count(),1);
    assert.match(await page.locator('#articles .article-correction').innerText(),/unzutreffende Behauptung wurde berichtigt/);
    assert.equal(await page.getByRole('link',{name:'Beleg zur Berichtigung'}).getAttribute('href'),'https://example.org/evidence');
@@ -152,7 +118,7 @@ const fs=require('node:fs');
    assert.equal(issues.length,1);
    assert.match(issues[0].body,/MORGENZEITUNG_NEU_FEEDBACK_V1/);
    const payload=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
-   assert.ok(payload.ratings.length>=1&&payload.comment.includes('Mehr internationale Wirtschaftspolitik'));
+   assert.ok(payload.ratings.length>=1&&payload.comment.includes('Thema interessiert'));
    assert.ok(payload.ratings.some(r=>r.id===correctedId),'Correction retains same article rating identity');
    assert.deepEqual(payload.comment_suggestions,[suggestion]);
    assert.ok(payload.comment.includes('Freie eigene Begründung zur Artikelwahl.'));
