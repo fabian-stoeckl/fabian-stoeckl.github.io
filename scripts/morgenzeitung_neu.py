@@ -206,6 +206,105 @@ def print_cluster_review(ed,prior_editions=()):
               "same-event review is still essential.")
     return report
 
+
+# Phase 4: explicit, read-only publication-source signals. These numbers
+# trigger HUMAN questions; they never feed a ranking, quota or publication gate.
+SOURCE_ALIASES={
+    "orf science":"ORF","orf":"ORF",
+    "reuters":"Reuters","associated press":"AP","ap":"AP",
+    "financial times":"Financial Times",
+    "the guardian":"The Guardian","guardian":"The Guardian",
+}
+def publisher_group(value):
+    """Normalize *declared publication* names without guessing syndication."""
+    cleaned=" ".join(str(value or "").strip().split())
+    key=cleaned.casefold()
+    return SOURCE_ALIASES.get(key,cleaned)
+
+def diversity_snapshot(ed):
+    """Summarize visible source exposure; never infer ideology or preferences."""
+    if ed.get("preview"):
+        return {"date":ed.get("date"),"preview":True,"total":0,"sections":{},
+                "alerts":[],"all_sources":[]}
+    entries=[("Heute wichtig",a) for a in ed["headlines"]]+[
+        ("Vertiefungen",a) for a in ed["articles"]]
+    sections={}
+    alerts=[]
+    for label,rows in [
+        ("Gesamtausgabe",[a for _,a in entries]),
+        ("Heute wichtig",ed["headlines"]),
+        ("Vertiefungen",ed["articles"])
+    ]:
+        count=Counter(publisher_group(a["source"]) for a in rows)
+        ordered=sorted(count.items(),key=lambda p:(-p[1],p[0]))
+        sections[label]={"total":len(rows),"sources":[
+            {"source":publisher,"count":n} for publisher,n in ordered],
+            "distinct_source_groups":len(ordered)}
+        # These are advisory thresholds, NEVER quotas or automatic removals.
+        if len(rows)>=6:
+            alerts.extend({"section":label,"source":publisher,"count":n,
+                           "total":len(rows),"kind":"concentration_to_review"}
+                          for publisher,n in ordered if n>=4 and n*5>=len(rows)*2)
+    genres=Counter(str(a.get("article_type") or "nicht klassifiziert").strip()
+                   for _,a in entries)
+    return {"date":ed["date"],"preview":False,"total":len(entries),
+            "sections":sections,
+            "all_sources":sections["Gesamtausgabe"]["sources"],
+            "article_types":[{"type":key,"count":num}
+                             for key,num in sorted(genres.items())],
+            "news_regions":dict(sorted(Counter(
+                a.get("region","nicht klassifiziert") for a in ed["headlines"]).items())),
+            "alerts":alerts}
+
+def recurring_concentration(ed,prior_editions=()):
+    """Flag repeated dependence on a publisher without suppressing that source."""
+    editions=[ed]+[x for x in prior_editions if not x.get("preview") and x.get("date")!=ed["date"]]
+    snapshots=[diversity_snapshot(x) for x in editions]
+    per_source={}
+    for snap in snapshots:
+        for signal in snap["alerts"]:
+            if signal["section"]!="Gesamtausgabe":
+                continue
+            per_source.setdefault(signal["source"],[]).append(snap["date"])
+    return [{"source":name,"dates":sorted(set(days),reverse=True)}
+            for name,days in sorted(per_source.items())
+            if len(set(days))>=2]
+
+def print_diversity_review(ed,prior_editions=()):
+    """Advisory newsroom review with no file writes or content decisions."""
+    snap=diversity_snapshot(ed)
+    if snap["preview"]:
+        print("DIVERSITY REVIEW: imported preview; not an independently researched issue.")
+        return snap
+    print(f"DIVERSITY REVIEW {snap['date']}: {snap['total']} articles.")
+    for section,details in snap["sections"].items():
+        described=", ".join(f"{p['source']}: {p['count']}"
+                            for p in details["sources"]) or "(no articles)"
+        print(f"PUBLICATION SOURCES {section} ({details['total']}): {described}")
+    print("NEWS REGIONS: "+", ".join(
+        f"{area}: {n}" for area,n in snap["news_regions"].items()))
+    print("ARTICLE TYPES: "+", ".join(
+        f"{p['type']}: {p['count']}" for p in snap["article_types"]))
+    for alert in snap["alerts"]:
+        print(f"REVIEW CONCENTRATION ({alert['section']}): {alert['source']} "
+              f"{alert['count']}/{alert['total']}. This is not a source quota.")
+    for recurring in recurring_concentration(ed,prior_editions):
+        print(f"REVIEW REPEATED CONCENTRATION: {recurring['source']} across "
+              f"{', '.join(recurring['dates'])}")
+    print("EDITORIAL REVIEW REQUIRED: check independently sourced ORIGINALS, "
+          "agency republications, neglected strong alternatives, topic/country "
+          "breadth, scientific/primary evidence, views challenging existing "
+          "assumptions, and fair contrary evidence. A numerical concentration "
+          "alone does not justify removal or token publisher substitution.")
+    print("PERSONALIZATION SAFEGUARD: do not infer a topic ban from one negative "
+          "rating, lack of feedback, suggested-reason clicks or poor access "
+          "to paywalled originals. Test competing hypotheses against genuine "
+          "freely written feedback and later reader response.")
+    print("NO AUTOMATIC ACTION: no article, topic, publisher, ranking or reader "
+          "preference was changed. Editorial judgement and verifiable evidence "
+          "are required; no source quotas or enforced balance.")
+    return snap
+
 def editorial_warnings(ed):
     """Advisory newsroom signals; not a semantic classifier or publication veto."""
     if ed["preview"]: return []
@@ -240,7 +339,7 @@ def verify(root=ROOT):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument("action",choices=("verify","cluster-review"))
+    p.add_argument("action",choices=("verify","cluster-review","diversity-review"))
     p.add_argument("--root",type=Path,default=ROOT)
     p.add_argument("--date",help="Date YYYY-MM-DD to review; latest if omitted")
     p.add_argument("--previous-days",type=int,default=3,
@@ -262,5 +361,8 @@ def main():
         validate(ed)
         older=[json.loads((args.root/(day+".json")).read_text())
                for day in days if day<selected][:args.previous_days]
-        print_cluster_review(ed,older)
+        if args.action=="cluster-review":
+            print_cluster_review(ed,older)
+        else:
+            print_diversity_review(ed,older)
 if __name__=="__main__": main()
