@@ -81,6 +81,10 @@ assert.match(research,/seit der letzten nachweislich erfolgreichen Veröffentlic
 assert.match(research,/Keine starre Altersgrenze/);
 assert.match(research,/abschließenden? Aktualitätsdurchgang|Aktualitätsdurchgang/);
 assert.match(research,/Nachrichtenanlass/);
+assert.match(research,/cluster-review/);
+assert.match(research,/nicht-destruktive Ereignisprüfung/);
+assert.match(fs.readFileSync('scripts/morgenzeitung_neu.py','utf8'),/def cluster_candidates/);
+assert.match(fs.readFileSync('scripts/morgenzeitung_neu.py','utf8'),/def historical_overlap/);
 assert.match(research,/Redaktionsrunde vor der Veröffentlichung/);
 assert.match(research,/preview:false/);
 assert.ok(!research.includes(String.raw`\n\n`),'No literal escaped paragraph delimiters');
