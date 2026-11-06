@@ -1,6 +1,6 @@
 {
   "date": "2026-11-06",
-  "researched_at": "2026-11-06T23:29:28+01:00",
+  "researched_at": "2026-11-06T23:45:00+01:00",
   "preview": false,
   "editorial_note": "Kontrollierter E2E-Produktionsneulauf nach unabhängiger Nachrecherche: Fünf zusätzliche belegte Originalmeldungen (österreichische Einkommenslücke, Copernicus-Temperaturbilanz, EU-Ratsposition zu Methan, US-Arbeitsmarktdaten, Ukraine-Diplomatie) und eine zusätzliche Reuters-Vertiefung zum Ölmarkt. Vorherige 14 Nachrichten/10 Vertiefungen und sämtliche alten Artikel-IDs/URLs bleiben erhalten; gemeinsame Marktanlässe sind redaktionell mit event_key und eigenständigen Beiträgen gekennzeichnet. Keine endgültigen Beschlüsse aus Ankündigungen oder Ratspositionen abgeleitet. Originalsprachige Zusammenfassungen. Keine künstlichen Bewertungen und keine Themenausschlüsse. Vollständige Originalbelege für die neuen Beiträge im privaten Dossier PR #76; zu älteren Beiträgen gelten deren dokumentierte ursprüngliche Zugriffsgrenzen. Unbeaufsichtigter redaktioneller Nachmittags-Rerun: neues bestätigtes Xi-Treffen (ORF ZIB 13:00) als eigenständige Nachmittagsentwicklung; die Vormittagsmeldung und ihre Identität bleiben unverändert. Neue Quelle im privaten Dossier PR #78. Keine künstlichen Bewertungen; keine Änderungen an anderen Bereichen. Phase-4-Neulauf: unabhängige Recherche über IEA/Reuters-Erneuerbaren-Prognosen und Eurozonen-Einzelhandelsdaten des Wall Street Journal (Originalauszug). Zwei eigenständige Vertiefungen mit Originalsprachen und ausgewiesenen Zugriffsgrenzen hinzugefügt; Reuters-Makroanalyse nach redaktioneller Dublettenabwägung nicht aufgenommen. Quellenhäufungen sind Warnhinweise, keine Quoten. Privates Recherche-/Quellendossier PR #79, keine Änderung an authentischem Feedback oder anderen Bereichen. Phase-5-Kontrolllauf: IEA-Primärbericht zu Netzanschluss-Warteschlangen nach Originalsichtung ergänzt; überraschende Speicher-/Hybrid-Dynamik als genau ein Neues-Beitrag mit regulärer Vertiefungs-ID markiert. Private Belege PR #81, Backup-Branches erhalten; keine alten Artikel oder Feedback-Stimmen verändert. Redaktioneller Nachtrag am 6. November, 22:19 Uhr: Die Originaltexte zu globalen Fondsflüssen und Japans Notenbank-ETF-Verkäufen wurden erneut geprüft; die Einordnung präzisiert den Zeitraum der Fondsflüsse vor dem Technologieabverkauf und die Unsicherheit weiterer Zinsschritte. Bestehende Artikelidentitäten und die belegte OECD-Gegenposition bleiben unverändert. Phase-7-Drittversuch 23:29 CET: neue ACER-Originalvertiefung vom 06.11. zu Stromnetzinvestitionen, Engpasskosten und zurückgelegten Erlösen nach tatsächlich gelesenem ACER-Primärtext ergänzt; unabhängiger Erkenntnisgegenstand gegenüber IEA-Warteschlangenbericht, kein zusätzliches künstliches Neues oder zweite Gegenposition. Privates Originaldossier PR #90, unveränderte 20 Nachrichten und 14 alten Vertiefungen mit allen IDs/URLs; 0 unabhängige neue Feedbackvorlagenwünsche, private Vorschlagsdatei bewusst unverändert.",
   "articles": [
@@ -440,6 +440,30 @@
       "evidence_level": "teaser",
       "event_key": "austria-china-stocker-visit-2026-11-06",
       "distinct_contribution": "Afternoon follow-up confirming the actual Xi meeting, whereas the morning ORF story had only announced it."
+    },
+    {
+      "id": "6c2a7e5d9b0f4128",
+      "title": "Österreichische Großhandelspreise stiegen im Oktober um 10,0 Prozent",
+      "url": "https://www.statistik.at/fileadmin/announcement/2026/11/20261106GHPI_Oktober2026.pdf",
+      "source": "Statistik Austria",
+      "published_at": "2026-11-06",
+      "summary": "Laut vorläufigen Daten von Statistik Austria lagen die Großhandelspreise im Oktober 2026 um 10,0 Prozent über dem Vorjahresniveau, gingen gegenüber September aber um 0,2 Prozent zurück. Besonders stark verteuerten sich Mineralölerzeugnisse (+70,6 Prozent) sowie Benzin und Diesel (+41,5 Prozent). Die Zahlen betreffen Großhandelspreise, nicht die Verbraucherpreisinflation.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read",
+      "event_key": "statistik-austria-ghpi-2026-10"
+    },
+    {
+      "id": "e7b13f68a90c425d",
+      "title": "Österreich: Zahl offener Stellen im dritten Quartal weiter gesunken",
+      "url": "https://www.statistik.at/fileadmin/announcement/2026/11/20261105OffeneStellen2026Q3.pdf",
+      "source": "Statistik Austria",
+      "published_at": "2026-11-05",
+      "summary": "Im dritten Quartal 2026 waren in Österreich durchschnittlich 121.900 Stellen unbesetzt. Das waren 1,2 Prozent weniger als im Vorquartal und 11,8 Prozent weniger als ein Jahr zuvor. Die Quote offener Stellen sank gegenüber dem Vorquartal von 2,9 auf 2,8 Prozent; die Statistik misst die Arbeitskräftenachfrage, nicht die Arbeitslosenquote.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read",
+      "event_key": "statistik-austria-vacancies-q3-2026"
     }
   ]
 }
