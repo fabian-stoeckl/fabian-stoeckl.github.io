@@ -1,6 +1,10 @@
 """Small editorial-metadata regression: no automated topical censorship."""
 import importlib.util
+import hashlib
+import json
 import pathlib
+import subprocess
+import sys
 import unittest
 
 root=pathlib.Path(__file__).resolve().parents[1]
@@ -122,6 +126,25 @@ class EditorialEventTests(unittest.TestCase):
         ed["headlines"][1]["title"]="A completely independent story on research"
         self.assertEqual(len(ed["headlines"]),2)
         self.assertEqual(mod.cluster_candidates(ed)["possible_same_event"],[])
+
+    def test_cli_review_on_actual_latest_issue_is_read_only(self):
+        folder=root/"Privat/Pressespiegel/data"
+        index=folder/"index.json"
+        days=json.loads(index.read_text(encoding="utf-8"))["dates"]
+        latest=days[0]
+        edition=folder/(latest+".json")
+        before=(hashlib.sha256(index.read_bytes()).hexdigest(),
+                hashlib.sha256(edition.read_bytes()).hexdigest())
+        process=subprocess.run(
+            [sys.executable,str(root/"scripts/morgenzeitung_neu.py"),"cluster-review",
+             "--root",str(folder),"--date",latest,"--previous-days","3"],
+            cwd=root,capture_output=True,text=True,check=True
+        )
+        self.assertIn("CLUSTER REVIEW "+latest,process.stdout)
+        self.assertIn("EDITORIAL DECISION REQUIRED",process.stdout)
+        after=(hashlib.sha256(index.read_bytes()).hexdigest(),
+               hashlib.sha256(edition.read_bytes()).hexdigest())
+        self.assertEqual(before,after,"Review must never mutate public editions")
 
     def test_invalid_event_key_is_an_actual_structural_error(self):
         ed=self.edition()
