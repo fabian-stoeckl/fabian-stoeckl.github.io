@@ -16,13 +16,54 @@ jobs:
         with: {node-version: '22'}
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
+      - name: Validate blog-only data branch
+        if: github.event_name == 'pull_request' && github.base_ref == 'blogs-live'
+        run: |
+          python3 - <<'PY'
+          import json, re, sys
+          from urllib.parse import urlsplit
+          from datetime import datetime
+          from pathlib import Path
+          f=Path('Privat/Pressespiegel/data/blogs.json')
+          data=json.loads(f.read_text(encoding='utf-8'))
+          posts=data.get('posts')
+          assert isinstance(posts,list) and len(posts)>=5, 'RSS archive invalid'
+          keys=set(); n=0
+          def ident(value):
+              p=urlsplit(value)
+              assert p.scheme=='https' and p.hostname in ('noahpinion.blog','www.noahpinion.blog','noahpinion.substack.com') and not p.username and not p.password and p.port is None, 'Untrusted blog URL'
+              return (p.hostname.removeprefix('www.'),p.path.rstrip('/').lower())
+          for p in posts:
+              assert isinstance(p,dict) and isinstance(p.get('title'),str) and p['title'].strip(), 'Missing blog title'
+              key=ident(p.get('url',''))
+              assert key not in keys, 'Duplicate blog URL'
+              keys.add(key)
+              fields=[k for k in p if k.startswith('summary_')]
+              if not fields: continue
+              assert p.get('summary_source')=='article' and p.get('summary_access')=='visible_text_only', 'Unverified summary provenance'
+              body=p.get('summary_text')
+              assert isinstance(body,str) and 100<=len(body.split())<=150, 'Summary outside 100-150 words'
+              assert p.get('summary_language') in ('en','de'), 'Missing/unsupported summary language'
+              assert ident(p.get('summary_evidence_url',''))==key, 'Summary evidence differs from article'
+              stamp=p.get('summary_generated_at')
+              assert isinstance(stamp,str) and datetime.fromisoformat(stamp.replace('Z','+00:00')).tzinfo is not None, 'Invalid summary timestamp'
+              n+=1
+          print(f'PASS: {len(posts)} blog items, {n} verified article summaries; data-only CI')
+          PY
       - run: python3 scripts/morgenzeitung_neu.py verify
+        if: github.base_ref != 'blogs-live'
       - run: python3 tests/morgenzeitung-neu-editorial.py
+        if: github.base_ref != 'blogs-live'
       - run: node tests/morgenzeitung-neu.test.cjs
+        if: github.base_ref != 'blogs-live'
       - run: node tests/morgenzeitung-neu-feedback.cjs
+        if: github.base_ref != 'blogs-live'
       - run: npm ci
+        if: github.base_ref != 'blogs-live'
       - run: npx playwright install --with-deps chromium
+        if: github.base_ref != 'blogs-live'
       - name: Classic reader and independent preference page on mobile and desktop
+        if: github.base_ref != 'blogs-live'
         run: |
           python3 -m http.server 8766 --bind 127.0.0.1 &
           server_pid=$!
