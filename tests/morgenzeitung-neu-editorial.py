@@ -39,6 +39,18 @@ class EditorialEventTests(unittest.TestCase):
             self.assertEqual(count,1)
             self.assertTrue(any("LIMITED EDITION" in warning for warning in warnings))
 
+    def test_research_breadth_and_depth_warnings(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=pathlib.Path(directory)
+            ed=self.edition()
+            ed["editorial_note"]="Limited edition: only a small number of source-verified news items were available for publication today."
+            (root/"index.json").write_text(json.dumps({"dates":[ed["date"]]}))
+            (root/(ed["date"]+".json")).write_text(json.dumps(ed))
+            _,warnings=mod.verify(root)
+            self.assertTrue(any("SOURCE CONCENTRATION" in x for x in warnings))
+            self.assertTrue(any("SOURCE VERIFICATION" in x for x in warnings))
+            self.assertTrue(any("DEPTH GAP" in x for x in warnings))
+
     def test_detects_shared_event_without_silently_dropping_a_source(self):
         ed=self.edition()
         mod.validate(ed)
