@@ -2,6 +2,7 @@
 const assert=require('node:assert/strict');
 const {chromium}=require('playwright');
 const fs=require('node:fs');
+const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/index.json','utf8')).dates[0];
 (async()=>{
  const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
  try{
@@ -44,6 +45,11 @@ const fs=require('node:fs');
      const sample=await response.json();
      sample.articles[0].related_article={title:'Independent follow-up',source:'Another publisher',url:'https://example.org/follow-up'};
      sample.preview=false; // Synthetic real-edition correction fixture.
+     // Synthetic Neues example: tested only, NEVER written to public edition.
+     if(sample.date===latestFixtureDay&&sample.articles.length>=3){
+       sample.articles.at(-2).new_perspective='A source-based counterintuitive link between productive innovation and public policy.';
+       sample.articles.at(-1).new_perspective='A documented unconventional perspective on familiar economic trade-offs and institutions.';
+     }
      sample.articles[0].correction={
        corrected_at:'2026-10-29T12:00:00+01:00',
        previous_summary:'Falsche ursprüngliche Zusammenfassung',
@@ -149,6 +155,18 @@ const fs=require('node:fs');
    assert.match(await general.inputValue(),/Thema interessiert/);
    await page.locator('#tab-articles').click();
    assert.equal(await page.locator('#articles').isVisible(),true);
+   const published=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/'+latestFixtureDay+'.json','utf8'));
+   assert.equal(await page.locator('#neues').isVisible(),true,'Neues appears only with editorial selections');
+   assert.equal(await page.locator('#neues h2').innerText(),'Neues');
+   assert.equal(await page.locator('#neues article').count(),2,'Only the selected two articles appear under Neues');
+   assert.equal(await page.locator('#articles article').count(),published.articles.length,'No duplicated or lost article');
+   assert.equal(await page.locator('#articles > .article-list article').count(),published.articles.length-2,
+     'Neues items must not reappear in the ordinary article list');
+   assert.equal(await page.locator('#neues article .new-perspective-rationale').count(),2);
+   assert.equal(await page.locator('#neues').evaluate(el=>el.nextElementSibling.classList.contains('section-save')),true,
+     'Neues must be at the END of Vertiefungen, before the shared save button');
+   const firstNovelId=await page.locator('#neues article').first().getAttribute('data-article-id');
+   assert.equal(await page.locator('#neues article').first().getAttribute('data-section'),'Vertiefungen');
    assert.equal(await page.locator('#articles .article-correction').count(),1);
    assert.match(await page.locator('#articles .article-correction').innerText(),/unzutreffende Behauptung wurde berichtigt/);
    assert.equal(await page.getByRole('link',{name:'Beleg zur Berichtigung'}).getAttribute('href'),'https://example.org/evidence');
@@ -159,6 +177,8 @@ const fs=require('node:fs');
    const correctedId=await page.locator('#articles article').first().getAttribute('data-article-id');
    const group=page.locator('#articles .ratings').first();
    await group.locator('input[type=radio][value="Sehr relevant"]').check();
+   await page.locator('#neues article .ratings').first()
+     .locator('input[type=radio][value="Teilweise relevant"]').check();
    assert.equal(await group.locator('.rating-reason').evaluate(el=>el.open),true);
    assert.equal(await group.getByText('Deine Begründung').count(),0);
    assert.equal(await group.getByText('Optionale Gründe auswählen; eigener Text bleibt separat:').count(),0);
@@ -171,9 +191,19 @@ const fs=require('node:fs');
    const payload=JSON.parse(issues[0].body.slice(issues[0].body.indexOf('\n')+1));
    assert.ok(payload.ratings.length>=1&&payload.comment.includes('Thema interessiert'));
    assert.ok(payload.ratings.some(r=>r.id===correctedId),'Correction retains same article rating identity');
+   assert.ok(payload.ratings.some(r=>r.id===firstNovelId&&r.section==='Vertiefungen'&&r.value==='Teilweise relevant'),
+     'Neues feedback must persist under original article ID and same Vertiefungen section');
    assert.deepEqual(payload.comment_suggestions,[suggestion]);
    assert.ok(payload.comment.includes('Freie eigene Begründung zur Artikelwahl.'));
    assert.ok(payload.ratings.some(r=>r.suggested_reasons?.includes('Zu juristisch für ein Randthema')));
+   // Older genuine editions lack the optional Neues markers; no empty section.
+   const older=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/index.json','utf8')).dates[1];
+   await page.locator('#date').selectOption(older);
+   await page.waitForFunction(date=>document.querySelector('#edition-meta').textContent.includes(date.split('-')[2])&&!document.querySelector('#neues'),older);
+   assert.equal(await page.locator('#neues').count(),0,'Historical editions without markers show no Neues section');
+   await page.locator('#date').selectOption(latestFixtureDay);
+   await page.waitForSelector('#neues');
+   assert.equal(await page.locator('#neues article').count(),2,'Switching back restores exactly the selected items');
    await page.getByRole('link',{name:/Meine Präferenzen/}).first().click();
    await page.waitForURL(/praeferenzen.html/);
    await page.waitForSelector('#profile-text:not([hidden])');
