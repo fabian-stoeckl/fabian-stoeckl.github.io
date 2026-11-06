@@ -88,7 +88,7 @@ assert.match(fs.readFileSync(path+'app.js','utf8'),/new_perspective/);
 assert.match(fs.readFileSync(path+'app.js','utf8'),/section.id='neues'/);
 assert.match(fs.readFileSync(path+'style.css','utf8'),/new-perspectives-list/);
 assert.match(research,/Phase 5 – „Neues“/);
-assert.match(research,/Phase 6 – Fundierte Gegenposition/);
+assert.match(research,/Phase 6 – Ein echter Gegenartikel/);
 assert.match(engine,/Phase 7 – Private Vorschläge/);
 assert.match(engine,/comment_suggestions/);
 assert.match(engine,/suggested_reasons/);
@@ -98,7 +98,10 @@ assert.match(fs.readFileSync(path+'app.js','utf8'),/FeedbackSuggestions.loadPriv
 execFileSync('python3',['-m','unittest','discover','-s','tests','-p','test_feedback_suggestions_review.py','-v']);
 assert.match(fs.readFileSync('scripts/morgenzeitung_neu.py','utf8'),/counterposition_count/);
 assert.match(fs.readFileSync(path+'app.js','utf8'),/article-counterposition/);
-assert.match(fs.readFileSync(path+'style.css','utf8'),/counterposition-source/);
+assert.match(fs.readFileSync(path+'app.js','utf8'),/counterposition-summary/);
+assert.doesNotMatch(fs.readFileSync(path+'app.js','utf8'),/Worauf sie antwortet/);
+assert.match(research,/Gegenartikel darf \*\*ausdrücklich älter sein/);
+assert.match(fs.readFileSync(path+'style.css','utf8'),/counterposition-heading a/);
 assert.match(research,/Interessenanschluss/);
 assert.match(fs.readFileSync('scripts/morgenzeitung_neu.py','utf8'),/new_perspective_count/);
 
