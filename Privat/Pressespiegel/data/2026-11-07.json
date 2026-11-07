@@ -2,10 +2,10 @@
   "date": "2026-11-07",
   "researched_at": "2026-11-07T10:48:17+01:00",
   "preview": false,
-  "editorial_note": "Vorgezogene redaktionelle Nachprüfung mit neuen Medienpräferenzen: zwei bereits behandelte Ereignisse anhand konkret überprüfter journalistischer Originalartikel neu belegt (Die Presse statt ORF zum Stocker-Xi-Treffen; Guardian statt Reuters zu Bombendrohungen). Die übrigen 13 Beiträge und ihre Belegstufen bleiben unverändert. Dies ist keine vollständige Neurecherche aller Ressorts; einzelne bevorzugte Medien konnten nicht mit passenden belegten Originalartikeln berücksichtigt werden. Keine pauschale Agentursperre oder künstlichen Füllartikel.",
+  "editorial_note": "Vorgezogene redaktionelle Nachprüfung mit neuen Medienpräferenzen: zwei bereits behandelte Ereignisse anhand konkret überprüfter journalistischer Originalartikel neu belegt (Die Presse statt ORF zum Stocker-Xi-Treffen; Guardian statt Reuters zu Bombendrohungen). Die übrigen 13 Beiträge und ihre IDs bleiben unverändert. Die zwei neuen Original-URLs erhalten neue IDs, damit alte artikelbezogene Bewertungen nicht irrtümlich anderen Texten zugeordnet werden. Dies ist keine vollständige Neurecherche aller Ressorts; einzelne bevorzugte Medien konnten nicht mit passenden belegten Originalartikeln berücksichtigt werden. Keine pauschale Agentursperre oder künstlichen Füllartikel.",
   "headlines": [
     {
-      "id": "92fa5163363a8b28",
+      "id": "e731b9c429f04a12",
       "title": "Stocker bei Xi Jinping: Für China ist Österreich eine Figur auf dem globalen Schachbrett",
       "url": "https://www.diepresse.com/41424781/stocker-bei-xi-jinping-fuer-china-ist-oesterreich-eine-figur-auf-dem",
       "source": "Die Presse",
@@ -77,7 +77,7 @@
       "event_key": "eu-ukraine-security-2026-11-06"
     },
     {
-      "id": "9a3404b130cf27eb",
+      "id": "9d42c6e58f10b3a7",
       "title": "Bomb threats disrupt dozens of flights across Europe, raising hybrid war fears",
       "url": "https://www.theguardian.com/world/2026/nov/05/bomb-threats-disrupt-flights-across-europe-and-renew-hybrid-warfare-fears",
       "source": "The Guardian",
