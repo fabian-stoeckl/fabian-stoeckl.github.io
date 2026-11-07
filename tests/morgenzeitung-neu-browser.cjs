@@ -242,7 +242,12 @@ const latestFixtureDay=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/ind
    assert.ok(!revisedRating.ratings.find(r=>r.id===correctedId)?.suggested_reasons?.includes(quotedReason),
      'Edited article explanation is not saved as an exact clicked template');
    // Older genuine editions lack the optional Neues markers; no empty section.
-   const older=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/index.json','utf8')).dates[1];
+   const older=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/index.json','utf8')).dates.find(day=>{
+      if(day===latestFixtureDay)return false;
+      const historical=JSON.parse(fs.readFileSync('Privat/Pressespiegel/data/'+day+'.json','utf8'));
+      return historical.articles.length>0&&!historical.articles.some(a=>a.new_perspective||a.counterposition);
+    });
+    assert.ok(older,'A historical issue without Neues/counterposition markers is required for this test');
    await page.locator('#date').selectOption(older);
    await page.waitForFunction(date=>{
      const formatted=new Intl.DateTimeFormat('de-AT',{dateStyle:'full',timeZone:'Europe/Vienna'})
