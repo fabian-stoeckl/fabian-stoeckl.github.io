@@ -17,6 +17,8 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - run: python3 scripts/morgenzeitung_neu.py verify
+      - name: Phase 3 read-only event clustering (latest published edition)
+        run: python3 scripts/morgenzeitung_neu.py cluster-review --previous-days 3
       - name: Advisory source-diversity review (not a content gate)
         run: python3 scripts/morgenzeitung_neu.py diversity-review --previous-days 3
       - run: python3 tests/morgenzeitung-neu-editorial.py
