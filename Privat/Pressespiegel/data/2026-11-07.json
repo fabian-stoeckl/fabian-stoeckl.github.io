@@ -1,0 +1,191 @@
+{
+  "date": "2026-11-07",
+  "researched_at": "2026-11-07T04:40:18+01:00",
+  "preview": false,
+  "editorial_note": "Neue redaktionelle Auswahl auf Grundlage von Originalseiten und indexierten Originalvorschauen vom 6. November. Vorige Ausgabe vom 6. November war bereits umfangreich und wurde nicht überschrieben. Reuters und FT bei indexierten Vorschauen als teaser gekennzeichnet. Die beiden KI-Marktanalysen bieten verschiedene Perspektiven, ohne identische Meldungen zu wiederholen. Keine künstlichen Füllartikel oder behauptete Volltextlektüre.",
+  "headlines": [
+    {
+      "id": "92fa5163363a8b28",
+      "title": "Stocker und Xi beschwören Partnerschaft",
+      "url": "https://orf.at/stories/3447411/",
+      "source": "ORF",
+      "published_at": "2026-11-06",
+      "summary": "Bundeskanzler Stocker traf in Peking Xi Jinping und Premier Li Qiang. Beide Seiten betonten die wirtschaftliche Zusammenarbeit; der Besuch endete mit Absichtserklärungen, nicht mit einem umfassenden Handelsabkommen.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read",
+      "event_key": "austria-china-stocker-xi-2026-11-06"
+    },
+    {
+      "id": "d8cfe7f0d9197705",
+      "title": "EU-Länder wollen Methan-Importregeln verschieben",
+      "url": "https://www.derstandard.at/story/3000000347938/eu-l228nder-wollen-methan-verordnung-um-ein-jahr-verschieben",
+      "source": "Der Standard",
+      "published_at": "2026-11-06",
+      "summary": "Eine Mehrheit der EU-Staaten befürwortet, die Importpflichten der Methanverordnung auf 2028 zu verschieben. Das Europäische Parlament muss noch zustimmen; Österreich hatte zuvor einen längeren Aufschub verlangt.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read",
+      "event_key": "eu-methane-import-delay-2026-11-06"
+    },
+    {
+      "id": "bfc3d29d1c8b18b6",
+      "title": "Landeshauptleute beraten Reformen",
+      "url": "https://on.orf.at/video/14346321/16182453/landeshauptleute-beraten-ueber-grosse-reformen-zib-1300-vom-06112026",
+      "source": "ORF",
+      "published_at": "2026-11-06",
+      "summary": "Bei der Konferenz in Mellau diskutierten die Landeshauptleute gemeinsame Ansätze für Gesundheit, Energie und Strafmündigkeit. Erste Ergebnisse werden bis Jahresende angestrebt; konkrete Reformbeschlüsse sind damit noch nicht belegt.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read",
+      "event_key": "austria-governors-reform-2026-11-06"
+    },
+    {
+      "id": "449b8c035de898de",
+      "title": "Österreichs Bildungsminister stellt KI-Strategie vor",
+      "url": "https://on.orf.at/video/14346339/16182874/wiederkehr-stellt-strategie-fuer-ki-in-schulen-vor-zib-2-vom-06112026",
+      "source": "ORF",
+      "published_at": "2026-11-06",
+      "summary": "Bildungsminister Wiederkehr präsentierte Grundprinzipien für den Einsatz künstlicher Intelligenz in Schulen: zunächst ohne KI lernen, dann die Technik verstehen und anschließend anwenden. Der Bericht beschreibt eine Strategie, noch keine umfassenden Detailvorschriften.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read",
+      "event_key": "austria-schools-ai-2026-11-06"
+    },
+    {
+      "id": "c5ab535121a6861d",
+      "title": "US-Arbeitsmarkt stärkt Zinserhöhungserwartungen",
+      "url": "https://www.reuters.com/business/traders-raise-bets-fed-rate-hike-after-jobs-report-2026-11-06/",
+      "source": "Reuters",
+      "published_at": "2026-11-06",
+      "summary": "US employers added 165,000 jobs in October and unemployment fell to 4.1%, according to the report. Traders increased expectations of a December Federal Reserve rate rise; no decision has yet been taken.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser",
+      "event_key": "us-jobs-fed-2026-11-06"
+    },
+    {
+      "id": "7a021ef9106d75cc",
+      "title": "EU-Außenbeauftragte fordert Rolle Europas bei Ukraine-Frieden",
+      "url": "https://www.reuters.com/world/ukraine-must-be-part-europes-security-architecture-eu-foreign-policy-chief-says-2026-11-06/",
+      "source": "Reuters",
+      "published_at": "2026-11-06",
+      "summary": "EU foreign policy chief Kaja Kallas said Ukraine must be part of Europe's security architecture and the EU must have a role in peace negotiations. Her remarks express a policy position, not an agreed peace settlement.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser",
+      "event_key": "eu-ukraine-security-2026-11-06"
+    },
+    {
+      "id": "9a3404b130cf27eb",
+      "title": "Bombendrohungen stören europäische Medien und Luftverkehr",
+      "url": "https://www.reuters.com/business/aerospace-defense/danish-police-investigate-renewed-threats-copenhagen-airport-2026-11-06/",
+      "source": "Reuters",
+      "published_at": "2026-11-06",
+      "summary": "Further bomb threats disrupted European flights and media organisations. No explosives were found, and investigators have not established a state sponsor or proven who coordinated the incidents.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser",
+      "event_key": "europe-bomb-threats-2026-11-06"
+    },
+    {
+      "id": "c7f7c1c8e2c16b12",
+      "title": "USA drängen China bei Seltenen Erden und Agrarhandel",
+      "url": "https://www.reuters.com/world/asia-pacific/us-urged-beijing-implement-commitments-busan-trade-deal-treasury-says-2026-11-06/",
+      "source": "Reuters",
+      "published_at": "2026-11-06",
+      "summary": "Washington urged Beijing to fulfil previous commitments on critical minerals and agricultural purchases. Talks continue over trade restrictions, but no new completed trade agreement was announced.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "teaser",
+      "event_key": "us-china-trade-2026-11-06"
+    }
+  ],
+  "articles": [
+    {
+      "id": "4f6e0e5fa8e0c5bc",
+      "title": "US tech stock rout: is the AI bubble bursting?",
+      "url": "https://www.theguardian.com/technology/2026/nov/06/us-tech-stock-ai-bubble-bursting-market-meltdown-explainer",
+      "source": "The Guardian",
+      "published_at": "2026-11-06",
+      "summary": "The explainer examines whether the sell-off reflects excessive valuations and debt-financed AI infrastructure or a temporary reassessment. It connects concentrated index exposure, political opposition to data centres and uncertain investment returns, while noting that the longer-term outcome remains contested.",
+      "article_type": "analysis",
+      "topic": "AI investment and macroeconomics",
+      "evidence_level": "teaser",
+      "event_key": "us-ai-selloff-2026-11-06"
+    },
+    {
+      "id": "3aa6dad4638cb52a",
+      "title": "Copper is booming but not everyone is striking gold",
+      "url": "https://www.ft.com/content/6c4d1285-535d-4e86-895b-afddd1d15491",
+      "source": "Financial Times",
+      "published_at": "2026-11-05",
+      "summary": "The article distinguishes copper miners from smelters: rising prices can boost mining profits while excess refining capacity compresses processing fees. China's dominant refining position makes the distribution of gains more complex than a simple bullish copper-price story.",
+      "article_type": "analysis",
+      "topic": "Industrial economics and critical minerals",
+      "evidence_level": "teaser",
+      "event_key": "copper-mining-smelting-2026"
+    },
+    {
+      "id": "ba16b533292462bf",
+      "title": "Britain's biggest container port rises by the Thames",
+      "url": "https://www.ft.com/content/dcc01116-e63c-44b0-ad3d-311f5e2f7367",
+      "source": "Financial Times",
+      "published_at": "2026-11-04",
+      "summary": "London Gateway's expansion illustrates how deep-water access, nearby distribution facilities and shipping networks can reshape trade logistics. The project faces road and rail constraints, while Britain's import surplus creates the practical problem of returning empty containers.",
+      "article_type": "analysis",
+      "topic": "Trade infrastructure and productivity",
+      "evidence_level": "teaser",
+      "event_key": "london-gateway-expansion-2026"
+    },
+    {
+      "id": "48b619dbbc1bbac8",
+      "title": "Russia and US seek to block plan for binding rules on autonomous weapons",
+      "url": "https://www.theguardian.com/world/2026/nov/06/autonomous-weapons-ai-russia-us-binding-rules",
+      "source": "The Guardian",
+      "published_at": "2026-11-06",
+      "summary": "The report examines resistance to a binding treaty on autonomous weapons. Supporters seek meaningful human control, while opponents favour existing law or national measures; a November UN meeting will test whether formal negotiations can begin.",
+      "article_type": "analysis",
+      "topic": "Security and technology governance",
+      "evidence_level": "teaser",
+      "event_key": "un-autonomous-weapons-2026"
+    },
+    {
+      "id": "acf1dc21bbfd7491",
+      "title": "Activists breach Microsoft data centre construction site as protests spread in Europe",
+      "url": "https://www.reuters.com/world/europe/activists-breach-microsoft-data-centre-construction-site-protests-spread-europe-2026-11-06/",
+      "source": "Reuters",
+      "published_at": "2026-11-06",
+      "summary": "Protesters entered an Amsterdam data-centre site as demonstrations against the environmental costs of AI expansion spread. The conflict illustrates how electricity, water and local consent can constrain digital investment, even as Europe seeks more computing capacity.",
+      "article_type": "analysis",
+      "topic": "Energy infrastructure and investment",
+      "evidence_level": "teaser",
+      "event_key": "eu-datacentre-protests-2026-11-06"
+    },
+    {
+      "id": "af2bb3b5080de6db",
+      "title": "Is the AI stock bubble finally bursting?",
+      "url": "https://www.ft.com/content/e185d576-c4a6-4fb0-aa03-deda69c900c8",
+      "source": "Financial Times",
+      "published_at": "2026-11-06",
+      "summary": "The commentary examines circular financing, borrowing and ambitious revenue expectations in the AI boom. It treats a market crash as a scenario rather than a certainty, distinguishing vulnerable infrastructure specialists from diversified technology groups.",
+      "article_type": "analysis",
+      "topic": "Financial stability and investment risk",
+      "evidence_level": "teaser",
+      "event_key": "us-ai-selloff-2026-11-06",
+      "distinct_contribution": "Independent analysis of circular finance and credit risks, unlike the Guardian explainer focused on market/index consequences."
+    },
+    {
+      "id": "9b44e420149299fe",
+      "title": "Denmark’s top court to rule on ‘parallel societies’ after ‘non-western’ people evicted",
+      "url": "https://www.theguardian.com/world/2026/nov/06/denmarks-top-court-to-rule-on-parallel-societies-after-non-western-people-evicted",
+      "source": "The Guardian",
+      "published_at": "2026-11-06",
+      "summary": "The case raises questions about Denmark's housing policy and whether measures targeting so-called parallel societies discriminate against residents with non-western backgrounds. The forthcoming court decision is distinct from the government's assertion that its policy is unrelated to ethnicity.",
+      "article_type": "analysis",
+      "topic": "Migration and integration",
+      "evidence_level": "teaser",
+      "event_key": "denmark-housing-court-2026-11-06"
+    }
+  ]
+}
