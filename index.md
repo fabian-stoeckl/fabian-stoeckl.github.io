@@ -74,27 +74,35 @@ with Wolf-Peter Schill & Alexander Zerrahn, *Scientific Reports (2021)*<br/>
 
 <div class="jaere-feature">
   <div class="jaere-feature-copy">
-    <strong>Substituting Clean for Dirty Energy: A Bottom-Up Analysis</strong> (<em><a href="https://www.aere.org/best-jaere-paper-award-recipients" target="_blank" rel="noopener noreferrer">JAERE Best Paper Award</a></em>)<br/>
+    <strong>Substituting Clean for Dirty Energy: A Bottom-Up Analysis</strong><br/>
+    <em><a href="https://www.aere.org/best-jaere-paper-award-recipients" target="_blank" rel="noopener noreferrer">JAERE Best Paper Award</a></em><br/>
     with Alexander Zerrahn, <em>Journal of the Association of Environmental and Resource Economists (2023)</em><br/>
     [ <a href="https://doi.org/10.1086/722612" target="_blank" rel="noopener noreferrer">download</a> ]
   </div>
   <a class="jaere-seal-link" href="https://www.aere.org/best-jaere-paper-award-recipients" target="_blank" rel="noopener noreferrer" aria-label="JAERE Best Paper Award – award recipients">
     <svg class="jaere-seal" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="jaere-seal-title">
-      <title id="jaere-seal-title">JAERE Best Paper Award</title>
-      <circle cx="60" cy="60" r="57" fill="#712634" stroke="#B78E48" stroke-width="2.5"/>
-      <circle cx="60" cy="60" r="51.5" fill="none" stroke="#E9D6A6" stroke-width="1.5"/>
-      <path d="M38 32 H82 V39 Q60 44 38 39 Z M60 32 V48 M38 43 L35 49 M82 43 L85 49" fill="none" stroke="#E9D6A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M26 79 Q26 95 48 103 M94 79 Q94 95 72 103" fill="none" stroke="#E9D6A6" stroke-width="1.4"/>
+      <title id="jaere-seal-title">JAERE Best Paper Award – decorative seal</title>
+      <circle cx="60" cy="60" r="57" fill="#712634" stroke="#B78E48" stroke-width="2.8"/>
+      <circle cx="60" cy="60" r="52" fill="none" stroke="#E9D6A6" stroke-width="1.4"/>
+      <circle cx="60" cy="60" r="47.7" fill="none" stroke="#D4B777" stroke-width=".8" stroke-dasharray="1 3.9" stroke-linecap="round"/>
+      <path d="M36 30 Q47 25 60 31 Q73 25 84 30 V46 Q72 42 60 48 Q48 42 36 46 Z" fill="none" stroke="#E9D6A6" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="M60 31 V48 M40 33 Q49 31 56 35 M64 35 Q73 31 80 33 M40 38 Q48 36 56 40 M64 40 Q72 36 80 38" fill="none" stroke="#E9D6A6" stroke-width=".9" stroke-linecap="round"/>
+      <text x="60" y="64" text-anchor="middle" font-family="Georgia,serif" font-size="15.5" font-weight="bold" fill="#FFF3D4" letter-spacing=".4">BEST</text>
+      <text x="60" y="80" text-anchor="middle" font-family="Georgia,serif" font-size="14.2" font-weight="bold" fill="#FFF3D4" letter-spacing=".35">PAPER</text>
+      <path d="M25 79 Q30 97 51 103 M95 79 Q90 97 69 103" fill="none" stroke="#E9D6A6" stroke-width="1.5" stroke-linecap="round"/>
       <g fill="#E9D6A6">
-        <ellipse cx="27" cy="83" rx="2.7" ry="6" transform="rotate(-20 27 83)"/>
-        <ellipse cx="32" cy="92" rx="2.6" ry="5.4" transform="rotate(-40 32 92)"/>
-        <ellipse cx="40" cy="99" rx="2.6" ry="5" transform="rotate(-60 40 99)"/>
-        <ellipse cx="93" cy="83" rx="2.7" ry="6" transform="rotate(20 93 83)"/>
-        <ellipse cx="88" cy="92" rx="2.6" ry="5.4" transform="rotate(40 88 92)"/>
-        <ellipse cx="80" cy="99" rx="2.6" ry="5" transform="rotate(60 80 99)"/>
+        <ellipse cx="26" cy="81" rx="2.4" ry="5.8" transform="rotate(-18 26 81)"/>
+        <ellipse cx="29" cy="88" rx="2.3" ry="5.4" transform="rotate(-36 29 88)"/>
+        <ellipse cx="34" cy="94" rx="2.2" ry="5.3" transform="rotate(-51 34 94)"/>
+        <ellipse cx="40" cy="99" rx="2.1" ry="4.8" transform="rotate(-67 40 99)"/>
+        <ellipse cx="46" cy="102" rx="2.0" ry="4.2" transform="rotate(-78 46 102)"/>
+        <ellipse cx="94" cy="81" rx="2.4" ry="5.8" transform="rotate(18 94 81)"/>
+        <ellipse cx="91" cy="88" rx="2.3" ry="5.4" transform="rotate(36 91 88)"/>
+        <ellipse cx="86" cy="94" rx="2.2" ry="5.3" transform="rotate(51 86 94)"/>
+        <ellipse cx="80" cy="99" rx="2.1" ry="4.8" transform="rotate(67 80 99)"/>
+        <ellipse cx="74" cy="102" rx="2.0" ry="4.2" transform="rotate(78 74 102)"/>
       </g>
-      <text x="60" y="63" text-anchor="middle" font-family="Georgia,serif" font-size="15" font-weight="bold" fill="#FFF3D4" letter-spacing=".4">BEST</text>
-      <text x="60" y="80" text-anchor="middle" font-family="Georgia,serif" font-size="15" font-weight="bold" fill="#FFF3D4" letter-spacing=".4">PAPER</text>
+      <path d="M55 103 L60 99 L65 103 L60 107 Z" fill="#D4B777"/>
     </svg>
   </a>
 </div>
