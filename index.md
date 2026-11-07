@@ -80,30 +80,7 @@ with Wolf-Peter Schill & Alexander Zerrahn, *Scientific Reports (2021)*<br/>
     [ <a href="https://doi.org/10.1086/722612" target="_blank" rel="noopener noreferrer">download</a> ]
   </div>
   <a class="jaere-seal-link" href="https://www.aere.org/best-jaere-paper-award-recipients" target="_blank" rel="noopener noreferrer" aria-label="JAERE Best Paper Award – award recipients">
-    <svg class="jaere-seal" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="jaere-seal-title">
-      <title id="jaere-seal-title">JAERE Best Paper Award – decorative seal</title>
-      <circle cx="60" cy="60" r="57" fill="#712634" stroke="#B78E48" stroke-width="2.8"/>
-      <circle cx="60" cy="60" r="52" fill="none" stroke="#E9D6A6" stroke-width="1.4"/>
-      <circle cx="60" cy="60" r="47.7" fill="none" stroke="#D4B777" stroke-width=".8" stroke-dasharray="1 3.9" stroke-linecap="round"/>
-      <path d="M36 30 Q47 25 60 31 Q73 25 84 30 V46 Q72 42 60 48 Q48 42 36 46 Z" fill="none" stroke="#E9D6A6" stroke-width="1.8" stroke-linejoin="round"/>
-      <path d="M60 31 V48 M40 33 Q49 31 56 35 M64 35 Q73 31 80 33 M40 38 Q48 36 56 40 M64 40 Q72 36 80 38" fill="none" stroke="#E9D6A6" stroke-width=".9" stroke-linecap="round"/>
-      <text x="60" y="64" text-anchor="middle" font-family="Georgia,serif" font-size="15.5" font-weight="bold" fill="#FFF3D4" letter-spacing=".4">BEST</text>
-      <text x="60" y="80" text-anchor="middle" font-family="Georgia,serif" font-size="14.2" font-weight="bold" fill="#FFF3D4" letter-spacing=".35">PAPER</text>
-      <path d="M25 79 Q30 97 51 103 M95 79 Q90 97 69 103" fill="none" stroke="#E9D6A6" stroke-width="1.5" stroke-linecap="round"/>
-      <g fill="#E9D6A6">
-        <ellipse cx="26" cy="81" rx="2.4" ry="5.8" transform="rotate(-18 26 81)"/>
-        <ellipse cx="29" cy="88" rx="2.3" ry="5.4" transform="rotate(-36 29 88)"/>
-        <ellipse cx="34" cy="94" rx="2.2" ry="5.3" transform="rotate(-51 34 94)"/>
-        <ellipse cx="40" cy="99" rx="2.1" ry="4.8" transform="rotate(-67 40 99)"/>
-        <ellipse cx="46" cy="102" rx="2.0" ry="4.2" transform="rotate(-78 46 102)"/>
-        <ellipse cx="94" cy="81" rx="2.4" ry="5.8" transform="rotate(18 94 81)"/>
-        <ellipse cx="91" cy="88" rx="2.3" ry="5.4" transform="rotate(36 91 88)"/>
-        <ellipse cx="86" cy="94" rx="2.2" ry="5.3" transform="rotate(51 86 94)"/>
-        <ellipse cx="80" cy="99" rx="2.1" ry="4.8" transform="rotate(67 80 99)"/>
-        <ellipse cx="74" cy="102" rx="2.0" ry="4.2" transform="rotate(78 74 102)"/>
-      </g>
-      <path d="M55 103 L60 99 L65 103 L60 107 Z" fill="#D4B777"/>
-    </svg>
+    <img class="jaere-seal" src="/assets/jaere-best-paper-seal.svg" alt="" width="68" height="68" />
   </a>
 </div>
 <details>
