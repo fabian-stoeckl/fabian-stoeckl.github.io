@@ -1,7 +1,7 @@
 <!-- website-area: {"name": "Allgemeine Website", "paths": ["index.md", "Privat/index.html"]} -->
 # Bereichsprotokoll: Allgemeine Website
 
-**Stand:** 18.10.2026. **Status:** bestehende Website; letzte freigegebene Privat-Änderung PR #20 gemergt.  
+**Stand:** 07.11.2026. **Status:** bestehende Website; letzte freigegebene Privat-Änderung PR #20 gemergt.  
 **Quellen:** tatsächlicher Stand auf `main`, offene PRs, CI-Läufe sowie dokumentierte Nutzerfreigaben.
 
 ## Geltungsbereich und Dateien
@@ -86,3 +86,11 @@ Auf ausdrücklichen Auftrag zum vollständigen Neubau führt die mittlere Privat
 
 ## 02.11.2026 – Name und kanonische Adresse der aktuellen Zeitung
 - Auf `Privat/index.html` heißen die drei Kacheln **ETF**, **Pressespiegel**, **Website ändern**. Die mittlere Kachel führt auf die aktive Zeitung `Privat/Pressespiegel/` (statt `Privat/Morgenzeitung-Neu/`). Der frühere Pressespiegel ist unter `Privat/Pressespiegel-Archiv/` historisch gesichert; die alte aktive Adresse leitet weiter. Der ETF- und ChatGPT-Skill-Bereich bleiben unangetastet. Alle früheren Aussagen über Kacheln in diesem Protokoll sind zeitgebundene Historie.
+
+
+## 07.11.2026 – JAERE-Best-Paper-Siegel (PR #349)
+
+- Für die ausgezeichnete Publikation „Substituting Clean for Dirty Energy: A Bottom-Up Analysis“ rechts ein eigenständig gestaltetes, burgunderrot-goldenes Best-Paper-Siegel ergänzt. Kein offizielles AERE-Logo, da keine verbindliche Logovorlage festgestellt wurde.
+- Endgültige Nutzerentscheidung: Siegel detailreicher und nochmals kleiner (Desktop 68 px, mobil bis 480 px 48 px). Der bestehende blaue Link „JAERE Best Paper Award“ steht nun unmittelbar unter dem Publikationstitel auf einer **eigenen Zeile**. Sowohl Link als auch Siegel führen auf die bisherige offizielle AERE-Preisträgerseite.
+- HTML in `index.md` und responsives CSS in `assets/css/style.scss`; keine Änderungen an Publikationsmetadaten, PDF-/DOI-Link, anderen Seiten, ETF oder Pressespiegel.
+- Ausdrückliche Veröffentlichungsfreigabe nach mehreren visuellen Vorschau-Runden am 07.11.2026; Umsetzung über PR #349 mit verpflichtenden CI-Prüfungen und nachfolgender Pages-Bereitstellung.
