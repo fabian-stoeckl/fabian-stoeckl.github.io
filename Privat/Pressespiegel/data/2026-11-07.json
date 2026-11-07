@@ -1,8 +1,8 @@
 {
   "date": "2026-11-07",
-  "researched_at": "2026-11-07T10:48:17+01:00",
+  "researched_at": "2026-11-07T11:30:00+01:00",
   "preview": false,
-  "editorial_note": "Vorgezogene redaktionelle Nachprüfung mit neuen Medienpräferenzen: zwei bereits behandelte Ereignisse anhand konkret überprüfter journalistischer Originalartikel neu belegt (Die Presse statt ORF zum Stocker-Xi-Treffen; Guardian statt Reuters zu Bombendrohungen). Die übrigen 13 Beiträge und ihre IDs bleiben unverändert. Die zwei neuen Original-URLs erhalten neue IDs, damit alte artikelbezogene Bewertungen nicht irrtümlich anderen Texten zugeordnet werden. Dies ist keine vollständige Neurecherche aller Ressorts; einzelne bevorzugte Medien konnten nicht mit passenden belegten Originalartikeln berücksichtigt werden. Keine pauschale Agentursperre oder künstlichen Füllartikel.",
+  "editorial_note": "Vorgezogener, ausdrücklich zum Überschreiben freigegebener Produktions-Probelauf: Originalbeiträge aus Handelsblatt und Guardian zusätzlich recherchiert und mit den bisherigen Artikeln abgeglichen. Drei ältere Beiträge wurden durch neue, eigenständig belegte Perspektiven ersetzt; zwei Artikel kamen hinzu. Die übrigen IDs und Bewertungen bleiben unverändert. Bei Podcast-Zusammenfassung nur die öffentlich zugängliche Verlagsbeschreibung als Beleg verwendet. Keine künstlichen Quellenquoten und keine behauptete Volltextlektüre unzugänglicher Beiträge.",
   "headlines": [
     {
       "id": "e731b9c429f04a12",
@@ -99,19 +99,31 @@
       "region": "International",
       "evidence_level": "teaser",
       "event_key": "us-china-trade-2026-11-06"
+    },
+    {
+      "id": "e82b31ca694f507d",
+      "title": "Bank of England raises interest rates to 4%, the first increase for more than three years",
+      "url": "https://www.theguardian.com/business/2026/nov/05/bank-of-england-raises-interest-rates-first-increase-for-more-than-three-years",
+      "source": "The Guardian",
+      "published_at": "2026-11-05",
+      "summary": "The Bank of England raised its policy rate from 3.75% to 4% as higher energy costs threatened to push inflation up. Most policymakers supported the quarter-point increase. The bank warned of pressure on household incomes and left further rate rises dependent on the inflation outlook.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read",
+      "event_key": "boe-rate-hike-2026-11-05"
     }
   ],
   "articles": [
     {
-      "id": "4f6e0e5fa8e0c5bc",
-      "title": "US tech stock rout: is the AI bubble bursting?",
-      "url": "https://www.theguardian.com/technology/2026/nov/06/us-tech-stock-ai-bubble-bursting-market-meltdown-explainer",
-      "source": "The Guardian",
+      "id": "a43f108eb1d6c290",
+      "title": "Der Crash an der Wall Street war kein Unfall",
+      "url": "https://www.handelsblatt.com/meinung/kommentare/kommentar-der-crash-an-der-wall-street-war-kein-unfall/100267813.html",
+      "source": "Handelsblatt",
       "published_at": "2026-11-06",
-      "summary": "The explainer examines whether the sell-off reflects excessive valuations and debt-financed AI infrastructure or a temporary reassessment. It connects concentrated index exposure, political opposition to data centres and uncertain investment returns, while noting that the longer-term outcome remains contested.",
-      "article_type": "analysis",
-      "topic": "AI investment and macroeconomics",
-      "evidence_level": "teaser",
+      "summary": "Michael Maisch argumentiert, dass die Angst vor einer schärferen KI-Regulierung nach den US-Zwischenwahlen eher Auslöser als grundlegende Ursache des Börseneinbruchs war. Der Kommentar sieht die Neubewertung der Risiken des KI-Investitionsbooms als länger angelegte Entwicklung; ob bereits eine Blase platzt, bleibt offen.",
+      "article_type": "opinion",
+      "topic": "Finanzmärkte und KI-Investitionen",
+      "evidence_level": "read",
       "event_key": "us-ai-selloff-2026-11-06"
     },
     {
@@ -151,29 +163,28 @@
       "event_key": "un-autonomous-weapons-2026"
     },
     {
-      "id": "acf1dc21bbfd7491",
-      "title": "Activists breach Microsoft data centre construction site as protests spread in Europe",
-      "url": "https://www.reuters.com/world/europe/activists-breach-microsoft-data-centre-construction-site-protests-spread-europe-2026-11-06/",
-      "source": "Reuters",
-      "published_at": "2026-11-06",
-      "summary": "Protesters entered an Amsterdam data-centre site as demonstrations against the environmental costs of AI expansion spread. The conflict illustrates how electricity, water and local consent can constrain digital investment, even as Europe seeks more computing capacity.",
-      "article_type": "analysis",
+      "id": "b78e2460cd1f395a",
+      "title": "UK's most polluting power plant could power country's largest AI datacentre",
+      "url": "https://www.theguardian.com/business/2026/nov/03/uk-drax-power-station-ai-datacentre",
+      "source": "The Guardian",
+      "published_at": "2026-11-03",
+      "summary": "Drax plans a large data-centre development at its North Yorkshire power station with Brookfield and Radiant, potentially exceeding 1GW. Existing land and grid connections could make the site attractive as biomass subsidies decline. The proposal also raises questions about emissions accounting, power supply and whether infrastructure built for electricity generation can profitably serve AI computing.",
+      "article_type": "report",
       "topic": "Energy infrastructure and investment",
-      "evidence_level": "teaser",
-      "event_key": "eu-datacentre-protests-2026-11-06"
+      "evidence_level": "read",
+      "event_key": "drax-datacentre-2026"
     },
     {
-      "id": "af2bb3b5080de6db",
-      "title": "Is the AI stock bubble finally bursting?",
-      "url": "https://www.ft.com/content/e185d576-c4a6-4fb0-aa03-deda69c900c8",
-      "source": "Financial Times",
+      "id": "c62d910f4a7b3e85",
+      "title": "Wird Europa nach den US-Midterms zum Gewinner?",
+      "url": "https://www.handelsblatt.com/audio/economic-challenges-podcast/economic-challenges-wird-europa-nach-den-us-midterms-zum-gewinner/100267782.html",
+      "source": "Handelsblatt",
       "published_at": "2026-11-06",
-      "summary": "The commentary examines circular financing, borrowing and ambitious revenue expectations in the AI boom. It treats a market crash as a scenario rather than a certainty, distinguishing vulnerable infrastructure specialists from diversified technology groups.",
+      "summary": "Im Handelsblatt-Podcast diskutieren Bert Rürup und Michael Hüther die wirtschaftspolitischen Folgen des demokratischen Siegs bei den US-Zwischenwahlen. Sie unterscheiden Trumps weiterhin großen außenpolitischen Spielraum von möglichen Grenzen seiner Zollpolitik durch den Kongress. Rürup sieht eine Chance für Europa im Verhältnis zwischen USA, China und Russland; das bleibt eine Einschätzung, kein gesichertes Ergebnis.",
       "article_type": "analysis",
-      "topic": "Financial stability and investment risk",
+      "topic": "Globale Wirtschaftspolitik und Europa",
       "evidence_level": "teaser",
-      "event_key": "us-ai-selloff-2026-11-06",
-      "distinct_contribution": "Independent analysis of circular finance and credit risks, unlike the Guardian explainer focused on market/index consequences."
+      "event_key": "us-midterms-europe-economic-2026"
     },
     {
       "id": "9b44e420149299fe",
@@ -186,6 +197,18 @@
       "topic": "Migration and integration",
       "evidence_level": "teaser",
       "event_key": "denmark-housing-court-2026-11-06"
+    },
+    {
+      "id": "d91e6ab734c5028f",
+      "title": "Andy Burnham to unveil EU trade deals worth billions of pounds",
+      "url": "https://www.theguardian.com/politics/2026/nov/03/andy-burnham-to-unveil-eu-trade-deals-brexit",
+      "source": "The Guardian",
+      "published_at": "2026-11-03",
+      "summary": "Britain's government is preparing agreements with the EU on agricultural trade, emissions trading and youth mobility. It estimates economic gains, but terms including payments, quotas and access remain under negotiation. The article illustrates how easing post-Brexit trade barriers could improve growth while creating politically difficult concessions.",
+      "article_type": "report",
+      "topic": "EU-UK trade and carbon pricing",
+      "evidence_level": "read",
+      "event_key": "uk-eu-trade-reset-2026"
     }
   ]
 }
