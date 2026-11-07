@@ -1,8 +1,8 @@
 {
   "date": "2026-11-06",
-  "researched_at": "2026-11-07T00:08:00+01:00",
+  "researched_at": "2026-11-07T01:15:35+01:00",
   "preview": false,
-  "editorial_note": "Kontrollierter vollständiger Morgen-Neubau der Ausgabe vom 6. November, tatsächlich recherchiert nach Mitternacht am 7. November (Wien). Die bisherige Auswahl wurde neu redaktionell abgewogen: eine veraltete Stocker-Xi-Ankündigung und zwei redundante internationale Finanzmarkt-Meldungen wurden gestrichen, zwei aktuelle Statistik-Austria-Originalmeldungen aufgenommen. Eine ältere allgemeine Guardian-Analyse wurde durch eine aktuelle Reuters-Analyse zur EU-Klimaresilienz und Finanzierung ersetzt. 19 Nachrichten und 15 Vertiefungen, darunter eine begründete Neues-Perspektive und eine eigenständig belegte Gegenposition. Vorhandene Artikel-IDs/URLs unverändert bei übernommenen Stücken; neue IDs nur für neue Originalartikel. Keine privaten Bewertungen, Kommentare oder Profilangaben in der Ausgabe. Echte Originalbelege, redaktionelle Auswahl und Zugriffsgrenzen im privaten Dossier PR #93. Der ausgefallene additive PR #339 wurde nicht als Basis benutzt. Statistik-Austria-Großhandelspreisindex direkt gelesen; Stellen-PDF selbst nicht abrufbar, Kennzahlen durch aktuelle Statistik-Austria-Veröffentlichungsübersicht und weitere Berichterstattung verifiziert, daher teaser. Reuters-Klimaresilienz über verifizierten indexierten Auszug, daher teaser. Kein vorgetäuschter Frühmorgenzeitpunkt. Gegenposition als eigenständigen Originalartikel präzisiert: Der bis dahin verwendete OECD-Argumentationsblock wurde durch den am 03.11.2026 publizierten Artikel des Momentum Instituts ersetzt (Originaltext gelesen; 9,2 Mrd. EUR nur grobes rechnerisches Beispiel, keine Einnahmenprognose). Hauptartikel-ID und Original-URL bleiben erhalten; keine zusätzliche Bewertung. Ehemaliger OECD-Beleg bleibt ausschließlich in der dokumentierten früheren Recherche: https://www.oecd.org/en/publications/the-role-and-design-of-net-wealth-taxes-in-the-oecd_9789264290303-en/full-report/component-8.html.",
+  "editorial_note": "Kontrollierter vollständiger Morgen-Neubau der Ausgabe vom 6. November, tatsächlich recherchiert nach Mitternacht am 7. November (Wien). Die bisherige Auswahl wurde neu redaktionell abgewogen: eine veraltete Stocker-Xi-Ankündigung und zwei redundante internationale Finanzmarkt-Meldungen wurden gestrichen, zwei aktuelle Statistik-Austria-Originalmeldungen aufgenommen. Eine ältere allgemeine Guardian-Analyse wurde durch eine aktuelle Reuters-Analyse zur EU-Klimaresilienz und Finanzierung ersetzt. 19 Nachrichten und 15 Vertiefungen, darunter eine begründete Neues-Perspektive und eine eigenständig belegte Gegenposition. Vorhandene Artikel-IDs/URLs unverändert bei übernommenen Stücken; neue IDs nur für neue Originalartikel. Keine privaten Bewertungen, Kommentare oder Profilangaben in der Ausgabe. Echte Originalbelege, redaktionelle Auswahl und Zugriffsgrenzen im privaten Dossier PR #93. Der ausgefallene additive PR #339 wurde nicht als Basis benutzt. Statistik-Austria-Großhandelspreisindex direkt gelesen; Stellen-PDF selbst nicht abrufbar, Kennzahlen durch aktuelle Statistik-Austria-Veröffentlichungsübersicht und weitere Berichterstattung verifiziert, daher teaser. Reuters-Klimaresilienz über verifizierten indexierten Auszug, daher teaser. Kein vorgetäuschter Frühmorgenzeitpunkt. Gegenposition als eigenständigen Originalartikel präzisiert: Der bis dahin verwendete OECD-Argumentationsblock wurde durch den am 03.11.2026 publizierten Artikel des Momentum Instituts ersetzt (Originaltext gelesen; 9,2 Mrd. EUR nur grobes rechnerisches Beispiel, keine Einnahmenprognose). Hauptartikel-ID und Original-URL bleiben erhalten; keine zusätzliche Bewertung. Ehemaliger OECD-Beleg bleibt ausschließlich in der dokumentierten früheren Recherche: https://www.oecd.org/en/publications/the-role-and-design-of-net-wealth-taxes-in-the-oecd_9789264290303-en/full-report/component-8.html. Einmalige ergänzende Vorab-Produktionsprobe am 07.11.2026 ab 01:15 CET: vollständige Nachprüfung der 34 bestehenden Beiträge gegen aktuelle Originalquellen und unabhängige Alternativen; die übersehene eigenständige österreichische Verbund-Ergebnismeldung (Reuters 05.11., gegen Originalmitteilung des Unternehmens geprüft) als 20. Nachricht aufgenommen. Reuters nur als teaser, Primärbeleg privat dokumentiert. Bestehende 34 Artikel-IDs, URLs, Texte, Gegenartikel und Neues-Markierung erhalten; keine Leserbewertungen geändert. Privates Dossier PR #96. Weitere Markt-/IEA-/ACER-Kandidaten wegen Überschneidung oder bereits bestehender Aufnahme nicht doppelt hinzugefügt. Tatsächlicher Recherchestand 07.11.01:15 CET; keine rückdatierte Ausgabe.",
   "articles": [
     {
       "id": "5e82ffe12693a038",
@@ -428,6 +428,18 @@
       "region": "Österreich",
       "evidence_level": "teaser",
       "event_key": "austria-job-vacancies-q3-2026"
+    },
+    {
+      "id": "b4d1a067e62c0f19",
+      "title": "Historische Dürre drückt Verbund-Ergebnis um fast 30 Prozent",
+      "url": "https://www.reuters.com/business/energy/driest-year-record-hurts-hydropower-producer-verbunds-results-2026-11-05/",
+      "source": "Reuters",
+      "published_at": "2026-11-05",
+      "summary": "Der österreichische Stromerzeuger Verbund meldet für die ersten neun Monate 2026 einen EBITDA-Rückgang um 29 Prozent auf rund 1,5 Milliarden Euro. Historisch niedrige Wasserführung ließ die Wasserkrafterzeugung um gut ein Fünftel sinken; auch niedrigere Stromerlöse belasteten das Ergebnis. Die Unternehmenszahlen werden durch die Originalmitteilung bestätigt.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "teaser",
+      "event_key": "verbund-nine-month-results-hydropower-drought-2026-11-05"
     }
   ]
 }
