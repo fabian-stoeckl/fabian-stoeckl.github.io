@@ -71,11 +71,33 @@ with Wolf-Peter Schill & Alexander Zerrahn, *Scientific Reports (2021)*<br/>
 <span style="display:block; margin-top:-18px;">&nbsp;</span>
 <hr/>
 
-**Substituting Clean for Dirty Energy: A Bottom-Up Analysis** (*[JAERE Best Paper Award](https://www.aere.org/best-jaere-paper-award-recipients){:target="_blank"}*)<br/>
-with Alexander Zerrahn, *Journal of the Association of Environmental and Resource Economists (2023)*<br/>
-[
-[download](https://doi.org/10.1086/722612){:target="_blank"}
-]
+
+<div class="jaere-feature">
+  <div class="jaere-feature-copy">
+    <strong>Substituting Clean for Dirty Energy: A Bottom-Up Analysis</strong> (<em><a href="https://www.aere.org/best-jaere-paper-award-recipients" target="_blank" rel="noopener noreferrer">JAERE Best Paper Award</a></em>)<br/>
+    with Alexander Zerrahn, <em>Journal of the Association of Environmental and Resource Economists (2023)</em><br/>
+    [ <a href="https://doi.org/10.1086/722612" target="_blank" rel="noopener noreferrer">download</a> ]
+  </div>
+  <a class="jaere-seal-link" href="https://www.aere.org/best-jaere-paper-award-recipients" target="_blank" rel="noopener noreferrer" aria-label="JAERE Best Paper Award – award recipients">
+    <svg class="jaere-seal" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="jaere-seal-title">
+      <title id="jaere-seal-title">JAERE Best Paper Award</title>
+      <circle cx="60" cy="60" r="57" fill="#712634" stroke="#B78E48" stroke-width="2.5"/>
+      <circle cx="60" cy="60" r="51.5" fill="none" stroke="#E9D6A6" stroke-width="1.5"/>
+      <path d="M38 32 H82 V39 Q60 44 38 39 Z M60 32 V48 M38 43 L35 49 M82 43 L85 49" fill="none" stroke="#E9D6A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M26 79 Q26 95 48 103 M94 79 Q94 95 72 103" fill="none" stroke="#E9D6A6" stroke-width="1.4"/>
+      <g fill="#E9D6A6">
+        <ellipse cx="27" cy="83" rx="2.7" ry="6" transform="rotate(-20 27 83)"/>
+        <ellipse cx="32" cy="92" rx="2.6" ry="5.4" transform="rotate(-40 32 92)"/>
+        <ellipse cx="40" cy="99" rx="2.6" ry="5" transform="rotate(-60 40 99)"/>
+        <ellipse cx="93" cy="83" rx="2.7" ry="6" transform="rotate(20 93 83)"/>
+        <ellipse cx="88" cy="92" rx="2.6" ry="5.4" transform="rotate(40 88 92)"/>
+        <ellipse cx="80" cy="99" rx="2.6" ry="5" transform="rotate(60 80 99)"/>
+      </g>
+      <text x="60" y="63" text-anchor="middle" font-family="Georgia,serif" font-size="15" font-weight="bold" fill="#FFF3D4" letter-spacing=".4">BEST</text>
+      <text x="60" y="80" text-anchor="middle" font-family="Georgia,serif" font-size="15" font-weight="bold" fill="#FFF3D4" letter-spacing=".4">PAPER</text>
+    </svg>
+  </a>
+</div>
 <details>
   <summary>Abstract</summary>
   <br/>
