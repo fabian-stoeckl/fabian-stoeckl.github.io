@@ -1,0 +1,192 @@
+{
+  "date": "2026-11-08",
+  "researched_at": "2026-11-08T04:44:31+01:00",
+  "preview": false,
+  "editorial_note": "Redaktioneller Stand am frühen Morgen des 8. November: aktuelle Meldungen vom 7. November und ausgewählte ältere Originalanalysen. Vorläufige Wahlergebnisse und Ermittlungsstände ausdrücklich als vorläufig gekennzeichnet. Originaltexte und sichtbare Verlagsauszüge ohne behauptete Paywall-Volltextlektüre; keine künstlichen Quoten.",
+  "headlines": [
+    {
+      "id": "e23811d735347904",
+      "title": "New Zealand faces weeks of uncertainty with election 'too close to call'",
+      "url": "https://www.theguardian.com/world/2026/nov/07/new-zealand-election-too-close-to-call-vote-count",
+      "source": "The Guardian",
+      "published_at": "2026-11-07",
+      "summary": "New Zealand's election has produced no decisive winner. The National-led bloc appeared narrowly ahead, but special votes and coalition negotiations could change the outcome; official results are due on 27 November.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read",
+      "event_key": "nz-election-2026-11-07"
+    },
+    {
+      "id": "5e81fbb2d06d51a1",
+      "title": "Historische Wahlschlappe für Mandelas ANC in Südafrika",
+      "url": "https://www.diepresse.com/41428469/historische-wahlschlappe-fuer-mandelas-anc-in-suedafrika",
+      "source": "Die Presse",
+      "published_at": "2026-11-07",
+      "summary": "Bei Südafrikas Kommunalwahlen fiel der ANC nach fast vollständig ausgezählten Stimmen auf knapp 31 Prozent. Die Partei verlor laut vorläufigen Ergebnissen ihre Mehrheit in mehreren Großstädten; Koalitionsbildungen bleiben offen.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read",
+      "event_key": "south-africa-local-election-2026-11-07"
+    },
+    {
+      "id": "a5aa191357978d46",
+      "title": "Schüsse in Krakau: Mindestens fünf Tote und zehn Verletzte",
+      "url": "https://www.diepresse.com/41429528/schuesse-in-krakau-mindestens-fuenf-tote-und-zehn-verletzte",
+      "source": "Die Presse",
+      "published_at": "2026-11-07",
+      "summary": "Bei Schüssen in der Krakauer Altstadt wurden nach ersten Angaben mindestens fünf Menschen getötet und zehn verletzt. Die Polizei nahm einen Verdächtigen fest; Motiv und Hintergründe waren zunächst ungeklärt.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read",
+      "event_key": "krakow-shooting-2026-11-07"
+    },
+    {
+      "id": "43d2705f27605644",
+      "title": "Ukraine-Krieg: Selenskyj nennt Trumps Friedensplan gefährlich",
+      "url": "https://www.handelsblatt.com/politik/international/ukraine-krieg-selenskyj-nennt-trumps-friedensplan-gefaehrlich/100268092.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-07",
+      "summary": "Selenskyj warnte vor einem US-Vorschlag, der die europäische Sicherheitsordnung mit einem Friedensabkommen verknüpfen soll. Er fordert zuerst eine tragfähige Beendigung des Krieges und Sicherheitsgarantien; eine Einigung liegt nicht vor.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read",
+      "event_key": "ukraine-us-peace-framework-2026-11-07"
+    },
+    {
+      "id": "743409ad43e7514d",
+      "title": "Handelskonflikt: USA werfen China Verstoß gegen Handelsdeal vor",
+      "url": "https://www.handelsblatt.com/politik/international/handelskonflikt-usa-werfen-china-verstoss-gegen-handelsdeal-vor/100268065.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-07",
+      "summary": "US-Vertreter kritisieren nach Gesprächen mit Chinas Vizepremier unzureichende Lieferungen seltener Erden und Agrarkäufe. Der Streit über die Umsetzung bestehender Vereinbarungen flammt vor einem geplanten Trump-Xi-Treffen erneut auf.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read",
+      "event_key": "us-china-trade-implementation-2026-11-07"
+    },
+    {
+      "id": "59704ea95962741f",
+      "title": "US-Justizministerium will Klage zu Kaliforniens Wahl zurückziehen",
+      "url": "https://www.handelsblatt.com/politik/international/nach-us-midterms-us-justizministerium-will-klage-zu-kaliforniens-wahl-zurueckziehen/29669594.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-07",
+      "summary": "Das US-Justizministerium beantragte laut dem laufend aktualisierten Bericht, seine Klage gegen die Auszählung rund 20.000 kalifornischer Stimmzettel einzustellen. Kalifornien hatte die zugrunde liegende Wählerliste als veraltet bezeichnet.",
+      "article_type": "report",
+      "region": "International",
+      "evidence_level": "read",
+      "event_key": "california-ballot-lawsuit-2026-11-07"
+    },
+    {
+      "id": "204e6c7cd2995a5c",
+      "title": "Tirol verliert seinen letzten Gletscher in den Allgäuer Alpen",
+      "url": "https://www.diepresse.com/41428827/tirol-verliert-seinen-letzten-gletscher-in-den-allgaeuer-alpen",
+      "source": "Die Presse",
+      "published_at": "2026-11-07",
+      "summary": "Der Schwarzmilzferner gilt nach massivem Eisverlust nicht mehr als fließender Gletscher. Glaziologen berichten von mehr als vier Metern Dickenverlust im Sommer und erwarten ein baldiges vollständiges Verschwinden des verbliebenen Eisfelds.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "read",
+      "event_key": "allgaeu-schwarzmilzferner-2026-11-07"
+    },
+    {
+      "id": "1ff1497afb6ad670",
+      "title": "Wiener Baupolizei setzt auf einfachere Verfahren",
+      "url": "https://on.orf.at/video/14346908/wien-heute-vom-07112026",
+      "source": "ORF",
+      "published_at": "2026-11-07",
+      "summary": "Wiens neuer Baupolizei-Leiter kündigt transparentere Verfahren, digitale Terminvergabe und bessere Beratung an. In einem ORF-Interview erläutert er auch den Umgang mit Kurzzeitvermietung; der Bericht dokumentiert Vorhaben, nicht deren Umsetzung.",
+      "article_type": "report",
+      "region": "Österreich",
+      "evidence_level": "teaser",
+      "event_key": "vienna-building-authority-2026-11-07"
+    }
+  ],
+  "articles": [
+    {
+      "id": "792f4b85176ca3d4",
+      "title": "Trump may have lost but don't bet Democrats can fix the economy",
+      "url": "https://www.theguardian.com/business/2026/nov/07/democrats-economy-affordability-crisis",
+      "source": "The Guardian",
+      "published_at": "2026-11-07",
+      "summary": "The analysis argues that Democrats' midterm gains do not give them straightforward control over living costs. Presidential vetoes, the Iran-war energy shock, fiscal constraints and risks around debt-financed AI investment could limit their room to deliver economic relief.",
+      "article_type": "analysis",
+      "topic": "US political economy",
+      "evidence_level": "read",
+      "event_key": "us-midterms-economic-outlook-2026"
+    },
+    {
+      "id": "3b2cc0fec1c9e6dc",
+      "title": "Rüstungs-Start-ups: Nur Los Angeles zieht mehr Geld an als München",
+      "url": "https://www.handelsblatt.com/unternehmen/start-ups/ruestungs-start-ups-nur-los-angeles-zieht-mehr-geld-an-als-muenchen/100266155.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-07",
+      "summary": "Eine exklusive Handelsblatt-Auswertung beziffert das bis Oktober eingeworbene Risikokapital für Münchner Rüstungs-Start-ups auf 2,65 Milliarden Dollar, nahezu dreimal so viel wie im Vorjahr. Hochschulen, etablierte Firmen und Bundeswehrnähe prägen das regionale Ökosystem.",
+      "article_type": "analysis",
+      "topic": "Innovation und Industrie",
+      "evidence_level": "teaser",
+      "event_key": "munich-defence-startups-investment-2026",
+      "new_perspective": "Eine überraschende Verschiebung im Innovationssystem: München konkurriert bei Rüstungs-Start-up-Kapital mit US-Technologiezentren. Die Originalauswertung zeigt, wie öffentliche Nachfrage und regionale Forschung Investitionen anziehen."
+    },
+    {
+      "id": "9366668c4c97b6bc",
+      "title": "Berlin: Haushalt wird zur eigentlichen Bewährungsprobe für Rot-Grün-Rot",
+      "url": "https://www.handelsblatt.com/politik/deutschland/berlin-haushalt-wird-zur-eigentlichen-bewaehrungsprobe-fuer-rot-gruen-rot/100267825.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-07",
+      "summary": "Der Bericht zeigt die finanzpolitischen Grenzen einer möglichen Berliner Koalition: Für 2026 wird ein Defizit von knapp 4,6 Milliarden Euro erwartet, hinzu kommen steigende Schulden und mögliche Milliardenkosten durch das Urteil zur Beamtenbesoldung.",
+      "article_type": "analysis",
+      "topic": "Öffentliche Finanzen",
+      "evidence_level": "teaser",
+      "event_key": "berlin-budget-2026-11-07"
+    },
+    {
+      "id": "ad661f9ca567c309",
+      "title": "Cop31 will expose the conflicts and contradictions of the world's fossil fuel reliance",
+      "url": "https://www.theguardian.com/environment/2026/nov/06/cop31-coal-turkey-fossil-fuel-reliance",
+      "source": "The Guardian",
+      "published_at": "2026-11-06",
+      "summary": "The article examines the tensions facing Cop31's hosts: Australia exports coal while Turkey relies on it domestically. Their divided roles in the summit expose the gap between climate pledges, energy security and a politically credible path away from fossil fuels.",
+      "article_type": "analysis",
+      "topic": "Climate policy and political economy",
+      "evidence_level": "read",
+      "event_key": "cop31-hosts-fossil-fuels-2026"
+    },
+    {
+      "id": "3349f59be1983e1e",
+      "title": "China's critical minerals dominance leaves UK 'dangerously exposed', MPs warn",
+      "url": "https://www.ft.com/content/9d1f6829-6385-491e-8561-2afd02489190",
+      "source": "Financial Times",
+      "published_at": "2026-11-05",
+      "summary": "A UK parliamentary committee warns that China's position in mineral processing leaves British industry and defence vulnerable. Its proposals include targeted diversification, financing processing capacity and cooperation with allied buyers; these are recommendations, not enacted policy.",
+      "article_type": "analysis",
+      "topic": "Industrial policy and supply chains",
+      "evidence_level": "teaser",
+      "event_key": "uk-critical-minerals-report-2026"
+    },
+    {
+      "id": "60bd351ace378ac7",
+      "title": "New Zealand's two major parties are flatlining as dispirited voters seek transformational change",
+      "url": "https://www.theguardian.com/world/2026/nov/08/nz-election-2026-national-labour-rejection-by-voters",
+      "source": "The Guardian",
+      "published_at": "2026-11-08",
+      "summary": "The analysis reads New Zealand's inconclusive election as a broader rejection of its two largest parties, whose combined vote fell sharply. Smaller parties gained ground, while special votes could still change the parliamentary balance.",
+      "article_type": "analysis",
+      "topic": "Democracy and political economy",
+      "evidence_level": "read",
+      "event_key": "nz-election-2026-11-07"
+    },
+    {
+      "id": "bca1606943fdf37e",
+      "title": "Aukus is 'worst, riskiest and most costly' Australian defence decision ever, public inquiry into submarine deal says",
+      "url": "https://www.theguardian.com/australia-news/2026/nov/04/aukus-worst-australian-defence-decision-ever-public-inquiry",
+      "source": "The Guardian",
+      "published_at": "2026-11-04",
+      "summary": "An independent inquiry challenges the financial and strategic assumptions behind Australia's Aukus submarine plan, citing cost, delivery and sovereignty risks. The government disputes the inquiry's conclusions, making this a contested assessment rather than an established verdict.",
+      "article_type": "analysis",
+      "topic": "Defence economics and public investment",
+      "evidence_level": "read",
+      "event_key": "aukus-inquiry-2026",
+      "new_perspective": "Der AUKUS-Bericht stellt eine oft als sicherheitspolitisch notwendig dargestellte Großinvestition unter ein fiskalisches und strategisches Fragezeichen. Die Schlussfolgerungen der unabhängigen Untersuchung sind allerdings umstritten."
+    }
+  ]
+}
