@@ -1,0 +1,125 @@
+{
+  "date": "2026-11-09",
+  "researched_at": "2026-11-09T04:43:07+01:00",
+  "preview": false,
+  "editorial_note": "Frühe Ausgabe: recherchierte Originalartikel vom 6.–8. November sowie bewusst ältere gehaltvolle Analysen. Deutlich unter den redaktionellen Richtwerten; trotz zusätzlicher Suche keine unbelegten Füllartikel. Bei FT nur belegte Vorschauinhalte. Verfahrensstände sind als vorläufig gekennzeichnet.",
+  "headlines": [
+    {
+      "id": "347c755a74201cc7",
+      "title": "Pressl mahnt zu „Realismus“",
+      "url": "https://orf.at/stories/3447597/",
+      "source": "ORF",
+      "published_at": "2026-11-08",
+      "summary": "Gemeindebund-Präsident Pressl hält eine Einigung bei der Reformpartnerschaft von Bund, Ländern und Gemeinden weiter für möglich, dämpft aber insbesondere im Gesundheitsbereich die Erwartungen. Er fordert, die Gemeinden aus der Gesundheitszuständigkeit zu entlassen.",
+      "region": "Österreich",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "at-reformpartnerschaft-pressl-2026-11-08"
+    },
+    {
+      "id": "562ea565eca7bfcb",
+      "title": "Gadi Eisenkot reaches out to Netanyahu allies as he strives to form government",
+      "url": "https://www.theguardian.com/world/2026/nov/08/gadi-eisenkot-netanyahu-allies-form-israel-government",
+      "source": "The Guardian",
+      "published_at": "2026-11-08",
+      "summary": "Gadi Eisenkot has been given 28 days to try to form Israel's next government. His bloc lacks a parliamentary majority, leaving him to seek difficult deals with Netanyahu's allies, Arab-led parties or ultra-Orthodox factions. A coalition agreement is not yet in place.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "israel-coalition-mandate-2026-11-08"
+    },
+    {
+      "id": "3feb5ade35cc0258",
+      "title": "EU charges TikTok with failing to protect users' mental health",
+      "url": "https://www.theguardian.com/technology/2026/nov/06/eu-charges-tiktok-failure-to-protect-users-mental-health",
+      "source": "The Guardian",
+      "published_at": "2026-11-06",
+      "summary": "The European Commission's preliminary findings challenge TikTok's safeguards against harmful recommendation loops. TikTok disputes the assessment. The Digital Services Act process is ongoing; these are not final findings of infringement or an imposed fine.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "eu-tiktok-dsa-preliminary-findings-2026-11"
+    },
+    {
+      "id": "48b619dbbc1bbac8",
+      "title": "Russia and US seek to block plan for binding rules on autonomous weapons",
+      "url": "https://www.theguardian.com/world/2026/nov/06/autonomous-weapons-ai-russia-us-binding-rules",
+      "source": "The Guardian",
+      "published_at": "2026-11-06",
+      "summary": "Ahead of a UN conference scheduled for 16–20 November, governments are divided over whether to start negotiating binding restrictions on weapons that select and attack targets autonomously. The US and Russia oppose a proposed timetable, while other states and humanitarian groups press for enforceable rules.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "un-autonomous-weapons-negotiations-2026-11"
+    },
+    {
+      "id": "e6e3be66215ad09b",
+      "title": "Innovationen: Unternehmen investieren erstmals weniger in neue Produkte und Verfahren",
+      "url": "https://www.handelsblatt.com/politik/deutschland/innovationen-unternehmen-investieren-erstmals-weniger-in-neue-produkte-und-verfahren/100262848.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-08",
+      "summary": "Laut dem neuen Innovationsreport des DIHK wollen erstmals seit Beginn der Befragung 2008 mehr Unternehmen ihre Forschungs- und Entwicklungsinvestitionen reduzieren als erhöhen. Der Bericht zeigt damit ein Risiko für die künftige Wettbewerbsfähigkeit; es handelt sich um Investitionsabsichten, nicht bereits realisierte Ausgaben.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "germany-dihk-innovation-survey-2026"
+    }
+  ],
+  "articles": [
+    {
+      "id": "2a338f2115f7fbdb",
+      "title": "Election results in Brazil, Serbia, Israel and US renew faith in resilience of democracy",
+      "url": "https://www.theguardian.com/world/2026/nov/08/election-brazil-serbia-israel-and-us-resilience-democracy-grassroots-activism-authoritarianism",
+      "source": "The Guardian",
+      "published_at": "2026-11-08",
+      "summary": "The analysis links electoral setbacks for incumbent or authoritarian-leaning leaders across four countries, while stressing that winning elections is not the same as reversing institutional damage. Parliamentary arithmetic, entrenched interests and coalition constraints may limit the consequences of the results.",
+      "article_type": "analysis",
+      "topic": "Democracy and institutions",
+      "evidence_level": "read"
+    },
+    {
+      "id": "3aa6dad4638cb52a",
+      "title": "Copper is booming but not everyone is striking gold",
+      "url": "https://www.ft.com/content/6c4d1285-535d-4e86-895b-afddd1d15491",
+      "source": "Financial Times",
+      "published_at": "2026-11-05",
+      "summary": "The article contrasts mining companies that can benefit from higher copper prices with smelters squeezed by expensive concentrates and weak processing fees. The distinction matters for industrial policy: rising demand for a strategic commodity does not distribute gains evenly across its supply chain.",
+      "article_type": "analysis",
+      "topic": "Global commodities and industry",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "3ab8ec290147b25b",
+      "title": "Why America is struggling to power the AI boom",
+      "url": "https://www.ft.com/content/20d5599f-8955-4184-a2a0-ac1296e400f3",
+      "source": "Financial Times",
+      "published_at": "2026-11-04",
+      "summary": "The report examines the tension between rapid data-centre expansion and slow electricity transmission investment. Fragmented permitting and grid governance may create costly bottlenecks, while building too much infrastructure for uncertain future demand would create another risk.",
+      "article_type": "analysis",
+      "topic": "Infrastructure and economic growth",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "2315194f224cacd4",
+      "title": "Konjunkturprognose: Die Wirtschaft wächst wieder – warum Sie trotzdem ärmer werden",
+      "url": "https://www.diepresse.com/41353869/konjunkturprognose-die-wirtschaft-waechst-wieder-warum-sie-trotzdem",
+      "source": "Die Presse",
+      "published_at": "2026-10-14",
+      "summary": "Die Analyse der Wifo- und IHS-Prognosen erklärt, warum moderates BIP-Wachstum nicht automatisch bei den Haushalten ankommt: Realeinkommen, Inflation und Arbeitsmarkt entwickeln sich anders als die Gesamtproduktion. Zugleich belasten höhere Zinskosten und Konsolidierung den Staatshaushalt.",
+      "article_type": "analysis",
+      "topic": "Österreichische Wirtschaft",
+      "evidence_level": "read"
+    },
+    {
+      "id": "1ec283338cf835b7",
+      "title": "Europas wirtschaftliche Sicherheit wird auch in Österreich entschieden",
+      "url": "https://www.diepresse.com/41374210/europas-wirtschaftliche-sicherheit-wird-auch-in-oesterreich-entschieden",
+      "source": "Die Presse",
+      "published_at": "2026-10-20",
+      "summary": "Der Gastkommentar argumentiert, dass Energiesicherheit, Infrastruktur und Zugang zu langfristigem Kapital wichtige Standortfaktoren für Österreich sind. Der Autor ist Manager der Bank of America und betrachtet das Thema ausdrücklich aus einer finanzwirtschaftlichen Perspektive; seine Wertungen sind keine unabhängige Studie.",
+      "article_type": "opinion",
+      "topic": "Europäische Industriepolitik",
+      "evidence_level": "read"
+    }
+  ]
+}
