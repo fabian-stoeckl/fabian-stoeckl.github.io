@@ -3,8 +3,16 @@
   "name": "Noahpinion",
   "homepage": "https://www.noahpinion.blog/",
   "feed": "https://www.noahpinion.blog/feed",
-  "checked_at": "2026-11-09T00:48:55+00:00",
+  "checked_at": "2026-11-09T11:24:12+00:00",
   "posts": [
+    {
+      "title": "Noah, Brad DeLong, and Dan Wang discuss the Anthropic IPO",
+      "url": "https://www.noahpinion.blog/p/noah-brad-delong-and-dan-wang-discuss",
+      "published_at": "2026-11-09",
+      "author": "Noah Smith",
+      "description": "The Hexapodia Podcast is back!",
+      "published_time": "2026-11-09T07:59:29+00:00"
+    },
     {
       "title": "Why I’m becoming a China bear",
       "url": "https://www.noahpinion.blog/p/why-im-becoming-a-china-bear",
