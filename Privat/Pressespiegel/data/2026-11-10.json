@@ -1,0 +1,232 @@
+{
+  "date": "2026-11-10",
+  "researched_at": "2026-11-10T04:45:09+01:00",
+  "preview": false,
+  "editorial_note": "Frühe Morgenausgabe mit geprüften Meldungen vom 9. November und bewusst älteren gehaltvollen Vertiefungen. Originalbelege und Zugriffstiefe im privaten Tagesdossier; FT-Inhalte nur anhand belegter Vorschau. Nicht alle redaktionellen Richtwerte erreicht; keine Füllartikel.",
+  "headlines": [
+    {
+      "id": "80491c2c80491c2c",
+      "title": "Budgetdienst und Fiskalrat warnen: Steuer- und Sparpaket reicht nicht. Droht Österreich eine neue Sparwelle?",
+      "url": "https://www.diepresse.com/41431977/budgetdienst-und-fiskalrat-warnen-steuer-und-sparpaket-reicht-nicht",
+      "source": "Die Presse",
+      "published_at": "2026-11-09",
+      "summary": "Budgetdienst und Fiskalrat warnen vor zusätzlichen Konsolidierungserfordernissen, sollte Österreich sein Defizit bis 2028 unter die EU-Grenze von drei Prozent bringen wollen. Die Analyse unterscheidet bereits beschlossene Maßnahmen von möglichen weiteren Sparschritten.",
+      "region": "Österreich",
+      "article_type": "analysis",
+      "evidence_level": "read",
+      "event_key": "at-budget-consolidation-warning-nov-2026"
+    },
+    {
+      "id": "2b3145082b314508",
+      "title": "High fossil fuel prices spread inflation 'like a cancer', UN climate chief tells Cop31",
+      "url": "https://www.theguardian.com/environment/2026/nov/09/high-fossil-fuel-prices-spread-inflation-like-cancer-cop31egotiator-tells-cop31",
+      "source": "The Guardian",
+      "published_at": "2026-11-09",
+      "summary": "At the opening of Cop31 in Antalya, UN climate chief Simon Stiell warned that volatile fossil-fuel prices were worsening inflation and household costs. Delegates are discussing emissions cuts, climate finance and a voluntary target to expand electrification; no final agreement has yet been reached.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "cop31-opening-energy-inflation-2026"
+    },
+    {
+      "id": "894ce8ef894ce8ef",
+      "title": "Polish prosecutors say 'too early' to tell if Kraków gunman was motivated by political ideology",
+      "url": "https://www.theguardian.com/world/2026/nov/09/krakow-shooting-suspected-gunman-dead",
+      "source": "The Guardian",
+      "published_at": "2026-11-09",
+      "summary": "Polish prosecutors say the motive behind Saturday's mass shooting in Kraków remains unproven, despite earlier official suggestions of far-right links. Six people died in the market-square attack; the suspect has since died in hospital. The investigation continues.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "poland-krakow-shooting-investigation-2026-11"
+    },
+    {
+      "id": "9993e7669993e766",
+      "title": "New Zealand's Opportunity party takes aim at populist politics as it prepares to enter parliament",
+      "url": "https://www.theguardian.com/world/2026/nov/09/nz-elections-opportunity-party-qiulae-wong-speech-first-day-in-parliament",
+      "source": "The Guardian",
+      "published_at": "2026-11-09",
+      "summary": "New Zealand's new Opportunity party is poised to enter parliament with seven seats and may become pivotal to coalition negotiations. Its leader Qiulae Wong is prioritising competition, health planning and climate policy. The final count is not due until 27 November, so the governing majority remains uncertain.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "new-zealand-election-coalition-2026"
+    },
+    {
+      "id": "2311b09f2311b09f",
+      "title": "Nvidia’s value tumbles by $330bn after ‘honeytrap’ investigation launched, as China denies spying claims",
+      "url": "https://www.theguardian.com/business/live/2026/nov/09/nvidia-jensen-huang-scandal-investigation-ai-industry-tech-stocks-recovery-slump-latest-news-updates",
+      "source": "The Guardian",
+      "published_at": "2026-11-09",
+      "summary": "Nvidia shares fell sharply after its board launched an investigation into reports concerning chief executive Jensen Huang and possible foreign-intelligence activity. China denied spying allegations. No compromise of company secrets has been established; the market reaction reflects uncertainty rather than a proven espionage finding.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "nvidia-ceo-investigation-2026-11"
+    },
+    {
+      "id": "34d8509434d85094",
+      "title": "Labour's Brexit red lines ready for 'dignified retirement', says their co-author",
+      "url": "https://www.theguardian.com/politics/2026/nov/09/labour-mp-brexit-red-lines-dignified-retirement",
+      "source": "The Guardian",
+      "published_at": "2026-11-09",
+      "summary": "Chris Ward, a Labour MP who helped draft the party's Brexit restrictions, now argues for reconsidering them in light of Britain's security relationship with Europe. This is a political intervention, not a government decision to rejoin the EU or its single market.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "uk-labour-brexit-red-lines-debate-2026"
+    },
+    {
+      "id": "89d3e71889d3e718",
+      "title": "'A new age of climate extremes': Earth accumulating heat at accelerating rate",
+      "url": "https://www.theguardian.com/environment/2026/nov/09/cop31-climate-extremes-earth-global-heating",
+      "source": "The Guardian",
+      "published_at": "2026-11-09",
+      "summary": "The World Meteorological Organization reports a record planetary energy imbalance, rising ocean heat and sea levels, and exceptionally high temperatures in 2026. Its scientific assessment adds urgency to Cop31, but is distinct from the diplomatic negotiations taking place there.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "wmo-climate-state-2026"
+    },
+    {
+      "id": "62b2c4f662b2c4f6",
+      "title": "US warns China it must 'immediately' meet terms of Busan trade deal",
+      "url": "https://www.ft.com/content/391bb785-0247-4c39-b53b-35007187d603",
+      "source": "Financial Times",
+      "published_at": "2026-11-06",
+      "summary": "US officials have pressed China to fulfil commitments under the Busan trade truce, citing concerns over rare-earth and agricultural shipments. The dispute highlights the fragility of the agreement ahead of further diplomatic meetings; Beijing rejects accusations of non-compliance.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "event_key": "us-china-busan-trade-implementation-2026"
+    },
+    {
+      "id": "c098c424c098c424",
+      "title": "'I can't bear it': young family takes refuge in bedroom as choking haze engulfs Indonesian city",
+      "url": "https://www.theguardian.com/world/2026/nov/09/indonesia-air-pollution-toxic-haze-family-takes-refuge-in-bedroom",
+      "source": "The Guardian",
+      "published_at": "2026-11-09",
+      "summary": "A report from Palangkaraya describes families sheltering from toxic smoke generated by forest and peatland fires. Volunteers have established clean-air spaces as severe particulate pollution threatens children's health. The story links local suffering to recurring land-clearing practices and extreme dry conditions.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "indonesia-borneo-wildfire-haze-2026"
+    },
+    {
+      "id": "83c9011e83c9011e",
+      "title": "Fixing UK's youth jobs crisis demands much more investment, TUC boss warns",
+      "url": "https://www.theguardian.com/society/2026/nov/09/uk-young-people-job-work-employment-crisis-paul-nowak-milburn-review",
+      "source": "The Guardian",
+      "published_at": "2026-11-09",
+      "summary": "Britain's TUC leader argues that youth worklessness requires more investment in training and employment support rather than benefit cuts alone. A government review is examining options; the union's recommendations should not be mistaken for enacted policy.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "uk-youth-employment-review-2026"
+    }
+  ],
+  "articles": [
+    {
+      "id": "2615be732615be73",
+      "title": "Mark Blyth: 'I call it the barbell from hell'",
+      "url": "https://www.ft.com/content/92bcf6f9-619c-4f24-82ea-425984d3ecaf",
+      "source": "Financial Times",
+      "published_at": "2026-11-09",
+      "summary": "In an interview, economist Mark Blyth warns that AI could undermine high-paying jobs and the tax base, while an investment bust could also cause severe unemployment. His stark scenarios are arguments about risks, not forecasts established by consensus.",
+      "article_type": "analysis",
+      "topic": "AI, labour and public finances",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "b0753028b0753028",
+      "title": "How the UK could borrow more without spooking gilt markets",
+      "url": "https://www.ft.com/content/87a7c28c-deed-457e-b247-cf9bb83d5947",
+      "source": "Financial Times",
+      "published_at": "2026-11-09",
+      "summary": "The analysis examines municipal borrowing and capturing future land-value gains as ways to finance British infrastructure. Such approaches might strengthen local investment capacity but depend on predictable revenue, institutional expertise and investors' willingness to lend.",
+      "article_type": "analysis",
+      "topic": "Public investment and fiscal institutions",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "2264acff2264acff",
+      "title": "The rise and rise of the family farm",
+      "url": "https://www.theguardian.com/environment/2026/nov/09/family-farming-agritainment",
+      "source": "The Guardian",
+      "published_at": "2026-11-09",
+      "summary": "US family farms increasingly supplement agricultural income with visitor experiences, farm shops and seasonal events. The reporting explores how this can support family businesses and attract younger workers, while noting that revenues vary widely and hospitality skills bring new risks.",
+      "article_type": "analysis",
+      "topic": "Rural economic adaptation",
+      "evidence_level": "read",
+      "new_perspective": "Die Reportage zeigt, wie Bauernhöfe mit Freizeitangeboten ein zweites Geschäftsmodell entwickeln – eine ungewöhnliche Antwort auf Produktivitäts- und Einkommensdruck im Agrarsektor."
+    },
+    {
+      "id": "007689de007689de",
+      "title": "We can't just 'move on': Democrats must hold Trump accountable",
+      "url": "https://www.theguardian.com/commentisfree/2026/nov/09/democrats-trump-congress",
+      "source": "The Guardian",
+      "published_at": "2026-11-09",
+      "summary": "Jan-Werner Müller argues that Democrats should pursue institutional accountability after their electoral gains, rather than focusing exclusively on immediate household economics. His commentary frames investigations as necessary for democracy; it is a normative argument, not a report of decisions already taken.",
+      "article_type": "opinion",
+      "topic": "Democratic institutions",
+      "evidence_level": "read"
+    },
+    {
+      "id": "a0ec08b2a0ec08b2",
+      "title": "Blue wave washes out AI rally",
+      "url": "https://www.ft.com/content/f79e4c03-9486-4a3b-ab08-e75fa815472c",
+      "source": "Financial Times",
+      "published_at": "2026-11-09",
+      "summary": "This markets newsletter connects the sharp AI-stock sell-off with changing political expectations after the US midterms, alongside broader stresses in leveraged finance. It offers a snapshot of investor concerns, not proof that long-term AI investment has ended.",
+      "article_type": "analysis",
+      "topic": "Financial markets and technology",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "011002e7011002e7",
+      "title": "Pope’s visit to Argentina sets up showdown with ‘hyper-capitalist’ Milei",
+      "url": "https://www.theguardian.com/world/2026/nov/08/popes-visit-to-argentina-sets-up-showdown-with-hyper-capitalist-milei",
+      "source": "The Guardian",
+      "published_at": "2026-11-08",
+      "summary": "A report from Argentina examines tensions between President Javier Milei's austerity agenda and Pope Leo XIV's emphasis on disability care, social protection and human-centred technology. It includes testimony from affected institutions and distinguishes critics' claims from government policy.",
+      "article_type": "analysis",
+      "topic": "Austerity and social policy",
+      "evidence_level": "read"
+    },
+    {
+      "id": "60bd351a60bd351a",
+      "title": "New Zealand’s two major parties are flatlining as dispirited voters seek transformational change",
+      "url": "https://www.theguardian.com/world/2026/nov/08/nz-election-2026-national-labour-rejection-by-voters",
+      "source": "The Guardian",
+      "published_at": "2026-11-07",
+      "summary": "Political analyst Claire Robinson argues that New Zealand's election reflects voters' dissatisfaction with both major parties and a shift toward smaller parties offering clearer agendas. The interpretation complements, rather than duplicates, reporting on the still-undecided coalition arithmetic.",
+      "article_type": "opinion",
+      "topic": "Political economy and elections",
+      "evidence_level": "read",
+      "event_key": "new-zealand-election-coalition-2026",
+      "distinct_contribution": "Analyse der strukturellen Fragmentierung der Parteienlandschaft statt aktuelle Koalitionsarithmetik."
+    },
+    {
+      "id": "9e7c75799e7c7579",
+      "title": "Burning forests, emptying rivers, €180bn in damage: Europe’s politicians face reckoning after ‘summer of truth’",
+      "url": "https://www.theguardian.com/environment/2026/sep/19/summer-of-truth-will-political-leaders-act-as-climate-chaos-comes-knocking",
+      "source": "The Guardian",
+      "published_at": "2026-09-19",
+      "summary": "This longer report examines Europe's summer climate damage, from infrastructure disruption to crop losses and public-health costs. It links extreme weather to economic adaptation challenges, while the estimates and attribution claims require care about their underlying methods.",
+      "article_type": "analysis",
+      "topic": "Climate adaptation economics",
+      "evidence_level": "read"
+    },
+    {
+      "id": "cb086571cb086571",
+      "title": "'I never understood wind': midterms spark hope for renewables after Trump's hostility",
+      "url": "https://www.theguardian.com/business/2026/nov/05/democrats-midterms-triumph-renewable-energy-industry-donald-trump",
+      "source": "The Guardian",
+      "published_at": "2026-11-05",
+      "summary": "The article considers whether Democratic gains in Congress could reduce policy risk for US renewable-energy developers and improve financing conditions. It also notes persistent constraints from interest rates, supply chains and rising electricity demand; policy outcomes remain uncertain.",
+      "article_type": "analysis",
+      "topic": "Renewable investment",
+      "evidence_level": "read"
+    }
+  ]
+}
