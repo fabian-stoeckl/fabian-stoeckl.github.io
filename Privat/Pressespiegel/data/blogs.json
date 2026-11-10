@@ -3,8 +3,16 @@
   "name": "Noahpinion",
   "homepage": "https://www.noahpinion.blog/",
   "feed": "https://www.noahpinion.blog/feed",
-  "checked_at": "2026-11-09T22:15:59+00:00",
+  "checked_at": "2026-11-10T07:10:15+00:00",
   "posts": [
+    {
+      "title": "Noah Smith and Azeem Azhar discuss the AI boom",
+      "url": "https://www.noahpinion.blog/p/noah-smith-and-azeem-azhar-discuss",
+      "published_at": "2026-11-09",
+      "author": "Noah Smith",
+      "description": "A bonus podcast!",
+      "published_time": "2026-11-09T23:01:29+00:00"
+    },
     {
       "title": "Noah, Brad DeLong, and Dan Wang discuss the Anthropic IPO",
       "url": "https://www.noahpinion.blog/p/noah-brad-delong-and-dan-wang-discuss",
