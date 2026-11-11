@@ -1,0 +1,148 @@
+{
+  "date": "2026-11-11",
+  "researched_at": "2026-11-11T04:47:31+01:00",
+  "preview": false,
+  "editorial_note": "Quellengeprüfte Morgenredaktion mit vorsichtig gekennzeichneten Teaser-Belegen. Quellenkonzentration beim Guardian und unter den Richtwerten liegende Artikelzahl; keine Füllartikel. Originalfundstellen und Grenzen im privaten Tagesdossier.",
+  "headlines": [
+    {
+      "id": "6913c86b48d7b82f",
+      "title": "US officials seek 'final end' to Russia-Ukraine war, as Abu Dhabi talks set to continue",
+      "url": "https://www.theguardian.com/world/2026/nov/10/us-officials-russia-ukraine-war-abu-dhabi-talks",
+      "source": "The Guardian",
+      "published_at": "2026-11-10",
+      "summary": "US, Russian and Ukrainian delegations began substantive talks in Abu Dhabi on security guarantees and a European security framework. Ukraine called the discussions constructive; European governments warned against concessions without their involvement. No peace agreement has been reached.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "event_key": "ukraine-abu-dhabi-talks-2026"
+    },
+    {
+      "id": "e8c95b5d53a1fd41",
+      "title": "Oil prices fall to lowest since August as Trump says Iran war is 'effectively over'",
+      "url": "https://www.theguardian.com/business/2026/nov/10/oil-prices-fall-donald-trump-iran-war-ftse-100-markets",
+      "source": "The Guardian",
+      "published_at": "2026-11-10",
+      "summary": "Oil prices declined after Donald Trump described the Iran war as effectively over. European shares gained on hopes of lower energy costs. His statement is not itself a formal end to the conflict, and geopolitical and inflation risks remain.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "event_key": "iran-oil-market-nov-2026"
+    },
+    {
+      "id": "d05dd7af66713ecb",
+      "title": "US inflation rose 0.4% in October as price increases cooled and gas costs dipped",
+      "url": "https://www.theguardian.com/business/2026/nov/10/october-inflation-report",
+      "source": "The Guardian",
+      "published_at": "2026-11-10",
+      "summary": "US consumer prices rose 0.4% in October, slower than in September but above forecasts. The usual annual comparison was unavailable because data from October 2025 were missing after a government shutdown. Markets reassessed future Federal Reserve rate decisions.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "event_key": "us-inflation-oct-2026"
+    },
+    {
+      "id": "1a792897a173569d",
+      "title": "Anthropic targets valuation of up to $1.4tn in stock market flotation",
+      "url": "https://www.theguardian.com/technology/2026/nov/10/anthropic-valuation-stock-market-flotation-ipo-wall-street-ai",
+      "source": "The Guardian",
+      "published_at": "2026-11-10",
+      "summary": "Anthropic is preparing a flotation with a proposed valuation of up to $1.4tn, below earlier expectations. The plans come amid questions about returns on huge AI infrastructure investments. The proposed valuation is not a completed market transaction.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "event_key": "anthropic-ipo-nov-2026"
+    },
+    {
+      "id": "6c387d7ede8ec34e",
+      "title": "Cop31 as it happened: 'Everything and everyone we love is at stake,' Greta Thunberg warns",
+      "url": "https://www.theguardian.com/environment/live/2026/nov/10/cop31-live-fossil-fuel-carbon-emissions-climate-crisis-latest-news-updates",
+      "source": "The Guardian",
+      "published_at": "2026-11-10",
+      "summary": "Researchers projected broadly flat fossil-fuel carbon emissions in 2026 as COP31 delegates debated climate finance and transition plans. Turkey's oil-production plans also drew criticism. These are interim discussions rather than final conference decisions.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "event_key": "cop31-day-two-2026"
+    },
+    {
+      "id": "c1b06cf4a1162502",
+      "title": "Disgraced former leader Sheikh Hasina plans return to Bangladesh from exile",
+      "url": "https://www.theguardian.com/world/2026/nov/10/disgraced-former-leader-sheikh-hasina-plans-return-to-bangladesh-from-exile",
+      "source": "The Guardian",
+      "published_at": "2026-11-10",
+      "summary": "Former Bangladeshi prime minister Sheikh Hasina plans to return from exile despite a death sentence imposed in absentia over the 2024 uprising. The announcement raises questions about political stability and accountability; the return has not yet occurred.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "event_key": "bangladesh-hasina-return-2026"
+    }
+  ],
+  "articles": [
+    {
+      "id": "e43a178ced89e9a2",
+      "title": "Young people in UK hit by 'low-gear economy', warns Bank of England deputy",
+      "url": "https://www.theguardian.com/business/2026/nov/10/young-people-uk-economy-bank-of-england-clare-lombardelli",
+      "source": "The Guardian",
+      "published_at": "2026-11-10",
+      "summary": "Bank of England deputy Clare Lombardelli describes a labour market with little hiring but comparatively few layoffs. Young entrants are particularly affected as firms retain existing staff. She warns that unemployment may not rapidly suppress inflation, complicating monetary policy during an energy shock.",
+      "article_type": "analysis",
+      "topic": "Youth employment and monetary policy",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "f659615d8e4d8747",
+      "title": "World 'virtually certain' to exceed average 1.5C of warming in 2026, EU agency says",
+      "url": "https://www.ft.com/content/1860f560-2400-4881-a98f-9101eb3d8705",
+      "source": "Financial Times",
+      "published_at": "2026-11-07",
+      "summary": "Copernicus expects the global average temperature in 2026 to exceed 1.5C above pre-industrial levels. The account distinguishes a single-year breach from the Paris Agreement's longer-term threshold. Ocean heat and regional extremes provide context without establishing that the long-term target has formally been crossed.",
+      "article_type": "analysis",
+      "topic": "Climate science and policy",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "537289a8afe390ee",
+      "title": "Russia and US seek to block plan for binding rules on autonomous weapons",
+      "url": "https://www.theguardian.com/world/2026/nov/06/autonomous-weapons-ai-russia-us-binding-rules",
+      "source": "The Guardian",
+      "published_at": "2026-11-06",
+      "summary": "Ahead of a UN review conference, governments disagree about launching negotiations on binding restrictions for autonomous weapons. The US and Russia resist a timetable, while supporters argue voluntary measures cannot reliably preserve meaningful human control. The disagreement exposes the challenges of governing military AI.",
+      "article_type": "analysis",
+      "topic": "International technology governance",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "0aa87b363bcbb5f0",
+      "title": "A Trump proposal would punish single parents. Other wealthy countries have a different approach",
+      "url": "https://www.theguardian.com/world/2026/nov/10/a-trump-proposal-would-punish-single-parents-other-wealthy-countries-have-a-different-approach",
+      "source": "The Guardian",
+      "published_at": "2026-11-10",
+      "summary": "This feature compares a US proposal affecting single parents with approaches in other wealthy countries. Its comparative framing raises questions about welfare incentives and family security. The accessible headline does not substantiate detailed programme effects.",
+      "article_type": "analysis",
+      "topic": "Welfare-state comparison",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "7c283fadfc39c3bb",
+      "title": "Interest rate rise in midst of cost of living crisis will leave many incredulous",
+      "url": "https://www.theguardian.com/business/2026/nov/05/interest-rate-rise-in-midst-of-cost-of-living-crisis-will-leave-many-incredulous",
+      "source": "The Guardian",
+      "published_at": "2026-11-05",
+      "summary": "This commentary questions monetary tightening amid weak demand and an energy shock. It contrasts central-bank inflation concerns with weaker fiscal forecasts and warns that simultaneous monetary and fiscal restraint could deepen pressure on households. It is a contested argument rather than a consensus forecast.",
+      "article_type": "commentary",
+      "topic": "Macroeconomic trade-offs",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "80bbb6924e81e6f6",
+      "title": "AI boom fuels China’s exports",
+      "url": "https://wspartners.bbc.com/episode/w3ct8d3z",
+      "source": "BBC World Service",
+      "published_at": "2026-10-19",
+      "summary": "The BBC programme examines how AI-related demand supported Chinese exports and growth while weak domestic spending and trade tensions remained risks. Only the published episode description was accessible, not a full transcript.",
+      "article_type": "analysis",
+      "topic": "China and international trade",
+      "evidence_level": "teaser"
+    }
+  ]
+}
