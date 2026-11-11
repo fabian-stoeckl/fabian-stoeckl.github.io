@@ -3,8 +3,16 @@
   "name": "Noahpinion",
   "homepage": "https://www.noahpinion.blog/",
   "feed": "https://www.noahpinion.blog/feed",
-  "checked_at": "2026-11-11T06:04:34+00:00",
+  "checked_at": "2026-11-11T14:10:49+00:00",
   "posts": [
+    {
+      "title": "India is quietly doing great",
+      "url": "https://www.noahpinion.blog/p/india-is-quietly-doing-great",
+      "published_at": "2026-11-11",
+      "author": "Noah Smith",
+      "description": "The world’s biggest country continues to defy the skeptics.",
+      "published_time": "2026-11-11T08:51:56+00:00"
+    },
     {
       "title": "Noah Smith and Azeem Azhar discuss the AI boom",
       "url": "https://www.noahpinion.blog/p/noah-smith-and-azeem-azhar-discuss",
