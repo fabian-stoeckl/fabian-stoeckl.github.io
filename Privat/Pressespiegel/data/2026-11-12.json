@@ -47,7 +47,7 @@
       "source": "Tagesschau",
       "published_at": "2026-11-11",
       "summary": "Die deutsche Bundesregierung hat einen Gesetzentwurf für eine nationale Gasreserve beschlossen. Sie soll außergewöhnliche Versorgungsausfälle abfedern, nicht hohe Gaspreise; die Finanzierung soll die Gaskunden belasten.",
-      "region": "Deutschland",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "read",
       "event_key": "germany-gas-reserve-cabinet-nov-2026"
@@ -59,7 +59,7 @@
       "source": "Handelsblatt",
       "published_at": "2026-11-11",
       "summary": "Der Sachverständigenrat sieht eine bessere Konjunktur, warnt aber vor langfristigen Haushaltslücken, besonders durch schuldenfinanzierte Verteidigungsausgaben. Der Bericht ist eine Warnung und noch kein Regierungsbeschluss.",
-      "region": "Deutschland",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "read",
       "event_key": "germany-economic-council-annual-report-nov-2026"
@@ -71,7 +71,7 @@
       "source": "Handelsblatt / dpa",
       "published_at": "2026-11-11",
       "summary": "Ein Entwurf des Bundesarbeitsministers sieht Erleichterungen bei Befristungen und Änderungen bei Arbeitszeiten und Kündigungsschutz vor. Die Reform ist noch nicht beschlossen; der Bericht beruht auf dpa.",
-      "region": "Deutschland",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "teaser",
       "event_key": "germany-labor-law-draft-nov-2026"
@@ -95,7 +95,7 @@
       "source": "The Guardian",
       "published_at": "2026-11-11",
       "summary": "Spain's first general strike in 14 years targeted rising housing costs ahead of the 29 November election. Unions reported strong but uneven participation, while employers disputed the scale of disruption.",
-      "region": "Europa",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "teaser",
       "event_key": "spain-housing-general-strike-nov-2026"
@@ -119,7 +119,7 @@
       "source": "Handelsblatt",
       "published_at": "2026-11-11",
       "summary": "CSG senkte wegen veränderter Munitionsnachfrage und des weniger profitablen Panzergeschäfts seine Margenprognose. Der Auftragsbestand erreichte zugleich einen Rekordwert; die Aktie verlor deutlich.",
-      "region": "Europa",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "read",
       "event_key": "csg-profit-guidance-nov-2026"
