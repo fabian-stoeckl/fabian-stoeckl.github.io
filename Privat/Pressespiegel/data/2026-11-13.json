@@ -44,7 +44,7 @@
       "source": "Tagesschau",
       "published_at": "2026-11-12",
       "summary": "Mercedes stoppt weitere Investitionen in Deutschland und prüft Werksschließungen. Der Konzern fordert Kostensenkungen und längere Arbeitszeiten, während Betriebsrat und IG Metall zentrale Forderungen ablehnen.",
-      "region": "Deutschland",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "read"
     },
@@ -55,7 +55,7 @@
       "source": "Tagesschau",
       "published_at": "2026-11-12",
       "summary": "Jensen Huang ist als Nvidia-Chef zurückgetreten. Vorwürfe rund um die Affäre werfen Fragen zur Führung und Sicherheit des für die KI-Industrie zentralen Unternehmens auf.",
-      "region": "Welt",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "teaser",
       "event_key": "nvidia-huang-resignation-nov-2026"
@@ -67,7 +67,7 @@
       "source": "Tagesschau",
       "published_at": "2026-11-12",
       "summary": "Die Bundesbank warnt vor mehr Problemkrediten, Cyberangriffen, möglichen KI-Börsenkorrekturen und Risiken im Schattenbankensektor. Zugleich gelten deutsche Banken als ausreichend kapitalisiert.",
-      "region": "Deutschland",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "read"
     },
@@ -78,7 +78,7 @@
       "source": "Tagesschau",
       "published_at": "2026-11-12",
       "summary": "Polen ist vor dem Europäischen Gerichtshof mit Klagen gegen das Fit-for-55-Klimapaket gescheitert. Das stärkt den bestehenden Rechtsrahmen für die europäische Klimapolitik.",
-      "region": "Europa",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "teaser"
     },
@@ -89,7 +89,7 @@
       "source": "Tagesschau",
       "published_at": "2026-11-12",
       "summary": "Die IG Metall beschließt in der laufenden Tarifrunde ganztägige Streiks. Damit verschärft sich der Konflikt um Löhne und Arbeitsbedingungen in der Industrie.",
-      "region": "Deutschland",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "teaser"
     },
@@ -100,7 +100,7 @@
       "source": "Tagesschau",
       "published_at": "2026-11-12",
       "summary": "Union und SPD streiten über die versprochene Stromsteuersenkung. Für die geplante Entlastung fehlen laut SPD rund fünf Milliarden Euro Gegenfinanzierung; die Union hofft auf weitere Gespräche.",
-      "region": "Deutschland",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "read"
     },
@@ -111,7 +111,7 @@
       "source": "Handelsblatt",
       "published_at": "2026-11-12",
       "summary": "Laut Creditreforms Schuldneratlas gelten 7,36 Millionen Erwachsene in Deutschland als überschuldet, 293.000 mehr als im Vorjahr. Hohe Lebenshaltungs- und Wohnkosten belasten die Haushalte.",
-      "region": "Deutschland",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "teaser"
     },
@@ -122,7 +122,7 @@
       "source": "Tagesschau",
       "published_at": "2026-11-12",
       "summary": "Ein spanisches Übergangsparlament hat ein Dekret zur Eindämmung der Wohnungsnot gebilligt. Ein zweites Dekret zur Verlängerung von Mietverträgen fand keine Mehrheit.",
-      "region": "Europa",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "teaser"
     },
@@ -133,7 +133,7 @@
       "source": "Tagesschau",
       "published_at": "2026-11-12",
       "summary": "Europäische Regierungschefs drängen bei ihrem Treffen in Dublin auf direkte Beteiligung an den US-vermittelten Ukraine-Verhandlungen. Die Einbindung Europas bleibt diplomatisch umstritten.",
-      "region": "Europa",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "read"
     },
@@ -144,7 +144,7 @@
       "source": "Tagesschau",
       "published_at": "2026-11-12",
       "summary": "Greta Thunberg kritisiert auf der COP31 die unzureichende Klimapolitik. Ein neuer Bericht sieht bei aktueller Politik eine Erwärmung um rund 2,7 Grad bis 2100.",
-      "region": "Welt",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "teaser"
     },
@@ -155,7 +155,7 @@
       "source": "Handelsblatt",
       "published_at": "2026-11-12",
       "summary": "Das britische BIP wuchs im dritten Quartal um 0,7 Prozent gegenüber dem Vorquartal. Inflation und höhere Zinsen bleiben Risiken, während die Notenbank auf Wachstumsimpulse durch KI verweist.",
-      "region": "Europa",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "read"
     },
@@ -166,7 +166,7 @@
       "source": "Handelsblatt",
       "published_at": "2026-11-12",
       "summary": "Der DAX erreichte am Donnerstag zeitweise erstmals 27.000 Punkte. Hoffnungen auf sinkende Ölpreise und gute Unternehmenszahlen stützten die Kurse, bevor Nvidia-Turbulenzen belasteten.",
-      "region": "Deutschland",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "read"
     },
@@ -177,7 +177,7 @@
       "source": "Tagesschau",
       "published_at": "2026-11-13",
       "summary": "Microsoft meldet weltweite Störungen bei Outlook, Exchange und weiteren Cloud-Diensten. Ein Serverproblem bei automatisierten Prüfungen wird als Ursache genannt; die Wiederherstellung war in der Nacht noch nicht abgeschlossen.",
-      "region": "Welt",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "read"
     },
@@ -199,7 +199,7 @@
       "source": "Handelsblatt",
       "published_at": "2026-11-12",
       "summary": "Finanzchefin Colette Kress übernimmt Nvidia vorläufig. Marktbeobachter halten die kurzfristige Chipnachfrage für robust, sehen aber langfristige Risiken durch den Verlust des prägenden Unternehmenschefs.",
-      "region": "Welt",
+      "region": "International",
       "article_type": "report",
       "evidence_level": "read",
       "event_key": "nvidia-huang-resignation-nov-2026",
