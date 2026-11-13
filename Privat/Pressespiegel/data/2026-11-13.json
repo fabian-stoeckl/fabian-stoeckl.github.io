@@ -1,0 +1,279 @@
+{
+  "date": "2026-11-13",
+  "researched_at": "2026-11-13T04:45:29+01:00",
+  "preview": false,
+  "editorial_note": "Breite Recherche seit der letzten Ausgabe: Österreich, Deutschland, Europa und Welt. Original-/Verlagssichtungen, redaktionelle Ereignisprüfung und konservative Kennzeichnung der Zugriffstiefe. Bei fehlendem lokalen Checkout manuelle Cluster- und Quellenprüfung im privaten Dossier.",
+  "headlines": [
+    {
+      "id": "0e75a3e347fb8b0b",
+      "title": "Stocker beharrt trotz Kritik auf Zukunftsdepot",
+      "url": "https://on.orf.at/video/14347023/16185665/stocker-beharrt-trotz-kritik-auf-zukunftsdepot",
+      "source": "ORF",
+      "published_at": "2026-11-12",
+      "summary": "Sozialorganisationen kritisieren den Entwurf zum Zukunftsdepot als sozial unausgewogen. Bundeskanzler Stocker hält an der geplanten Anlagemöglichkeit für junge Menschen fest.",
+      "region": "Österreich",
+      "article_type": "report",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "764a7ed7b3ca120b",
+      "title": "Messenger-Überwachung: Software „im Beschafftwerden“",
+      "url": "https://orf.at/stories/3447993/",
+      "source": "ORF",
+      "published_at": "2026-11-12",
+      "summary": "Das Innenministerium beschafft Software für die ab 2027 vorgesehene Überwachung von Messenger-Diensten. Der Verfassungsgerichtshof prüft das Gesetz noch; die Grünen kritisieren den vorgezogenen Beschaffungsvorgang.",
+      "region": "Österreich",
+      "article_type": "report",
+      "evidence_level": "read"
+    },
+    {
+      "id": "a855ece643bde392",
+      "title": "Strengere Social-Media-Vorgaben für Politiker",
+      "url": "https://on.orf.at/video/14347017/16185543/strengere-social-media-vorgaben-fuer-politiker-zib-1300-vom-12112026",
+      "source": "ORF",
+      "published_at": "2026-11-12",
+      "summary": "Der Verfassungsgerichtshof schränkt die Betreuung privater oder parteinaher Social-Media-Kanäle von Regierungsmitgliedern durch öffentlich bezahlte Kabinettsmitarbeiter ein. Die Regierung sucht nach einer Lösung.",
+      "region": "Österreich",
+      "article_type": "report",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "c364e20b8ff9941b",
+      "title": "Mercedes stoppt Investitionen in deutsche Standorte",
+      "url": "https://www.tagesschau.de/wirtschaft/unternehmen/mercedes-stopp-investitionen-100.html",
+      "source": "Tagesschau",
+      "published_at": "2026-11-12",
+      "summary": "Mercedes stoppt weitere Investitionen in Deutschland und prüft Werksschließungen. Der Konzern fordert Kostensenkungen und längere Arbeitszeiten, während Betriebsrat und IG Metall zentrale Forderungen ablehnen.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read"
+    },
+    {
+      "id": "28b7a3615cd02319",
+      "title": "Nvidia-Chef Huang tritt nach Spionageaffäre zurück",
+      "url": "https://www.tagesschau.de/wirtschaft/unternehmen/nvidia-huang-ruecktritt-100.html",
+      "source": "Tagesschau",
+      "published_at": "2026-11-12",
+      "summary": "Jensen Huang ist als Nvidia-Chef zurückgetreten. Vorwürfe rund um die Affäre werfen Fragen zur Führung und Sicherheit des für die KI-Industrie zentralen Unternehmens auf.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "event_key": "nvidia-huang-resignation-nov-2026"
+    },
+    {
+      "id": "dcf7103be4a4f9bb",
+      "title": "Erhöhte Risiken für das deutsche Finanzsystem",
+      "url": "https://www.tagesschau.de/wirtschaft/finanzen/risiken-finanzsystem-bundesbank-100.html",
+      "source": "Tagesschau",
+      "published_at": "2026-11-12",
+      "summary": "Die Bundesbank warnt vor mehr Problemkrediten, Cyberangriffen, möglichen KI-Börsenkorrekturen und Risiken im Schattenbankensektor. Zugleich gelten deutsche Banken als ausreichend kapitalisiert.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read"
+    },
+    {
+      "id": "e692bac2c2dd58c6",
+      "title": "Polen scheitert vor EuGH mit Klagen gegen EU-Klimapaket",
+      "url": "https://www.tagesschau.de/ausland/europa/eugh-polen-klage-eu-klimapaket-100.html",
+      "source": "Tagesschau",
+      "published_at": "2026-11-12",
+      "summary": "Polen ist vor dem Europäischen Gerichtshof mit Klagen gegen das Fit-for-55-Klimapaket gescheitert. Das stärkt den bestehenden Rechtsrahmen für die europäische Klimapolitik.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "fd2afb268e47b446",
+      "title": "IG Metall beschließt erstmals seit acht Jahren ganztägige Streiks",
+      "url": "https://www.tagesschau.de/wirtschaft/unternehmen/ig-metall-streiks-100.html",
+      "source": "Tagesschau",
+      "published_at": "2026-11-12",
+      "summary": "Die IG Metall beschließt in der laufenden Tarifrunde ganztägige Streiks. Damit verschärft sich der Konflikt um Löhne und Arbeitsbedingungen in der Industrie.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "c3e2607bf5f2b56b",
+      "title": "Keine Senkung der Stromsteuer: Bei der Union hat es ordentlich geknallt",
+      "url": "https://www.tagesschau.de/inland/innenpolitik/haushalt-kompromisse-stromsteuer-reaktionen-100.html",
+      "source": "Tagesschau",
+      "published_at": "2026-11-12",
+      "summary": "Union und SPD streiten über die versprochene Stromsteuersenkung. Für die geplante Entlastung fehlen laut SPD rund fünf Milliarden Euro Gegenfinanzierung; die Union hofft auf weitere Gespräche.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read"
+    },
+    {
+      "id": "8b045f59c8c07235",
+      "title": "Mehr Erwachsene sind überschuldet – jeder Zehnte ist betroffen",
+      "url": "https://www.handelsblatt.com/politik/konjunktur/schuldneratlas-mehr-erwachsene-sind-ueberschuldet-jeder-zehnte-ist-betroffen/100269355.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-12",
+      "summary": "Laut Creditreforms Schuldneratlas gelten 7,36 Millionen Erwachsene in Deutschland als überschuldet, 293.000 mehr als im Vorjahr. Hohe Lebenshaltungs- und Wohnkosten belasten die Haushalte.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "14d004ca44d3a98e",
+      "title": "Spanisches Parlament beschließt Maßnahmen für mehr Mieterschutz",
+      "url": "https://www.tagesschau.de/ausland/europa/spanien-parlament-wohnungsdekret-100.html",
+      "source": "Tagesschau",
+      "published_at": "2026-11-12",
+      "summary": "Ein spanisches Übergangsparlament hat ein Dekret zur Eindämmung der Wohnungsnot gebilligt. Ein zweites Dekret zur Verlängerung von Mietverträgen fand keine Mehrheit.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "a6fa51e7071363eb",
+      "title": "EPG-Treffen in Irland: Europa will mit an den Tisch",
+      "url": "https://www.tagesschau.de/ausland/europa/irland-europaeische-gemeinschaft-100.html",
+      "source": "Tagesschau",
+      "published_at": "2026-11-12",
+      "summary": "Europäische Regierungschefs drängen bei ihrem Treffen in Dublin auf direkte Beteiligung an den US-vermittelten Ukraine-Verhandlungen. Die Einbindung Europas bleibt diplomatisch umstritten.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read"
+    },
+    {
+      "id": "1a2ef0cde151abd1",
+      "title": "Thunberg auf COP31: Der Planet stirbt nicht, er wird getötet",
+      "url": "https://www.tagesschau.de/ausland/asien/weltklimakonferenz-cop31-thunberg-100.html",
+      "source": "Tagesschau",
+      "published_at": "2026-11-12",
+      "summary": "Greta Thunberg kritisiert auf der COP31 die unzureichende Klimapolitik. Ein neuer Bericht sieht bei aktueller Politik eine Erwärmung um rund 2,7 Grad bis 2100.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "e2a174e7d20504e7",
+      "title": "Großbritannien: Britische Wirtschaft legt beim Wachstum zu",
+      "url": "https://www.handelsblatt.com/politik/international/grossbritannien-britische-wirtschaft-legt-beim-wachstum-zu/100269329.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-12",
+      "summary": "Das britische BIP wuchs im dritten Quartal um 0,7 Prozent gegenüber dem Vorquartal. Inflation und höhere Zinsen bleiben Risiken, während die Notenbank auf Wachstumsimpulse durch KI verweist.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read"
+    },
+    {
+      "id": "fc5dd6930a7732fb",
+      "title": "Dax erstmals über 27.000 Punkten",
+      "url": "https://www.handelsblatt.com/politik/deutschland/leitindex-optimismus-an-der-boerse-dax-erstmals-ueber-27000-punkten/100269391.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-12",
+      "summary": "Der DAX erreichte am Donnerstag zeitweise erstmals 27.000 Punkte. Hoffnungen auf sinkende Ölpreise und gute Unternehmenszahlen stützten die Kurse, bevor Nvidia-Turbulenzen belasteten.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read"
+    },
+    {
+      "id": "5329770dc8b2c2bd",
+      "title": "Auch Outlook betroffen: Microsoft-Dienste weltweit mit Störungen",
+      "url": "https://www.tagesschau.de/wirtschaft/unternehmen/microsoft-outlook-ausfall-100.html",
+      "source": "Tagesschau",
+      "published_at": "2026-11-13",
+      "summary": "Microsoft meldet weltweite Störungen bei Outlook, Exchange und weiteren Cloud-Diensten. Ein Serverproblem bei automatisierten Prüfungen wird als Ursache genannt; die Wiederherstellung war in der Nacht noch nicht abgeschlossen.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read"
+    },
+    {
+      "id": "973bf66bbeb5ceaf",
+      "title": "1.500 Projekte für Wasserinfrastruktur genehmigt",
+      "url": "https://orf.at/stories/3448008/",
+      "source": "ORF",
+      "published_at": "2026-11-12",
+      "summary": "Eine österreichische Kommission hat weitere 171 Millionen Euro für über 1.500 Projekte zur Wasserversorgung, Gewässerökologie und zum Hochwasserschutz genehmigt. Hintergrund ist auch die außergewöhnliche Trockenheit.",
+      "region": "Österreich",
+      "article_type": "report",
+      "evidence_level": "read"
+    },
+    {
+      "id": "152b8bf685b83152",
+      "title": "Nvidia: So reagieren Politik und Wirtschaft auf Huangs Rücktritt",
+      "url": "https://www.handelsblatt.com/technik/it-internet/nvidia-so-reagieren-politik-und-wirtschaft-auf-huangs-ruecktritt/100269516.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-12",
+      "summary": "Finanzchefin Colette Kress übernimmt Nvidia vorläufig. Marktbeobachter halten die kurzfristige Chipnachfrage für robust, sehen aber langfristige Risiken durch den Verlust des prägenden Unternehmenschefs.",
+      "region": "International",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "nvidia-huang-resignation-nov-2026",
+      "distinct_contribution": "Eigene Reaktionsanalyse mit Unternehmens- und Nachfolgeperspektive"
+    }
+  ],
+  "articles": [
+    {
+      "id": "47e79d1f6160a1a3",
+      "title": "Haushalt: Frust in der Union – „Dafür habe ich keinen Wahlkampf gemacht“",
+      "url": "https://www.handelsblatt.com/politik/deutschland/haushalt-frust-in-der-union-dafuer-habe-ich-keinen-wahlkampf-gemacht/100269337.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-12",
+      "summary": "Die Handelsblatt-Recherche beschreibt die Unzufriedenheit der Union mit dem Haushalt 2027. Mehr als 200 Milliarden Euro neue Schulden sind geplant. Besonders umstritten ist die nur teilweise Kompensation der kalten Progression: 10,76 Milliarden Euro Belastung stehen 3,2 Milliarden Euro Ausgleich gegenüber.",
+      "article_type": "analysis",
+      "topic": "Fiskalpolitik",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "12e9870f3aef0c27",
+      "title": "Bundesbaugesellschaft für günstigen Wohnraum soll rasch starten",
+      "url": "https://www.handelsblatt.com/politik/deutschland/immobilien-bundesbaugesellschaft-fuer-guenstigen-wohnraum-soll-rasch-starten/100269519.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-12",
+      "summary": "Ein dem Handelsblatt vorliegendes Papier von Bau- und Finanzministerium sieht den raschen Aufbau einer Bundeswohnungsbaugesellschaft vor. Erste Ergebnisse sollen 2027 erreicht werden. Wohnungsknappheit wird darin nicht nur als soziales, sondern auch als wirtschaftliches Standortproblem behandelt.",
+      "article_type": "analysis",
+      "topic": "Wohnungsmarkt",
+      "evidence_level": "read"
+    },
+    {
+      "id": "6a1ee5d2107e951a",
+      "title": "Können Abnehmspritzen die Fehlzeiten senken?",
+      "url": "https://www.handelsblatt.com/unternehmen/industrie/unternehmen-koennen-abnehmspritzen-die-fehlzeiten-senken/100266686.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-12",
+      "summary": "Pharmahersteller werben dafür, dass Arbeitgeber Adipositas-Medikamente als Zusatzleistung finanzieren. Studien deuten auf weniger Fehlzeiten hin, aber ein Teil der Einsparungsrechnungen stammt aus Herstelleranalysen. Hohe Medikamentenkosten und Rückzüge amerikanischer Arbeitgeber verdeutlichen die Unsicherheit der Wirtschaftlichkeitsrechnung.",
+      "article_type": "analysis",
+      "topic": "Gesundheitsökonomie",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "aa0480d44f9cc15c",
+      "title": "Rücktritt von Nvidia-Chef Huang: Vom Sympathieträger zum Sicherheitsrisiko",
+      "url": "https://www.tagesschau.de/wirtschaft/unternehmen/nvidia-huang-rolle-100.html",
+      "source": "Tagesschau",
+      "published_at": "2026-11-12",
+      "summary": "Die Hintergrundgeschichte ordnet den Rücktritt Jensen Huangs in die Sicherheitsdebatte um Nvidia ein. Sie fragt, wie stark die KI-Branche von einer einzelnen Führungsperson und dem geopolitisch exponierten Unternehmen abhängig ist.",
+      "article_type": "analysis",
+      "topic": "Technologie und Governance",
+      "evidence_level": "teaser",
+      "event_key": "nvidia-huang-resignation-nov-2026",
+      "distinct_contribution": "Hintergrund zur Sicherheits- und Governance-Dimension"
+    },
+    {
+      "id": "3db354fac5bc7dbe",
+      "title": "Kita-Startchancengesetz: Mehr Förderung mit weniger Geld?",
+      "url": "https://www.tagesschau.de/inland/innenpolitik/kita-startchancengesetz-100.html",
+      "source": "Tagesschau",
+      "published_at": "2026-11-12",
+      "summary": "Der Beitrag untersucht die Frage, ob die gezieltere Förderung von Kitas mit knapperen Mitteln gelingen kann. Der Gegensatz zwischen politischen Förderzielen und tatsächlicher finanzieller Ausstattung ist zentral für die Bewertung.",
+      "article_type": "analysis",
+      "topic": "Bildung und Budget",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "22cd8c6eb480a486",
+      "title": "'A global political awakening': how gen Z protests are sweeping the world",
+      "url": "https://www.theguardian.com/world/2026/nov/06/gen-z-protests-sweeping-the-world",
+      "source": "The Guardian",
+      "published_at": "2026-11-06",
+      "summary": "The Guardian examines at least 25 youth-led protest movements around the world. It links mobilisation to corruption, unaffordable housing, inequality and frustration with public services. Digital coordination helps campaigns spread, but political outcomes vary widely and repression remains a major risk. The cross-country comparison offers more insight than isolated protest reports.",
+      "article_type": "analysis",
+      "topic": "Gesellschaft und Wirtschaft",
+      "evidence_level": "teaser"
+    }
+  ]
+}
