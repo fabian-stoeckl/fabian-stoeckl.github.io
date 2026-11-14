@@ -1,0 +1,230 @@
+{
+  "date": "2026-11-14",
+  "researched_at": "2026-11-14T04:40:00+01:00",
+  "preview": false,
+  "editorial_note": "Die Recherche umfasst neue Entwicklungen vom 13. November. Das redaktionelle Ziel von 20 eigenständigen Nachrichten wurde trotz Nachrecherche nicht erreicht; einzelne nur als Teaser belegte Originale sind entsprechend gekennzeichnet.",
+  "headlines": [
+    {
+      "id": "1f609b83dffa1faf",
+      "title": "Regierung sucht Mehrheit für Wehrdienstreform",
+      "url": "https://on.orf.at/video/14347498/zib-800-vom-13112026",
+      "source": "ORF",
+      "published_at": "2026-11-13",
+      "summary": "Die Regierung verhandelt über eine Wehrdienstreform und benötigt dafür zusätzliche parlamentarische Unterstützung. Die ORF-ZIB nennt das Vorhaben als eines der zentralen innenpolitischen Themen des 13. November.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "Österreich"
+    },
+    {
+      "id": "d101495770470a03",
+      "title": "Haushaltsausschuss einigt sich auf Bundeshaushalt 2027",
+      "url": "https://www.tagesschau.de/video/video-1683046.html?t=%7Bseek_to_second_number%7D",
+      "source": "Tagesschau",
+      "published_at": "2026-11-13",
+      "summary": "Der Haushaltsausschuss des Bundestags hat sich auf den Etat 2027 mit Rekordausgaben geeinigt. Das ist ein neuer Verfahrensstand gegenüber der vorangegangenen Debatte um den Haushaltskompromiss.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International"
+    },
+    {
+      "id": "e708cd39065dd769",
+      "title": "Keine Stromsteuer-Senkung - Kritik auch aus der Union",
+      "url": "https://www.tagesschau.de/thema/haushalt",
+      "source": "Tagesschau",
+      "published_at": "2026-11-13",
+      "summary": "Im Bundeshaushalt 2027 sind Ausgaben von mehr als 560 Milliarden Euro geplant. Für die geforderte Stromsteuersenkung ist weiterhin kein Geld vorgesehen; Kritik kommt auch aus der Union.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International"
+    },
+    {
+      "id": "e1b07b26e3461cd6",
+      "title": "Klingsbeils große Steuervereinfachung",
+      "url": "https://www.handelsblatt.com/politik/deutschland/steuern-interner-gesetzesentwurf-klingsbeils-grosse-steuervereinfachung/100269455.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-13",
+      "summary": "Ein interner Entwurf des Finanzministeriums sieht unter anderem eine begrenzte Steuerbefreiung für Abfindungen, elektronische Steuererklärungen und die Abschaffung der Steuerklassen III und V ab 2030 vor. Es handelt sich um Pläne, nicht um geltendes Recht.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International"
+    },
+    {
+      "id": "3c61e5c5c7b8a2f9",
+      "title": "Bundesregierung erwartet leichtes Wachstum zum Jahresende",
+      "url": "https://www.handelsblatt.com/politik/konjunktur/konjunktur-bundesregierung-erwartet-leichtes-wachstum-zum-jahresende/100269681.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-13",
+      "summary": "Das Wirtschaftsministerium erwartet eine leichte Beschleunigung der Konjunktur. Niedrigwasser- und Produktionsbelastungen dürften nachlassen, während hohe Öl- und Gaspreise sowie schwacher Konsum Risiken bleiben.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International"
+    },
+    {
+      "id": "1a0b613af38bdb72",
+      "title": "Ölversorgung erholt sich erstmals seit Iran-Krieg",
+      "url": "https://www.handelsblatt.com/politik/international/oelmarkt-oelversorgung-erholt-sich-erstmals-seit-iran-krieg/100269743.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-13",
+      "summary": "Laut IEA übersteigt das weltweite Ölangebot erstmals seit Kriegsbeginn wieder die Nachfrage. Die Lagerbestände stiegen im Oktober, während insbesondere die Dieselversorgung und die Golfexporte weiter belastet sind.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International"
+    },
+    {
+      "id": "930ca41282fb2c96",
+      "title": "Neues Verbraucherkreditgesetz tritt am 20. November in Kraft",
+      "url": "https://www.diepresse.com/a/41436858/neues-verbraucherkreditgesetz-was-sich-jetzt-aendert",
+      "source": "Die Presse",
+      "published_at": "2026-11-13",
+      "summary": "Die Presse erläutert das neue Verbraucherkreditgesetz. Die bisherige Schwelle von 200 Euro für verpflichtende Bonitätsprüfungen bei Käufen auf Ziel soll wegfallen; Inkrafttreten ist am 20. November.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "Österreich"
+    },
+    {
+      "id": "311eb1e1575608f9",
+      "title": "Ukraine-Gespräche: Europäische Beteiligung weiter umstritten",
+      "url": "https://www.theguardian.com/world/2026/nov/13/ukraine-war-briefing-europe-to-join-negotiations-says-kushner-as-putin-warns-against-peace-keepers",
+      "source": "The Guardian",
+      "published_at": "2026-11-13",
+      "summary": "US-Gesandter Kushner stellte europäische Beteiligung an der nächsten Verhandlungsrunde in Aussicht. Putin warnte zugleich vor europäischen Friedenstruppen. Eine verbindliche Einigung über die Verhandlungsarchitektur liegt nicht vor.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International"
+    },
+    {
+      "id": "499b9d1697af18b2",
+      "title": "EU-Spitzen drängen auf gemeinsame KI-Investitionen",
+      "url": "https://www.theguardian.com/world/live/2026/nov/13/eu-leaders-negotiations-ukraine-russia-dublin-ai-summit-kushner-witkoff-latest-news-updates",
+      "source": "The Guardian",
+      "published_at": "2026-11-13",
+      "summary": "Beim Treffen in Dublin forderten Macron und Tusk eine stärkere europäische Koordination und Investitionen in künstliche Intelligenz. Die Staats- und Regierungschefs diskutierten technologische Unabhängigkeit.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International"
+    },
+    {
+      "id": "275c0418a43a3724",
+      "title": "COP31: Guterres fordert beschleunigten Klimaschutz",
+      "url": "https://www.theguardian.com/environment/live/2026/nov/13/cop31-climate-crisis-talks-turkey-latest-news-updates",
+      "source": "The Guardian",
+      "published_at": "2026-11-13",
+      "summary": "UN-Generalsekretär Guterres mahnte auf der COP31 schnellere Klimaschutzmaßnahmen an. Die Elektrifizierung des Energieverbrauchs wurde als zentraler Verhandlungsschwerpunkt hervorgehoben.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International"
+    },
+    {
+      "id": "e06db78638ac5c12",
+      "title": "US-Kongress erhöht Druck wegen Nvidia-Chipexporten",
+      "url": "https://www.theguardian.com/technology/live/2026/nov/13/nvidia-jensen-huang-to-testify-before-congress-live-latest-updates",
+      "source": "The Guardian",
+      "published_at": "2026-11-13",
+      "summary": "Nach dem Rücktritt von Nvidia-Chef Huang fordern US-Abgeordnete zusätzliche Untersuchungen zu fortgeschrittenen Chipexporten nach China. Der neue Aspekt betrifft Exportkontrollen und mögliche Umleitungen über Drittländer.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International"
+    },
+    {
+      "id": "c1e031ddc176c939",
+      "title": "Britischer Ausschuss warnt vor Umfang neuer EU-Regelübernahme",
+      "url": "https://www.theguardian.com/politics/live/2026/nov/13/uk-eu-post-brexit-deal-relationship-trade-food-standards-committee-latest-news-updates",
+      "source": "The Guardian",
+      "published_at": "2026-11-13",
+      "summary": "Ein Ausschuss des britischen Oberhauses warnt, geplante Abkommen mit der EU könnten umfangreiche parlamentarische Kontrolle sich verändernder EU-Vorschriften erfordern. Allein bei Lebensmitteln geht es um Hunderte relevante Regeln pro Jahr.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International"
+    },
+    {
+      "id": "278613fb8ae392d3",
+      "title": "US-Demokrat Scott Colom gewinnt Senatswahl",
+      "url": "https://www.tagesschau.de/thema/schwerpunkt",
+      "source": "Tagesschau",
+      "published_at": "2026-11-13",
+      "summary": "Die Tagesschau berichtet über den historischen Wahlsieg des Demokraten Scott Colom bei einer US-Senatswahl. Der Beitrag ordnet den Ausgang als politischen Erfolg der Demokraten ein.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International"
+    },
+    {
+      "id": "db5c4695db5c4695",
+      "title": "UK-EU deal will 'dissolve' £60m a year of costs for plant trade, says Angela Eagle",
+      "url": "https://www.theguardian.com/business/2026/nov/13/uk-eu-deal-plant-trade-angela-eagle",
+      "source": "The Guardian",
+      "published_at": "2026-11-13",
+      "summary": "The UK government says a planned sanitary and phytosanitary agreement with the EU could save horticulture businesses £60m a year in border costs. Signing is expected next week, with implementation later; savings remain projected.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International"
+    },
+    {
+      "id": "94e4d42e94e4d42e",
+      "title": "Microsoft says services experiencing 'broad recovery' after global outage",
+      "url": "https://www.ft.com/content/025b2769-bca8-4a74-b9f5-5d7ad7da32c7",
+      "source": "Financial Times",
+      "published_at": "2026-11-13",
+      "summary": "Microsoft says its cloud services are broadly recovering after the global outage, although complete restoration remains uncertain. This is a new recovery update to the previously reported disruption.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International"
+    }
+  ],
+  "articles": [
+    {
+      "id": "63aa69ebf4ca0d6f",
+      "title": "Der Railjet, die neue Zuggeneration in Österreich",
+      "url": "https://www.diepresse.com/a/41444353/der-railjet-die-neue-zuggeneration-in-oesterreich",
+      "source": "Die Presse",
+      "published_at": "2026-11-13",
+      "summary": "Die Analyse zeichnet nach, warum Österreich angesichts seiner Gebirgsgeografie und begrenzten finanziellen Mittel beim Bahnverkehr einen anderen Weg als klassische Hochgeschwindigkeitsnetze wählte. Der Railjet steht für einen auf das vorhandene Netz zugeschnittenen Ansatz.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Infrastruktur"
+    },
+    {
+      "id": "05272b18a2650dc0",
+      "title": "Anthony Albanese's coffee diplomacy can't remove shadow of domestic politics at Cop31",
+      "url": "https://www.theguardian.com/environment/2026/nov/13/anthony-albaneses-coffee-diplomacy-cant-remove-shadow-of-domestic-politics-at-cop31",
+      "source": "The Guardian",
+      "published_at": "2026-11-13",
+      "summary": "The analysis contrasts Australia's climate diplomacy and support for Pacific nations with its continued coal and LNG exports. It highlights the political constraints on stronger commitments and the gap between international rhetoric and domestic policy.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Klimapolitik"
+    },
+    {
+      "id": "f7d1ebeef7d1ebee",
+      "title": "Surging British tech sector helps drive UK economy",
+      "url": "https://www.ft.com/content/76fec740-0825-4c6b-a106-1dcdcba36219",
+      "source": "Financial Times",
+      "published_at": "2026-11-13",
+      "summary": "Britain's technology sector grew strongly in the third quarter, supporting national output despite energy costs and inflation. The report distinguishes the sector's contribution to GDP from the much less certain effects on employment and long-term productivity.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Wirtschaft"
+    },
+    {
+      "id": "d008dc0bd008dc0b",
+      "title": "'They've cut all entry-level jobs': unlikely seaside town on frontline of AI threat",
+      "url": "https://www.theguardian.com/business/2026/nov/13/ai-uk-finance-jobs-bournemouth-tech",
+      "source": "The Guardian",
+      "published_at": "2026-11-13",
+      "summary": "A report from Bournemouth examines how automation may undermine entry-level finance jobs and regional employment pathways. Employers argue AI can improve productivity, while workers and local leaders fear the loss of junior roles and knock-on effects on local services.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Arbeitsmarkt"
+    },
+    {
+      "id": "a65a1b80a65a1b80",
+      "title": "Nscale warns it needs more cash ahead of $35bn IPO",
+      "url": "https://www.ft.com/content/8d5a8642-d0a1-458d-aaa4-c1e7d344fe47",
+      "source": "Financial Times",
+      "published_at": "2026-11-13",
+      "summary": "Nvidia-backed data-centre company Nscale says it needs additional financing for major 2027 commitments ahead of a planned IPO. The story illustrates how large AI infrastructure contracts can generate substantial financing requirements before revenue materialises.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Investitionen"
+    }
+  ]
+}
