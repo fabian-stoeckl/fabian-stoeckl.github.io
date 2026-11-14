@@ -24,7 +24,7 @@
       "summary": "Der Haushaltsausschuss des Bundestags hat sich auf den Etat 2027 mit Rekordausgaben geeinigt. Das ist ein neuer Verfahrensstand gegenüber der vorangegangenen Debatte um den Haushaltskompromiss.",
       "article_type": "report",
       "evidence_level": "teaser",
-      "region": "Deutschland"
+      "region": "International"
     },
     {
       "id": "e708cd39065dd769",
@@ -35,7 +35,7 @@
       "summary": "Im Bundeshaushalt 2027 sind Ausgaben von mehr als 560 Milliarden Euro geplant. Für die geforderte Stromsteuersenkung ist weiterhin kein Geld vorgesehen; Kritik kommt auch aus der Union.",
       "article_type": "report",
       "evidence_level": "teaser",
-      "region": "Deutschland"
+      "region": "International"
     },
     {
       "id": "e1b07b26e3461cd6",
@@ -46,7 +46,7 @@
       "summary": "Ein interner Entwurf des Finanzministeriums sieht unter anderem eine begrenzte Steuerbefreiung für Abfindungen, elektronische Steuererklärungen und die Abschaffung der Steuerklassen III und V ab 2030 vor. Es handelt sich um Pläne, nicht um geltendes Recht.",
       "article_type": "report",
       "evidence_level": "teaser",
-      "region": "Deutschland"
+      "region": "International"
     },
     {
       "id": "3c61e5c5c7b8a2f9",
@@ -57,7 +57,7 @@
       "summary": "Das Wirtschaftsministerium erwartet eine leichte Beschleunigung der Konjunktur. Niedrigwasser- und Produktionsbelastungen dürften nachlassen, während hohe Öl- und Gaspreise sowie schwacher Konsum Risiken bleiben.",
       "article_type": "report",
       "evidence_level": "teaser",
-      "region": "Deutschland"
+      "region": "International"
     },
     {
       "id": "1a0b613af38bdb72",
@@ -68,7 +68,7 @@
       "summary": "Laut IEA übersteigt das weltweite Ölangebot erstmals seit Kriegsbeginn wieder die Nachfrage. Die Lagerbestände stiegen im Oktober, während insbesondere die Dieselversorgung und die Golfexporte weiter belastet sind.",
       "article_type": "report",
       "evidence_level": "teaser",
-      "region": "Welt"
+      "region": "International"
     },
     {
       "id": "930ca41282fb2c96",
@@ -90,7 +90,7 @@
       "summary": "US-Gesandter Kushner stellte europäische Beteiligung an der nächsten Verhandlungsrunde in Aussicht. Putin warnte zugleich vor europäischen Friedenstruppen. Eine verbindliche Einigung über die Verhandlungsarchitektur liegt nicht vor.",
       "article_type": "report",
       "evidence_level": "teaser",
-      "region": "Welt"
+      "region": "International"
     },
     {
       "id": "499b9d1697af18b2",
@@ -101,7 +101,7 @@
       "summary": "Beim Treffen in Dublin forderten Macron und Tusk eine stärkere europäische Koordination und Investitionen in künstliche Intelligenz. Die Staats- und Regierungschefs diskutierten technologische Unabhängigkeit.",
       "article_type": "report",
       "evidence_level": "teaser",
-      "region": "Europa"
+      "region": "International"
     },
     {
       "id": "275c0418a43a3724",
@@ -112,7 +112,7 @@
       "summary": "UN-Generalsekretär Guterres mahnte auf der COP31 schnellere Klimaschutzmaßnahmen an. Die Elektrifizierung des Energieverbrauchs wurde als zentraler Verhandlungsschwerpunkt hervorgehoben.",
       "article_type": "report",
       "evidence_level": "teaser",
-      "region": "Welt"
+      "region": "International"
     },
     {
       "id": "e06db78638ac5c12",
@@ -123,7 +123,7 @@
       "summary": "Nach dem Rücktritt von Nvidia-Chef Huang fordern US-Abgeordnete zusätzliche Untersuchungen zu fortgeschrittenen Chipexporten nach China. Der neue Aspekt betrifft Exportkontrollen und mögliche Umleitungen über Drittländer.",
       "article_type": "report",
       "evidence_level": "teaser",
-      "region": "Welt"
+      "region": "International"
     },
     {
       "id": "c1e031ddc176c939",
@@ -134,7 +134,7 @@
       "summary": "Ein Ausschuss des britischen Oberhauses warnt, geplante Abkommen mit der EU könnten umfangreiche parlamentarische Kontrolle sich verändernder EU-Vorschriften erfordern. Allein bei Lebensmitteln geht es um Hunderte relevante Regeln pro Jahr.",
       "article_type": "report",
       "evidence_level": "teaser",
-      "region": "Europa"
+      "region": "International"
     },
     {
       "id": "278613fb8ae392d3",
@@ -145,7 +145,7 @@
       "summary": "Die Tagesschau berichtet über den historischen Wahlsieg des Demokraten Scott Colom bei einer US-Senatswahl. Der Beitrag ordnet den Ausgang als politischen Erfolg der Demokraten ein.",
       "article_type": "report",
       "evidence_level": "teaser",
-      "region": "Welt"
+      "region": "International"
     },
     {
       "id": "db5c4695db5c4695",
@@ -156,7 +156,7 @@
       "summary": "The UK government says a planned sanitary and phytosanitary agreement with the EU could save horticulture businesses £60m a year in border costs. Signing is expected next week, with implementation later; savings remain projected.",
       "article_type": "report",
       "evidence_level": "teaser",
-      "region": "Europa"
+      "region": "International"
     },
     {
       "id": "94e4d42e94e4d42e",
@@ -167,7 +167,7 @@
       "summary": "Microsoft says its cloud services are broadly recovering after the global outage, although complete restoration remains uncertain. This is a new recovery update to the previously reported disruption.",
       "article_type": "report",
       "evidence_level": "teaser",
-      "region": "Welt"
+      "region": "International"
     }
   ],
   "articles": [
