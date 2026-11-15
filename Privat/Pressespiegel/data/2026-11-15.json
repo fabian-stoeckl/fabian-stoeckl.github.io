@@ -1,0 +1,170 @@
+{
+  "date": "2026-11-15",
+  "researched_at": "2026-11-15T05:30:00+01:00",
+  "preview": false,
+  "editorial_note": "Wochenendausgabe mit neuen Entwicklungen und hochwertigen Analysen. Die Richtzahlen wurden trotz Nachrecherche nicht erreicht; ungeprüfte oder werbliche Treffer wurden nicht als Füllartikel aufgenommen.",
+  "headlines": [
+    {
+      "id": "b350a6f8c564a91c",
+      "title": "Microsoft-Dienste nach globalem Ausfall wiederhergestellt",
+      "url": "https://www.theguardian.com/technology/2026/nov/14/microsoft-says-services-fully-restored-after-global-outage",
+      "source": "The Guardian",
+      "published_at": "2026-11-14",
+      "summary": "Microsoft meldet nach einer weltweiten Störung von Outlook, Teams und anderen Diensten die vollständige Wiederherstellung. Behörden, Kliniken und Gerichte waren betroffen. Nach Unternehmensangaben war eine Netzwerkänderung ursächlich, kein Cyberangriff.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "microsoft-365-restored-nov-2026"
+    },
+    {
+      "id": "124a1fd086a7e8b6",
+      "title": "Selenskyj kritisiert SpaceX wegen Starshield-Beschränkungen",
+      "url": "https://www.theguardian.com/world/2026/nov/14/spacex-not-honest-slowing-starshield-elon-musk-volodymyr-zelenskyy",
+      "source": "The Guardian",
+      "published_at": "2026-11-14",
+      "summary": "Selenskyj wirft SpaceX Einschränkungen der ukrainischen Satellitenverbindungen vor. Zudem berichtet er, US-Vermittler hätten einen möglichen Donbas-gegen-NATO-Tausch sondiert. Beides sind Aussagen des ukrainischen Präsidenten, keine bestätigten Vereinbarungen.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "ukraine-starshield-nov-2026"
+    },
+    {
+      "id": "80737fe3325aec2b",
+      "title": "Britischer Premier zieht negative Brexit-Bilanz",
+      "url": "https://www.theguardian.com/world/2026/nov/14/andy-burnham-says-uk-lost-more-than-we-gained-brexit",
+      "source": "The Guardian",
+      "published_at": "2026-11-14",
+      "summary": "Andy Burnham sagt, Großbritannien habe durch den Brexit mehr verloren als gewonnen. Vor dem EU-Gipfel am 20. November strebt er engere Kooperation bei Lebensmitteln, Emissionshandel und Mobilität an. Erwartete Wachstumseffekte sind Prognosen.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "uk-eu-brexit-summit-nov-2026"
+    },
+    {
+      "id": "512feadb100f5223",
+      "title": "Eurotunnel will Grenzkontrollen im Fahrzeug erproben",
+      "url": "https://www.theguardian.com/travel/2026/nov/14/eurotunnel-drive-in-fingerprint-trial-folkestone-calais-border",
+      "source": "The Guardian",
+      "published_at": "2026-11-14",
+      "summary": "Getlink plant mit französischer und europäischer Unterstützung einen Test biometrischer Kontrollen, ohne dass Reisende ihr Auto verlassen müssen. Das soll Staus durch das EU-Ein- und Ausreisesystem vermeiden. Die Technik ist noch nicht vollständig angeschlossen.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "eurotunnel-ees-trial-nov-2026"
+    },
+    {
+      "id": "3ce08997e3435a47",
+      "title": "Zwei Tote bei israelischem Drohnenangriff in Gaza",
+      "url": "https://apnews.com/article/ade76bebaf22135168aac6eb3016bc19",
+      "source": "Associated Press",
+      "published_at": "2026-11-14",
+      "summary": "Krankenhausvertreter melden zwei Tote nach einem Angriff in Dschabalia. Israel erklärt, zwei Hamas-Mitglieder angegriffen zu haben. Die unterschiedlichen Angaben zur Identität der Getöteten bleiben entsprechend zugeordnet.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "gaza-jabaliya-strike-nov-2026"
+    }
+  ],
+  "articles": [
+    {
+      "id": "741801272e3a1d6f",
+      "title": "Wie sich Deutschland in die Schuldenfalle manövriert",
+      "url": "https://www.welt.de/article6af867079849eea0701e2c77",
+      "source": "Die Welt",
+      "published_at": "2026-11-14",
+      "summary": "Die Analyse warnt vor steigenden Zinslasten und strukturell schwachem Wachstum bei hoher Kreditaufnahme. Sie fordert Reformen und Ausgabendisziplin. Die langfristige Schuldenentwicklung hängt von Wachstum, Zinsen und Politik ab.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Fiskalpolitik"
+    },
+    {
+      "id": "fdfccc8c769277b4",
+      "title": "Chart of the Week: The great market rotation",
+      "url": "https://www.ft.com/content/936376d1-4a69-4a3c-8975-3c55e9cb9d42",
+      "source": "Financial Times",
+      "published_at": "2026-11-14",
+      "summary": "Investors have moved from high-growth technology stocks towards defensive sectors since October. The gap between the capitalisation-weighted and equal-weighted S&P 500 illustrates how a handful of large companies can mask broader market performance. The trend may not persist.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Finanzmärkte"
+    },
+    {
+      "id": "59b8163673dcac6a",
+      "title": "How bonds got interesting again",
+      "url": "https://www.ft.com/content/3f89c87c-4bc4-40db-8c15-1957079917f3",
+      "source": "Financial Times",
+      "published_at": "2026-11-14",
+      "summary": "Higher starting yields have made bonds more attractive after years of poor returns. The analysis examines their potential role in diversified portfolios but stresses the remaining risks of inflation, rising rates and losses on long-dated bonds sold before maturity.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Finanzmärkte"
+    },
+    {
+      "id": "e9be7210bf739844",
+      "title": "China's beaten-down tech stocks could offer AI with a little less drama",
+      "url": "https://www.ft.com/content/1505df5d-14e0-4095-8a88-fd23a165a821",
+      "source": "Financial Times",
+      "published_at": "2026-11-14",
+      "summary": "The article explores Chinese domestic suppliers of AI-related components as an alternative to the best-known model developers. Falling valuations and local demand may create opportunities, but export restrictions, geopolitical risks and uncertainty about investment spending remain.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Technologie und Wirtschaft",
+      "new_perspective": "Statt nur die großen KI-Modellentwickler zu betrachten, untersucht der Beitrag chinesische Zulieferer mit heimischem Absatzmarkt – eine ungewöhnliche Perspektive auf KI-Wertschöpfung und geopolitische Risiken."
+    },
+    {
+      "id": "868e9643bb418333",
+      "title": "Terror from the skies: drones are redefining warfare in Sudan, and massacring its civilians",
+      "url": "https://www.theguardian.com/world/2026/nov/14/drones-redefining-warfare-sudan-massacring-civilians",
+      "source": "The Guardian",
+      "published_at": "2026-11-14",
+      "summary": "An investigation describes how long-range drones are changing Sudan's war and causing extensive civilian harm. Attacks on markets and infrastructure disrupt essential services, while investigators trace a growing variety of drone systems. Casualty estimates and allegations of external support require attribution.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Geopolitik"
+    },
+    {
+      "id": "9e45403c7a4682b2",
+      "title": "Public media freedom has been eroded across central Europe. Now Czechs are rallying to protect theirs",
+      "url": "https://www.theguardian.com/world/2026/nov/14/protests-grow-czechia-changes-public-media-funding",
+      "source": "The Guardian",
+      "published_at": "2026-11-14",
+      "summary": "Protests in Czechia challenge a proposal to replace public broadcasting licence fees with state-budget funding. Critics fear political pressure and reduced independence; the government argues legally guaranteed funding can protect broadcasters. The bill has not become law.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Demokratie"
+    },
+    {
+      "id": "9c5289a6063bbfcc",
+      "title": "Choking fires, deadly heat and devastating floods: 2026 in extreme weather",
+      "url": "https://www.theguardian.com/world/2026/nov/14/fires-heat-floods-extreme-weather-2026",
+      "source": "The Guardian",
+      "published_at": "2026-11-14",
+      "summary": "The review surveys deadly heat, floods, droughts and wildfires across continents during an exceptionally warm year. It connects observed impacts with scientific warnings while distinguishing past events from projections about future risk.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Klima"
+    },
+    {
+      "id": "fdf43245ed03a8f1",
+      "title": "'El Niño turned off the taps': factors behind Indonesia's wildfires revealed",
+      "url": "https://www.theguardian.com/world/2026/nov/13/indonesia-el-nino-wildfires",
+      "source": "The Guardian",
+      "published_at": "2026-11-13",
+      "summary": "A weather-attribution study examines how a strong El Niño reduced rainfall and human-driven warming intensified Indonesia's fire season. Land conversion and drained peatlands also increased the risk, highlighting the interaction between climate and land-use decisions.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Klimaforschung"
+    },
+    {
+      "id": "f111ff86d0ee6efa",
+      "title": "Robert Habeck: „China hat den Freihandel zu einer Falle gemacht“",
+      "url": "https://www.handelsblatt.com/politik/deutschland/robert-habeck-china-hat-den-freihandel-zu-einer-falle-gemacht/100265339.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-01",
+      "summary": "Im Interview kritisiert Robert Habeck Chinas industrielle Überkapazitäten und argumentiert, Europa müsse seine Freihandelspolitik im Wettbewerb der Großmächte überdenken. Seine Diagnose ist eine politische Einschätzung, keine unabhängig bewiesene Feststellung.",
+      "article_type": "interview",
+      "evidence_level": "teaser",
+      "topic": "Welthandel"
+    }
+  ]
+}
