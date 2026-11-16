@@ -3,8 +3,16 @@
   "name": "Noahpinion",
   "homepage": "https://www.noahpinion.blog/",
   "feed": "https://www.noahpinion.blog/feed",
-  "checked_at": "2026-11-16T00:59:18+00:00",
+  "checked_at": "2026-11-16T11:03:50+00:00",
   "posts": [
+    {
+      "title": "Bumbition",
+      "url": "https://www.noahpinion.blog/p/bumbition",
+      "published_at": "2026-11-16",
+      "author": "Noah Smith",
+      "description": "An alternative route to success in life.",
+      "published_time": "2026-11-16T09:52:30+00:00"
+    },
     {
       "title": "I’m feeling more optimistic about American politics",
       "url": "https://www.noahpinion.blog/p/im-feeling-more-optimistic-about",
