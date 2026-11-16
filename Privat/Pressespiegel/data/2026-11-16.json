@@ -1,0 +1,163 @@
+{
+  "date": "2026-11-16",
+  "researched_at": "2026-11-16T04:40:34+01:00",
+  "preview": false,
+  "editorial_note": "Unvollständige Früh-Ausgabe: 20 Nachrichten und mindestens fünf Vertiefungen wurden nicht erreicht; insbesondere österreichische und deutsche Originalmeldungen fehlen. Keine künstlichen Füllartikel.",
+  "headlines": [
+    {
+      "id": "a82f9849024bbd55",
+      "title": "Gewessler verteidigt Heizungsförderungen nach Rechnungshof-Kritik",
+      "url": "https://www.krone.at/4377242",
+      "source": "Kronen Zeitung",
+      "published_at": "2026-11-15",
+      "summary": "Nach Rechnungshofkritik an rund 1,7 Milliarden Euro für den Heizungstausch verteidigt Leonore Gewessler die Förderungen. Sie will künftig stärker auf soziale Treffsicherheit achten.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "Österreich",
+      "event_key": "event-a82f9849024bbd55"
+    },
+    {
+      "id": "a0c74f951312415f",
+      "title": "Van der Bellen ruft am deutschen Volkstrauertag zu Mitgefühl auf",
+      "url": "https://www.tagesschau.de/thema/volkstrauertag",
+      "source": "Tagesschau",
+      "published_at": "2026-11-15",
+      "summary": "Beim Gedenken an die Opfer von Krieg und Gewaltherrschaft im Bundestag rief Österreichs Bundespräsident zu mehr Mitgefühl auf.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "event-a0c74f951312415f"
+    },
+    {
+      "id": "1541b812eac976f1",
+      "title": "Estland will Grenzübergänge zu Russland schließen",
+      "url": "https://www.theguardian.com/world/2026/nov/15/estonia-to-close-all-border-crossings-with-russia-after-attack-on-drone-maker",
+      "source": "The Guardian",
+      "published_at": "2026-11-15",
+      "summary": "Nach einem mutmaßlichen Sabotageversuch gegen einen Drohnenhersteller plant Estland die Grenzschließung ab Dezember. Behörden verdächtigen russische Dienste.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "event-1541b812eac976f1"
+    },
+    {
+      "id": "a04822fa7af5fdae",
+      "title": "Hunderttausende demonstrieren in Prag für Medienfreiheit",
+      "url": "https://www.theguardian.com/world/2026/nov/15/czechia-protest-prague-media-freedom",
+      "source": "The Guardian",
+      "published_at": "2026-11-15",
+      "summary": "Mehr als 350.000 Menschen protestierten gegen die geplante Umstellung der öffentlich-rechtlichen Rundfunkfinanzierung. Die Regierung weist Kritik an der Unabhängigkeit zurück.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "event-a04822fa7af5fdae"
+    },
+    {
+      "id": "177bc7002e1b49d9",
+      "title": "Iran greift US-Radaranlage in Bahrain mit Drohnen an",
+      "url": "https://www.theguardian.com/world/2026/nov/15/iran-launches-drone-attacks-against-us-military-base-in-bahrain",
+      "source": "The Guardian",
+      "published_at": "2026-11-15",
+      "summary": "Iran meldet einen Vergeltungsangriff mit Drohnen; Bahrain erklärte, alle abgefangen zu haben. Schäden oder Verletzte wurden nicht gemeldet.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "event-177bc7002e1b49d9"
+    },
+    {
+      "id": "6bc32d63459f53fa",
+      "title": "Asiatische Gipfelwoche: USA, China und Russland im Fokus",
+      "url": "https://www.theguardian.com/world/2026/nov/15/asia-diplomatic-summits-trump-xi-putin-apec-asean",
+      "source": "The Guardian",
+      "published_at": "2026-11-15",
+      "summary": "Vor ASEAN und APEC stehen Handelsfragen und mögliche Gespräche zwischen Trump, Xi und Putin im Fokus. Ergebnisse sind noch offen.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "event-6bc32d63459f53fa"
+    },
+    {
+      "id": "0964c71bc0aea94e",
+      "title": "Internationaler Gerichtshof vor Entscheidung über Rohingya-Genozidklage",
+      "url": "https://www.theguardian.com/world/2026/nov/15/myanmar-rohingya-genocide-icj",
+      "source": "The Guardian",
+      "published_at": "2026-11-15",
+      "summary": "Der IGH soll über Gambias Klage gegen Myanmar entscheiden. Myanmar weist den Genozidvorwurf zurück; zentral ist die Frage der Vernichtungsabsicht.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "event-0964c71bc0aea94e"
+    },
+    {
+      "id": "c16c177f402af2e5",
+      "title": "Italien verhängt Datenschutzstrafe von 805 Millionen Euro gegen Meta",
+      "url": "https://www.theguardian.com/technology/2026/nov/15/italy-fines-meta-887m-for-accessing-android-users-photos-and-videos",
+      "source": "The Guardian",
+      "published_at": "2026-11-15",
+      "summary": "Italiens Behörde wirft Meta fehlende spezifische Einwilligung beim Zugriff auf Android-Fotos vor. Meta kündigte Berufung an.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "event-c16c177f402af2e5"
+    },
+    {
+      "id": "df4b4e8f1cfcfe37",
+      "title": "Energiepreise belasten Textilindustrie in Bangladesch",
+      "url": "https://www.tagesschau.de/tagesthemen/video-1684408.html",
+      "source": "Tagesschau",
+      "published_at": "2026-11-15",
+      "summary": "Ein ARD-Bericht beschreibt Firmenschließungen in der Textilindustrie Bangladeschs im Zusammenhang mit gestiegenen Energiepreisen.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "event-df4b4e8f1cfcfe37"
+    },
+    {
+      "id": "2280020af76a204d",
+      "title": "Wiener Mistplatz: Wie Geräte wieder in den Handel gelangen",
+      "url": "https://www.diepresse.com/a/41448265/vom-wiener-mistplatz-zurueck-ins-geschaeft",
+      "source": "Die Presse",
+      "published_at": "2026-11-15",
+      "summary": "Die Reportage erklärt, wie Funktionsprüfung, Datenlöschung und Reparatur über die Wiederverwendung gebrauchter Elektrogeräte entscheiden.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "Österreich",
+      "event_key": "event-2280020af76a204d"
+    }
+  ],
+  "articles": [
+    {
+      "id": "90e07cd0e15a588f",
+      "title": "Pension funds raise alarm on systemic risk from climate events",
+      "url": "https://www.ft.com/content/fcce6df7-7040-4c83-84ea-30f8fbac1239",
+      "source": "Financial Times",
+      "published_at": "2026-11-15",
+      "summary": "The article examines warnings by institutional investors about systemic financial risks from climate events. The original full text was not accessible.",
+      "article_type": "analysis",
+      "evidence_level": "headline",
+      "topic": "Klima und Finanzsystem"
+    },
+    {
+      "id": "1bbdc12275e2cdf9",
+      "title": "Data centre construction stocks lose $4.2tn as boom in AI trade unravels",
+      "url": "https://www.ft.com/content/d5adde7e-68cc-455b-ba78-b39cc3676b7a",
+      "source": "Financial Times",
+      "published_at": "2026-11-15",
+      "summary": "The report examines a sharp sell-off in companies linked to data-centre construction amid doubts about AI-related valuations. Full text was inaccessible.",
+      "article_type": "analysis",
+      "evidence_level": "headline",
+      "topic": "Technologie und Wirtschaft"
+    },
+    {
+      "id": "bf28c131e23c30d1",
+      "title": "'Risk multiplier': super El Niño looms over Cop31 as climate pattern fuels global disasters",
+      "url": "https://www.theguardian.com/environment/2026/nov/15/el-nino-cop31-turkey-climate",
+      "source": "The Guardian",
+      "published_at": "2026-11-15",
+      "summary": "The report examines how El Niño can amplify drought, floods and food insecurity, sharpening the debate over climate adaptation finance at COP31.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Klimafolgen"
+    }
+  ]
+}
