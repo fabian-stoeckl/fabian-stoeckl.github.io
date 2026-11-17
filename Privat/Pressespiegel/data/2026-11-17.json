@@ -1,0 +1,127 @@
+{
+  "date": "2026-11-17",
+  "researched_at": "2026-11-17T04:55:00+01:00",
+  "preview": false,
+  "editorial_note": "Begrenzte Früh-Ausgabe: Österreichische und deutsche Originalberichterstattung sowie analytische Vertiefungen sind unterrepräsentiert. Mehrere FT-Texte waren nur als Titel zugänglich; keine unbelegten Volltextbehauptungen.",
+  "headlines": [
+    {
+      "id": "8a89a626759eac45",
+      "title": "Five EU states announce plans for immigration 'return hubs' in Rwanda",
+      "url": "https://www.theguardian.com/world/2026/nov/16/eu-states-immigration-return-hubs-rwanda",
+      "source": "The Guardian",
+      "published_at": "2026-11-16",
+      "summary": "Deutschland, Österreich, die Niederlande, Dänemark und Griechenland wollen mit Ruanda über Rückführungszentren für ausreisepflichtige Menschen verhandeln. Menschenrechtsfragen sind umstritten.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "Österreich",
+      "event_key": "eu-rwanda-return-hubs-nov-2026"
+    },
+    {
+      "id": "3c35d058abb88f65",
+      "title": "Ukraine hits Kerch bridge between Russia and occupied Crimea",
+      "url": "https://www.theguardian.com/world/2026/nov/16/ukraine-drone-kerch-bridge-russia-occupied-crimea",
+      "source": "The Guardian",
+      "published_at": "2026-11-16",
+      "summary": "Ein ukrainischer Drohnenangriff auf die Kertsch-Brücke führte zu zeitweisen Verkehrsbeschränkungen. Das Ausmaß der Schäden ist unklar; russische Stellen spielten den Vorfall herunter.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "ukraine-kerch-bridge-strikes-nov-2026"
+    },
+    {
+      "id": "343a44c5665708ac",
+      "title": "Ukraine war briefing: Crimea bridge attacked again after Russia strikes major Kyiv bridges",
+      "url": "https://www.theguardian.com/world/2026/nov/17/ukraine-war-briefing-crimea-bridge-attacked-again-after-russia-strikes-major-kyiv-bridges",
+      "source": "The Guardian",
+      "published_at": "2026-11-17",
+      "summary": "Nach einem weiteren Angriff auf die Kertsch-Brücke meldete Kiew russische Treffer auf wichtige Brücken und Störungen bei Wärme- und Wasserversorgung. Die Konfliktparteien machten unterschiedliche Angaben.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "ukraine-kerch-bridge-strikes-nov-2026",
+      "distinct_contribution": "Neue Angriffe auf Kiews Brücken und ein erneuter Angriff auf die Kertsch-Brücke nach dem Bericht vom Vortag."
+    },
+    {
+      "id": "95fcf37b7c3e9e10",
+      "title": "Andy Burnham to say Brexit 'has not worked' and he will sign new deal with EU",
+      "url": "https://www.theguardian.com/politics/2026/nov/16/andy-burnham-brexit-has-not-worked-sign-new-deal-with-eu",
+      "source": "The Guardian",
+      "published_at": "2026-11-16",
+      "summary": "Die britische Regierung strebt neue Vereinbarungen mit der EU über Lebensmittelstandards, Emissionshandel und Jugendmobilität an. Der Abschluss steht noch aus.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "uk-eu-reset-nov-2026"
+    },
+    {
+      "id": "4c7daa0e47aa70fa",
+      "title": "Japan’s economy contracts for the first time in a year",
+      "url": "https://www.ft.com/content/4eb7ff18-1ba3-4944-ad48-bdc9e5ddc84e",
+      "source": "Financial Times",
+      "published_at": "2026-11-16",
+      "summary": "Die Financial Times berichtet über Japans ersten Wirtschaftsrückgang seit einem Jahr. Der vollständige Originalartikel war nicht zugänglich.",
+      "article_type": "report",
+      "evidence_level": "headline",
+      "region": "International",
+      "event_key": "japan-gdp-q3-2026"
+    },
+    {
+      "id": "d3574910b7f799c6",
+      "title": "UK short-term borrowing costs hit three-year high",
+      "url": "https://www.ft.com/content/aad29fc8-1b1b-4b7a-9e60-99989887ad89",
+      "source": "Financial Times",
+      "published_at": "2026-11-16",
+      "summary": "Die Renditen kurzfristiger britischer Staatsanleihen erreichten laut Financial Times ein Dreijahreshoch. Der vollständige Artikel war nicht zugänglich.",
+      "article_type": "report",
+      "evidence_level": "headline",
+      "region": "International",
+      "event_key": "uk-gilt-yields-nov-2026"
+    }
+  ],
+  "articles": [
+    {
+      "id": "f90ab8c789941df2",
+      "title": "Fed chair Kevin Warsh says AI boom could help sustain 'substantially higher' US growth",
+      "url": "https://www.ft.com/content/0431ca7c-5bef-4ffa-a4bd-aa29354eb691",
+      "source": "Financial Times",
+      "published_at": "2026-11-16",
+      "summary": "The FT reports that Fed chair Kevin Warsh sees potential for faster US growth from AI. The full article was not accessible.",
+      "article_type": "analysis",
+      "evidence_level": "headline",
+      "topic": "Geldpolitik und Produktivität"
+    },
+    {
+      "id": "4058a33d8ace548d",
+      "title": "The great migration slowdown",
+      "url": "https://www.ft.com/content/12f76b96-6ef9-40fb-924f-60c348935a21",
+      "source": "Financial Times",
+      "published_at": "2026-11-16",
+      "summary": "The FT examines a slowdown in migration to wealthy economies. The full article was inaccessible, so its detailed analysis cannot be verified here.",
+      "article_type": "analysis",
+      "evidence_level": "headline",
+      "topic": "Migration und Wirtschaft"
+    },
+    {
+      "id": "79869d8be06916fb",
+      "title": "US manufacturing is back and better",
+      "url": "https://www.ft.com/content/ed1a39b6-15fc-45f5-8b31-2fe24a7cfa6b",
+      "source": "Financial Times",
+      "published_at": "2026-11-16",
+      "summary": "The FT presents an argument about a recovery in US manufacturing. Its evidence and qualifications could not be checked behind the paywall.",
+      "article_type": "analysis",
+      "evidence_level": "headline",
+      "topic": "Industrie und Wettbewerbsfähigkeit"
+    },
+    {
+      "id": "5b6311420263de36",
+      "title": "Earth has surpassed global warming targets - what now?",
+      "url": "https://www.ft.com/content/ba04b299-90f6-47b7-8aa3-a2b5b5de4b2e",
+      "source": "Financial Times",
+      "published_at": "2026-11-16",
+      "summary": "The FT examines what climate policy should do after exceeding warming targets. Its full argument was not accessible.",
+      "article_type": "analysis",
+      "evidence_level": "headline",
+      "topic": "Klimapolitik"
+    }
+  ]
+}
