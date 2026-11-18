@@ -1,0 +1,190 @@
+{
+  "date": "2026-11-18",
+  "researched_at": "2026-11-18T04:44:00+01:00",
+  "preview": false,
+  "editorial_note": "Frühausgabe: Österreichische aktuelle Originalberichte waren bei der Quellenprüfung nicht ausreichend verifizierbar. Der Nachrichtenüberblick bleibt unter dem Richtwert und enthält eine erkennbare Konzentration auf tagesschau.de. Paywall-Artikel sind nur nach nachgewiesenem Titel/Teaser beschrieben.",
+  "headlines": [
+    {
+      "id": "51172fe4ea91d65a",
+      "title": "Mögliche Stromsteuersenkung: Verhandlung beendet - Verkündung am Morgen",
+      "url": "https://www.tagesschau.de/inland/innenpolitik/koalition-beendet-verhandlungen-100.html",
+      "source": "tagesschau.de",
+      "published_at": "2026-11-18",
+      "summary": "Die Koalitionsspitzen von CDU, CSU und SPD haben ihre Beratungen zur Stromsteuer beendet. Eine Einigung wurde in der Nacht zunächst nicht verkündet; Details waren für den Morgen angekündigt.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "de-stromsteuer-koalition-nov-2026"
+    },
+    {
+      "id": "2e669ac5d44684a9",
+      "title": "Warum die USA nicht mehr masernfrei sind",
+      "url": "https://www.tagesschau.de/ausland/amerika/masern-usa-118.html",
+      "source": "tagesschau.de",
+      "published_at": "2026-11-18",
+      "summary": "Nach schweren Masernausbrüchen haben die USA laut Panamerikanischer Gesundheitsorganisation ihren Status als masernfreies Land verloren. Der Beitrag erklärt die Entwicklung und ihre gesundheitspolitische Bedeutung.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "us-measles-elimination-status-2026"
+    },
+    {
+      "id": "374ccc2cd89c5d56",
+      "title": "Nvidia verdoppelt Umsatz und Gewinn",
+      "url": "https://www.tagesschau.de/wirtschaft/unternehmen/nvidia-quartalsergebnisse-100.html",
+      "source": "tagesschau.de",
+      "published_at": "2026-11-18",
+      "summary": "Nvidia meldet nach dem Rücktritt von Konzernchef Jensen Huang überraschend starke Quartalszahlen. Umsatz und Gewinn haben sich laut Bericht verdoppelt und die Erwartungen von Analysten übertroffen.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "nvidia-quarterly-earnings-nov-2026"
+    },
+    {
+      "id": "11d4cbc32e14602f",
+      "title": "Serbiens Parlament konstituiert: Nach 14 Jahren echte Vertreter des Volkes",
+      "url": "https://www.tagesschau.de/ausland/europa/serbien-parlament-studentische-liste-100.html",
+      "source": "tagesschau.de",
+      "published_at": "2026-11-17",
+      "summary": "Nach dem Wahlsieg der Studentenbewegung ist das serbische Parlament zusammengetreten. Die frühere Regierungspartei von Aleksandar Vučić verzögerte die Sitzung; eine reibungslose Machtübergabe ist nicht gesichert.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "serbia-student-parliament-inauguration-nov-2026"
+    },
+    {
+      "id": "a0260986c9b49da0",
+      "title": "Sozialproteste in Frankreich reißen nicht ab",
+      "url": "https://www.tagesschau.de/ausland/europa/frankreich-proteste-254.html",
+      "source": "tagesschau.de",
+      "published_at": "2026-11-17",
+      "summary": "In Frankreich demonstrierten und streikten erneut Beschäftigte für höhere Löhne und bessere Bedingungen im Bildungswesen. Über die Teilnehmerzahlen machten die Beteiligten unterschiedliche Angaben.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "france-labor-protests-nov-17-2026"
+    },
+    {
+      "id": "68e6eebd4861fec1",
+      "title": "USA prüfen mögliche Anschlagspläne Irans auf Washington",
+      "url": "https://www.tagesschau.de/ausland/amerika/trump-schmutzige-bombe-iran-100.html",
+      "source": "tagesschau.de",
+      "published_at": "2026-11-17",
+      "summary": "Nach einem CNN-Bericht über angebliche iranische Anschlagspläne in Washington prüfen US-Behörden die Hinweise. Die Vorwürfe sind nicht als bestätigter Anschlagsplan zu behandeln; Präsident Trump drohte Teheran.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "us-iran-washington-threat-claims-nov-2026"
+    },
+    {
+      "id": "9b9131bb4f1c7f5d",
+      "title": "Schneider für mehr Tempo bei Erneuerbaren Energien",
+      "url": "https://www.tagesschau.de/ausland/europa/klimakonferent-schneider-rede-100.html",
+      "source": "tagesschau.de",
+      "published_at": "2026-11-17",
+      "summary": "Deutschlands Umweltminister Schneider sprach sich auf der COP31 in Antalya für einen schnelleren Ausbau erneuerbarer Energien und den Ausstieg aus fossilen Brennstoffen aus. Es handelt sich um eine politische Forderung, keinen neuen Beschluss.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "cop31-germany-renewables-speech-nov-2026"
+    },
+    {
+      "id": "de7fb2ffb908b0cf",
+      "title": "Zelenskyy urges allies to send air defence deliveries without delay as Russia intensifies attacks",
+      "url": "https://www.theguardian.com/world/live/2026/nov/17/europe-ukraine-russia-crimea-kerch-bridge-attack-latest-news-updates",
+      "source": "The Guardian",
+      "published_at": "2026-11-17",
+      "summary": "Ukraine's president urged allies to speed up air-defence deliveries as Russian strikes threatened infrastructure ahead of winter. European partners announced further support; the live report also covered competing assessments of strikes on the Kerch Bridge.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "ukraine-air-defence-aid-nov-17-2026"
+    },
+    {
+      "id": "59d248c4f77f4c54",
+      "title": "Brussels raises Eurozone growth forecasts as AI boom drives exports",
+      "url": "https://www.ft.com/content/ce0f66b9-703d-4e04-b046-bf04a3d9209a",
+      "source": "Financial Times",
+      "published_at": "2026-11-17",
+      "summary": "The FT reports that Brussels has raised its eurozone growth forecasts amid stronger exports of AI-related industrial equipment. The full article is paywalled; its detailed projections were not independently verified from the original text.",
+      "article_type": "report",
+      "evidence_level": "headline",
+      "region": "International",
+      "event_key": "eu-autumn-economic-forecast-nov-2026"
+    },
+    {
+      "id": "956c58c4c3d6351a",
+      "title": "Japan proposes 'Asian IEA' to manage oil stockpiles",
+      "url": "https://www.ft.com/content/208b3dff-5d7a-4250-989a-821fb70fb896",
+      "source": "Financial Times",
+      "published_at": "2026-11-17",
+      "summary": "The FT reports that Japan is proposing a regional arrangement to coordinate emergency oil stockpiles in Asia. The full article is paywalled, so operational details have not been independently verified in the original.",
+      "article_type": "report",
+      "evidence_level": "headline",
+      "region": "International",
+      "event_key": "japan-asia-oil-stockpiles-nov-2026"
+    }
+  ],
+  "articles": [
+    {
+      "id": "d08e844c1c171fc0",
+      "title": "Warum eine Konjunkturerholung noch kein Ende der Jobkrise bedeutet",
+      "url": "https://www.tagesschau.de/wirtschaft/arbeitsmarkt/industrie-aufschwung-jobabbau-100.html",
+      "source": "tagesschau.de",
+      "published_at": "2026-11-17",
+      "summary": "Trotz besserer Umsätze in Teilen der deutschen Industrie werden Stellen weiter abgebaut. Die Analyse erklärt, warum Arbeitsmärkte verzögert auf Konjunkturimpulse reagieren und strukturelle Probleme der Autoindustrie sowie schwache Neueinstellungen die Erholung bremsen.",
+      "topic": "Industrie, Produktivität und Arbeitsmarkt",
+      "article_type": "analysis",
+      "evidence_level": "read",
+      "new_perspective": "Gegenintuitiv: Selbst bei anziehenden Industrieumsätzen können Beschäftigung und Neueinstellungen weiter sinken. Die Analyse erklärt die verzögerte Arbeitsmarktwirkung und strukturelle Branchenprobleme."
+    },
+    {
+      "id": "5e0b5af4ec4cfb6c",
+      "title": "Haben Augenärzte Hunderte Millionen zu viel kassiert?",
+      "url": "https://www.tagesschau.de/investigativ/ndr/augenaerzte-grauer-star-100.html",
+      "source": "tagesschau.de",
+      "published_at": "2026-11-17",
+      "summary": "Eine NDR-Recherche untersucht, ob Augenarztketten Patientinnen und Patienten bei Grauer-Star-Operationen zu teuren Sonderlinsen drängen. Der Verdacht überhöhter Zahlungen wirft Fragen nach Informationsasymmetrien und Anreizen im Gesundheitswesen auf.",
+      "topic": "Gesundheitsökonomie",
+      "article_type": "analysis",
+      "evidence_level": "read"
+    },
+    {
+      "id": "e105e5061aa73e22",
+      "title": "Automated warfare is already here. Now governments must restrain it",
+      "url": "https://www.theguardian.com/commentisfree/2026/nov/17/automated-warfare-here-governments-restrain-ai-militaries-treaty",
+      "source": "The Guardian",
+      "published_at": "2026-11-17",
+      "summary": "Former New Zealand prime minister Helen Clark argues that AI-assisted targeting is compressing military decision times and increasing accountability risks. She calls for binding international rules that preserve meaningful human control; this is an advocacy argument, not an agreed treaty.",
+      "topic": "KI, Sicherheit und internationale Regulierung",
+      "article_type": "opinion",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "e5ef787230ac13ca",
+      "title": "Wie schwer ist die Krim-Brücke getroffen?",
+      "url": "https://www.tagesschau.de/ausland/europa/krim-bruecke-152.html",
+      "source": "tagesschau.de",
+      "published_at": "2026-11-17",
+      "summary": "Die Analyse ordnet die militärische und symbolische Bedeutung der Krim-Brücke nach dem jüngsten ukrainischen Angriff ein. Die strategischen Folgen hängen vom tatsächlichen Schadensausmaß und den verfügbaren alternativen Transportwegen ab.",
+      "topic": "Ukrainekrieg und Infrastruktur",
+      "article_type": "analysis",
+      "evidence_level": "read",
+      "event_key": "ukraine-kerch-bridge-strikes-nov-2026",
+      "distinct_contribution": "Eigenständige Analyse der militärischen und symbolischen Bedeutung, nicht bloße Wiederholung der Angriffsmeldung vom Vortag."
+    },
+    {
+      "id": "61a5b9169d652604",
+      "title": "Showdown im Koalitionsausschuss: Bekommt der Kanzler seinen Willen?",
+      "url": "https://www.tagesschau.de/inland/innenpolitik/koalitionsausschuss-stromsteuer-merz-100.html",
+      "source": "tagesschau.de",
+      "published_at": "2026-11-17",
+      "summary": "Die Analyse beschreibt den politischen und finanziellen Konflikt um eine Senkung der deutschen Stromsteuer. Sie beleuchtet die Finanzierungssuche und die Erwartungen an Kanzler Merz vor dem Koalitionsausschuss, nicht dessen späteres Ergebnis.",
+      "topic": "Fiskalpolitik und Energiepreise",
+      "article_type": "analysis",
+      "evidence_level": "read",
+      "event_key": "de-stromsteuer-koalition-nov-2026",
+      "distinct_contribution": "Politisch-fiskalische Vorgeschichte des nächtlichen Koalitionsausschusses, nicht erneute Nachricht zum Ergebnis."
+    }
+  ]
+}
