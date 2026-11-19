@@ -1,0 +1,155 @@
+{
+  "date": "2026-11-19",
+  "researched_at": "2026-11-19T04:47:52+01:00",
+  "preview": false,
+  "editorial_note": "Nachrichten seit der letzten Ausgabe und eigenständige Vertiefungen. Eingeschränkte Paywall-Zugriffe sind gekennzeichnet.",
+  "headlines": [
+    {
+      "id": "8ce97b7a0d40c734",
+      "title": "Koalition einigt sich auf Stromsteuersenkung und Spritpreisdeckel",
+      "url": "https://www.sueddeutsche.de/politik/news-stromsteuer-spritpreisdeckel-koalition-streit-merz-bsw-wahlbeschwerde-zweiertreffen-zwischen-putin-und-trump-apec-gipfel-china-li.3582734",
+      "source": "Süddeutsche Zeitung",
+      "published_at": "2026-11-18",
+      "summary": "Die deutsche Koalition will die Stromsteuer für alle Bürger ab 2027 befristet auf das EU-Mindestniveau senken und einen zeitlich begrenzten Spritpreisdeckel beschließen.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International"
+    },
+    {
+      "id": "61e26c0ec2e55df0",
+      "title": "EU-Kommission schlägt 45-Milliarden-Euro-Kredit für Ukraine vor",
+      "url": "https://www.theguardian.com/world/2026/nov/18/eu-loan-ukraine-cash-crisis-defences-von-der-leyen-kyiv",
+      "source": "The Guardian",
+      "published_at": "2026-11-18",
+      "summary": "The Commission has proposed a €45bn loan to help Ukraine avert a financing crisis and bolster its defence. Member-state backing is still needed.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International"
+    },
+    {
+      "id": "e02b2de2eae118ac",
+      "title": "Österreich und Deutschland wollen TikTok europäisieren",
+      "url": "https://orf.at/stories/3448548/",
+      "source": "ORF.at",
+      "published_at": "2026-11-18",
+      "summary": "Wien und Berlin werben für eine europäische Eigentümerstruktur bei TikTok, um Daten und Algorithmen besser kontrollieren zu können. Es handelt sich noch um eine Initiative.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "Österreich"
+    },
+    {
+      "id": "295dac19643d2d33",
+      "title": "Inflation in Österreich bleibt bei 3,6 Prozent",
+      "url": "https://www.krone.at/4380190",
+      "source": "Kronen Zeitung",
+      "published_at": "2026-11-18",
+      "summary": "Statistik Austria bestätigt für Oktober 3,6 Prozent Inflation. Gas und Heizöl treiben Preise, günstigere Lebensmittel wirken dämpfend.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "Österreich"
+    },
+    {
+      "id": "453a3bcb1b8ccb25",
+      "title": "Trump, Xi und Putin treffen sich beim APEC-Gipfel",
+      "url": "https://www.theguardian.com/world/live/2026/nov/18/apec-summit-live-updates-xi-putin-trump-world-leaders-gather-in-china",
+      "source": "The Guardian",
+      "published_at": "2026-11-18",
+      "summary": "Xi welcomed Trump and met Putin in Shenzhen. Trilateral talks were planned for Thursday; a joint agreement was not yet announced.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "apec-shenzhen-nov2026"
+    },
+    {
+      "id": "542d35423aa23112",
+      "title": "COP31 ringt um fossile Energien und Klimafinanzierung",
+      "url": "https://www.theguardian.com/environment/2026/nov/18/world-held-hostage-by-oil-mafia-says-panama-minister-at-cop-31",
+      "source": "The Guardian",
+      "published_at": "2026-11-18",
+      "summary": "Negotiators remain divided near the end of COP31. Panama says 30 countries are supporting a separate initiative for a fossil-fuel treaty.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International"
+    },
+    {
+      "id": "71eba1072b10cd35",
+      "title": "Israel verzögert Verträge für E1-Siedlungsprojekt",
+      "url": "https://www.theguardian.com/world/2026/nov/18/israel-construction-contracts-e1-west-bank-settlement-uk-sanctions",
+      "source": "The Guardian",
+      "published_at": "2026-11-18",
+      "summary": "Israel has delayed construction contracts for the disputed E1 West Bank project amid legal objections and British sanctions.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International"
+    }
+  ],
+  "articles": [
+    {
+      "id": "7ae79ca4a3bc0fa6",
+      "title": "Warum Kiews Energiekrise auch Klitschko unter Druck setzt",
+      "url": "https://www.theguardian.com/world/2026/nov/18/russian-attacks-kyiv-power-outages-mayor-in-perilous-position",
+      "source": "The Guardian",
+      "published_at": "2026-11-18",
+      "summary": "Russian attacks have caused severe electricity outages in Kyiv. The report examines the pressure on mayor Vitali Klitschko over winter preparations, while distinguishing the damage inflicted by Russia from domestic political accusations.",
+      "article_type": "analysis",
+      "evidence_level": "read",
+      "topic": "Ukraine und Infrastruktur"
+    },
+    {
+      "id": "f4902238e8932b6e",
+      "title": "Chinas Wirtschaft schwächelt überraschend",
+      "url": "https://www.handelsblatt.com/politik/konjunktur/konjunktur-chinas-wirtschaft-schwaechelt-ueberraschend/100270088.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-16",
+      "summary": "Chinas Oktoberzahlen enttäuschen: Einzelhandelsumsätze stiegen nur um 0,4 Prozent, Industrieproduktion um 4,8 Prozent und Anlageinvestitionen gingen in den ersten zehn Monaten um 8,1 Prozent zurück. Bisherige Konjunkturhilfen zeigen wenig Wirkung.",
+      "article_type": "analysis",
+      "evidence_level": "read",
+      "topic": "Globale Konjunktur"
+    },
+    {
+      "id": "16006346522eae9a",
+      "title": "EZB warnt vor Turbulenzen an den Börsen",
+      "url": "https://www.sueddeutsche.de/wirtschaft/ezb-finanzstabilitaetsbericht-2026-staatsanleihen-ki-blase-li.3582332",
+      "source": "Süddeutsche Zeitung",
+      "published_at": "2026-11-18",
+      "summary": "Die Analyse ordnet die EZB-Warnungen zu hohen Staatsschulden, Finanzmarktpositionen und KI-Investitionen ein. Aus der öffentlich sichtbaren Vorschau lassen sich keine weitergehenden Details sicher entnehmen.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Finanzstabilität",
+      "event_key": "ezb-finanzstabilitaet-nov2026"
+    },
+    {
+      "id": "e0ed8357d384a9dd",
+      "title": "How Deutsche Bank lost its bet on Putin’s Russia",
+      "url": "https://www.ft.com/content/bf775dda-4148-49f9-a8b4-a4a02f44207e",
+      "source": "Financial Times",
+      "published_at": "2026-11-18",
+      "summary": "The Financial Times examines Deutsche Bank's failed bet on Putin's Russia. Only the headline was accessible, so no unseen arguments or findings are attributed to the article.",
+      "article_type": "analysis",
+      "evidence_level": "headline",
+      "topic": "Banken und Geopolitik"
+    },
+    {
+      "id": "149c3c0e30c3efe8",
+      "title": "A decade after demonetisation in India, rules continue to change overnight",
+      "url": "https://www.ft.com/content/5ed2e6f5-80b9-4f51-a442-c88eb4ad615f",
+      "source": "Financial Times",
+      "published_at": "2026-11-18",
+      "summary": "The Financial Times revisits India's demonetisation a decade later and highlights continuing abrupt rule changes. The full text was inaccessible, so this is a headline-based reading suggestion.",
+      "article_type": "analysis",
+      "evidence_level": "headline",
+      "topic": "Institutionen und Wirtschaftspolitik"
+    },
+    {
+      "id": "3e6e70174c776ab3",
+      "title": "The voice of a nation: the Czech children’s TV show that became a symbol of media freedom",
+      "url": "https://www.theguardian.com/world/2026/nov/18/vecernicek-czech-children-tv-show-media-freedom",
+      "source": "The Guardian",
+      "published_at": "2026-11-18",
+      "summary": "The Czech children's television character Večerníček has become a symbol of protests about public broadcasting. The report explores how a familiar cultural institution became associated with media independence.",
+      "article_type": "analysis",
+      "evidence_level": "read",
+      "topic": "Medienfreiheit"
+    }
+  ]
+}
