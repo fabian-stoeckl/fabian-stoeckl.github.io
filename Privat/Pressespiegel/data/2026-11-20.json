@@ -13,7 +13,7 @@
       "summary": "Die Bundesregierung akzeptiert Bedingungen für eine mögliche Übernahme. UniCredit sagt den Frankfurter Sitz und Arbeitnehmerrechte zu; über den Verkauf des Bundesanteils von 13,3 Prozent ist noch nicht entschieden.",
       "article_type": "report",
       "evidence_level": "read",
-      "region": "Deutschland",
+      "region": "International",
       "event_key": "commerzbank-unicredit-deal-2026-11-19"
     },
     {
@@ -72,7 +72,7 @@
       "summary": "Hessens Ministerpräsident begrüßt die Standortzusage, während Arbeitnehmervertreter zurückhaltend bleiben. Die Reaktionen betreffen die Bedingungen einer geplanten Übernahme.",
       "article_type": "report",
       "evidence_level": "read",
-      "region": "Deutschland",
+      "region": "International",
       "event_key": "commerzbank-unicredit-deal-2026-11-19",
       "distinct_contribution": "Eigenständige Reaktionen aus Hessen und dem Betriebsrat, nicht bloße Wiederholung der Übernahmebedingungen."
     },
@@ -85,7 +85,7 @@
       "summary": "Nach SZ-Informationen könnten bei der insolventen Warenhauskette bis zu 40 Standorte wegfallen. Eine endgültige Entscheidung über die Filialen ist damit noch nicht getroffen.",
       "article_type": "report",
       "evidence_level": "read",
-      "region": "Deutschland"
+      "region": "International"
     },
     {
       "id": "4a10b0c0d0e00008",
@@ -96,7 +96,7 @@
       "summary": "Seit Mitternacht laufen in Deutschland ganztägige Warnstreiks der IG Metall an. Unter anderem sollen Werke von Audi und BMW betroffen sein; die Tarifverhandlungen sind festgefahren.",
       "article_type": "report",
       "evidence_level": "read",
-      "region": "Deutschland"
+      "region": "International"
     },
     {
       "id": "4a10b0c0d0e00009",
@@ -118,7 +118,7 @@
       "summary": "Die Bundesbank rechnet nach dem Jahreswechsel mit höherer deutscher Inflation, weil der vorübergehend dämpfende Tankrabatt ausläuft. Die Meldung ist eine unveränderte dpa-Übernahme.",
       "article_type": "report",
       "evidence_level": "teaser",
-      "region": "Deutschland"
+      "region": "International"
     }
   ],
   "articles": [
