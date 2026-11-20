@@ -3,8 +3,16 @@
   "name": "Noahpinion",
   "homepage": "https://www.noahpinion.blog/",
   "feed": "https://www.noahpinion.blog/feed",
-  "checked_at": "2026-11-20T02:16:21+00:00",
+  "checked_at": "2026-11-20T11:26:54+00:00",
   "posts": [
+    {
+      "title": "Does it really matter if there’s an intelligence explosion?",
+      "url": "https://www.noahpinion.blog/p/does-it-really-matter-if-theres-an",
+      "published_at": "2026-11-20",
+      "author": "Noah Smith",
+      "description": "Maybe this is the wrong frame for the AI safety discussion.",
+      "published_time": "2026-11-20T10:13:06+00:00"
+    },
     {
       "title": "Roundup #91: Rocketing into the technofuture",
       "url": "https://www.noahpinion.blog/p/roundup-91-rocketing-into-the-technofuture",
