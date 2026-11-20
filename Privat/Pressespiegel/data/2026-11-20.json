@@ -1,0 +1,188 @@
+{
+  "date": "2026-11-20",
+  "researched_at": "2026-11-20T04:45:00+01:00",
+  "preview": false,
+  "editorial_note": "Redaktionelle Ausnahme: Das Ziel von 20 eigenständig belegten Nachrichten wurde trotz Nachrecherche nicht erreicht. Originalzugriffe und Teaser sind gekennzeichnet.",
+  "headlines": [
+    {
+      "id": "4a10b0c0d0e00001",
+      "title": "Commerzbank-Übernahme: Bundesregierung und UniCredit einigen sich",
+      "url": "https://www.tagesschau.de/wirtschaft/unternehmen/unicredit-bundesregierung-100.html",
+      "source": "Tagesschau",
+      "published_at": "2026-11-19",
+      "summary": "Die Bundesregierung akzeptiert Bedingungen für eine mögliche Übernahme. UniCredit sagt den Frankfurter Sitz und Arbeitnehmerrechte zu; über den Verkauf des Bundesanteils von 13,3 Prozent ist noch nicht entschieden.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "Deutschland",
+      "event_key": "commerzbank-unicredit-deal-2026-11-19"
+    },
+    {
+      "id": "4a10b0c0d0e00002",
+      "title": "Historisches Dreiertreffen von Xi, Trump und Putin endet ohne konkreten Durchbruch",
+      "url": "https://www.theguardian.com/world/2026/nov/19/china-russia-us-agree-peace-statement-no-mention-ukraine-iran-wars",
+      "source": "The Guardian",
+      "published_at": "2026-11-19",
+      "summary": "The leaders issued a broad peace declaration, but it omitted the wars in Ukraine and Iran and established no concrete arms-control framework.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "apec-shenzhen-nov2026"
+    },
+    {
+      "id": "4a10b0c0d0e00003",
+      "title": "Internationaler Gerichtshof: Myanmar beging Völkermord an Rohingya",
+      "url": "https://www.theguardian.com/world/2026/nov/19/genocide-rohingya-international-court-of-justice-ruling-myanmar",
+      "source": "The Guardian",
+      "published_at": "2026-11-19",
+      "summary": "The ICJ ruled that Myanmar committed genocide against the Rohingya during its 2017 military campaign. The judgment calls for reparations but the court cannot enforce them itself.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "icj-myanmar-rohingya-2026-11-19"
+    },
+    {
+      "id": "4a10b0c0d0e00004",
+      "title": "COP31: Neuer Entwurf streicht Verweise auf fossile Energien",
+      "url": "https://www.theguardian.com/environment/2026/nov/19/cop31-risks-becoming-ghost-summit-after-all-mentions-of-fossil-fuels-removed-from-draft-text",
+      "source": "The Guardian",
+      "published_at": "2026-11-19",
+      "summary": "A revised draft removed references to phasing out fossil fuels and weakened electrification language. Panama threatened to block an outcome; negotiations were still ongoing.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "cop31-draft-2026-11-19"
+    },
+    {
+      "id": "4a10b0c0d0e00005",
+      "title": "Europäische Ukraine-Unterstützer warnen vor Großmächtefrieden ohne Europa",
+      "url": "https://www.theguardian.com/world/live/2026/nov/19/russia-ukraine-war-coalition-of-the-willing-europe-latest-news-updates",
+      "source": "The Guardian",
+      "published_at": "2026-11-19",
+      "summary": "At Berlin talks, European leaders rejected a Yalta-style deal imposed by major powers and called for Ukraine and Europe to be involved. Security guarantees remain under discussion.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International"
+    },
+    {
+      "id": "4a10b0c0d0e00006",
+      "title": "Bundesregierung und UniCredit: Frankfurt bleibt Sitz der Commerzbank",
+      "url": "https://www.tagesschau.de/inland/regional/hessen/hr-erleichterung-nach-einigung-auf-commerzbank-standort-in-frankfurt-100.html",
+      "source": "Tagesschau",
+      "published_at": "2026-11-19",
+      "summary": "Hessens Ministerpräsident begrüßt die Standortzusage, während Arbeitnehmervertreter zurückhaltend bleiben. Die Reaktionen betreffen die Bedingungen einer geplanten Übernahme.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "Deutschland",
+      "event_key": "commerzbank-unicredit-deal-2026-11-19",
+      "distinct_contribution": "Eigenständige Reaktionen aus Hessen und dem Betriebsrat, nicht bloße Wiederholung der Übernahmebedingungen."
+    },
+    {
+      "id": "4a10b0c0d0e00007",
+      "title": "Galeria: Bis zu 40 der 83 Filialen könnten schließen",
+      "url": "https://www.sueddeutsche.de/politik/news-dreiergipfel-von-xi-trump-und-putin-un-ukraine-voelkermord-an-rohingya-galeria-insolvenz-afd-sachsen-anhalt-siegmund-unicredit-li.3583328",
+      "source": "Süddeutsche Zeitung",
+      "published_at": "2026-11-19",
+      "summary": "Nach SZ-Informationen könnten bei der insolventen Warenhauskette bis zu 40 Standorte wegfallen. Eine endgültige Entscheidung über die Filialen ist damit noch nicht getroffen.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "Deutschland"
+    },
+    {
+      "id": "4a10b0c0d0e00008",
+      "title": "IG Metall verschärft Arbeitskampf mit ganztägigen Streiks",
+      "url": "https://www.sueddeutsche.de/politik/news-dreiergipfel-von-xi-trump-und-putin-un-ukraine-voelkermord-an-rohingya-galeria-insolvenz-afd-sachsen-anhalt-siegmund-unicredit-li.3583328",
+      "source": "Süddeutsche Zeitung",
+      "published_at": "2026-11-19",
+      "summary": "Die IG Metall organisiert in der Tarifrunde 24-stündige Arbeitsniederlegungen unter anderem bei Audi, BMW und Bosch. Der Konflikt erreicht damit eine neue Eskalationsstufe.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "Deutschland"
+    },
+    {
+      "id": "4a10b0c0d0e00009",
+      "title": "IWF-Chefin warnt: KI-Investitionsboom kann globale Zinsen erhöhen",
+      "url": "https://www.theguardian.com/world/2026/nov/19/imf-head-warns-ai-demand-push-up-interest-rates-apec",
+      "source": "The Guardian",
+      "published_at": "2026-11-19",
+      "summary": "Kristalina Georgieva warns that strong AI investment demand and energy-price pressures could fuel inflation and keep global interest rates higher, even as AI supports growth.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International"
+    },
+    {
+      "id": "4a10b0c0d0e0000a",
+      "title": "Bundesbank erwartet Inflationsanstieg nach Auslaufen des Tankrabatts",
+      "url": "https://www.sueddeutsche.de/wirtschaft/verbraucherpreise-bundesbank-erwartet-inflationsschub-nach-jahreswechsel-dpa.urn-newsml-dpa-com-20090101-261119-930-19296",
+      "source": "Süddeutsche Zeitung / dpa",
+      "published_at": "2026-11-19",
+      "summary": "Die Bundesbank rechnet nach dem Jahreswechsel mit höherer deutscher Inflation, weil der vorübergehend dämpfende Tankrabatt ausläuft. Die Meldung ist eine unveränderte dpa-Übernahme.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "Deutschland"
+    }
+  ],
+  "articles": [
+    {
+      "id": "4a10b0c0d0e00065",
+      "title": "Können Abnehmspritzen mehr Menschen zurück in den Job bringen?",
+      "url": "https://www.handelsblatt.com/unternehmen/industrie/industrie-koennen-abnehmspritzen-mehr-menschen-zurueck-in-den-job-bringen/100266686.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-19",
+      "summary": "Drugmakers are pitching weight-loss medication as an employer benefit in Germany. The article examines potential productivity and absence-cost savings, while noting important limitations and the manufacturers' commercial incentives.",
+      "topic": "Wirtschaft und Arbeitsmarkt",
+      "article_type": "analysis",
+      "evidence_level": "teaser"
+    },
+    {
+      "id": "4a10b0c0d0e00066",
+      "title": "Indische Aktien werden als KI Hedge zu Gewinnern der Tech-Sorgen",
+      "url": "https://www.handelsblatt.com/finanzen/anlagestrategie/kolumnen/geldanlage-indische-aktien-werden-als-ki-hedge-zu-gewinnern-der-tech-sorgen/100269738.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-19",
+      "summary": "Indische Aktien profitierten zuletzt gerade von ihrem vergleichsweise geringen Gewicht an Chip- und Technologiefirmen. Die Kolumne diskutiert, warum ein bisher schwacher Markt bei einer Korrektur der KI-Euphorie als Absicherung wahrgenommen wird.",
+      "topic": "Globale Kapitalmärkte",
+      "article_type": "commentary",
+      "evidence_level": "teaser",
+      "new_perspective": "Eine ungewöhnliche Umkehrung der KI-Investmentlogik: Nicht die stärkste KI-Exponierung, sondern ihre geringe Bedeutung kann einen Markt kurzfristig attraktiver machen."
+    },
+    {
+      "id": "4a10b0c0d0e00067",
+      "title": "Myanmar ruling gives new relevance to genocide convention and is ‘full of messages’ for Israel",
+      "url": "https://www.theguardian.com/law/2026/nov/19/myanmar-ruling-new-relevance-genocide-convention-messages-israel",
+      "source": "The Guardian",
+      "published_at": "2026-11-19",
+      "summary": "The analysis explains how the ICJ assessed genocidal intent through cumulative evidence and why the reasoning may matter for other cases. It also notes the dissenting judges and the distinct facts of the Gaza proceedings.",
+      "topic": "Völkerrecht und internationale Ordnung",
+      "article_type": "analysis",
+      "evidence_level": "read",
+      "event_key": "icj-myanmar-rohingya-2026-11-19",
+      "distinct_contribution": "Juristische Analyse des Beweismaßstabs statt bloßer Urteilsbericht."
+    },
+    {
+      "id": "4a10b0c0d0e00068",
+      "title": "New page in history? Xi, Trump and Putin summit was more of a footnote",
+      "url": "https://www.theguardian.com/world/2026/nov/19/new-page-in-history-xi-trump-and-putin-summit-was-more-of-a-footnote",
+      "source": "The Guardian",
+      "published_at": "2026-11-19",
+      "summary": "The analysis argues that the unprecedented summit's symbolism far exceeded its concrete achievements. Its vague statement offered the three leaders political imagery but little evidence of progress on Ukraine or nuclear arms control.",
+      "topic": "Geopolitik",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "event_key": "apec-shenzhen-nov2026",
+      "distinct_contribution": "Eigenständige Bewertung der symbolischen Gipfeldiplomatie."
+    },
+    {
+      "id": "4a10b0c0d0e00069",
+      "title": "‘Everyone struggled for this justice’: tears in court as Rohingya vindicated in Myanmar genocide ruling",
+      "url": "https://www.theguardian.com/global-development/2026/nov/19/everyone-struggled-for-this-justice-tears-in-court-as-rohingya-vindicated-in-myanmar-genocide-ruling",
+      "source": "The Guardian",
+      "published_at": "2026-11-19",
+      "summary": "Rohingya survivors describe the relief of legal recognition after years of testimony and displacement, while stressing that safe return to Myanmar remains uncertain. The reporting adds the human consequences of the court's decision.",
+      "topic": "Migration und Menschenrechte",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "icj-myanmar-rohingya-2026-11-19",
+      "distinct_contribution": "Originalreportage über Reaktionen und Lebensumstände von Betroffenen."
+    }
+  ]
+}
