@@ -1,0 +1,169 @@
+{
+  "date": "2026-11-21",
+  "researched_at": "2026-11-21T04:48:00+01:00",
+  "preview": false,
+  "editorial_note": "Auswahl nach überprüfbaren Originalauszügen und zugänglichen Texten; nicht alle Verlagsartikel waren vollständig zugänglich. Die Ausgabe konzentriert sich auf neue Entwicklungen vom 20. November.",
+  "headlines": [
+    {
+      "id": "5b21000000000001",
+      "title": "Cop31 talks go into overtime as debate rages over lack of fossil fuels in draft deal",
+      "url": "https://www.theguardian.com/environment/2026/nov/20/cop31-talks-overtime-fossil-fuels-vanish-from-draft-deal",
+      "source": "The Guardian",
+      "published_at": "2026-11-20",
+      "summary": "COP31 negotiations in Antalya ran beyond Friday's scheduled finish. A draft omitted fossil fuels, drawing objections from several countries; finance and transition provisions remained contested.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "event_key": "cop31-antalyanegotiations-2026",
+      "region": "International"
+    },
+    {
+      "id": "5b21000000000002",
+      "title": "Burnham seals trade and youth mobility deals in biggest step towards EU since Brexit",
+      "url": "https://www.theguardian.com/politics/2026/nov/20/burnham-trade-youth-mobility-deals-biggest-step-towards-eu-since-brexit",
+      "source": "The Guardian",
+      "published_at": "2026-11-20",
+      "summary": "The UK and EU agreed on food and drink trade, emissions trading and youth mobility, though tuition-fee disputes could complicate implementation. The British government estimates a £17bn economic benefit.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "event_key": "uk-eu-summit-2026-11-20",
+      "region": "International"
+    },
+    {
+      "id": "5b21000000000003",
+      "title": "UK and France believed to have vetoed UAE choice for UN secretary general",
+      "url": "https://www.theguardian.com/world/2026/nov/20/uk-france-veto-uae-choice-lana-nusseibeh-next-un-secretary-general",
+      "source": "The Guardian",
+      "published_at": "2026-11-20",
+      "summary": "The UN secretary-general selection remains unresolved after a straw poll. The UAE candidate faced objections from permanent Security Council members, while Costa Rica's Rebeca Grynspan remains a frontrunner.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "event_key": "un-sg-selection-nov2026",
+      "region": "International"
+    },
+    {
+      "id": "5b21000000000004",
+      "title": "Katar will 15 Milliarden in Deutschland investieren",
+      "url": "https://www.handelsblatt.com/politik/deutschland/zusammenarbeit-mit-golfstaaten-katar-will-15-milliarden-in-deutschland-investieren/100271648.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-20",
+      "summary": "Beim Staatsbesuch des Emirs vereinbarten Deutschland und Katar eine engere Zusammenarbeit. Katar sagte laut Bundesregierung Investitionen von 15 Milliarden Euro über fünf Jahre zu.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "event_key": "qatar-germany-investment-2026-11-20",
+      "region": "International"
+    },
+    {
+      "id": "5b21000000000005",
+      "title": "Merz fordert deutsche Firmen zu Investitionen in der Ukraine auf",
+      "url": "https://www.handelsblatt.com/politik/international/wirtschaftsforum-merz-fordert-deutsche-firmen-zu-investitionen-in-der-ukraine-auf/100270931.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-20",
+      "summary": "Der Kanzler wirbt trotz des Krieges für Investitionen in der Ukraine. Förderdarlehen und Kriegsrisikoversicherungen sollen private Unternehmen unterstützen; konkrete Projekte bleiben risikobehaftet.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "event_key": "ukraine-investment-forum-2026-11-20",
+      "region": "International"
+    },
+    {
+      "id": "5b21000000000006",
+      "title": "Dax rutscht unter 25.000-Punkte-Marke",
+      "url": "https://www.handelsblatt.com/finanzen/maerkte/marktberichte/dax-aktuell-dax-rutscht-unter-25-000-punkte-marke/100271464.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-20",
+      "summary": "Der Dax fiel am Freitag zeitweise unter 25.000 Punkte. Sorgen über die Bewertung von KI-Aktien belasteten internationale Börsen; der Optionsverfall konnte die Schwankungen verstärken.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "event_key": "ai-market-selloff-2026-11-20",
+      "region": "International"
+    },
+    {
+      "id": "5b21000000000007",
+      "title": "Ostasiens Börsen brechen nach Anthropics Börsengang ein",
+      "url": "https://www.handelsblatt.com/finanzen/maerkte/marktberichte/ostasiens-boersen-brechen-nach-anthropics-boersengang-ein/100271416.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-20",
+      "summary": "Asiatische Halbleiterwerte verloren stark, obwohl Anthropic gerade an die Börse gegangen war. Neben Zweifeln an KI-Bewertungen belasteten mögliche neue US-Exportkontrollen für Chips.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "event_key": "ai-market-selloff-2026-11-20",
+      "region": "International"
+    },
+    {
+      "id": "5b21000000000008",
+      "title": "Budget: Bauer bekräftigt Forderung nach Senkung",
+      "url": "https://orf.at/stories/3448653/",
+      "source": "ORF",
+      "published_at": "2026-11-20",
+      "summary": "Österreich fordert in den Verhandlungen über den nächsten EU-Finanzrahmen ein deutlich kleineres Gesamtvolumen. Ein neuer Vorschlag des Ratspräsidenten und ein Sondergipfel stehen bevor.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "event_key": "eu-budget-negotiations-nov2026",
+      "region": "Österreich"
+    }
+  ],
+  "articles": [
+    {
+      "id": "5b21000000000009",
+      "title": "What impact has Brexit had on the UK and EU economies?",
+      "url": "https://www.theguardian.com/business/2026/nov/20/what-impact-brexit-uk-eu-economies",
+      "source": "The Guardian",
+      "published_at": "2026-11-20",
+      "summary": "The explainer compares estimates of Brexit's economic costs with divergent outcomes for UK goods and services exports. It also assesses the potential gains from closer single-market ties while noting the EU's own economic challenges.",
+      "article_type": "analysis",
+      "evidence_level": "read",
+      "event_key": "uk-eu-summit-2026-11-20",
+      "topic": "Wirtschaft und Welthandel",
+      "distinct_contribution": "Langfristige ökonomische Bilanz und Schätzmethoden statt Tagesmeldung zum Gipfel."
+    },
+    {
+      "id": "5b2100000000000a",
+      "title": "Wirtschaftspolitik: BDI will Resilienzpolitik ins Kanzleramt holen",
+      "url": "https://www.handelsblatt.com/politik/deutschland/wirtschaftspolitik-bdi-will-resilienzpolitik-ins-kanzleramt-holen/100271055.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-20",
+      "summary": "Der BDI schlägt vor, die deutsche Resilienzpolitik im Kanzleramt zu koordinieren. Ein neues Grundsatzpapier kritisiert zersplitterte Zuständigkeiten und fordert eine gemeinsame Strategie von Staat und Unternehmen.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "event_key": "bdi-resilience-paper-2026-11-20",
+      "topic": "Industrie und Wirtschaftspolitik"
+    },
+    {
+      "id": "5b2100000000000b",
+      "title": "Migration: So lockt Polen deutsche Auswanderer zu sich",
+      "url": "https://www.handelsblatt.com/politik/international/migration-so-lockt-polen-deutsche-auswanderer-zu-sich/100249315.html",
+      "source": "Handelsblatt",
+      "published_at": "2026-11-20",
+      "summary": "Ein erneut veröffentlichter Archivbeitrag beschreibt die wachsende deutsche Auswanderung nach Polen und fragt nach wirtschaftlichen Standortvorteilen. 2025 zogen laut Beitrag 4.942 Deutsche nach Polen, 1.720 kamen zurück.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "event_key": "german-emigration-poland-2025",
+      "topic": "Migration und Wettbewerbsfähigkeit",
+      "new_perspective": "Der Standortvergleich kehrt den gewohnten Migrationsblick um: Deutsche ziehen nach Polen. Der Beitrag fragt, welche wirtschaftlichen Anreize und Standortfaktoren diesen Richtungswechsel erklären."
+    },
+    {
+      "id": "5b2100000000000c",
+      "title": "Das lange Warten auf den Zug",
+      "url": "https://www.diepresse.com/a/41468589/das-lange-warten-auf-den-zug",
+      "source": "Die Presse",
+      "published_at": "2026-11-20",
+      "summary": "Zwischen Tunneldurchschlag und Inbetriebnahme liegen oft Jahre: Am Semmering ist regulärer Betrieb erst Ende 2029 geplant, am Brenner wurde die Eröffnung auf 2034 verschoben. Der Beitrag erklärt geologische und technische Gründe.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "event_key": "austrian-rail-tunnels-2026",
+      "topic": "Infrastruktur und Investitionen"
+    },
+    {
+      "id": "5b2100000000000d",
+      "title": "Pacific islanders face a 'sickening disconnect' between Cop31 and the climate devastation at their doorstep",
+      "url": "https://www.theguardian.com/environment/2026/nov/20/pacific-cop31-summit-climate-devastation",
+      "source": "The Guardian",
+      "published_at": "2026-11-20",
+      "summary": "Pacific island representatives warn that the slow COP31 talks contrast sharply with worsening floods and adaptation needs. The regional resilience fund remains underfinanced, and governments are exploring options beyond the UN process.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "event_key": "cop31-antalyanegotiations-2026",
+      "topic": "Klimapolitik und Entwicklung",
+      "distinct_contribution": "Eigenständige Perspektive der betroffenen Inselstaaten auf Finanzierung und Anpassung."
+    }
+  ]
+}
