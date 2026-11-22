@@ -3,8 +3,16 @@
   "name": "Noahpinion",
   "homepage": "https://www.noahpinion.blog/",
   "feed": "https://www.noahpinion.blog/feed",
-  "checked_at": "2026-11-22T01:13:24+00:00",
+  "checked_at": "2026-11-22T11:11:46+00:00",
   "posts": [
+    {
+      "title": "AI people are very, very, very, very rich",
+      "url": "https://www.noahpinion.blog/p/ai-people-are-very-very-very-very",
+      "published_at": "2026-11-22",
+      "author": "Noah Smith",
+      "description": "What should we think about that?",
+      "published_time": "2026-11-22T06:27:25+00:00"
+    },
     {
       "title": "Does it really matter if there’s an intelligence explosion?",
       "url": "https://www.noahpinion.blog/p/does-it-really-matter-if-theres-an",
