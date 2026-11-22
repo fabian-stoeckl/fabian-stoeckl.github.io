@@ -1,0 +1,94 @@
+{
+  "date": "2026-11-22",
+  "researched_at": "2026-11-22T04:45:00+01:00",
+  "preview": false,
+  "editorial_note": "Kompakte Sonntagsausgabe mit überprüften Originaltexten oder ausdrücklich als Teaser gekennzeichneten Quellen; keine künstliche Auffüllung.",
+  "headlines": [
+    {
+      "id": "3362c83dbec75616",
+      "title": "Climate talks stall as countries mull showdown with Saudi Arabia over fossil fuel phase-out",
+      "url": "https://www.theguardian.com/environment/2026/nov/21/climate-talks-stall-countries-mull-showdown-saudi-arabia-over-fossil-fuels",
+      "source": "The Guardian",
+      "published_at": "2026-11-21",
+      "summary": "About 130 countries pressed for language on transitioning away from fossil fuels, while climate finance, carbon capture and electrification remained contentious. Talks continued beyond their scheduled end without a final agreement.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "cop31-antalya-final-negotiations-nov2026"
+    },
+    {
+      "id": "872075bc340aa3c5",
+      "title": "International UN talks on controlling use of autonomous weapons collapse",
+      "url": "https://www.theguardian.com/technology/2026/nov/21/international-talks-control-ai-autonomous-weapons-collapse",
+      "source": "The Guardian",
+      "published_at": "2026-11-21",
+      "summary": "UN talks in Geneva failed to agree a mandate for a binding treaty on autonomous weapons. Consensus rules and resistance from military powers produced a weaker process; Austria was among seven countries pushing for stronger regulation.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "un-autonomous-weapons-geneva-nov2026"
+    },
+    {
+      "id": "2c75daf82d7a9803",
+      "title": "Rejoining EU 'on the table' as UK makes deals on trade and young people",
+      "url": "https://www.theguardian.com/politics/2026/nov/21/rejoining-eu-uk-trade-youth-deals-ed-miliband",
+      "source": "The Guardian",
+      "published_at": "2026-11-21",
+      "summary": "Following new UK–EU agreements on food standards, emissions trading and youth mobility, Ed Miliband said future membership options could be considered. The government still maintains limits on closer integration before the next election.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "uk-eu-reset-agreements-nov2026"
+    },
+    {
+      "id": "c3e7893dc41e4ce5",
+      "title": "Costa revives EU digital tax proposal in bid to reach agreement on budget",
+      "url": "https://www.ft.com/content/2e9c54a8-e2c5-4334-8141-9791267ae3c3",
+      "source": "Financial Times",
+      "published_at": "2026-11-22",
+      "summary": "António Costa's revised proposal for the EU's 2028–34 budget revives a digital-services levy and greater use of carbon-market revenues. Member states have yet to agree; the digital levy would require unanimity.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "eu-budget-costa-proposal-nov2026"
+    }
+  ],
+  "articles": [
+    {
+      "id": "8806cd864dff9cb5",
+      "title": "‘Little room for error’: what a debt-laden cloud computing company says about the AI boom",
+      "url": "https://www.theguardian.com/business/2026/nov/21/debt-laden-cloud-computing-company-coreweave-ai-boom",
+      "source": "The Guardian",
+      "published_at": "2026-11-21",
+      "summary": "CoreWeave's GPU-backed borrowing and large debt maturities illustrate how AI infrastructure growth transfers financial risk to specialist cloud providers. The report also presents arguments for resilience, including long-term contracts and demand for older chips.",
+      "article_type": "analysis",
+      "evidence_level": "read",
+      "topic": "KI-Investitionen und Finanzmärkte",
+      "new_perspective": "The report shifts the AI debate from productivity forecasts to the credit structure behind GPU data centres: depreciation, collateral and advance payments could determine who bears the financial risk."
+    },
+    {
+      "id": "1f1e799b3139755a",
+      "title": "China commits to low-carbon electrification and help for others to improve",
+      "url": "https://www.theguardian.com/environment/2026/nov/21/china-commits-low-carbon-electrification-help-others-improve",
+      "source": "The Guardian",
+      "published_at": "2026-11-21",
+      "summary": "China is promoting electrification and cheaper clean technologies at Cop31 while keeping coal generation for backup. Its adviser supports expanding electricity's share but argues for country-specific pathways rather than a uniform fossil-fuel roadmap.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Energie und internationale Wirtschaftspolitik",
+      "event_key": "cop31-antalya-final-negotiations-nov2026",
+      "distinct_contribution": "China's specific electrification strategy and trade-policy perspective, rather than a repeat of the negotiations report."
+    },
+    {
+      "id": "e40f339818b0c8a6",
+      "title": "How can investors succeed in markets today?",
+      "url": "https://www.ft.com/content/22b3765d-ff3d-4f07-8982-5a222dbb862e",
+      "source": "Financial Times",
+      "published_at": "2026-11-22",
+      "summary": "The analysis questions the assumption that government bonds always protect portfolios and stresses inflation, leverage and US equity concentration. It argues for broader diversification while acknowledging that alternative assets also have limitations.",
+      "article_type": "analysis",
+      "evidence_level": "teaser",
+      "topic": "Weltwirtschaft und Kapitalmärkte"
+    }
+  ]
+}
