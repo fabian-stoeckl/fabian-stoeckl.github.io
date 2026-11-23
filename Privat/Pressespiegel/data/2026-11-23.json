@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-23",
+  "researched_at": "2026-11-23T04:48:00+01:00",
+  "preview": false,
+  "editorial_note": "Redaktionelle Ausnahme: Die verfügbare, einzeln belegte Auswahl bleibt deutlich unter den üblichen Richtzahlen. Keine künstlichen Füllartikel; teils Agenturanteile und nur Teaserzugriff sind ausgewiesen.",
+  "headlines": [
+    {
+      "id": "b231126000000001",
+      "title": "Russisches Kriegsschiff sinkt nach mutmaßlichem Drohnenangriff in Benghazi",
+      "url": "https://www.theguardian.com/world/2026/nov/22/blast-russian-ship-suspected-drone-attack-benghazi-libya",
+      "source": "The Guardian",
+      "published_at": "2026-11-22",
+      "summary": "A Russian naval corvette sank in Libya after an apparent sea-drone attack. Libyan officials reported the strike, but responsibility has not been claimed or independently established.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "ukraine-russian-ship-benghazi-2026-11-22"
+    },
+    {
+      "id": "b231126000000002",
+      "title": "Siedlerangriffe im Westjordanland lösen scharfe Kritik israelischer Opposition aus",
+      "url": "https://www.theguardian.com/world/2026/nov/22/netanyahu-rival-condemns-settler-arson-attacks-palestinian-villages-west-bank",
+      "source": "The Guardian",
+      "published_at": "2026-11-22",
+      "summary": "After arson attacks on Palestinian villages, Israeli opposition figures condemned extremist settler violence. Police opened an investigation; the political accusations remain contested.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "west-bank-settler-arson-2026-11-21"
+    },
+    {
+      "id": "b231126000000003",
+      "title": "Südkoreas Bildungsminister tritt nach KI-Betrugsskandal zurück",
+      "url": "https://www.theguardian.com/world/2026/nov/22/south-korea-education-minister-resigns-after-ai-cheating-scandal-engulfs-university-exams",
+      "source": "The Guardian",
+      "published_at": "2026-11-22",
+      "summary": "South Korea's education minister resigned after a scandal over AI-assisted exam cheating and criticism of late safeguards. Authorities said the university entrance exam itself ended without major incidents.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "International",
+      "event_key": "south-korea-exam-cheating-resignation-2026-11-22"
+    },
+    {
+      "id": "b231126000000004",
+      "title": "Indonesien: Tote und Vermisste nach Fabrikbrand",
+      "url": "https://www.theguardian.com/world/2026/nov/22/fire-confectionary-factory-indonesia-jakarta",
+      "source": "The Guardian",
+      "published_at": "2026-11-22",
+      "summary": "A fire at a confectionery factory in Indonesia left at least three people dead and dozens missing, according to initial reports. Rescue efforts were ongoing.",
+      "article_type": "report",
+      "evidence_level": "teaser",
+      "region": "International",
+      "event_key": "indonesia-confectionery-factory-fire-2026-11-22"
+    },
+    {
+      "id": "b231126000000005",
+      "title": "Parlament: Neun Ausschüsse beraten diese Woche über Regierungsvorhaben",
+      "url": "https://www.parlament.gv.at/aktuelles/pk/jahr_2026/pk1106",
+      "source": "Österreichisches Parlament",
+      "published_at": "2026-11-20",
+      "summary": "Für die Woche vom 23. bis 27. November sind neun Nationalratsausschüsse vorgesehen. Unter möglichen Themen sind Integration, ÖBB-Strukturreform und Preisbremsen; die Beratungen sind noch keine Beschlüsse.",
+      "article_type": "report",
+      "evidence_level": "read",
+      "region": "Österreich",
+      "event_key": "austria-parliament-week-2026-11-23"
+    }
+  ],
+  "articles": [
+    {
+      "id": "b231126000000065",
+      "title": "Europe is entering a ‘supercycle’ of national elections. Their outcomes could shake the EU’s foundations",
+      "url": "https://www.theguardian.com/world/2026/nov/22/europe-elections-supercycle-could-shake-eu-foundations",
+      "source": "The Guardian",
+      "published_at": "2026-11-22",
+      "summary": "An analysis examines how a succession of national elections could reshape the EU's political direction and test its ability to act collectively. The outcomes remain uncertain.",
+      "topic": "Europäische Politik",
+      "article_type": "analysis",
+      "evidence_level": "teaser"
+    }
+  ]
+}
