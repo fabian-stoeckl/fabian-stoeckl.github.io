@@ -3,8 +3,16 @@
   "name": "Noahpinion",
   "homepage": "https://www.noahpinion.blog/",
   "feed": "https://www.noahpinion.blog/feed",
-  "checked_at": "2026-11-25T19:12:04+00:00",
+  "checked_at": "2026-11-26T03:30:52+00:00",
   "posts": [
+    {
+      "title": "How to make Thanksgiving even better",
+      "url": "https://www.noahpinion.blog/p/how-to-make-thanksgiving-even-better",
+      "published_at": "2026-11-25",
+      "author": "Noah Smith",
+      "description": "A few ideas.",
+      "published_time": "2026-11-25T19:23:28+00:00"
+    },
     {
       "title": "Why the New Right is failing",
       "url": "https://www.noahpinion.blog/p/why-the-new-right-is-failing",
