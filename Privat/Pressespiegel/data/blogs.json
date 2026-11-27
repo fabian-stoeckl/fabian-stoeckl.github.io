@@ -3,8 +3,16 @@
   "name": "Noahpinion",
   "homepage": "https://www.noahpinion.blog/",
   "feed": "https://www.noahpinion.blog/feed",
-  "checked_at": "2026-11-27T12:06:29+00:00",
+  "checked_at": "2026-11-27T21:09:38+00:00",
   "posts": [
+    {
+      "title": "The coming age of sodium-ion batteries",
+      "url": "https://www.noahpinion.blog/p/the-coming-age-of-sodium-ion-batteries",
+      "published_at": "2026-11-27",
+      "author": "Alex Shoer",
+      "description": "A guest post by Alex Shoer",
+      "published_time": "2026-11-27T19:42:40+00:00"
+    },
     {
       "title": "How to make Thanksgiving even better",
       "url": "https://www.noahpinion.blog/p/how-to-make-thanksgiving-even-better",
